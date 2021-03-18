@@ -1,0 +1,30 @@
+﻿@using DystirWeb.ModelViews
+@model FullStatisticModelView
+
+<div id="competition-view" style="overflow:auto;margin-bottom:5px">
+    <table style="font-size:9px;font-weight:bold;">
+        <tr>
+            @foreach (string competition in Model.CompetitionsList)
+            {
+                <td onclick="getStatistics('@competition');" style="padding:0;">
+                    @if (competition != Model.SelectedCompetition)
+                    {
+                        <div class="standings-competition-item">
+                            @competition
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="selected-standings-competition-item">
+                            @competition
+                        </div>
+                    }
+                </td>
+            }
+            <td class="standings-right-space">
+                <div class="standings-competition-background"></div>
+            </td>
+        </tr>
+    </table>
+</div>
+

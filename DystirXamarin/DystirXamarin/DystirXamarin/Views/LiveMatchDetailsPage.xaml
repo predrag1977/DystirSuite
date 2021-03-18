@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DystirXamarin.Views.LiveMatchDetailsPage"
+             BackgroundColor="{StaticResource LightBackgroundColor}"
+             Title="Live match details">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="HorizontalOptions" Value="Center"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid BindingContext="{Binding SelectedLiveMatch}">
+        <ScrollView >
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Row="0" Grid.Column="0" Margin="0,10,0,0" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" >
+                    <!--<Image Source="https://www.faroekickoff.com/Images/TeamLogos/team1logo.png" WidthRequest="40" HeightRequest="40" />-->
+                    <Label Grid.Column="0" FontSize="20"  Text="{Binding HomeTeam}" />
+                </StackLayout>
+                <StackLayout Grid.Row="0" Grid.Column="1" Margin="0,10,0,0"  Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" >
+                    <Label Grid.Column="0" FontSize="20" Text="{Binding AwayTeam}" />
+                    <!--<Image Source="https://www.faroekickoff.com/Images/TeamLogos/team2logo.png" WidthRequest="40" HeightRequest="40" />-->
+                </StackLayout>
+
+                <StackLayout x:Name="LiveMatchDetailsPanel" IsVisible="False" Grid.Row="2" Grid.Column="0" Margin="0,20" Grid.ColumnSpan="2" HorizontalOptions="Center" Orientation="Vertical">
+                    <!--LINE UPS-->
+                    <StackLayout Grid.Row="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <ContentView Padding="1" Margin="20,0,20,20" BackgroundColor="Gray" HorizontalOptions="Fill">
+                                <StackLayout BackgroundColor="Gray" Padding="10">
+                                    <Label Text="LINE UP" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  TextColor="White" />
+                                </StackLayout>
+                                <ContentView.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="LineUp_Tapped" CommandParameter="{Binding HomeTeam}" NumberOfTapsRequired="1" />
+                                </ContentView.GestureRecognizers>
+                            </ContentView>
+                            <ContentView Grid.Column="1" Padding="1" Margin="20,0,20,20" BackgroundColor="Gray" HorizontalOptions="Fill">
+                                <StackLayout BackgroundColor="Gray" Padding="10">
+                                    <Label Text="LINE UP" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  TextColor="White" />
+                                </StackLayout>
+                                <ContentView.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="LineUp_Tapped" CommandParameter="{Binding AwayTeam}" NumberOfTapsRequired="1" />
+                                </ContentView.GestureRecognizers>
+                            </ContentView>
+                        </Grid>
+                    </StackLayout>
+                    <!--TACTICS-->
+                    <StackLayout Grid.Row="1" Opacity="0.5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <ContentView Padding="1" Margin="20,0,20,20" BackgroundColor="LightGray" HorizontalOptions="Fill">
+                                <StackLayout BackgroundColor="LightGray" Padding="10">
+                                    <Label Text="TACTIC" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  TextColor="Black" />
+                                </StackLayout>
+                                <ContentView.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="Tactic_Tapped" CommandParameter="{Binding HomeTeamID}" NumberOfTapsRequired="1" />
+                                </ContentView.GestureRecognizers>
+                            </ContentView>
+                            <ContentView Grid.Column="1" Padding="1" Margin="20,0,20,20" BackgroundColor="LightGray" HorizontalOptions="Fill">
+                                <StackLayout BackgroundColor="LightGray" Padding="10">
+                                    <Label Text="TACTIC" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  TextColor="Black" />
+                                </StackLayout>
+                                <ContentView.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="Tactic_Tapped" CommandParameter="{Binding AwayTeamID}" NumberOfTapsRequired="1" />
+                                </ContentView.GestureRecognizers>
+                            </ContentView>
+                        </Grid>
+                    </StackLayout>
+                    <!--TEAMS STAFF-->
+                    <StackLayout Grid.Row="1" Opacity="0.5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <ContentView Padding="1" Margin="20,0,20,20" BackgroundColor="Gray" HorizontalOptions="Fill">
+                                <StackLayout BackgroundColor="Gray" Padding="10">
+                                    <Label Text="TEAM STAFF" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  TextColor="White" />
+                                </StackLayout>
+                                <ContentView.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="CoachAndStaff_Tapped" CommandParameter="{Binding HomeTeamID}" NumberOfTapsRequired="1" />
+                                </ContentView.GestureRecognizers>
+                            </ContentView>
+                            <ContentView Grid.Column="1" Padding="1" Margin="20,0,20,20" BackgroundColor="Gray" HorizontalOptions="Fill">
+                                <StackLayout BackgroundColor="Gray" Padding="10">
+                                    <Label Text="TEAM STAFF" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  TextColor="White" />
+                                </StackLayout>
+                                <ContentView.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="CoachAndStaff_Tapped" CommandParameter="{Binding AwayTeamID}" NumberOfTapsRequired="1" />
+                                </ContentView.GestureRecognizers>
+                            </ContentView>
+                        </Grid>
+                    </StackLayout>
+                    <!--REFEERES-->
+                    <StackLayout Grid.Row="1" Opacity="0.5">
+                        <Grid>
+                            <ContentView Padding="1" Margin="20,0,20,20" BackgroundColor="LightGray" HorizontalOptions="Fill">
+                                <StackLayout BackgroundColor="LightGray" Padding="10">
+                                    <Label Text="REFEERES" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  TextColor="Black" />
+                                </StackLayout>
+                                <ContentView.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="Refeerees_Tapped" CommandParameter="{Binding HomeTeamID}" NumberOfTapsRequired="1" />
+                                </ContentView.GestureRecognizers>
+                            </ContentView>
+                        </Grid>
+                    </StackLayout>
+                    <!--PITCH AND WEATHER-->
+                    <StackLayout Grid.Row="1" Opacity="0.5">
+                        <Grid>
+                            <ContentView Padding="1" Margin="20,0,20,20" BackgroundColor="Gray" HorizontalOptions="Fill">
+                                <StackLayout BackgroundColor="Gray" Padding="10">
+                                    <Label Text="PITCH AND WEATHER" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  TextColor="White" />
+                                </StackLayout>
+                                <ContentView.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="PitchAndWeather_Tapped" CommandParameter="{Binding HomeTeamID}" NumberOfTapsRequired="1" />
+                                </ContentView.GestureRecognizers>
+                            </ContentView>
+                        </Grid>
+                    </StackLayout>
+                    <!--LIVE MATCH EVENTS-->
+                    <StackLayout Grid.Row="1">
+                        <Grid>
+                            <ContentView Padding="1" Margin="20,0,20,20" BackgroundColor="DarkGreen" HorizontalOptions="Fill">
+                                <StackLayout BackgroundColor="DarkGreen" Padding="10">
+                                    <Label Text="LIVE MATCH EVENTS" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"  TextColor="White" />
+                                </StackLayout>
+                                <ContentView.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="MatchEvents_Tapped" CommandParameter="{Binding HomeTeamID}" NumberOfTapsRequired="1" />
+                                </ContentView.GestureRecognizers>
+                            </ContentView>
+                        </Grid>
+                    </StackLayout>
+                </StackLayout>
+
+                
+            </Grid>
+        </ScrollView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:image" content="https://www.dystir.fo/images/icons/dystir_icon.png" />
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+
+    <title>@ViewData["Title"]</title>
+    <link rel="icon" type="image/x-icon" href="https://www.dystir.fo/images/icons/dystir_icon.png">
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+              crossorigin="anonymous"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
+    </environment>
+    @RenderSection("HeaderContent", false)
+    <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Graduate|Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro" rel="stylesheet">
+    <script type="text/javascript">
+        var pageindex = @(ViewData["PageIndex"] ?? 0);
+        var selectedMatchID = @(ViewData["SelectedMatchID"] ?? 0);
+        var selectedTabIndex = 1;
+    </script>
+</head>
+<body onload="refresh();">
+    <header class="header-dystir">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow mb-3">
+            <div class="container" style="text-align: center;">
+                <table class="table">
+                    <tr>
+                        <td style="width:70px">
+                            <a class="navbar-brand navbar-collapse collapse" asp-area="" asp-controller="MatchesView" asp-action="Index">
+                                <img src="~/images/icons/dystir_icon.png" width="50" />
+                            </a>
+                            <div class="navbar-expand-sm navbar-toggler navbar-toggler-icon sidebar-menu-button" onclick="openNav()" style="border:0;background-color:transparent" />
+                        </td>
+                        <td class="navbar-toggler" id="header-title" style="height: 60px;border:0; color: white; font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                            @ViewData["Title"]
+                        </td>
+                        <td class="navbar-collapse collapse" style="height:60px">
+                            <ul class="navbar-nav flex-grow-1" style="font-size:14px;">
+                                <li class="nav-item matches-tab">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="MatchesView" asp-action="Index">DYSTIR</a>
+                                </li>
+                                <li class="nav-item results-tab">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Results" asp-action="Index">ÚRSLIT</a>
+                                </li>
+                                <li class="nav-item fixtures-tab">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Fixtures" asp-action="Index">KOMANDI</a>
+                                </li>
+                                <li class="nav-item standings-tab">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="StandingsView" asp-action="Index">STØÐAN</a>
+                                </li>
+                                <li class="nav-item statistics-tab">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="StatisticsView" asp-action="Index">HAGTØL</a>
+                                </li>
+                            </ul>
+                        </td>
+                        <td style="width:120px;">
+                            <span style="float:left;padding:0 5px">
+                                <a href='https://play.google.com/store/apps/details?id=fo.Dystir&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+                                    <img alt='Get it on Google Play' height="45" src="~/images/icons/google-play-square.png" />
+                                </a>
+                            </span>
+                            <span style="float:left;padding:0 5px">
+                                <a href='https://apps.apple.com/us/app/dystir/id1460781430?ls=1'>
+                                    <img alt='Download on Apple Store' height="45" src="~/images/icons/apple-store-square.png" />
+                                </a>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="mySidenav" class="sidenav navbar-toggler" style="padding: 0px;border: 0px;padding-top: 50px;margin-top:5px">
+                                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                                <ul class="flex-grow-1" style="font-size:14px;padding:0 10px;list-style:none;">
+                                    <li class="nav-item matches-tab">
+                                        <a class="nav-link text-white" asp-area="" asp-controller="MatchesView" asp-action="Index">DYSTIR</a>
+                                    </li>
+                                    <li class="nav-item results-tab">
+                                        <a class="nav-link text-white" asp-area="" asp-controller="Results" asp-action="Index">ÚRSLIT</a>
+                                    </li>
+                                    <li class="nav-item fixtures-tab">
+                                        <a class="nav-link text-white" asp-area="" asp-controller="Fixtures" asp-action="Index">KOMANDI</a>
+                                    </li>
+                                    <li class="nav-item standings-tab">
+                                        <a class="nav-link text-white" asp-area="" asp-controller="StandingsView" asp-action="Index">STØÐAN</a>
+                                    </li>
+                                    <li class="nav-item statistics-tab">
+                                        <a class="nav-link text-white" asp-area="" asp-controller="StatisticsView" asp-action="Index">HAGTØL</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </nav>
+    </header>
+    <img class="background-image" src="~/images/background/grass-background.png" style="position:absolute;top:0;height:100%;width:100%" />
+
+    <div style="margin:0 auto;max-width:1140px;">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <div id="loading-image" style="display:none;position:absolute;width:100%;top:calc(50% - 45px);text-align:center;opacity:0.8">
+        <img src="~/images/icons/loadingicon.gif" style="height:45px;width:45px;" />
+    </div>
+
+    <footer class="footer text-white">
+        <table style="height:60px;width:100%">
+            <tr>
+                <td style="text-align:center">
+                    <div style="cursor:pointer;font:bold;padding:0 5px 0 10px;font-size:0.9em">
+                        <a style="color:white;text-decoration: underline" href="mailto: dystir@dystir.fo">
+                            dystir@dystir.fo
+                        </a>
+                        <div style="color:white;font:bold;white-space:nowrap ">
+                            &copy;2020 - Dystir.fo
+                        </div>
+                    </div>
+                </td>
+                <td style="text-align:center;width:100%;">
+                    <section id="sponsors" />
+                </td>
+            </tr>
+        </table>
+    </footer>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
+        </script>
+    </environment>
+
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/lib/moment/moment.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment-with-locales.min.js"></script>
+    @RenderSection("Scripts", false)
+</body>
+
+</html>

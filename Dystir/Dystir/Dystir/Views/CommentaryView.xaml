@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Dystir.Views.CommentaryView">
+
+    <ContentView.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+    </ContentView.Resources>
+
+    <ListView SelectionMode="None"  Margin="5"
+              SeparatorVisibility="None"
+              CachingStrategy="RecycleElement"
+              VerticalOptions="FillAndExpand"
+              BackgroundColor="Transparent"
+              VerticalScrollBarVisibility="Never"
+              ItemsSource="{Binding CommentaryOfMatch}">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <Grid BindingContext="{Binding}" BindingContextChanged="ParentLayout_BindingContextChanged" />
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</ContentView>

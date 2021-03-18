@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:properties="clr-namespace:Dystir.Properties"
+             xmlns:converter="clr-namespace:Dystir.Converter"
+             x:Class="Dystir.Views.StatisticsView">
+    
+    <ContentView.Resources>
+        <converter:StatisticToLenghtConverter x:Key="StatisticToLenghtConverter" />
+        <converter:LanguageConverter x:Key="LanguageConverter" />
+        <Style TargetType="Grid">
+            <Setter Property="ColumnSpacing" Value="0" />
+            <Setter Property="RowSpacing" Value="0" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+            <Setter Property="FontSize" Value="13" />
+        </Style>
+    </ContentView.Resources>
+    
+    <ScrollView VerticalOptions="FillAndExpand">
+        <Grid BindingContext="{Binding MatchStatistic}" RowSpacing="8" Padding="30,10,30,15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="15" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="15" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="40" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" FontFamily="{StaticResource BoldFont}" BindingContext="{Binding HomeTeamStatistic}" Text="{Binding Goal}" />
+                <Label Grid.Column="1" Text="{Binding Converter={StaticResource LanguageConverter}, ConverterParameter=GoalStatistic}" />
+                <Label Grid.Column="2" FontFamily="{StaticResource BoldFont}" Text="{Binding AwayTeamStatistic.Goal}" />
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding HomeTeamStatistic.GoalProcent, Converter={StaticResource StatisticToLenghtConverter}}" />
+                    <ColumnDefinition Width="{Binding AwayTeamStatistic.GoalProcent, Converter={StaticResource StatisticToLenghtConverter}}" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" BackgroundColor="#6495E6" ></Grid>
+                <Grid Grid.Column="1" BackgroundColor="#DB7D93"></Grid>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="40" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" FontFamily="{StaticResource BoldFont}" Text="{Binding HomeTeamStatistic.YellowCard}" />
+                <Label Grid.Column="1" Text="{Binding Converter={StaticResource LanguageConverter}, ConverterParameter=YellowCardStatistic}" />
+                <Label Grid.Column="2" FontFamily="{StaticResource BoldFont}" Text="{Binding AwayTeamStatistic.YellowCard}" />
+            </Grid>
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding HomeTeamStatistic.YellowCardProcent, Converter={StaticResource StatisticToLenghtConverter}}" />
+                    <ColumnDefinition Width="{Binding AwayTeamStatistic.YellowCardProcent, Converter={StaticResource StatisticToLenghtConverter}}" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" BackgroundColor="#6495E6" ></Grid>
+                <Grid Grid.Column="1" BackgroundColor="#DB7D93"></Grid>
+            </Grid>
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="40" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" FontFamily="{StaticResource BoldFont}" Text="{Binding HomeTeamStatistic.RedCard}" />
+                <Label Grid.Column="1" Text="{Binding Converter={StaticResource LanguageConverter}, ConverterParameter=RedCardStatistic}" />
+                <Label Grid.Column="2" FontFamily="{StaticResource BoldFont}" Text="{Binding AwayTeamStatistic.RedCard}" />
+            </Grid>
+            <Grid Grid.Row="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding HomeTeamStatistic.RedCardProcent, Converter={StaticResource StatisticToLenghtConverter}}" />
+                    <ColumnDefinition Width="{Binding AwayTeamStatistic.RedCardProcent, Converter={StaticResource StatisticToLenghtConverter}}" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" BackgroundColor="#6495E6" ></Grid>
+                <Grid Grid.Column="1" BackgroundColor="#DB7D93"></Grid>
+            </Grid>
+            <Grid Grid.Row="6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="40" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" FontFamily="{StaticResource BoldFont}" Text="{Binding HomeTeamStatistic.Corner}" />
+                <Label Grid.Column="1" Text="{Binding Converter={StaticResource LanguageConverter}, ConverterParameter=CornerStatistic}" />
+                <Label Grid.Column="2" FontFamily="{StaticResource BoldFont}" Text="{Binding AwayTeamStatistic.Corner}" />
+            </Grid>
+            <Grid Grid.Row="7">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding HomeTeamStatistic.CornerProcent, Converter={StaticResource StatisticToLenghtConverter}}" />
+                    <ColumnDefinition Width="{Binding AwayTeamStatistic.CornerProcent, Converter={StaticResource StatisticToLenghtConverter}}" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" BackgroundColor="#6495E6" ></Grid>
+                <Grid Grid.Column="1" BackgroundColor="#DB7D93"></Grid>
+            </Grid>
+            <Grid Grid.Row="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="40" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" FontFamily="{StaticResource BoldFont}" Text="{Binding HomeTeamStatistic.OnTarget}" />
+                <Label Grid.Column="1" Text="{Binding Converter={StaticResource LanguageConverter}, ConverterParameter=OnTargetStatistic}" />
+                <Label Grid.Column="2" FontFamily="{StaticResource BoldFont}" Text="{Binding AwayTeamStatistic.OnTarget}" />
+            </Grid>
+            <Grid Grid.Row="9">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding HomeTeamStatistic.OnTargetProcent, Converter={StaticResource StatisticToLenghtConverter}}" />
+                    <ColumnDefinition Width="{Binding AwayTeamStatistic.OnTargetProcent, Converter={StaticResource StatisticToLenghtConverter}}" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" BackgroundColor="#6495E6" ></Grid>
+                <Grid Grid.Column="1" BackgroundColor="#DB7D93"></Grid>
+            </Grid>
+            <Grid Grid.Row="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="40" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" FontFamily="{StaticResource BoldFont}" Text="{Binding HomeTeamStatistic.OffTarget}" />
+                <Label Grid.Column="1" Text="{Binding Converter={StaticResource LanguageConverter}, ConverterParameter=OffTargetStatistic}" />
+                <Label Grid.Column="2" FontFamily="{StaticResource BoldFont}" Text="{Binding AwayTeamStatistic.OffTarget}" />
+            </Grid>
+            <Grid Grid.Row="11">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding HomeTeamStatistic.OffTargetProcent, Converter={StaticResource StatisticToLenghtConverter}}" />
+                    <ColumnDefinition Width="{Binding AwayTeamStatistic.OffTargetProcent, Converter={StaticResource StatisticToLenghtConverter}}" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" BackgroundColor="#6495E6" ></Grid>
+                <Grid Grid.Column="1" BackgroundColor="#DB7D93"></Grid>
+            </Grid>
+            <Grid Grid.Row="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="40" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" FontFamily="{StaticResource BoldFont}" Text="{Binding HomeTeamStatistic.BlockedShot}" />
+                <Label Grid.Column="1" Text="{Binding Converter={StaticResource LanguageConverter}, ConverterParameter=BlockedShotStatistic}" />
+                <Label Grid.Column="2" FontFamily="{StaticResource BoldFont}" Text="{Binding AwayTeamStatistic.BlockedShot}" />
+            </Grid>
+            <Grid Grid.Row="13">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding HomeTeamStatistic.BlockedShotProcent, Converter={StaticResource StatisticToLenghtConverter}}" />
+                    <ColumnDefinition Width="{Binding AwayTeamStatistic.BlockedShotProcent, Converter={StaticResource StatisticToLenghtConverter}}" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" BackgroundColor="#6495E6"></Grid>
+                <Grid Grid.Column="1" BackgroundColor="#DB7D93"></Grid>
+            </Grid>
+            <Grid Grid.Row="14">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="40" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" FontFamily="{StaticResource BoldFont}" Text="{Binding HomeTeamStatistic.BigChance}" />
+                <Label Grid.Column="1" Text="{Binding Converter={StaticResource LanguageConverter}, ConverterParameter=BigChanceStatistic}" />
+                <Label Grid.Column="2" FontFamily="{StaticResource BoldFont}" Text="{Binding AwayTeamStatistic.BigChance}" />
+            </Grid>
+            <Grid Grid.Row="15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding HomeTeamStatistic.BigChanceProcent, Converter={StaticResource StatisticToLenghtConverter}}" />
+                    <ColumnDefinition Width="{Binding AwayTeamStatistic.BigChanceProcent, Converter={StaticResource StatisticToLenghtConverter}}" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" BackgroundColor="#6495E6"></Grid>
+                <Grid Grid.Column="1" BackgroundColor="#DB7D93"></Grid>
+            </Grid>
+        </Grid>
+    </ScrollView>
+</ContentView>

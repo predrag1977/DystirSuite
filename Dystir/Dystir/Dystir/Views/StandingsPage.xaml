@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:Dystir.Converter"
+             xmlns:properties="clr-namespace:Dystir.Properties"
+             xmlns:local="clr-namespace:Dystir.Views"
+             x:Class="Dystir.Views.StandingsPage"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true"
+             NavigationPage.HasNavigationBar="False"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" >
+
+    <ContentView.Resources>
+        <converter:LanguageConverter x:Key="LanguageConverter" />
+        <converter:LanguageToVisibleConverter x:Key="LanguageToVisibleConverter" />
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <converter:ItemsCountToBooleanConverter x:Key="ItemsCountToBooleanConverter" />
+
+        <Style TargetType="Label">
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontFamily" Value="{StaticResource NormalFont}" />
+        </Style>
+    </ContentView.Resources>
+
+    <Grid BindingContext="{Binding}" VerticalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,5,0,0" >
+            <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never" HorizontalOptions="CenterAndExpand" >
+                <StackLayout x:Name="StandingCompetitionsMenuView" Spacing="3" Orientation="Horizontal" BindingContext="{Binding StandingsCompetitions}" BindingContextChanged="StandingCompetitionsMenuView_BindingContextChanged" />
+            </ScrollView>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="0,5,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0" IsVisible="{Binding StandingsCompetitions.Count, Converter={StaticResource ItemsCountToBooleanConverter}}" >
+                <Grid BackgroundColor="#2F4F2F" Padding="6" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
+                    <Label Text="{Binding StandingsCompetitionSelected}" FontSize="12" FontFamily="{StaticResource NormalFont}" TextColor="White" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
+                </Grid>
+                <Grid VerticalOptions="Center" Padding="3,8,3,4" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Frame Grid.Column="0" Padding="0" CornerRadius="4"  BackgroundColor="Transparent" >
+                        <Label Padding="2,1,1,1" TextColor="Transparent" Text="0." />
+                    </Frame>
+                    <Label Grid.Column="1" TextColor="DimGray" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Start" Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=Team}"  />
+                    <Label Grid.Column="2" TextColor="DimGray" Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=MatchPlayedShort}" />
+                    <Label Grid.Column="3" TextColor="DimGray" Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=VictoriesShort}"  />
+                    <Label Grid.Column="4" TextColor="DimGray" Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=DrawShort}" />
+                    <Label Grid.Column="5" TextColor="DimGray" Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=LosesShort}"  />
+                    <Label Grid.Column="6" TextColor="DimGray" Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=GoalsScored}" />
+                    <Label Grid.Column="7" TextColor="DimGray" Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=GoalsAgainst}"  />
+                    <Label Grid.Column="8" TextColor="DimGray" Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=GoalsDiffrent}" />
+                    <!--<Label Grid.Column="8" TextColor="DimGray" Text="%" />-->
+                    <Label Grid.Column="9" TextColor="DimGray" FontFamily="{StaticResource BoldFont}" Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=Points}"  />
+                </Grid>
+                <BoxView HeightRequest="2" BackgroundColor="DimGray" />
+            </StackLayout>
+
+            <CollectionView x:Name="StandingListView"
+                            ItemsSource="{Binding CompetitionTeamStandings}" 
+                            Grid.Row="1" Margin="3,0"
+                            BackgroundColor="Transparent"
+                            VerticalOptions="Start" >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout BindingContext="{Binding}" >
+                            <Grid VerticalOptions="Center" Padding="0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Frame Grid.Column="0" Padding="0" CornerRadius="4"  BackgroundColor="{Binding LiveColor}" >
+                                    <Label Padding="2,1,1,1"  Text="{Binding Position, StringFormat='{0}.'}" />
+                                </Frame>
+                                <Label Grid.Column="1" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Start" FontFamily="{StaticResource BoldFont}" Text="{Binding Team}"  />
+                                <Label Grid.Column="2" Text="{Binding MatchesNo}" />
+                                <Label Grid.Column="3" Text="{Binding Victories}"  />
+                                <Label Grid.Column="4" Text="{Binding Draws}" />
+                                <Label Grid.Column="5" Text="{Binding Losses}"  />
+                                <Label Grid.Column="6" Text="{Binding GoalScored}"  />
+                                <Label Grid.Column="7" Text="{Binding GoalAgainst}" />
+                                <Label Grid.Column="8" Text="{Binding GoalDifference}"  />
+                                <!--<Label Grid.Column="9" Text="{Binding PointsProcent}"  /-->
+                                <Label Grid.Column="9" FontFamily="{StaticResource BoldFont}" Text="{Binding Points}" />
+                            </Grid>
+                            <BoxView HeightRequest="2" BackgroundColor="{Binding PositionColor}"></BoxView>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </Grid>
+</ContentView>

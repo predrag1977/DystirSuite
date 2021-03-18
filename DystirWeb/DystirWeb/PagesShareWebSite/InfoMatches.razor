@@ -1,0 +1,140 @@
+﻿@page "/infomatches"
+
+@using DystirWeb.Models
+@using DystirWeb.Services
+@inject NavigationManager NavigationManager
+@inject Blazored.Localisation.Services.IBrowserDateTimeProvider BrowserDateTimeProvider
+@layout MainShareWebSiteLayout
+@implements IDisposable
+    
+<link href="css/info_site.css?v=2" rel="stylesheet" />
+
+<table class="table" style="width:100%;height:100%;">
+    <tr>
+        <td style="position:relative;width:100%;height:auto;padding:0;vertical-align:middle;">
+            @if (isLoading)
+            {
+                <div style="position:relative; width:100%;height:100%;">
+                    <img src="images/icons/loadingicon.gif" style="position:absolute; width:3rem;top:calc(50% - 1.5rem);left:calc(50% - 1.5rem);" />
+                </div>
+            }
+            else
+            {
+                <div id="header-match-list box" style="overflow:hidden; margin:3px 0">
+                    <table class="table">
+                        <tr>
+                            @foreach (var matchesGroup in SelectedMatchListGroup)
+                            {
+                                var matches = matchesGroup.Select(x => x);
+                                <td style="padding-left:0px;">
+                                    <div class="competition-item tab @(selectedCompetitionName == matchesGroup.Key ? "selected_tab" : "")" @onclick="(() => OnCompetitionClick(matchesGroup.Key))">@(matchesGroup.Key?.ToUpper())</div>
+                                </td>
+                            }
+                        </tr>
+                    </table>
+                    <table class="table" style="border-collapse: separate; border-spacing: 4px 0;">
+                        <tr>
+                            @foreach (var matchesGroup in SelectedMatchListGroup)
+                            {
+                                if (selectedCompetitionName == matchesGroup.Key)
+                                {
+                                    var matches = matchesGroup.Select(x => x);
+                                    @foreach (Matches match in matches)
+                                    {
+                                        <td>
+                                            <NavLink class="nav-link" style="cursor: pointer;" target="_new" href="@("infomatchdetails/" + match.MatchId)">
+                                                <MatchShare MatchItem="@match" ShowMore="@(false)" TimeZoneOffset="@timeZoneOffset" />
+                                            </NavLink>
+                                        </td>
+                                    }
+                                }
+                            }
+                        </tr>
+                    </table>
+                    @if (SelectedMatchListGroup == null || SelectedMatchListGroup?.Count == 0)
+                    {
+                        <div style="width:100%;text-align:center;padding:35px;background-color:white">Eingin dystur í dag</div>
+                    }
+                </div>
+            }
+        </td>
+    </tr>
+</table>
+
+@code {
+    private List<IGrouping<string, Matches>> SelectedMatchListGroup;
+    private int timeZoneOffset = 0;
+    private bool isLoading = true;
+    private string selectedCompetitionName = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var browserDateTime = await BrowserDateTimeProvider.GetInstance();
+        int serverTimeZoneHours = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
+        int clientTimeZoneHours = browserDateTime.LocalTimeZoneInfo.BaseUtcOffset.Hours;
+        timeZoneOffset = clientTimeZoneHours - serverTimeZoneHours;
+        DystirService.OnLoadData += LoadData;
+        DystirService.OnUpdateData += UpdateData;
+        DystirService.TimerService.OnTimerElapsed += TimerElapsed;
+        await Task.CompletedTask;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        isLoading = true;
+        await GetSelectedMatchListGroup();
+    }
+
+    void IDisposable.Dispose()
+    {
+        DystirService.OnLoadData -= LoadData;
+        DystirService.OnUpdateData -= UpdateData;
+        DystirService.TimerService.OnTimerElapsed -= TimerElapsed;
+    }
+
+    private async void LoadData(object sender, EventArgs arg)
+    {
+        await GetSelectedMatchListGroup();
+        Refresh();
+    }
+
+    private async void UpdateData(object sender, string matchDetailsJson)
+    {
+        await GetSelectedMatchListGroup();
+        Refresh();
+    }
+
+    private void TimerElapsed(object sender, EventArgs e)
+    {
+        Refresh();
+    }
+
+    private void Refresh()
+    {
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    private void OnCompetitionClick(string competitionName)
+    {
+        selectedCompetitionName = competitionName;
+        Refresh();
+    }
+
+    public async Task GetSelectedMatchListGroup()
+    {
+        await Task.Run(() =>
+        {
+            var fromDate = DateTime.UtcNow.AddHours(timeZoneOffset).Date.AddDays(0);
+            var toDate = fromDate.AddDays(0);
+            SelectedMatchListGroup = DystirService.AllMatches?
+            .OrderBy(x => x.MatchTypeId).ThenBy(x => x.Time).ThenBy(x => x.MatchId)
+            .Where(x => x.Time.Value.ToLocalTime().Date >= fromDate && x.Time.Value.ToLocalTime().Date <= toDate)
+            .GroupBy(x => x.MatchTypeName)?.ToList() ?? new List<IGrouping<string, Matches>>();
+            if (string.IsNullOrWhiteSpace(selectedCompetitionName))
+            {
+                selectedCompetitionName = SelectedMatchListGroup?.FirstOrDefault()?.Key ?? "";
+            }
+        });
+        isLoading = false;
+    }
+}

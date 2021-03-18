@@ -1,0 +1,395 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:DystirManager.Converter"
+             x:Class="DystirManager.Views.SendEventsView"
+             BindingContextChanged="ContentView_BindingContextChanged">
+    <ContentView.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="{StaticResource NormalFont}" />
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+        </Style>
+
+        <converter:MainPlayerVisibilityConverter x:Key="MainPlayerVisibilityConverter" />
+        <converter:SecondPlayerVisibilityConverter x:Key="SecondPlayerVisibilityConverter" />
+        <converter:MatchResultVisible x:Key="MatchResultVisible" />
+        
+    </ContentView.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Margin="0,10" BindingContext="{Binding}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Column="0" Grid.Row="0" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ContentView Grid.Column="0" Padding="1" Margin="5,0,5,5" BackgroundColor="White" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <Frame HeightRequest="14" WidthRequest="14" CornerRadius="7" VerticalOptions="Center" Margin="0" Padding="0" BackgroundColor="White" />
+                            <Label Text="Goal" TextColor="White" Margin="7,0,0,0"/>
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Goal_Clicked" CommandParameter="{Binding HomeTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                    <ContentView Grid.Column="1" Padding="1" Margin="5,0,5,5" BackgroundColor="White" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <Label Text="Penalty" TextColor="White" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Penalty_Clicked" CommandParameter="{Binding HomeTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                </Grid>
+                <Grid Grid.Row="1" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ContentView Grid.Column="0" Padding="1" Margin="5,0,5,5" BackgroundColor="White" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <Label Text="Pen. scored" TextColor="White" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="PenaltyScored_Clicked" CommandParameter="{Binding HomeTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                    <ContentView Grid.Column="1" Padding="1" Margin="5,0,5,5" BackgroundColor="White" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <Label Text="Pen. missed" TextColor="White" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="PenaltyMissed_Clicked" CommandParameter="{Binding HomeTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                </Grid>
+                <Grid Grid.Row="2" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ContentView Grid.Column="0" Padding="1" Margin="5,0,5,5" BackgroundColor="White" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <Label Text="Shot" TextColor="White" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Shot_Clicked" CommandParameter="{Binding HomeTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                    <ContentView Grid.Column="1" Padding="1" Margin="5,0,5,5" BackgroundColor="White" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <Label Text="Corner" TextColor="White" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Corner_Clicked" CommandParameter="{Binding HomeTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                </Grid>
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ContentView Grid.Column="0" Padding="1" Margin="5,0,5,5" BackgroundColor="White" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <StackLayout BackgroundColor="Gold" Padding="5" />
+                            <Label Text="Yellow" TextColor="White" Margin="7,0,0,0" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Yellow_Clicked" CommandParameter="{Binding HomeTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                    <ContentView Grid.Column="1" Padding="1" Margin="5,0,5,5" BackgroundColor="White" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <StackLayout BackgroundColor="Red" Padding="5" />
+                            <Label Text="Red" TextColor="White" Margin="7,0,0,0" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Red_Clicked" CommandParameter="{Binding HomeTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                </Grid>
+                <Grid Grid.Row="4" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ContentView Grid.Column="0" Padding="1" Margin="5,0,5,5" BackgroundColor="White" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <Label Text="Subs" TextColor="White" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Subs_Clicked" CommandParameter="{Binding HomeTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                    <ContentView Grid.Column="1" Padding="1" Margin="5,0,5,5" BackgroundColor="White" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <Label Text="Domination" TextColor="White" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="BigChance_Tapped" CommandParameter="{Binding HomeTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Column="1" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="Gray"/>
+
+            <Grid Grid.Column="2" Grid.Row="0" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ContentView Grid.Column="0" Padding="1" Margin="5,0,5,5" BackgroundColor="DarkKhaki" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <Frame HeightRequest="14" WidthRequest="14" CornerRadius="7" VerticalOptions="Center" Margin="0" Padding="0" BackgroundColor="DarkKhaki" />
+                            <Label Text="Goal" TextColor="DarkKhaki" Margin="7,0,0,0"/>
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Goal_Clicked" CommandParameter="{Binding AwayTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                    <ContentView Grid.Column="1" Padding="1" Margin="5,0,5,5" BackgroundColor="DarkKhaki" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <Label Text="Penalty" TextColor="DarkKhaki" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Penalty_Clicked" CommandParameter="{Binding AwayTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                </Grid>
+                <Grid Grid.Row="1" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ContentView Grid.Column="0" Padding="1" Margin="5,0,5,5" BackgroundColor="DarkKhaki" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <Label Text="Pen. scored" TextColor="DarkKhaki" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="PenaltyScored_Clicked" CommandParameter="{Binding AwayTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                    <ContentView Grid.Column="1" Padding="1" Margin="5,0,5,5" BackgroundColor="DarkKhaki" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <Label Text="Pen. missed" TextColor="DarkKhaki" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="PenaltyMissed_Clicked" CommandParameter="{Binding AwayTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                </Grid>
+                <Grid Grid.Row="2" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ContentView Grid.Column="0" Padding="1" Margin="5,0,5,5" BackgroundColor="DarkKhaki" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <Label Text="Shot" TextColor="DarkKhaki" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Shot_Clicked" CommandParameter="{Binding AwayTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                    <ContentView Grid.Column="1" Padding="1" Margin="5,0,5,5" BackgroundColor="DarkKhaki" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <Label Text="Corner" TextColor="DarkKhaki" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Corner_Clicked" CommandParameter="{Binding AwayTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                </Grid>
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ContentView Grid.Column="0" Padding="1" Margin="5,0,5,5" BackgroundColor="DarkKhaki" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <StackLayout BackgroundColor="Gold" Padding="5" />
+                            <Label Text="Yellow" TextColor="DarkKhaki" Margin="7,0,0,0" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Yellow_Clicked" CommandParameter="{Binding AwayTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                    <ContentView Grid.Column="1" Padding="1" Margin="5,0,5,5" BackgroundColor="DarkKhaki" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <StackLayout BackgroundColor="Red" Padding="5" />
+                            <Label Text="Red" TextColor="DarkKhaki" Margin="7,0,0,0" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Red_Clicked" CommandParameter="{Binding AwayTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                </Grid>
+                <Grid Grid.Row="4" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ContentView Grid.Column="0" Padding="1" Margin="5,0,5,5" BackgroundColor="DarkKhaki" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <Label Text="Subs" TextColor="DarkKhaki" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Subs_Clicked" CommandParameter="{Binding AwayTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                    <ContentView Grid.Column="1" Padding="1" Margin="5,0,5,5" BackgroundColor="DarkKhaki" HorizontalOptions="Fill" Opacity="0.9">
+                        <StackLayout HorizontalOptions="FillAndExpand" Padding="7,9,2,9"  Orientation="Horizontal" BackgroundColor="#222222">
+                            <Label Text="Domination" TextColor="DarkKhaki" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="BigChance_Tapped" CommandParameter="{Binding AwayTeam}" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                </Grid>
+            </Grid>
+            
+        </Grid>
+
+        <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="Gray"/>
+        
+        <Grid Grid.Row="2" Padding="0" >
+            <ListView x:Name="EventsListView"
+                ItemsSource="{Binding CommentaryOfMatch}"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                IsPullToRefreshEnabled="False"   
+                CachingStrategy ="RecycleElement"
+                IsRefreshing="False"
+                SeparatorVisibility="None"
+                ItemSelected="OnMatchSelected">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="50" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="40" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="1" />
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Column="0" Grid.RowSpan="2" Opacity="0.9" Padding="1" VerticalOptions="Center" BackgroundColor="Red" >
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="Delete_Event_Tapped" CommandParameter="{Binding}" NumberOfTapsRequired="1" />
+                                    </Grid.GestureRecognizers>
+                                    <Label Text="Del" BackgroundColor="#222222" FontFamily="{StaticResource NormalFont}" TextColor="Red" HorizontalOptions="FillAndExpand" Padding="2,7" />
+                                </Grid>
+
+                                <Grid Grid.Column="1" Padding="2,5" ColumnSpacing="0" IsVisible="{Binding HomeTeamVisible}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Padding="0,0,5,0" Text="{Binding EventMinute}" FontFamily="{StaticResource BoldFont}" TextColor="DarkKhaki" HorizontalTextAlignment="Center" />
+                                    <StackLayout Grid.Column="1" Padding="0,0,5,0" Orientation="Horizontal" IsVisible="{Binding Converter={StaticResource MatchResultVisible}}" >
+                                        <Label Text="{Binding HomeTeamScore}" FontFamily="{StaticResource BoldFont}" TextColor="White"  />
+                                        <Label Text=":" FontFamily="{StaticResource BoldFont}" TextColor="White" />
+                                        <Label Text="{Binding AwayTeamScore}" FontFamily="{StaticResource BoldFont}" TextColor="White"  />
+                                    </StackLayout>
+                                    <Label Grid.Column="2" Text="{Binding EventName}" BackgroundColor="DarkGreen" TextColor="White" HorizontalTextAlignment="Center" Padding="3" />
+                                    <StackLayout Grid.Column="3" Padding="5,0" Orientation="Horizontal">
+                                        <Frame HeightRequest="22" WidthRequest="22" CornerRadius="11" VerticalOptions="Center" Opacity="0.9" Padding="1" BackgroundColor="White" IsVisible="{Binding Converter={StaticResource MainPlayerVisibilityConverter}}">
+                                            <Frame HeightRequest="20" WidthRequest="20" CornerRadius="10" VerticalOptions="Center" Opacity="0.9" Padding="1" BackgroundColor="White" >
+                                                <Label Text="{Binding MainPlayerOfMatchNumber}" BackgroundColor="White" FontSize="11" FontFamily="{StaticResource BoldFont}" TextColor="Black" HorizontalOptions="FillAndExpand" />
+                                            </Frame>
+                                        </Frame>
+                                        <Frame HeightRequest="22" WidthRequest="22" CornerRadius="11" Margin="2,0,0,0" VerticalOptions="Center" Opacity="0.9" Padding="1" BackgroundColor="LightGray" IsVisible="{Binding Converter={StaticResource SecondPlayerVisibilityConverter}}" >
+                                            <Frame HeightRequest="20" WidthRequest="20" CornerRadius="10" VerticalOptions="Center" Opacity="0.9" Padding="1" BackgroundColor="LightGray" >
+                                                <Label Text="{Binding SecondPlayerOfMatchNumber}" BackgroundColor="LightGray" FontSize="11" FontFamily="{StaticResource BoldFont}" TextColor="Black" HorizontalOptions="FillAndExpand" />
+                                            </Frame>
+                                        </Frame>
+                                    </StackLayout>
+                                </Grid>
+
+                                <Grid Grid.Column="1" ColumnSpacing="0" Padding="2,5" IsVisible="{Binding AwayTeamVisible}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackLayout Grid.Column="0" Padding="5,0" Orientation="Horizontal" HorizontalOptions="EndAndExpand">
+                                        <Frame HeightRequest="22" WidthRequest="22" CornerRadius="11" VerticalOptions="Center" Opacity="0.9" Padding="1" BackgroundColor="LightGray" IsVisible="{Binding Converter={StaticResource SecondPlayerVisibilityConverter}}" >
+                                            <Frame HeightRequest="20" WidthRequest="20" CornerRadius="10" VerticalOptions="Center" Opacity="0.9" Padding="1" BackgroundColor="LightGray" >
+                                                <Label Text="{Binding SecondPlayerOfMatchNumber}" BackgroundColor="LightGray" FontSize="11" FontFamily="{StaticResource BoldFont}" TextColor="Black" HorizontalOptions="FillAndExpand" />
+                                            </Frame>
+                                        </Frame>
+                                        <Frame HeightRequest="22" WidthRequest="22" CornerRadius="11" Margin="2,0,0,0" VerticalOptions="Center" Opacity="0.9" Padding="1" BackgroundColor="White" IsVisible="{Binding Converter={StaticResource MainPlayerVisibilityConverter}}" >
+                                            <Frame HeightRequest="20" WidthRequest="20" CornerRadius="10" VerticalOptions="Center" Opacity="0.9" Padding="1" BackgroundColor="White" >
+                                                <Label Text="{Binding MainPlayerOfMatchNumber}" BackgroundColor="White" FontSize="11" FontFamily="{StaticResource BoldFont}" TextColor="Black" HorizontalOptions="FillAndExpand" />
+                                            </Frame>
+                                        </Frame>
+                                    </StackLayout>
+                                    <Label Grid.Column="1" Text="{Binding EventName}" BackgroundColor="DarkGreen" TextColor="White" HorizontalTextAlignment="Center" Padding="3" />
+                                    <StackLayout Grid.Column="2" Padding="5,0,0,0" Orientation="Horizontal" IsVisible="{Binding Converter={StaticResource MatchResultVisible}}" >
+                                        <Label Text="{Binding HomeTeamScore}" FontFamily="{StaticResource BoldFont}" TextColor="White"  />
+                                        <Label Text=":" FontFamily="{StaticResource BoldFont}" TextColor="White" />
+                                        <Label Text="{Binding AwayTeamScore}" FontFamily="{StaticResource BoldFont}" TextColor="White"  />
+                                    </StackLayout>
+                                    <Label Grid.Column="3" Padding="5,0,0,0" Text="{Binding EventMinute}" FontFamily="{StaticResource BoldFont}" TextColor="DarkKhaki" HorizontalTextAlignment="Center" />
+                                </Grid>
+
+                                <Label Grid.Column="1" Grid.Row="1" Padding="2,0,2,5" Text="{Binding EventText}" TextColor="White" VerticalOptions="CenterAndExpand" MaxLines="10" HorizontalOptions="CenterAndExpand" />
+
+                                <Grid Grid.Column="2" Grid.RowSpan="2" Opacity="0.9" Padding="1" VerticalOptions="Center" BackgroundColor="DarkKhaki" >
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="Edit_Event_Tapped" CommandParameter="{Binding}" NumberOfTapsRequired="1" />
+                                    </Grid.GestureRecognizers>
+                                    <Label Text="Edit" BackgroundColor="#222222" FontFamily="{StaticResource NormalFont}" TextColor="DarkKhaki" HorizontalOptions="FillAndExpand" Padding="2,7" />
+                                </Grid>
+
+                                <BoxView Grid.Row="2" Grid.ColumnSpan="3" BackgroundColor="DarkGray" HeightRequest="1" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</ContentView>

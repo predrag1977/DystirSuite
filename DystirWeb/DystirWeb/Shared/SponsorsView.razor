@@ -1,0 +1,87 @@
+﻿@using DystirWeb.Services
+@using DystirWeb.Models
+@using System.Collections.ObjectModel
+@inject DystirService DystirService
+@implements IDisposable
+
+@if (ShowOnSideBar)
+{
+    <div class="@MainLayout.NavMenuCssClass">
+        <div class="sponsors">
+            <div style="cursor:pointer;font:bold;padding:15px 0;font-size:0.8em">
+                <a style="color:white;text-decoration: none" href="mailto: dystir@dystir.fo">
+                    <span class="fa fa-envelope p-1" style="color:white" aria-hidden="true" />
+                    <span>dystir@dystir.fo</span>
+                </a>
+            </div>
+            @foreach (var sponsor in DystirService.Sponsors?.Where(x => x.SponsorId < 100) ?? new ObservableCollection<Sponsors>())
+            {
+                <a href="@(sponsor.SponsorWebSite)" target="_blank">
+                    <img class="sponsors-main-img" src="@(sponsor.SponsorsName)">
+                </a>
+            }
+            @foreach (var sponsor in DystirService.Sponsors ?? new ObservableCollection<Sponsors>())
+            {
+                <a href="@(sponsor.SponsorWebSite)" target="_blank">
+                    <img class="sponsors-img" src="@(sponsor.SponsorsName)">
+                </a>
+            }
+            <div style="color: white;padding: 10px 0; font-size: 0.8em; white-space: nowrap ">
+                &copy;2021 - Dystir.fo
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="sponsors_below_matches" style="margin:50px 0 10px 0">
+        <div class="box">
+            <div class="matches_list_same_day" style="background-color:transparent;text-align:center">
+                @foreach (var sponsor in DystirService.Sponsors?.Where(x => x.SponsorId < 100) ?? new ObservableCollection<Sponsors>())
+                {
+                    <a href="@(sponsor.SponsorWebSite)" target="_blank">
+                        <img class="sponsors-main-img" src="@(sponsor.SponsorsName)">
+                    </a>
+                }
+            </div>
+        </div>
+        <div class="box" style="padding:0.3rem 0">
+            <div class="matches_list_same_day" style="background-color:transparent;text-align:center">
+                @foreach (var sponsor in DystirService.Sponsors ?? new ObservableCollection<Sponsors>())
+                {
+                    <a href="@(sponsor.SponsorWebSite)" target="_blank">
+                        <img class="sponsors-img" src="@(sponsor.SponsorsName)">
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public bool ShowOnSideBar { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        DystirService.TimerService.OnSponsorsTimerElapsed += SponsorsTimerElapsed;
+        await Task.CompletedTask;
+    }
+
+    void IDisposable.Dispose()
+    {
+        DystirService.TimerService.OnSponsorsTimerElapsed -= SponsorsTimerElapsed;
+    }
+
+    private void SponsorsTimerElapsed(object sender, EventArgs e)
+    {
+        Refresh();
+    }
+
+    private void Refresh()
+    {
+        var allSponsors = DystirService.Sponsors?.OrderBy(a => Guid.NewGuid()) ?? Enumerable.Empty<Sponsors>();
+        DystirService.Sponsors = new ObservableCollection<Sponsors>(allSponsors);
+        InvokeAsync(() => StateHasChanged());
+    }
+}

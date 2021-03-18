@@ -1,0 +1,21 @@
+﻿@using DystirWeb.ModelViews
+@model MatchesModelView
+
+    <table class="table" style="width:100%;height:100%;">
+        <tr>
+            <td id="days_view" style="position:relative;width:100%;padding:0;">
+                <partial name="~/Views/PartialViews/DaysView.cshtml" model="@Model.SelectedDate" />
+            </td>
+        </tr>
+        <tr>
+            <td style="position:relative;width:100%;height:100%;padding:0;">
+                <partial name="~/Views/PartialViews/ListOfMatchesPartialView.cshtml" model="@Model" />
+            </td>
+        </tr>
+        <tr>
+            <td id="sponsors-main-parent">
+                <section id="sponsors-main" />
+            </td>
+        </tr>
+    </table>
+

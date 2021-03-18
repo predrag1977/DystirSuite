@@ -1,0 +1,550 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+}
+
+.nav-item {
+    padding: 0 10px;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 12px;
+}
+
+@media (min-width: 800px) {
+    html {
+        font-size: 13px;
+    }
+}
+
+@media (min-width: 1000px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background-color: black;
+    overflow: hidden;
+    font-family: 'Open Sans', sans-serif;
+}
+
+header {
+    position: relative;
+    background-color: #2F4F2F;
+    opacity: 0.9;
+    width: 100%;
+    z-index: 10;
+    height:65px;
+    font-family: Graduate, cursive;
+}
+
+.header-dystir {
+    background-color: #2F4F2F;
+    display:block;
+}
+
+.header-info {
+    display: none;
+}
+
+main {
+    position: absolute;
+    top: 67px;
+    opacity: 0.9;
+    bottom: 60px;
+    background-color: #222222;
+    margin: auto 0;
+    max-width: 1140px;
+}
+
+.matches-view {
+    display: block;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #2F4F2F;
+    opacity: 0.9;
+    height: 60px;
+}
+
+#sponsors img {
+    height: 25px;
+    width: 87.5px;
+    border-radius: 7px;
+    border: 1px #222222 solid;
+}
+
+#sponsors-main-parent {
+    width: 100%;
+    text-align: center;
+    background-color: dimgray;
+    padding: 2px;
+}
+
+#sponsors-main img {
+    height: 40px;
+    width: 135px;
+    margin: 2px 5px;
+    border-radius: 7px;
+    border: 1px #222222 solid
+}
+
+button {
+    background-color: transparent;
+    border: 0px;
+}
+
+.table {
+    table-layout: fixed;
+    white-space: nowrap;
+    margin: 0;
+}
+
+    .table td {
+        border-top: 0px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        padding: 0;
+    }  
+
+.see-more-link {
+    padding: 0;
+}
+
+.details-tab > tr {
+    display: none;
+}
+
+.statistic-home, .statistic-away {
+    background-color: cornflowerblue;
+    height: 18px;
+    color: white;
+    font-size: 10px;
+}
+
+.statistic-away {
+    background-color: palevioletred;
+}
+
+.statistic_table {
+    text-align: center;
+    width: 260px;
+    margin: 5px auto;
+}
+
+.statistic_text {
+    margin: 10px auto 5px auto;
+}
+
+.statistic_cell {
+    text-overflow: ellipsis;
+    width: 30px;
+    white-space: normal;
+    overflow: hidden;
+    padding: 5px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+
+.day-view {
+    height:40px;
+    background-color: dimgray;
+    color: white;
+    opacity: 0.9;
+    padding: 7px 3px;
+    text-align: center;
+    border: 1px solid black;
+    cursor: pointer
+}
+
+.selected-day {
+    background-color: #2F4F2F;
+}
+
+.standings-cell {
+    text-align: left;
+    margin: 0 auto;
+    padding: 5px 0;
+    width: 25px;
+}
+
+.competition_name {
+    text-align: center;
+    background-color: #2F4F2F;
+    color: white;
+    opacity: 0.9;
+    padding: 5px;
+    margin-top: 0px
+}
+
+.match_item {
+    width: 100%;
+    border-bottom: 3px #404040 solid;
+    color: white;
+    padding: 2px 0;
+}
+
+.match_info {
+    border-bottom: 0px dimgray dashed;
+    color: #a6a6a6;
+}
+
+.match_item_teams_name {
+    text-align: center;
+    color: white;
+    font-weight: bold;
+}
+
+.match_time {
+    color: khaki;
+}
+
+.match_item_text_color {
+    text-align: center;
+    color: white;
+}
+
+.selection_matches {
+    background-color: dimgray;
+    color: white;
+    opacity: 0.9;
+    text-align: center;
+    border: 1px solid black;
+    height: 50px;
+    cursor: pointer;
+    padding: 2px 5px;
+}
+
+    .selection_matches table {
+        color: white;
+    }
+
+.selection_matches_empty_space {
+    padding: 0;
+    height: 50px;
+    background-color: dimgray;
+    opacity: 0.9;
+    color: white;
+    border: 1px solid black;
+    padding: 2px 5px;
+}
+
+#selected_match_header {
+    color: white;
+}
+
+#match-selected-time {
+    color: khaki;
+}
+
+#selected_match_teams {
+    font-weight: bold;
+    color: white;
+    padding-bottom: 3px;
+}
+
+#selected_match_score {
+    font-weight: bold;
+    color: white;
+    padding-bottom: 3px
+}
+
+#match_details_view {
+    color: white;
+}
+
+.selected_tab {
+    padding: 0;
+    background-color: dimgray;
+    color: white;
+    opacity: 0.9
+}
+
+.selected_tab-layout {
+    padding: 8px 5px;
+    text-align: center;
+    border-right: 2px solid black;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.event-list-item {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px #404040 solid;
+    padding: 3px 10px
+}
+
+.event_time {
+    color: khaki;
+    padding: 2px 0;
+}
+
+.player-list-item {
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px #404040 solid;
+    padding: 3px
+}
+
+#summary_main_table, #commentary_main_table {
+    text-align: center;
+    margin: 0 auto;
+    color: white
+}
+
+.big_chance {
+    color: lightblue;
+}
+
+.score {
+    background-color: darkgreen;
+    color: white;
+    font-weight: bold;
+    padding: 0 7px;
+}
+
+.main_player {
+    color: white;
+}
+
+.second_player, .owngoal_player {
+    color: #a6a6a6
+}
+
+.goal {
+    color: white;
+}
+
+.penalty_missed {
+    color: red;
+}
+
+.yellow_card {
+    font-weight: bold;
+    color: gold;
+    background-color: gold;
+    padding: 0 1px;
+    margin: 0 5px
+}
+
+.red_card {
+    font-weight: bold;
+    color: red;
+    background-color: red;
+    padding: 0 1px;
+    margin: 0 5px
+}
+
+.player_name {
+    color: white;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.player_number {
+    color: khaki;
+}
+
+.standings-view {
+    background-color: #222222;
+    width: 100%;
+    opacity: 0.9;
+    color: white;
+}
+
+.standings-competition-item, .selected-standings-competition-item {
+    width: 100px;
+    height: 40px;
+    line-height: 20px;
+    text-overflow: ellipsis;
+    text-align: center;
+    overflow: hidden;
+    background-color: dimgray;
+    opacity: 0.9;
+    color: white;
+    border: 1px solid black;
+    padding: 7px 3px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.selected-standings-competition-item {
+    background-color: #2F4F2F;
+}
+
+.standings-header {
+    border-bottom: 1px solid darkgray;
+    color: dimgray;
+}
+
+.standings-table {
+    max-width: 900px;
+    margin: 10px auto 0 auto;
+    color: white
+}
+
+.matches-tab, .results-tab, .fixtures-tab, .standings-tab, .statistics-tab {
+    border-bottom: 3px solid transparent;
+}
+
+.competition-item, .selected-competition-item {
+    width: 100px;
+    height: 40px;
+    line-height: 20px;
+    text-overflow: ellipsis;
+    text-align: center;
+    overflow: hidden;
+    background-color: dimgray;
+    opacity: 0.9;
+    color: white;
+    border: 1px solid black;
+    padding: 7px 2px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.selected-competition-item {
+    background-color: #2F4F2F;
+}
+
+.standings-left-space {
+    padding: 0;
+    width: 0%;
+}
+
+.standings-right-space {
+    width: 100%;
+}
+
+.standings-competition-background {
+    height: 40px;
+    background-color: dimgray;
+    opacity: 0.9;
+    border: 1px solid black;
+    padding: 0px 0;
+}
+
+.statistics-title {
+    display: table-cell;
+    text-align: center;
+    width: 50%;
+    line-height: 30px;
+    color: darkkhaki;
+}
+
+.statistics-border {
+    border-top: 2px solid darkkhaki;
+}
+
+.statistics-number {
+    width: 40px;
+    vertical-align: middle;
+    text-align: center;
+    color: white;
+}
+
+
+
+.sidenav {
+    height: auto;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 60px;
+    bottom: 60px;
+    left: 0;
+    background-color: #222222;
+    text-align: center;
+    opacity: 0.9;
+    overflow-x: hidden;
+    transition: 0.5s;
+    font-family: Graduate, cursive;
+}
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        color: dimgray;
+        display: block;
+        transition: 0.3s;
+    }
+
+        .sidenav a:hover {
+            color: white;
+        }
+
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0px;
+        right: 15px;
+        font-size: 36px;
+    }
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+
+        .sidenav a {
+            font-size: 18px;
+        }
+}
+.sidebar-menu-button {
+    width: 40px;
+    font-size: 25px;
+    cursor: pointer;
+    color: white;
+    background-color: #222222;
+    opacity: 1;
+    border-left: 1px solid dimgray;
+    border-right: 1px solid dimgray;
+    text-align: center;
+    margin:0 auto 0 auto;
+}

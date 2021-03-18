@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DystirXamarin.Views.SelectedPlayerPage"
+             xmlns:converter="clr-namespace:DystirXamarin.Converter"
+             BackgroundColor="{StaticResource LightBackgroundColor}"
+             Title="">
+    <ContentPage.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="Margin" Value="5,0" />
+            <Setter Property="BorderWidth" Value="2" />
+            <Setter Property="BorderColor" Value="DarkOrange" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+        </Style>
+        <converter:PositionToColorConverter x:Key="PositionToColorConverter" />
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems >
+        <ToolbarItem Name="OK" Order="Primary" Text="OK" Clicked="OK_Tapped" />
+    </ContentPage.ToolbarItems>
+    <StackLayout HorizontalOptions="Fill" >
+        <StackLayout Padding="10,0,0,0">
+            <Label Text="Number" FontSize="Small" HorizontalTextAlignment="Center" />
+        </StackLayout>
+        <Grid HorizontalOptions="Center" VerticalOptions="Center" Margin="0,0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="60"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+            <Button Grid.Column="0" Grid.Row="0" Text="-" Pressed="NumberDown_Tapped" Released="Button_Released"  />
+            <Label x:Name="Number" Grid.Column="1" WidthRequest="30" HeightRequest="45" Grid.Row="0" BackgroundColor="Transparent" Text="{Binding Number}" />
+            <Button  Grid.Column="2" Grid.Row="0" Text="+" Pressed="NumberUp_Tapped" Released="Button_Released"  />
+        </Grid>
+        <StackLayout Padding="10,0,0,0">
+            <Label Text="Full name" FontSize="Small" HorizontalTextAlignment="Center" />
+        </StackLayout>
+        <StackLayout HorizontalOptions="Fill" Padding="10,0">
+            <Entry x:Name="FirstNameEntry" Text="{Binding FirstName}" FontSize="Medium" HorizontalTextAlignment="Center" />
+            <Entry x:Name="LastNameEntry"  Text="{Binding LastName}" IsVisible="False" />
+        </StackLayout>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,20">
+            <StackLayout>
+                <Label Text="GK" WidthRequest="50" HeightRequest="20" />
+                <BoxView HeightRequest="30" BackgroundColor="{Binding Position,Converter={StaticResource PositionToColorConverter},ConverterParameter=GK}" />
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Position_Tapped" CommandParameter="GK" NumberOfTapsRequired="1" />
+                </StackLayout.GestureRecognizers>
+            </StackLayout>
+            <StackLayout>
+                <Label Text="DEF" WidthRequest="50" HeightRequest="20" />
+                <BoxView HeightRequest="30" BackgroundColor="{Binding Position,Converter={StaticResource PositionToColorConverter},ConverterParameter=DEF}" />
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Position_Tapped" CommandParameter="DEF" NumberOfTapsRequired="1" />
+                </StackLayout.GestureRecognizers>
+            </StackLayout>
+            <StackLayout>
+                <Label Text="MID" WidthRequest="50" HeightRequest="20" />
+                <BoxView HeightRequest="30" BackgroundColor="{Binding Position,Converter={StaticResource PositionToColorConverter},ConverterParameter=MID}" />
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Position_Tapped" CommandParameter="MID" NumberOfTapsRequired="1" />
+                </StackLayout.GestureRecognizers>
+            </StackLayout>
+            <StackLayout>
+                <Label Text="ATT" WidthRequest="50" HeightRequest="20" />
+                <BoxView HeightRequest="30" BackgroundColor="{Binding Position,Converter={StaticResource PositionToColorConverter},ConverterParameter=ATT}" />
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Position_Tapped" CommandParameter="ATT" NumberOfTapsRequired="1" />
+                </StackLayout.GestureRecognizers>
+            </StackLayout>
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

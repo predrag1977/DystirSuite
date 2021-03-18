@@ -1,0 +1,67 @@
+﻿@using DystirWeb.ModelViews
+@model FullStatisticModelView
+
+    <table class="table" style="width:100%;height:100%;">
+        <tr>
+            <td style="position:relative;width:100%;padding:0">
+                <partial name="~/Views/PartialViews/StatisticsCompetitionsView.cshtml" model="@Model" />
+            </td>
+        </tr>
+        <tr>
+            <td style="position:relative;width:100%;height:100%;">
+                <div style="position:absolute;display:table;top:0;width:100%;padding:0 5px">
+                    <div class="statistics-title">
+                        MÁLSKJÚTTAR<div class="statistics-border" />
+                    </div>
+                    <div class="statistics-title">
+                        UPPLEGG<div class="statistics-border" />
+                    </div>
+                </div>
+                <div class="matches-view" style="width:100%;top:35px">
+                    <table class="table" style="color:white;">
+                        <tr>
+                            <td style="vertical-align: top; padding: 0 5px; margin: 0 auto">
+                                @for (int i = 0; i < Model.CompetitionStatistic.GoalPlayers.Count; i++)
+                                {
+                                    PlayersOfMatches player = Model.CompetitionStatistic.GoalPlayers[i];
+                                    <table class="table player-list-item">
+                                        <tr>
+                                            <td style="width:30px;text-align:center;vertical-align:middle;color:gray">@(string.Format("{0}.", i+1))</td>
+                                            <td class="player_name">
+                                                @player.FirstName<br />
+                                                <span style="color: gray">@player.TeamName</span>
+                                            </td>
+                                            <td class="statistics-number">@player.Goal</td>
+                                        </tr>
+                                    </table>
+                                }
+                            </td>
+                            <td style="vertical-align:top;padding:0 5px;margin:0 auto">
+                                @for (int i = 0; i < Model.CompetitionStatistic.AssistPlayers.Count; i++)
+                                {
+                                    PlayersOfMatches player = Model.CompetitionStatistic.AssistPlayers[i];
+                                    <table class="table player-list-item">
+                                        <tr>
+                                            <td style="width:30px;text-align:center;vertical-align:middle;color:gray">@(string.Format("{0}.", i+1))</td>
+                                            <td class="player_name">
+                                                @player.FirstName<br />
+                                                <span style="color: gray">@player.TeamName</span>
+                                            </td>
+                                            <td class="statistics-number">@player.Assist</td>
+                                        </tr>
+                                    </table>
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </td>
+        </tr>
+        <tr>
+            <td id="sponsors-main-parent">
+                <section id="sponsors-main" />
+            </td>
+        </tr>
+    </table>
+

@@ -1,0 +1,151 @@
+﻿@page "/football/fixtures"
+
+@using DystirWeb.Models
+@using DystirWeb.Services
+@inject DystirService DystirService
+@inject NavigationManager NavigationManager
+@inject Blazored.Localisation.Services.IBrowserDateTimeProvider BrowserDateTimeProvider
+@layout MainFootballLayout
+@implements IDisposable
+
+<div class="container-fluid d-flex h-100 flex-column p-0">
+    <div class="row">
+        <div class="col p-0" style="background-color:dimgray">
+            <ChooseCompetitions CompetitionsList="@(CompetitionsList)" SelectedCompetition="@(SelectedFixturesCompetition)" CompetitionsOnClick="@(CompetitionsOnClick)" />
+        </div>
+    </div>
+    <div class="row flex-fill d-flex justify-content-start">
+        <div class="col">
+            @if (isLoading)
+            {
+                <div style="position:relative; width:100%;height:100%;">
+                    <img src="images/icons/loadingicon.gif" style="position:absolute; width:3rem;top:calc(50% - 1.5rem);left:calc(50% - 1.5rem);" />
+                </div>
+            }
+            else
+            {
+                <div class="matches_container">
+                    @if (FixturesMatchesList == null || FixturesMatchesList?.Count == 0)
+                    {
+                        <div class="no-matches">Eingin dystur</div>
+                    }
+                    else
+                    {
+                        @if (FixturesMatchesList.Count > 0)
+                        {
+                            <div class="match-group-competition-name">@SelectedFixturesCompetition</div>
+                        }
+                        @foreach (var match in FixturesMatchesList)
+                        {
+                            @if (match.StatusId <= 12)
+                            {
+                                <NavLink class="nav-link" style="cursor: pointer;" href="@("football/matchdetails/" + match.MatchId)">
+                                    <Match MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
+                                </NavLink>
+                            }
+                            else
+                            {
+                                <Match MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
+                            }
+                        }
+                    }
+                    <NewsView />
+                    <SponsorsView ShowOnSideBar="false" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private string SelectedFixturesCompetition { get; set; }
+    private List<string> CompetitionsList { get; set; }
+    private List<Matches> FixturesMatchesList { get; set; }
+    private int timeZoneOffset = 0;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        DystirService.OnLoadData += LoadData;
+        DystirService.OnUpdateData += UpdateData;
+        DystirService.TimerService.OnTimerElapsed += TimerElapsed;
+        await Task.CompletedTask;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var browserDateTime = await BrowserDateTimeProvider.GetInstance();
+            int serverTimeZoneHours = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
+            int clientTimeZoneHours = browserDateTime.LocalTimeZoneInfo.BaseUtcOffset.Hours;
+            timeZoneOffset = clientTimeZoneHours - serverTimeZoneHours;
+            await LoadFixturesMatches();
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        DystirService.OnLoadData -= LoadData;
+        DystirService.OnUpdateData -= UpdateData;
+        DystirService.TimerService.OnTimerElapsed -= TimerElapsed;
+    }
+
+    private void LoadData(object sender, EventArgs arg)
+    {
+        Refresh();
+    }
+
+    private async void UpdateData(object sender, string matchDetailsJson)
+    {
+        await LoadFixturesMatches();
+        Refresh();
+    }
+
+    private void TimerElapsed(object sender, EventArgs e)
+    {
+        Refresh();
+    }
+
+    private void Refresh()
+    {
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    public string GetMatchDetailsInfo(Matches match)
+    {
+        string matchDetailsInfo = (match.HomeTeam + "-" + match.AwayTeam)
+            .Replace(" ", "").Replace("/", "").Replace(".", "");
+        return matchDetailsInfo;
+    }
+
+    private async void CompetitionsOnClick(string competition)
+    {
+        SelectedFixturesCompetition = competition;
+        await LoadFixturesMatches();
+    }
+
+    public async Task LoadFixturesMatches()
+    {
+        await Task.Run(() =>
+        {
+            var allResultMatchByCompetition = DystirService.AllMatches?.Where(x => x.StatusId < 12 || x.StatusId == 14)
+            .OrderBy(x => x.MatchTypeId)
+            .ThenBy(x => x.RoundId).ThenBy(x => x.Time).ThenBy(x => x.MatchId)
+            .GroupBy(x => x.MatchTypeName)?.ToList() ?? new List<IGrouping<string, Matches>>();
+
+            CompetitionsList = new List<string>();
+            foreach (var matchGroup in allResultMatchByCompetition)
+            {
+                CompetitionsList.Add(matchGroup.Key);
+            }
+
+            SelectedFixturesCompetition = SelectedFixturesCompetition == null ? CompetitionsList.FirstOrDefault() ?? "" : SelectedFixturesCompetition;
+
+            FixturesMatchesList = allResultMatchByCompetition.FirstOrDefault(x => x.Key == SelectedFixturesCompetition)?.ToList() ?? new List<Matches>();
+        });
+        isLoading = false;
+    }
+}
+
+

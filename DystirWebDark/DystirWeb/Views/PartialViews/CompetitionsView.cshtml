@@ -1,0 +1,36 @@
+﻿@using DystirWeb.ModelViews
+@model MatchesModelView
+
+<div id="competition-view" style="overflow:auto;margin-bottom: 3px;">
+    <table style="font-size: 9px; font-weight: bold; width: 100%">
+        <tr>
+            @foreach (string competition in Model.CompetitionsList)
+            {
+                <td onclick="getMatchesFromCompetition('@competition');" style="padding:0;">
+                    @if (competition != Model.SelectedCompetition)
+                    {
+
+                        <div class="competition-item">
+                            @competition
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="selected-competition-item">
+                            @competition
+                        </div>
+                    }
+                </td>
+            }
+            <td class="standings-right-space">
+                <div class="standings-competition-background"></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+
+
+
+

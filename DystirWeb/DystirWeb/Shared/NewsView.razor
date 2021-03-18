@@ -1,0 +1,31 @@
+﻿@using DystirWeb.Services
+@using DystirWeb.Models
+@using System.Collections.ObjectModel
+@inject DystirService DystirService
+@implements IDisposable
+
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        //DystirService.TimerService.OnSponsorsTimerElapsed += SponsorsTimerElapsed;
+        await Task.CompletedTask;
+    }
+
+    void IDisposable.Dispose()
+    {
+        //DystirService.TimerService.OnSponsorsTimerElapsed -= SponsorsTimerElapsed;
+    }
+
+    private void SponsorsTimerElapsed(object sender, EventArgs e)
+    {
+        //Refresh();
+    }
+
+    private void Refresh()
+    {
+        //DystirService.Sponsors = new ObservableCollection<Models.Sponsors>(DystirService.Sponsors?.OrderBy(a => Guid.NewGuid()));
+        //InvokeAsync(() => StateHasChanged());
+    }
+}

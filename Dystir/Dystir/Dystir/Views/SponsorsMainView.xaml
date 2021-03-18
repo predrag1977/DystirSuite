@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:Dystir.Converter"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="Dystir.Views.SponsorsMainView">
+
+    <ContentView.Resources>
+        <converter:ItemsCountToBooleanConverter x:Key="ItemsCountToBooleanConverter" />
+    </ContentView.Resources>
+
+    <Grid HorizontalOptions="FillAndExpand" HeightRequest="40" ColumnSpacing="0" 
+          BackgroundColor="Transparent" IsVisible="{Binding Sponsors.Count, Converter={StaticResource ItemsCountToBooleanConverter}}" RowSpacing="0" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <BoxView Grid.Row="0" HeightRequest="1" BackgroundColor="DimGray" Margin="0,0,0,2" />
+
+        <StackLayout Grid.Row="1" Spacing="3" BindableLayout.ItemsSource="{Binding SponsorsMain}" Orientation="Horizontal" HorizontalOptions="Center" >
+            <BindableLayout.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="0" Margin="0" 
+                           CornerRadius="8" 
+                           BackgroundColor="LightGray" 
+                           IsClippedToBounds="True"
+                           HorizontalOptions="FillAndExpand">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Sponsor_Tapped" NumberOfTapsRequired="1" CommandParameter="{Binding SponsorWebSite}" />
+                        </Frame.GestureRecognizers>
+                        <Grid WidthRequest="130" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                            <ff:CachedImage Source="{Binding SponsorsName}" HeightRequest="40" WidthRequest="130" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"  />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </StackLayout>
+        <!--<CollectionView x:Name="SponsorsCarouselView" Grid.Row="1"
+                HorizontalScrollBarVisibility="Never"
+                HorizontalOptions="CenterAndExpand"
+                ItemsSource="{Binding SponsorsMain}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout HorizontalItemSpacing="2"
+                    Orientation="Horizontal" 
+                    SnapPointsAlignment="End"
+                    SnapPointsType="Mandatory" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                
+            </CollectionView.ItemTemplate>
+        </CollectionView>-->
+    </Grid>
+</ContentView>

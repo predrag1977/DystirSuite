@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:DystirXamarin.Converter"
+             x:Class="DystirXamarin.Views.LineUpsPage"
+             BackgroundColor="{StaticResource LightBackgroundColor}"
+             Title="{Binding}">
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+            <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+        </Style>
+
+        <converter:PlayingStatusToTextConverter x:Key="PlayingStatusToTextConverter" />
+        <converter:PlayingStatusToColorConverter x:Key="PlayingStatusToColorConverter" />
+        <converter:PlayersListByTeamNameConverter x:Key="PlayersListByTeamNameConverter" />
+        <converter:LineUpsGroupVisibilityConverter x:Key="LineUpsGroupVisibilityConverter" />
+        <converter:PlayingStatusToBackgroundConverter x:Key="PlayingStatusToBackgroundConverter" />
+        <converter:StartersTotalConverter x:Key="StartersTotalConverter" />
+        <converter:SubsTotalConverter x:Key="SubsTotalConverter" />
+
+        <DataTemplate x:Key="PlayersOfMatchTemplate">
+            <ViewCell>
+                <ContentView Padding="2" BackgroundColor="Gray" HorizontalOptions="Fill">
+                    <ContentView.GestureRecognizers>
+                        <TapGestureRecognizer CommandParameter="{Binding}" Tapped="SelectedPlayer_Tapped" />
+                    </ContentView.GestureRecognizers>
+                    <Grid BackgroundColor="{Binding PlayingStatus, Converter={StaticResource PlayingStatusToBackgroundConverter}}" Padding="5,3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="40" />
+                            </Grid.ColumnDefinitions>
+                            <Grid BackgroundColor="{Binding PlayingStatus, Converter={StaticResource PlayingStatusToBackgroundConverter}}" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                            <StackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Orientation="Horizontal">
+                                <Label Text="{Binding Number}" TextColor="Black" FontSize="18" FontAttributes="Bold" />
+                            </StackLayout>
+                            <StackLayout Grid.Row="0" Grid.Column="1"  Orientation="Horizontal" HorizontalOptions="Start">
+                                    <Label Text="{Binding FirstName}" TextColor="Black" FontAttributes="Bold" />
+                                    <Label Text="{Binding LastName}" TextColor="Black" FontAttributes="Bold" />
+                                </StackLayout>
+                                <StackLayout Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalOptions="Start">
+                                    <Label Text="Position:" TextColor="Black" FontSize="12"/>
+                                    <Label Text="{Binding Position}" TextColor="Black" FontSize="12"/>
+                                </StackLayout>
+                            </Grid>
+                            <StackLayout Grid.Column="1" BackgroundColor="DarkGreen" Padding="5,10,5,0">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer CommandParameter="{Binding}" Tapped="StartingPlaying_Tapped" />
+                                </StackLayout.GestureRecognizers>
+                                <Label Text="P" TextColor="White" FontAttributes="Bold" VerticalOptions="Center" />
+                            </StackLayout>
+                            <StackLayout Grid.Column="2" BackgroundColor="DarkGoldenrod" Padding="5,10,5,0">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer CommandParameter="{Binding}" Tapped="Substitutions_Tapped" />
+                                </StackLayout.GestureRecognizers>
+                                <Label Text="S" TextColor="White" FontAttributes="Bold" VerticalOptions="Center" />
+                            </StackLayout>
+                            <StackLayout Grid.Column="3" BackgroundColor="DarkRed" Padding="5,10,5,0">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer CommandParameter="{Binding}" Tapped="OutOfPlaying_Tapped" />
+                                </StackLayout.GestureRecognizers>
+                                <Label Text="O" TextColor="White" FontAttributes="Bold" VerticalOptions="Center" />
+                            </StackLayout>
+                    </Grid>                     
+                </ContentView>
+            </ViewCell>
+        </DataTemplate>
+
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems >
+        <ToolbarItem Name="OK" Order="Primary" Text="OK" Clicked="OK_Tapped" />
+    </ContentPage.ToolbarItems>
+    <Grid x:Name="PlayersLayout" RowSpacing="0" BindingContext="{Binding}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Padding="5,3,5,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackLayout Grid.Column="0" BackgroundColor="{StaticResource LineUpGreen}" Padding="5">
+                <Label TextColor="Black" Text="{Binding Source={x:Reference PlayingListView},Path=ItemsSource, Converter={StaticResource StartersTotalConverter}}" />
+            </StackLayout>
+            <StackLayout Grid.Column="1" BackgroundColor="{StaticResource LineUpYellow}" Padding="5">
+                <Label TextColor="Black" Text="{Binding Source={x:Reference PlayingListView},Path=ItemsSource, Converter={StaticResource SubsTotalConverter}}" />
+            </StackLayout>
+        </Grid>
+        <Grid Grid.Row="1" BackgroundColor="DimGray" IsVisible="{Binding IsLoading}"
+              Padding="5" VerticalOptions="FillAndExpand"  HorizontalOptions="FillAndExpand">
+            <Label Text="Loading players..." VerticalOptions="CenterAndExpand"/>
+        </Grid>
+        <ListView x:Name="PlayingListView" Grid.Row="2" BindingContext="{Binding SelectedLiveMatch}"
+                Margin="7,0"
+                ItemsSource="{Binding PlayersOfTeam}"                  
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="True"
+                CachingStrategy="RecycleElementAndDataTemplate"
+                IsRefreshing="False"
+                IsPullToRefreshEnabled="True"
+                BackgroundColor="{StaticResource LightBackgroundColor}"
+                ItemTemplate="{StaticResource PlayersOfMatchTemplate}"
+                ItemSelected="PlayingListView_ItemSelected"
+                Refreshing="PlayingListView_Refreshing"
+                SeparatorVisibility="None">
+        </ListView>
+        <BoxView Grid.Row="3" HeightRequest="1" Margin="5,0,5,5" BackgroundColor="Gray"/>
+        <ContentView Grid.Row="4" Padding="1" Margin="7,0,7,20" BackgroundColor="DarkGreen" HorizontalOptions="Fill">
+            <StackLayout BackgroundColor="DarkGreen" Padding="10">
+                <Label Text="NEW PLAYER" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontAttributes="Bold" TextColor="White" />
+            </StackLayout>
+            <ContentView.GestureRecognizers>
+                <TapGestureRecognizer Tapped="NewPlayer_Tapped" NumberOfTapsRequired="1" />
+            </ContentView.GestureRecognizers>
+        </ContentView>
+    </Grid>
+</ContentPage>

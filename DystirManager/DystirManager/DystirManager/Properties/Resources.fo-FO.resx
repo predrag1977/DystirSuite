@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Assist" xml:space="preserve">
+    <value>Upplegg</value>
+  </data>
+  <data name="ATT" xml:space="preserve">
+    <value>AL</value>
+  </data>
+  <data name="BackButtonText" xml:space="preserve">
+    <value>❮ Aftur</value>
+  </data>
+  <data name="BigChance" xml:space="preserve">
+    <value>Stórur møguleiki</value>
+  </data>
+  <data name="BigChanceStatistic" xml:space="preserve">
+    <value>STÓRUR MØGULEIKI</value>
+  </data>
+  <data name="BlockedShot" xml:space="preserve">
+    <value>Blokera skot</value>
+  </data>
+  <data name="BlockedShotStatistic" xml:space="preserve">
+    <value>BLOKERA SKOT</value>
+  </data>
+  <data name="Commentary" xml:space="preserve">
+    <value>Hendingar</value>
+  </data>
+  <data name="ConnectionLost" xml:space="preserve">
+    <value>Einki samband</value>
+  </data>
+  <data name="Corner" xml:space="preserve">
+    <value>Hornaspark</value>
+  </data>
+  <data name="CornerStatistic" xml:space="preserve">
+    <value>HORNA</value>
+  </data>
+  <data name="DEF" xml:space="preserve">
+    <value>VL</value>
+  </data>
+  <data name="ExtraTimeFinished" xml:space="preserve">
+    <value>longd leiktíð liðugt</value>
+  </data>
+  <data name="ExtraTimePause" xml:space="preserve">
+    <value>longd leiktíð hálvleikur</value>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>liðugt</value>
+  </data>
+  <data name="FirstEleven" xml:space="preserve">
+    <value>Fyrstu 11</value>
+  </data>
+  <data name="Fixtures" xml:space="preserve">
+    <value>KOMANDI DYSTIR</value>
+  </data>
+  <data name="FullTime" xml:space="preserve">
+    <value>liðugt</value>
+  </data>
+  <data name="GK" xml:space="preserve">
+    <value>MM</value>
+  </data>
+  <data name="Goal" xml:space="preserve">
+    <value>Mál</value>
+  </data>
+  <data name="GoalStatistic" xml:space="preserve">
+    <value>MÁL</value>
+  </data>
+  <data name="HalfTime" xml:space="preserve">
+    <value>hálvleikur</value>
+  </data>
+  <data name="Matches" xml:space="preserve">
+    <value>DYSTIR</value>
+  </data>
+  <data name="MID" xml:space="preserve">
+    <value>MV</value>
+  </data>
+  <data name="NoMatches" xml:space="preserve">
+    <value>Einki dystir</value>
+  </data>
+  <data name="OffTarget" xml:space="preserve">
+    <value>Roynd frammvið mál</value>
+  </data>
+  <data name="OffTargetStatistic" xml:space="preserve">
+    <value>ROYNDIR FRAMMVIÐ MÁL</value>
+  </data>
+  <data name="OnTarget" xml:space="preserve">
+    <value>Roynd á mál</value>
+  </data>
+  <data name="OnTargetStatistic" xml:space="preserve">
+    <value>ROYNDIR Á MÁL</value>
+  </data>
+  <data name="OwnGoal" xml:space="preserve">
+    <value>Sjálvmál</value>
+  </data>
+  <data name="Penalties" xml:space="preserve">
+    <value>brotsspark</value>
+  </data>
+  <data name="Penalty" xml:space="preserve">
+    <value>Brotsspark</value>
+  </data>
+  <data name="PenaltyMissed" xml:space="preserve">
+    <value>Brotsspark brent</value>
+  </data>
+  <data name="PenaltyScored" xml:space="preserve">
+    <value>Brotsspark skorða</value>
+  </data>
+  <data name="RedCardStatistic" xml:space="preserve">
+    <value>REYÐ KORT</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>ÚRSLIT</value>
+  </data>
+  <data name="SeeMore" xml:space="preserve">
+    <value>Vís meira ❯</value>
+  </data>
+  <data name="Standings" xml:space="preserve">
+    <value>STØÐAN</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Hagtøl</value>
+  </data>
+  <data name="Substitution" xml:space="preserve">
+    <value>Eyka</value>
+  </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Úrtak</value>
+  </data>
+  <data name="Team" xml:space="preserve">
+    <value>LIÐ</value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>Í dag</value>
+  </data>
+  <data name="YellowCardStatistic" xml:space="preserve">
+    <value>GUL KORT</value>
+  </data>
+</root>

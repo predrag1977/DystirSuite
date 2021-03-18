@@ -1,0 +1,26 @@
+﻿@using DystirWeb.ModelViews
+@model FullMatchDetailsModelView
+
+@{
+    ViewData["Title"] = (Model.MatchDetails.Match.HomeTeam + " " + Model.MatchDetails.Match.HomeCategoriesName + " " + Model.MatchDetails.Match.HomeSquadName).Trim() + " - " + (Model.MatchDetails.Match.AwayTeam + " " + Model.MatchDetails.Match.AwayCategoriesName + " " + Model.MatchDetails.Match.AwaySquadName).Trim();
+    ViewData["PageIndex"] = 5;
+    ViewData["SelectedMatchID"] = Model.MatchDetails.Match.MatchId;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section HeaderContent {
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170595956-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-170595956-1', { cookie_flags: 'SameSite=None;Secure' });
+    </script>
+    <!-- End Google Analytics -->
+    <link href="~/css/site.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    <script src="~/js/dystir_script.js?version=1.0.2"></script>
+}

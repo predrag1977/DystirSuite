@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DystirManager.Views.LineUpsView"
+             BindingContextChanged="ContentView_BindingContextChanged">
+
+    <ContentView.Resources>
+
+        <Style TargetType="StackLayout">
+            <Setter Property="Spacing" Value="2" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="HorizontalOptions" Value="Start" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="{StaticResource NormalFont}" />
+        </Style>
+    </ContentView.Resources>
+
+    <ScrollView Padding="0,5">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="1" Grid.Column="0" x:Name="HomeFirstElevenView" />
+            <StackLayout Grid.Row="1" Grid.Column="1" x:Name="AwayFirstElevenView"/>
+
+            <Label Grid.Row="2" Grid.ColumnSpan="2" Padding="2,20,2,0" Text="Substitution" TextColor="#a6a6a6" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
+            <BoxView Grid.Row="3" Grid.ColumnSpan="2" Margin="0,0,0,10" HeightRequest="1" BackgroundColor="Gray" />
+            
+            <StackLayout Grid.Row="4" Grid.Column="0" x:Name="HomeSubstitutionsView"/>
+            <StackLayout Grid.Row="4" Grid.Column="1" x:Name="AwaySubstitutionsView" />
+        </Grid>
+    </ScrollView>
+</ContentView>

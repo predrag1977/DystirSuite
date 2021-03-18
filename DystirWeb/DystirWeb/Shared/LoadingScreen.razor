@@ -1,0 +1,33 @@
+﻿@using Services
+@inject DystirService DystirService
+@implements IDisposable
+
+@if (isLoaded)
+{
+    @ChildContent
+}
+else
+{
+    <div style="position: absolute;top:calc(50% - 2.5rem);left:calc(50% - 2.5rem);">
+        <img src="images/icons/loadingicon.gif" style="width:5rem" />
+    </div>
+}
+
+@code {
+    bool isLoaded = false;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoaded = false;
+        await DystirService.StartupAsync();
+        isLoaded = true;
+        await InvokeAsync(() => StateHasChanged());
+    }
+
+    void IDisposable.Dispose()
+    {
+    }
+}

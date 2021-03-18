@@ -1,0 +1,162 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ProduceAssemblyReference>true</ProduceAssemblyReference>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\goal.png" />
+    <None Remove="Images\loadingicon.gif" />
+    <None Remove="Images\owngoal.png" />
+    <None Remove="Images\background.png" />
+    <None Remove="Images\faroe_islands_flag.png" />
+    <None Remove="Images\great_britain_flag.png" />
+    <None Remove="Images\squad_icon.png" />
+    <None Remove="Images\commentary_icon.png" />
+    <None Remove="Images\summary_icon.png" />
+    <None Remove="Images\statistics_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Images\goal.png" />
+    <EmbeddedResource Include="Images\owngoal.png" />
+    <EmbeddedResource Include="loadingicon.gif" />
+    <EmbeddedResource Include="Images\background.png" />
+    <EmbeddedResource Include="Images\faroe_islands_flag.png" />
+    <EmbeddedResource Include="Images\great_britain_flag.png" />
+    <EmbeddedResource Include="Images\squad_icon.png" />
+    <EmbeddedResource Include="Images\commentary_icon.png" />
+    <EmbeddedResource Include="Images\summary_icon.png" />
+    <EmbeddedResource Include="Images\statistics_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ViewModels\AboutViewModel.cs" />
+    <Compile Remove="Views\MatchView %28copy%29.xaml.cs" />
+    <Compile Remove="Views\SummaryItemView %28copy%29.xaml.cs" />
+    <Compile Remove="Views\PlayerView %28copy%29.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.en-US.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.en-US.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Resources.fo-FO.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.fo-FO.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CompetitionMenuItemView.xaml.cs">
+      <DependentUpon>CompetitionMenuItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\HeaderView.xaml.cs">
+      <DependentUpon>HeaderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MatchViewResultsAndFixtures.xaml.cs">
+      <DependentUpon>MatchViewResultsAndFixtures.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SponsorsMainView.xaml.cs">
+      <DependentUpon>SponsorsMainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\StandingHeaderView.xaml.cs">
+      <DependentUpon>StandingHeaderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SponsorsView.xaml.cs">
+      <DependentUpon>SponsorsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\StandingsPage.xaml.cs">
+      <DependentUpon>StandingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\FixturesPage.xaml.cs">
+      <DependentUpon>FixturesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MatchView.xaml.cs">
+      <DependentUpon>MatchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ResultsPage.xaml.cs">
+      <DependentUpon>ResultsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MatchInMenuView.xaml.cs">
+      <DependentUpon>MatchInMenuView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\DayView.xaml.cs">
+      <DependentUpon>DayView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MatchesPage.xaml.cs">
+      <DependentUpon>MatchesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\StatisticsView.xaml.cs">
+      <DependentUpon>StatisticsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SelectedMatchDetailsView.xaml.cs">
+      <DependentUpon>SelectedMatchDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\MatchView %28copy%29.xaml.cs">
+      <DependentUpon>MatchView %28copy%29.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Views\PlayerView.xaml.cs">
+      <DependentUpon>PlayerView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.fo-FO.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.fo-FO.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Resources.en-US.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\CommentaryView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\DayView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\DetailMenuItem.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\DystirTabbedPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\FirstElevenView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\StatisticsView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\SubstitutionsView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\SummaryView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AppCenter" Version="3.4.1" />
+    <PackageReference Include="Microsoft.AppCenter.Analytics" Version="3.4.1" />
+    <PackageReference Include="Microsoft.AppCenter.Crashes" Version="3.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="5.0.0-preview.3.20215.14" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Xam.Plugin.LatestVersion" Version="2.0.0-beta.76" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Views\PlayerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </None>
+  </ItemGroup>
+</Project>

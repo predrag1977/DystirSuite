@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:Dystir.Converter"
+             xmlns:local="clr-namespace:Dystir.Views"
+             xmlns:properties="clr-namespace:Dystir.Properties"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="Dystir.Views.SelectedMatchDetailsView">
+
+    <ContentView.Resources>
+        <converter:MatchInfoTextConverter x:Key="MatchInfoTextConverter" />
+        <converter:HomeTeamFullConverter x:Key="HomeTeamFullConverter" />
+        <converter:AwayTeamFullConverter x:Key="AwayTeamFullConverter" />
+        <converter:ToLocalTimeConverter x:Key="ToLocalTimeConverter" />
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <converter:LanguageConverter x:Key="LanguageConverter" />
+        <converter:ToSelectedColorConverter x:Key="ToSelectedColorConverter" />
+        <converter:MatchResultDisplayConverter x:Key="MatchResultDisplayConverter" />
+    </ContentView.Resources>
+
+    <Grid>
+        <Grid BindingContext="{Binding SelectedMatchDetails}" HorizontalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid BindingContext="{Binding Match}" RowSpacing="4" Grid.Row="0" BackgroundColor="#222222" Padding="0,7" Margin="3,0" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="23" />
+                    <ColumnDefinition Width="15" />
+                    <ColumnDefinition Width="23" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Grid.ColumnSpan="6" Padding="2,0" HorizontalOptions="Fill">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Text="{Binding Converter={StaticResource MatchInfoTextConverter}}"  TextColor="#a6a6a6" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Start" />
+                    <Label Grid.Column="1" Text="{Binding LiveTime}" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" HorizontalOptions="FillAndExpand" FontFamily="{StaticResource BoldFont}" TextColor="{Binding StatusColor}" />
+                </Grid>
+                <Label Grid.Row="1" Grid.Column="1" TextColor="White" Text="{Binding Converter={StaticResource HomeTeamFullConverter}}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" FontSize="14" FontFamily="{StaticResource BoldFont}"/>
+                <Label Grid.Row="1" Grid.Column="2" TextColor="White" Text="{Binding Converter={StaticResource MatchResultDisplayConverter},ConverterParameter=home}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" FontSize="14" FontFamily="{StaticResource BoldFont}" />
+                <Label Grid.Row="1" Grid.Column="3" TextColor="White" Text=":" FontSize="12" FontFamily="{StaticResource BoldFont}" />
+                <Label Grid.Row="1" Grid.Column="4" TextColor="White" Text="{Binding Converter={StaticResource MatchResultDisplayConverter},ConverterParameter=away}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Start" FontSize="14" FontFamily="{StaticResource BoldFont}" />
+                <Label Grid.Row="1" Grid.Column="5" TextColor="White" Text="{Binding Converter={StaticResource AwayTeamFullConverter}}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Start" FontSize="14" FontFamily="{StaticResource BoldFont}" />
+            </Grid>
+
+            <Grid x:Name="DetailsMenuItem" Grid.Row="1" ColumnSpacing="3"
+                  HorizontalOptions="FillAndExpand"
+                  BindingContext="{Binding}" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" Padding="0,4" BackgroundColor="{Binding DetailsMatchTabIndex, Converter={StaticResource ToSelectedColorConverter}, ConverterParameter = 0}">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" CommandParameter="0" Tapped="DetailsMenuItemSelected_Tapped" />
+                    </Grid.GestureRecognizers>
+                    <ff:CachedImage HeightRequest="22" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" Source="resource://Dystir.Images.summary_icon.png" />
+                </Grid>
+                <Grid Grid.Column="1" BackgroundColor="{Binding DetailsMatchTabIndex, Converter={StaticResource ToSelectedColorConverter}, ConverterParameter = 1}">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" CommandParameter="1" Tapped="DetailsMenuItemSelected_Tapped" />
+                    </Grid.GestureRecognizers>
+                    <ff:CachedImage HeightRequest="22" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" Source="resource://Dystir.Images.squad_icon.png" />
+                </Grid>
+                <Grid Grid.Column="2" BackgroundColor="{Binding DetailsMatchTabIndex, Converter={StaticResource ToSelectedColorConverter}, ConverterParameter = 2}">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" CommandParameter="2" Tapped="DetailsMenuItemSelected_Tapped" />
+                    </Grid.GestureRecognizers>
+                    <ff:CachedImage HeightRequest="22" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" Source="resource://Dystir.Images.commentary_icon.png" />
+                </Grid>
+                <Grid Grid.Column="3" BackgroundColor="{Binding DetailsMatchTabIndex, Converter={StaticResource ToSelectedColorConverter}, ConverterParameter = 3}">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" CommandParameter="3" Tapped="DetailsMenuItemSelected_Tapped" />
+                    </Grid.GestureRecognizers>
+                    <ff:CachedImage HeightRequest="22" HorizontalOptions="CenterAndExpand" VerticalOptions="Center" Source="resource://Dystir.Images.statistics_icon.png" />
+                </Grid>
+            </Grid>
+
+            <local:SummaryView Grid.Row="2" BindingContext="{Binding}" IsVisible="{Binding SummarySelected}"  />
+            <local:FirstElevenView Grid.Row="2" BindingContext="{Binding}" IsVisible="{Binding FirstElevenSelected}" />
+            <local:CommentaryView Grid.Row="2" BindingContext="{Binding}" IsVisible="{Binding CommentarySelected}" />
+            <local:StatisticsView Grid.Row="2" BindingContext="{Binding}" IsVisible="{Binding StatisticSelected}" />
+        </Grid>
+        <Grid IsVisible="{Binding IsLoadingSelectedMatch}" VerticalOptions="Center" HorizontalOptions="Center">
+            <ff:CachedImage WidthRequest="50" HeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center" Source="resource://Dystir.loadingicon.gif" />
+        </Grid>
+    </Grid>
+</ContentView>

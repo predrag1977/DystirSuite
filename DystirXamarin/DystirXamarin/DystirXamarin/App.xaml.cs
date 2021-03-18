@@ -1,0 +1,44 @@
+﻿using DystirXamarin.Views;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
+
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+namespace DystirXamarin
+{
+    public partial class App : Application
+    {
+        public App()
+        {
+            InitializeComponent();
+            AppAnalytics();
+            var username = Current.Properties.ContainsKey("username") ? Current.Properties["username"] : "";
+            MainPage = new NavigationPage(new LogInPage());
+        }
+
+        private void AppAnalytics()
+        {
+            AppCenter.Start("android=9ab87fe9-92da-45bb-aabf-37022479c19a;" +
+                  "uwp={Your UWP App secret here};" +
+                  "ios={Your iOS App secret here}",
+                  typeof(Analytics), typeof(Crashes));
+        }
+
+        protected override void OnStart()
+        {
+            // Handle when your app starts
+        }
+
+        protected override void OnSleep()
+        {
+            // Handle when your app sleeps
+        }
+
+        protected override void OnResume()
+        {
+            // Handle when your app resumes
+        }
+    }
+}

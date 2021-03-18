@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:DystirXamarin.Converter"
+             BackgroundColor="{StaticResource LightBackgroundColor}"
+             x:Class="DystirXamarin.Views.EventSelectedPage" >
+    
+    <ContentPage.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="DarkBlue" />
+            <Setter Property="Margin" Value="5,0" />
+            <Setter Property="BorderWidth" Value="2" />
+            <Setter Property="BorderColor" Value="DarkBlue" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontAttributes"  Value="Bold" />
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+        </Style>
+
+        <converter:PlayingStatusToBackgroundConverter x:Key="PlayingStatusToBackgroundConverter" />
+        
+        <DataTemplate x:Key="PlayersOfEventTemplate" >
+            <ViewCell>
+                <ContentView BackgroundColor="{Binding PlayingStatus, Converter={StaticResource PlayingStatusToBackgroundConverter}}" Padding="3" Margin="0,3"  >
+                    <ContentView.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Player_Tapped" CommandParameter="{Binding}" NumberOfTapsRequired="1" />
+                    </ContentView.GestureRecognizers>
+                    <Grid Padding="2" BackgroundColor="{StaticResource DarkBackgroundColor}" HorizontalOptions="Fill">
+                        <Grid Padding="5,3" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <StackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" VerticalOptions="CenterAndExpand" Orientation="Horizontal">
+                                <Label Text="{Binding Number}" WidthRequest="32" HeightRequest="32" 
+                                       TextColor="LightGray" 
+                                       FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                            </StackLayout>
+                            <StackLayout Grid.Row="0" Grid.Column="1"  Orientation="Horizontal" HorizontalOptions="Fill">
+                                <Label Text="{Binding FirstName}" FontAttributes="Bold" TextColor="White" />
+                                <Label Text="{Binding LastName}" FontAttributes="Bold" TextColor="White" />
+                            </StackLayout>
+                            <StackLayout Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalOptions="Start">
+                                <Label Text="Position:" FontSize="10" TextColor="LightGray"/>
+                                <Label Text="{Binding Position}" FontSize="10" TextColor="LightGray"/>
+                            </StackLayout>
+                        </Grid>
+                    </Grid>
+                </ContentView>
+            </ViewCell>
+        </DataTemplate>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <StackLayout x:Name="MatchTimeLayout" Margin="5,10,5,0" Spacing="2" IsVisible="false">
+            <Button x:Name="MatchTimeLabel" BorderColor="Goldenrod" HeightRequest="40" 
+                    BackgroundColor="Transparent" Clicked="EventTime_Clicked" TextColor="Goldenrod" />
+            <Label Text="change event time" FontSize="13" HorizontalTextAlignment="Center" 
+                   VerticalTextAlignment="Center" TextColor="LightGray" FontAttributes="Bold" />
+        </StackLayout>
+
+        <ContentView x:Name="CommentaryView" Grid.Row="2" IsVisible="False">
+            <Grid Margin="10" RowSpacing="0" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Row="0" Padding="7" Orientation="Horizontal">
+                    <Label Text="COMMENTARY" FontSize="16" HorizontalOptions="Start" VerticalOptions="FillAndExpand"  TextColor="White" />
+                </StackLayout>
+                
+                <Entry x:Name="CommentaryEntry" Grid.Row="1" FontSize="18"  Margin="0,10,0,0" VerticalOptions="StartAndExpand" HorizontalOptions="FillAndExpand" />
+
+                <BoxView Grid.Row="2" HeightRequest="2" BackgroundColor="Gray"/>
+
+                <Grid Grid.Row="3" Padding="1">
+                    <ContentView Margin="0,10">
+                        <Button Text="CONFIRM" BorderColor="{StaticResource BlueColor}" HeightRequest="50" 
+                                BackgroundColor="{StaticResource BlueColor}" 
+                                Margin="0" Clicked="CommentarySendEvent_Clicked" TextColor="White" />
+                    </ContentView>
+                </Grid>
+            </Grid>
+        </ContentView>
+
+        <ContentView x:Name="TeamEventView" Grid.Row="2" IsVisible="True">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <ScrollView Grid.Row="0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <StackLayout Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" VerticalOptions="StartAndExpand" >
+                            <Label Text="Choose a team" TextColor="LightGray" />
+                        </StackLayout>
+                        <StackLayout Grid.Column="0" Grid.Row="1" Margin="0,10" VerticalOptions="StartAndExpand" >
+                            <Button Text="{Binding HomeTeam}" BorderColor="White" 
+                                    HeightRequest="50" BackgroundColor="Black" 
+                                    Margin="0" CommandParameter="{Binding HomeTeam}" Clicked="ChooseTeam_Clicked" 
+                                    TextColor="White" />
+                        </StackLayout>
+
+                         <StackLayout Grid.Column="1" Grid.Row="1" Margin="0,10" VerticalOptions="StartAndExpand">
+                            <Button Text="{Binding AwayTeam}" BorderColor="White" 
+                                    HeightRequest="50" BackgroundColor="Black" 
+                                    Margin="0" CommandParameter="{Binding AwayTeam}" Clicked="ChooseTeam_Clicked" 
+                                    TextColor="White" />
+                        </StackLayout>
+                    </Grid>
+                </ScrollView>
+            </Grid>
+        </ContentView>
+
+        <ContentView x:Name="GoalEventView" Grid.Row="2" IsVisible="False">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <ScrollView Grid.Row="0">
+                    <StackLayout VerticalOptions="StartAndExpand" >
+                        <StackLayout Margin="10,15,10,0" Spacing="2">
+                            <Button Text="GOAL" BorderColor="DarkGreen" 
+                                    HeightRequest="50" BackgroundColor="DarkGreen" 
+                                    Margin="0" CommandParameter="GOAL" Clicked="GoalEvent_Clicked" 
+                                    TextColor="White" />
+                            <Label Text="goal" FontSize="13" HorizontalTextAlignment="Center" 
+                                   VerticalTextAlignment="Center" TextColor="LightGray" FontAttributes="Bold" />
+                        </StackLayout>
+
+                        <StackLayout Margin="10,15,10,0" Spacing="2">
+                            <Button Text="OWN GOAL" BorderColor="IndianRed" 
+                                    HeightRequest="50" BackgroundColor="IndianRed" 
+                                    Margin="0" CommandParameter="OWNGOAL" Clicked="GoalEvent_Clicked" 
+                                    TextColor="White" />
+                            <Label Text="own goal" FontSize="13" HorizontalTextAlignment="Center" 
+                                   VerticalTextAlignment="Center" TextColor="LightGray" FontAttributes="Bold" />
+                        </StackLayout>
+
+                        <StackLayout x:Name="AddAssistButtonLayout" Margin="10,15,10,0" Spacing="2" IsVisible="false">
+                            <Button Text="ADD ASSIST" BorderColor="DarkGray" 
+                                    HeightRequest="50" BackgroundColor="DarkGray" 
+                                    Margin="0" CommandParameter="ASSIST" Clicked="GoalEvent_Clicked" 
+                                    TextColor="Black" />
+                            <Label Text="add assist only" FontSize="13" HorizontalTextAlignment="Center" 
+                                   VerticalTextAlignment="Center" TextColor="LightGray" FontAttributes="Bold" />
+                        </StackLayout>
+                        
+                    </StackLayout>
+                </ScrollView>
+            </Grid>
+        </ContentView>
+
+        <ContentView x:Name="AssistView" Grid.Row="2" IsVisible="False">
+            <Grid Margin="10" VerticalOptions="StartAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackLayout>
+                    <Label Text="DID SOMEBODY ASSIST THE GOAL?" FontSize="14" HorizontalTextAlignment="Center" 
+                           VerticalTextAlignment="Center" HorizontalOptions="FillAndExpand" 
+                           VerticalOptions="FillAndExpand" TextColor="White" FontAttributes="Bold" />
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                        <Button BorderColor="{StaticResource BlueColor}" Text="YES" HeightRequest="50" 
+                                BackgroundColor="{StaticResource BlueColor}" CommandParameter="ASSIST" 
+                                Margin="20,10,20,0" WidthRequest="100"
+                                Clicked="Assist_Clicked" TextColor="White" />
+                        <Button BorderColor="{StaticResource LightBlueColor}" Text="NO" HeightRequest="50" 
+                                BackgroundColor="{StaticResource LightBlueColor}" CommandParameter="" 
+                                Margin="20,10,20,0" WidthRequest="100"
+                                Clicked="Assist_Clicked" TextColor="Black" />
+                    </StackLayout>
+                    <Label x:Name="AssistLabel" Margin="0,40,10,0" FontSize="16"
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="FillAndExpand"
+                           TextColor="White" />
+                </StackLayout>
+            </Grid>
+        </ContentView>
+
+        <ContentView x:Name="ChooseEventView" Grid.Row="2" IsVisible="False">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <ScrollView Grid.Row="0">
+                    <StackLayout VerticalOptions="StartAndExpand" >
+                        <StackLayout Margin="10,15,10,0" Spacing="2">
+                            <Button Text="ON TARGET" BorderColor="DimGray" 
+                                    HeightRequest="50" BackgroundColor="DimGray" 
+                                    Margin="0" CommandParameter="ONTARGET" Clicked="ShotEventTarget_Clicked" 
+                                    TextColor="White" />
+                            <Label Text="shot in the goal or hit the post" FontSize="13" HorizontalTextAlignment="Center" 
+                                   VerticalTextAlignment="Center" TextColor="LightGray" FontAttributes="Bold" />
+                        </StackLayout>
+
+                        <StackLayout Margin="10,15,10,0" Spacing="2">
+                            <Button Text="OFF TARGET" BorderColor="DarkGray" 
+                                    HeightRequest="50" BackgroundColor="DarkGray" 
+                                    Margin="0" CommandParameter="OFFTARGET" Clicked="ShotEventTarget_Clicked" 
+                                    TextColor="Black" />
+                            <Label Text="shot is out of goal" FontSize="13" HorizontalTextAlignment="Center" 
+                                   VerticalTextAlignment="Center" TextColor="LightGray" FontAttributes="Bold" />
+                        </StackLayout>
+
+                        <StackLayout Margin="10,15,10,0" Spacing="2">
+                            <Button Text="BLOCKED SHOT" BorderColor="LightGray" 
+                                    HeightRequest="50" BackgroundColor="LightGray" 
+                                    Margin="0" CommandParameter="BLOCKEDSHOT" Clicked="ShotEventTarget_Clicked" 
+                                    TextColor="Black" />
+                            <Label Text="shot is blocked" FontSize="13" HorizontalTextAlignment="Center" 
+                                   VerticalTextAlignment="Center" TextColor="LightGray" FontAttributes="Bold" />
+                        </StackLayout>
+                    </StackLayout>
+                </ScrollView>
+            </Grid>
+        </ContentView>
+        
+        <ContentView x:Name="BigChanceView" Grid.Row="2" IsVisible="False">
+            <Grid Margin="10" VerticalOptions="StartAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackLayout>
+                    <Label Text="IS IT BIG CHANCE?" FontSize="14" HorizontalTextAlignment="Center" 
+                           VerticalTextAlignment="Center" HorizontalOptions="FillAndExpand" 
+                           VerticalOptions="FillAndExpand" TextColor="White" FontAttributes="Bold" />
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                        <Button BorderColor="{StaticResource BlueColor}" Text="YES" HeightRequest="50" 
+                                BackgroundColor="{StaticResource BlueColor}" CommandParameter="BIGCHANCE" 
+                                Margin="20,10,20,0" WidthRequest="100"
+                                Clicked="BigChance_Clicked" TextColor="White" />
+                        <Button BorderColor="{StaticResource LightBlueColor}" Text="NO" HeightRequest="50" 
+                                BackgroundColor="{StaticResource LightBlueColor}" CommandParameter="" 
+                                Margin="20,10,20,0" WidthRequest="100"
+                                Clicked="BigChance_Clicked" TextColor="Black" />
+                    </StackLayout>
+                    <Label x:Name="BigChanceNameLabel" Margin="0,40,10,0" FontSize="16" HorizontalOptions="CenterAndExpand" VerticalOptions="FillAndExpand"  TextColor="White" />
+                </StackLayout>
+            </Grid>
+        </ContentView>
+        
+        <ContentView x:Name="MainView" Grid.Row="2" IsVisible="False">
+            <Grid Margin="10,0" RowSpacing="0" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Padding="1" RowSpacing="0" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackLayout Padding="5,2" Orientation="Horizontal">
+                        <Label x:Name="MainEventNameLabel" FontSize="16" HorizontalOptions="Start" VerticalOptions="FillAndExpand"  TextColor="White" />
+                        <Label x:Name="MainSelectedPlayerLabel" FontSize="16" HorizontalOptions="StartAndExpand" VerticalOptions="FillAndExpand"  TextColor="White" />
+                    </StackLayout>
+                    <Label x:Name="SecondEventLabel" Padding="5,2" Grid.Row="1" IsVisible="False" FontSize="14" HorizontalOptions="StartAndExpand" VerticalOptions="FillAndExpand"  TextColor="DimGray" />
+                </Grid>
+
+                <BoxView Grid.Row="1" HeightRequest="2" BackgroundColor="Gray"/>
+
+                <ListView Grid.Row="2" x:Name="MainPlayersListView"
+                      VerticalOptions="FillAndExpand"
+                      HasUnevenRows="true"
+                      CachingStrategy ="RecycleElementAndDataTemplate"
+                      IsRefreshing="{Binding IsLoading}"
+                      SeparatorVisibility="None"
+                      ItemSelected="PlayersListView_ItemSelected"
+                      ItemTemplate="{StaticResource PlayersOfEventTemplate}">
+                </ListView>
+
+                <BoxView Grid.Row="3" HeightRequest="2" BackgroundColor="Gray"/>
+
+                <Grid Grid.Row="4">
+                    <ContentView Margin="0,10">
+                        <Button Text="CONFIRM" BorderColor="{StaticResource BlueColor}" HeightRequest="50" 
+                                BackgroundColor="{StaticResource BlueColor}" 
+                                Margin="0" Clicked="MainViewSendEvent_Clicked" TextColor="White" />
+                    </ContentView>
+                </Grid>
+            </Grid>
+        </ContentView>
+        
+        <ContentView x:Name="SecondView" Grid.Row="2" IsVisible="False">
+            <Grid Margin="10,0" RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" Padding="1" >
+                    <StackLayout Padding="7" Orientation="Horizontal">
+                        <Label x:Name="SecondEventNameLabel" FontSize="16" HorizontalOptions="Start" VerticalOptions="FillAndExpand"  TextColor="White" />
+                        <Label x:Name="SecondSelectedPlayerLabel" FontSize="16" HorizontalOptions="StartAndExpand" VerticalOptions="FillAndExpand"  TextColor="White" />
+                    </StackLayout>
+                </Grid>
+
+                <BoxView Grid.Row="1" HeightRequest="2" BackgroundColor="Gray"/>
+
+                <ListView Grid.Row="2"  x:Name="SecondPlayersListView"
+                      VerticalOptions="FillAndExpand"
+                      HasUnevenRows="true"
+                      CachingStrategy ="RecycleElementAndDataTemplate"
+                      IsRefreshing="{Binding IsLoading}"
+                      SeparatorVisibility="None"
+                      ItemSelected="PlayersListView_ItemSelected"
+                      ItemTemplate="{StaticResource PlayersOfEventTemplate}">
+                </ListView>
+
+                <BoxView Grid.Row="3" HeightRequest="2" BackgroundColor="Gray"/>
+                
+                <Grid Grid.Row="4">
+                    <ContentView Margin="0,10" >
+                        <Button Text="CONFIRM" BorderColor="{StaticResource LightBlueColor}" HeightRequest="50" 
+                                BackgroundColor="{StaticResource LightBlueColor}" 
+                                Margin="0" Clicked="SecondViewSendEvent_Clicked" TextColor="Black" />
+                    </ContentView>
+                </Grid>
+            </Grid>
+        </ContentView>
+
+        <ContentView x:Name="DeleteEventView" Grid.Row="3" Margin="10,0,10,20">
+            <Button Text="DELETE EVENT" BorderColor="DarkRed" HeightRequest="50" BackgroundColor="DarkRed" Margin="0" Clicked="DeleteMatch_Tapped"  TextColor="White" />
+        </ContentView>
+    </Grid>
+    
+</ContentPage>

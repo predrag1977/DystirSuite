@@ -1,0 +1,93 @@
+﻿@using DystirWeb.ModelViews
+@model MatchesModelView
+
+<table class="table" style="width:100%;height:100%;">
+    <tr>
+        <td style="position:relative;width:100%;height:auto;padding:0;vertical-align:middle;">
+            <div id="header-match-list" style="overflow:hidden;">
+                <table class="table" style="">
+                    <tr>
+                        @foreach (IGrouping<string, Matches> matchesGroup in Model.MatchesGroups)
+                        {
+                            var matches = matchesGroup.Select(x => x);
+                            <td style="padding-left:0px;">
+                                <div class="competition-item" id="@(matchesGroup.Key.Replace(" ", "").Replace(".", "-"))" onclick="selectCompetition('@(matchesGroup.Key.Replace(" ", "").Replace(".", "-"))')">@(matchesGroup.Key?.ToUpper())</div>
+                                @if (Model.MatchesGroups.First().Key == matchesGroup.Key)
+                                {
+                                    <script>chooseCompetition('@(matchesGroup.Key.Replace(" ", "").Replace(".", "-"))')</script>
+                                }
+                            </td>
+                        }
+                    </tr>
+                </table>
+                <table class="table" style="border-collapse: separate; border-spacing: 0.2em;">
+                    <tr>
+                        @foreach (IGrouping<string, Matches> matchesGroup in Model.MatchesGroups)
+                        {
+                            var matches = matchesGroup.Select(x => x);
+                            @foreach (Matches match in matches)
+                            {
+                                <td class="@("selection_matches"+" " + (matchesGroup.Key.Replace(" ","").Replace(".","-")))" style="padding:0 0.1em">
+                                    <div onclick="getMatchDetailsFromDystir('@match.MatchId', '@((match.HomeTeam + "-" + match.AwayTeam).Replace(" /", "").Replace(" ", " ").Replace(" .", ""))');">
+                                        <table class="table">
+                                            <tr>
+                                                <td class="match-status" style="text-align:left;">
+                                                    <span id="@("match-info-short-time" + match.MatchId)" style="color:dimgray" />
+                                                    <script>convertToShortLocalTime("@("match-info-short-time" + match.MatchId)","@(match.Time?.ToString("dd.MM.yyyy HH:mm"))")</script>
+                                                </td>
+                                                <td class="match-status" style="text-align:right;width:60%">
+                                                    <span class="match_time" id="@("match-info-time" + match.MatchId)" />
+                                                    <script>calculateMatchTime(@(match.StatusId), $("#match-info-time" +@match.MatchId), @((match.StatusTime.Value - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds), @((match.Time.Value - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds))</script>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <table class="table" >
+                                            <tr>
+                                                <td style="padding:0 0.1em;text-align:left;">
+                                                    @((match.HomeTeam + " " + match.HomeCategoriesName + " " + match.HomeSquadName).Trim().ToUpper())
+                                                </td>
+                                                <td style="width:1em;padding:0 0.1em;text-align:right;">
+                                                    @if (match.StatusId > 1 && match.StatusId < 14)
+                                                    {
+                                                        @(match.HomeTeamScore)
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>-</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <table class="table">
+                                            <tr>
+                                                <td style="padding:0 0.1em;text-align:left;">
+                                                    @((match.AwayTeam + " " + match.AwayCategoriesName + " " + match.AwaySquadName).Trim().ToUpper())
+                                                </td>
+                                                <td style="width:1em;padding:0 0.1em;text-align:right;">
+                                                    @if (match.StatusId > 1 && match.StatusId < 14)
+                                                    {
+                                                        @(match.AwayTeamScore)
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>-</span>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                            }
+                        }
+                    </tr>
+                </table>
+                @if (Model.MatchesGroups.Count() == 0)
+                {
+                    <div style="width:100%;text-align:center;padding:35px; background-color:white">Eingin dystur í dag</div>
+                }
+            </div>
+        </td>
+    </tr>
+</table>
+
+

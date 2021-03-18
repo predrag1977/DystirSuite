@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DystirManager.Views.LogInPage"
+             xmlns:converter="clr-namespace:DystirManager.Converter"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="DimGray"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" >
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Font" Value="{StaticResource NormalFont}" />
+        </Style>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid RowSpacing="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <ff:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="Fill" Source="resource://DystirManager.Images.background.png" />
+        </Grid>
+        <StackLayout>
+            <StackLayout x:Name="LogInView" IsVisible="False" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand">
+                <StackLayout Margin="20,50,20,10" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                    <Label Text="User name" HorizontalOptions="FillAndExpand"/>
+                    <Entry x:Name="UserNameEntry" Placeholder="Enter user name..." HorizontalOptions="FillAndExpand"/>
+                </StackLayout>
+                <StackLayout Margin="20,0,20,20" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                    <Label Text="Password" HorizontalOptions="FillAndExpand"/>
+                    <Entry x:Name="PasswordEntry" Placeholder="Enter password..." IsPassword="True" HorizontalOptions="FillAndExpand"/>
+                </StackLayout>
+                <StackLayout>
+                    <ContentView Padding="1" Margin="20,0,20,20" HorizontalOptions="Fill">
+                        <Button x:Name="LogInBtn"  Text="LOG IN"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Clicked="LogIn_Tapped" />
+                        <!--<ContentView.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="LogIn_Tapped" CommandParameter="{Binding HomeTeamID}" NumberOfTapsRequired="1" />
+                    </ContentView.GestureRecognizers>-->
+                    </ContentView>
+                </StackLayout>
+            </StackLayout>
+            <Grid x:Name="LoadingView" VerticalOptions="CenterAndExpand">
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                    <Label Text="Dystir Manager" FontSize="20" TextColor="White" />
+                    <Label Text="Loading..." FontSize="14" TextColor="White"/>
+                </StackLayout>
+            </Grid>
+        </StackLayout>
+    </Grid>
+</ContentPage>

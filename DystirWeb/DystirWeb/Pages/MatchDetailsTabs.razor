@@ -1,0 +1,39 @@
+﻿<div class="tab-match-details">
+    <table class="table" style="font-size:0.9em;font-weight:bold;margin:0.2rem 0;">
+        <tr>
+            <td class="tab @(selectedTab == 0 ? "selected_tab" : "")">
+                <div class="selected_tab-layout" @onclick="(() => SelectTab(0))">
+                    Úrtak
+                </div>
+            </td>
+            <td class="tab @(selectedTab == 1 ? "selected_tab" : "")">
+                <div class="selected_tab-layout" @onclick="(() => SelectTab(1))">
+                    Leikarar
+                </div>
+            </td>
+            <td class="tab @(selectedTab == 2 ? "selected_tab" : "")">
+                <div class="selected_tab-layout" @onclick="(() => SelectTab(2))">
+                    Hendingar
+                </div>
+            </td>
+            <td class="tab @(selectedTab == 3 ? "selected_tab" : "")">
+                <div class="selected_tab-layout" @onclick="(() => SelectTab(3))">
+                    Hagtøl
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+@code {
+    [Parameter] 
+    public EventCallback<string> TabOnClick { get; set; }
+
+    public int selectedTab = 0;
+
+    private void SelectTab(int tabIndex)
+    {
+        selectedTab = tabIndex;
+        TabOnClick.InvokeAsync(tabIndex.ToString());
+    }
+}

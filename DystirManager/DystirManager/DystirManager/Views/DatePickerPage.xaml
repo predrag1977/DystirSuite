@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DystirManager.Views.DatePickerPage"
+             xmlns:converter="clr-namespace:DystirManager.Converter"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="DimGray"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
+    <ContentPage.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="Margin" Value="5,0" />
+            <Setter Property="BorderWidth" Value="2" />
+            <Setter Property="BorderColor" Value="White" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="FontFamily" Value="{StaticResource NormalFont}" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="HeightRequest" Value="28" />
+        </Style>
+        <converter:LanguageConverter x:Key="LanguageConverter" />
+    </ContentPage.Resources>
+    <Grid>
+        <Grid RowSpacing="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <ff:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="Fill" Source="resource://DystirManager.Images.background.png" />
+        </Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid RowSpacing="0" Grid.Row="0" BackgroundColor="#2F4F2F" Opacity="0.9" Padding="5,13">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="80" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Back_Tapped" NumberOfTapsRequired="1" />
+                    </Grid.GestureRecognizers>
+                    <Label Text="{Binding Converter={StaticResource LanguageConverter}, ConverterParameter=BackButtonText}" TextColor="White" FontSize="16" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <Label x:Name="TitleLabel" FontSize="16" FontFamily="{StaticResource BoldFont}" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" />
+                </Grid>
+                <Grid Grid.Column="2">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OK_Tapped" NumberOfTapsRequired="1" />
+                    </Grid.GestureRecognizers>
+                    <Label Text="OK" TextColor="White" />
+                </Grid>
+            </Grid>
+        </Grid>
+        <StackLayout Grid.Row="1" Margin="5,0" >
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,0,0,15">
+                <Label x:Name="DayLabel" />
+                <Label Text=", " />
+                <Label x:Name="DateLabel" />
+            </StackLayout>
+            <Grid HorizontalOptions="Center" VerticalOptions="Center" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="60"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45" />
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="45" />
+                </Grid.RowDefinitions>
+
+                <Button Grid.Column="0"  Grid.Row="2" Text="-" Pressed="DaysDown_Tapped" Released="Button_Released" />
+                <Label x:Name="Days" Grid.Column="0" Grid.Row="1"  BackgroundColor="Transparent" Text="{Binding TotalDate, StringFormat='{}{0:dd}'}" />
+                <Button Grid.Column="0" Grid.Row="0" Text="+" Pressed="DaysUp_Tapped" Released="Button_Released" />
+
+                <Label Grid.Column="1" Grid.Row="1" BackgroundColor="Transparent" Text="." />
+
+                <Button Grid.Column="2" Grid.Row="2" Text="-" Pressed="MonthsDown_Tapped" Released="Button_Released" />
+                <Label x:Name="Months" Grid.Column="2" Grid.Row="1" BackgroundColor="Transparent" Text="{Binding TotalDate, StringFormat='{}{0:MM}'}" />
+                <Button Grid.Column="2" Grid.Row="0" Text="+" Pressed="MonthsUp_Tapped" Released="Button_Released" />
+
+                <Label Grid.Column="3" Grid.Row="1" BackgroundColor="Transparent" Text="." />
+
+                <Button Grid.Column="4" Grid.Row="2" Text="-" Pressed="YearsDown_Tapped" Released="Button_Released" />
+                <Label x:Name="Years" Grid.Column="4" Grid.Row="1" BackgroundColor="Transparent" Text="{Binding TotalDate, StringFormat='{}{0:yyyy}'}" />
+                <Button  Grid.Column="4" Grid.Row="0" Text="+" Pressed="YearsUp_Tapped" Released="Button_Released" />
+            </Grid>
+        </StackLayout>
+    </Grid>
+</ContentPage>

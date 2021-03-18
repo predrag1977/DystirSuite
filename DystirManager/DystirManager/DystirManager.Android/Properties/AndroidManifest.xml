@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="3.0.0" package="dystirmanager.dystirmanager" android:installLocation="preferExternal" android:versionCode="25">
+	<uses-sdk android:targetSdkVersion="29" android:minSdkVersion="16" />
+	<application android:label="Dystir Manager" android:icon="@drawable/dystir_icon"></application>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+</manifest>

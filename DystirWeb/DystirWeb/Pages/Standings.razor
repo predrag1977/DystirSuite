@@ -1,0 +1,116 @@
+﻿@page "/football/standings"
+
+@using DystirWeb.ModelViews
+@using DystirWeb.Services
+@using System.Collections.ObjectModel
+@inject DystirService DystirService
+@layout MainFootballLayout
+@implements IDisposable
+
+<table class="table" style="width:100%;height:100%;">
+    <tr>
+        <td style="position:relative;width:100%;padding:0;background-color:dimgray">
+            <ChooseCompetitions CompetitionsList="@(StandingsView?.CompetitionsList?.ToList())" SelectedCompetition="@(StandingsView?.SelectedCompetition)" CompetitionsOnClick="@(CompetitionsOnClick)" />
+        </td>
+    </tr>
+    <tr>
+        <td style="position:relative;width:100%;height:100%;">
+            <div class="matches_container text-center" style="max-width:1200px;margin:0 auto;padding:10px 10px 0 5px">
+                <table class="table text-white">
+                    <tr class="standings-header">
+                        <td class="standings-cell" style="width:40%;padding:5px 0;text-align:left;font-weight:bold;">
+                            <div class="standings-number d-inline-block" style="color:transparent">Nr</div><span>LIÐ</span>
+                        </td>
+                        <td class="standings-cell">DS</td>
+                        <td class="standings-cell">VD</td>
+                        <td class="standings-cell">JD</td>
+                        <td class="standings-cell">TD</td>
+                        <td class="standings-cell">MF</td>
+                        <td class="standings-cell">MÍ</td>
+                        <td class="standings-cell">MM</td>
+                        @*<td class="standings-cell">(%)</td>*@
+                        <td class="standings-cell">St.</td>
+                    </tr>
+                    @foreach (var teamStanding in StandingsView.Standing?.TeamStandings ?? new List<TeamStanding>())
+                    {
+                        <tr style="border-bottom:1px solid @teamStanding.PositionColor">
+                            <td class="standings-cell" style="width:40%;padding:7px 0;text-align:left;font-weight:bold;">
+                                <div class="standings-number d-inline-block">@(teamStanding.Position).</div>@teamStanding.Team
+                            </td>
+                            <td class="standings-cell">@teamStanding.MatchesNo</td>
+                            <td class="standings-cell">@teamStanding.Victories</td>
+                            <td class="standings-cell">@teamStanding.Draws</td>
+                            <td class="standings-cell">@teamStanding.Losses</td>
+                            <td class="standings-cell">@teamStanding.GoalScored</td>
+                            <td class="standings-cell">@teamStanding.GoalAgainst</td>
+                            <td class="standings-cell">@teamStanding.GoalDifference</td>
+                            @*<td class="standings-cell">@teamStanding.PointsProcent</td>*@
+                            <td class="standings-cell" style="font-weight: bold;padding-right:3px">@teamStanding.Points</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </td>
+    </tr>
+</table>
+
+@code {
+    private StandingsModelView StandingsView;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadStandings(string.Empty);
+        DystirService.OnLoadData += LoadData;
+        DystirService.OnUpdateData += UpdateData;
+    }
+
+    void IDisposable.Dispose()
+    {
+        DystirService.OnLoadData -= LoadData;
+        DystirService.OnUpdateData -= UpdateData;
+    }
+
+    private void LoadData(object sender, EventArgs arg)
+    {
+        Refresh();
+    }
+
+    private void UpdateData(object sender, string matchDetailsJson)
+    {
+        Refresh();
+    }
+
+    private void Refresh()
+    {
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    private async void CompetitionsOnClick(string competition)
+    {
+        await LoadStandings(competition);
+    }
+
+    public async Task LoadStandings(string selectedCompetition)
+    {
+        selectedCompetition = string.IsNullOrWhiteSpace(selectedCompetition) ? DystirService.GetStandings()?.FirstOrDefault().StandingCompetitionName ?? string.Empty : selectedCompetition;
+        Standing standing = DystirService.GetStandings()?.FirstOrDefault(x => x.StandingCompetitionName == selectedCompetition);
+        StandingsView = new StandingsModelView()
+        {
+            SelectedCompetition = selectedCompetition,
+            CompetitionsList = GetCompetitionsList(),
+            Standing = standing
+        };
+        await Task.CompletedTask;
+    }
+
+    private IEnumerable<string> GetCompetitionsList()
+    {
+        List<string> competitionsList = new List<string>();
+        foreach (var standing in DystirService.GetStandings() ?? new ObservableCollection<Standing>())
+        {
+            competitionsList.Add(standing.StandingCompetitionName);
+        }
+        return competitionsList;
+    }
+}
+

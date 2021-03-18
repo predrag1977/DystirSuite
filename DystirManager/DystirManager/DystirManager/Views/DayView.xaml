@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:DystirManager.Converter"
+             x:Class="DystirManager.Views.DayView">
+    <ContentView.Resources>
+        <converter:DateToDayTextConverter x:Key="DateToDayTextConverter" />
+        <converter:ToLocalTimeConverter x:Key="ToLocalTimeConverter" />
+    </ContentView.Resources>
+    
+    <ContentView.Content>
+        <Grid RowSpacing="0" VerticalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label x:Name="DayLabel" Grid.Row="0" VerticalOptions="End" FontSize="10" FontFamily="{StaticResource BoldFont}" Text="{Binding Date, Converter={StaticResource DateToDayTextConverter}}" />
+            <Label x:Name="DaySecondLabel" Grid.Row="1" VerticalOptions="Start" FontSize="10" FontFamily="{StaticResource BoldFont}" Text="{Binding Date, Converter={StaticResource ToLocalTimeConverter},ConverterParameter=ddd}" />
+        </Grid>
+    </ContentView.Content>
+</ContentView>

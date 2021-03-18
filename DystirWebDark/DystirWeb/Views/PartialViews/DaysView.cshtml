@@ -1,0 +1,18 @@
+﻿@model DateTime
+
+<table style="margin-bottom: 3px">
+    <tr>
+        
+        <td>
+            <table class="table" style="font-size:8px;font-weight:bold" >
+                <tr class="matches-days"></tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<script>
+    createMatchDays();
+    selectDay('@Model.ToString("dd.MM.")');
+</script>
+
