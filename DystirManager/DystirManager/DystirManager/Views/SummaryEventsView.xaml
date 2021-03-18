@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:DystirManager.Converter"
+             x:Class="DystirManager.Views.SummaryEventsView"
+             BindingContextChanged="ContentView_BindingContextChanged">
+    
+    <ContentView.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="{StaticResource NormalFont}" />
+        </Style>
+
+        <converter:MainPlayerVisibilityConverter x:Key="MainPlayerVisibilityConverter" />
+        <converter:SecondPlayerVisibilityConverter x:Key="SecondPlayerVisibilityConverter" />
+        <converter:MatchResultVisible x:Key="MatchResultVisible" />
+    </ContentView.Resources>
+
+    <Grid Grid.Row="2" Padding="0" >
+        <ListView x:Name="EventsListView"
+                ItemsSource="{Binding SummaryEventsOfMatch}"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                IsPullToRefreshEnabled="False"   
+                CachingStrategy ="RecycleElement"
+                IsRefreshing="False"
+                SeparatorVisibility="None"
+                ItemSelected="OnMatchSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="50" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="1" />
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Column="0" Opacity="0.9" Padding="1" VerticalOptions="Center" BackgroundColor="Red" >
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="Delete_Event_Tapped" CommandParameter="{Binding}" NumberOfTapsRequired="1" />
+                                </Grid.GestureRecognizers>
+                                <Label Text="Del" BackgroundColor="#222222" FontFamily="{StaticResource NormalFont}" TextColor="Red" HorizontalOptions="FillAndExpand" Padding="2,7" />
+                            </Grid>
+
+                            <Grid Grid.Column="1" ColumnSpacing="0" Padding="2,5" IsVisible="{Binding HomeTeamVisible}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Padding="0,0,5,0" Text="{Binding EventMinute}" FontFamily="{StaticResource BoldFont}" TextColor="DarkKhaki" />
+                                <StackLayout Grid.Column="1" Padding="0,0,5,0" Orientation="Horizontal" IsVisible="{Binding Converter={StaticResource MatchResultVisible}}" >
+                                    <Label Text="{Binding HomeTeamScore}" FontSize="13" FontFamily="{StaticResource BoldFont}" TextColor="White"  />
+                                    <Label Text=":" FontSize="13" FontFamily="{StaticResource BoldFont}" TextColor="White" />
+                                    <Label Text="{Binding AwayTeamScore}" FontSize="13" FontFamily="{StaticResource BoldFont}" TextColor="White"  />
+                                </StackLayout>
+                                <Label Grid.Column="2" Text="{Binding EventName}" BackgroundColor="DarkGreen" TextColor="White" HorizontalTextAlignment="Center" Padding="3" />
+                                <StackLayout Grid.Column="3" Padding="5,0" VerticalOptions="Center" >
+                                    <Label Text="{Binding HomeMainPlayer}" TextColor="White" HorizontalOptions="StartAndExpand" />
+                                    <Label Text="{Binding HomeSecondPlayer}" IsVisible="{Binding Converter={StaticResource SecondPlayerVisibilityConverter}}" TextColor="Gray" HorizontalOptions="StartAndExpand" />
+                                </StackLayout>
+                            </Grid>
+
+                            <Grid Grid.Column="1" ColumnSpacing="0" Padding="2,5" IsVisible="{Binding AwayTeamVisible}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackLayout Grid.Column="0" Padding="5,0" VerticalOptions="Center" >
+                                    <Label Text="{Binding AwayMainPlayer}" TextColor="White" HorizontalOptions="EndAndExpand" />
+                                    <Label Text="{Binding AwaySecondPlayer}" IsVisible="{Binding Converter={StaticResource SecondPlayerVisibilityConverter}}" TextColor="Gray" HorizontalOptions="EndAndExpand" />
+                                </StackLayout>
+                                <Label Grid.Column="1" Text="{Binding EventName}" BackgroundColor="DarkGreen" TextColor="White" HorizontalTextAlignment="Center" Padding="3" />
+                                <StackLayout Grid.Column="2" Padding="5,0,0,0" Orientation="Horizontal" IsVisible="{Binding Converter={StaticResource MatchResultVisible}}" >
+                                    <Label Text="{Binding HomeTeamScore}" FontFamily="{StaticResource BoldFont}" TextColor="White"  />
+                                    <Label Text=":" FontFamily="{StaticResource BoldFont}" TextColor="White" />
+                                    <Label Text="{Binding AwayTeamScore}" FontFamily="{StaticResource BoldFont}" TextColor="White"  />
+                                </StackLayout>
+                                <Label Grid.Column="3" Padding="5,0,0,0" Text="{Binding EventMinute}" FontFamily="{StaticResource BoldFont}" TextColor="DarkKhaki" />
+                            </Grid>
+
+                            <Grid Grid.Column="2" Opacity="0.9" Padding="1" VerticalOptions="Center" BackgroundColor="DarkKhaki" >
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="Edit_Event_Tapped" CommandParameter="{Binding}" NumberOfTapsRequired="1" />
+                                </Grid.GestureRecognizers>
+                                <Label Text="Edit" BackgroundColor="#222222" FontFamily="{StaticResource NormalFont}" TextColor="DarkKhaki" HorizontalOptions="FillAndExpand" Padding="2,7" />
+                            </Grid>
+
+                            <BoxView Grid.Row="1" Grid.ColumnSpan="3" BackgroundColor="DarkGray" HeightRequest="1" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</ContentView>

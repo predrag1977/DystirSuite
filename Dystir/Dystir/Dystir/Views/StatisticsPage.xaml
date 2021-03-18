@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:Dystir.Converter"
+             xmlns:properties="clr-namespace:Dystir.Properties"
+             xmlns:local="clr-namespace:Dystir.Views"
+             x:Class="Dystir.Views.StatisticsPage"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true"
+             NavigationPage.HasNavigationBar="False"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms" >
+
+    <ContentView.Resources>
+        <converter:LanguageConverter x:Key="LanguageConverter" />
+        <converter:LanguageToVisibleConverter x:Key="LanguageToVisibleConverter" />
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <converter:ItemsCountToBooleanConverter x:Key="ItemsCountToBooleanConverter" />
+
+        <Style TargetType="Label">
+            <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+            <Setter Property="VerticalOptions" Value="FillAndExpand" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+            <Setter Property="VerticalTextAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="{StaticResource NormalFont}" />
+        </Style>
+    </ContentView.Resources>
+
+    <Grid BindingContext="{Binding}" VerticalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,5,0,0" >
+            <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never" HorizontalOptions="CenterAndExpand" >
+                <StackLayout x:Name="StatisticsCompetitionsMenuView" Spacing="3" Orientation="Horizontal" BindingContext="{Binding StatisticCompetitions}" BindingContextChanged="StatisticsCompetitionsMenuView_BindingContextChanged"/>
+            </ScrollView>
+        </Grid>
+
+        <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="DarkKhaki" Margin="0,3,0,0" />
+
+        <Grid Grid.Row="2" Margin="0,6,0,2" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=TopScorers}" TextColor="DarkKhaki" />
+            <Label Grid.Column="1" Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=Assists}" TextColor="DarkKhaki" />
+            <BoxView Grid.Row="1" Grid.ColumnSpan="2" BackgroundColor="DarkKhaki" HeightRequest="1" Margin="0,3" />
+        </Grid>
+
+
+        <CollectionView SelectionMode="None" Grid.Row="3"
+              BackgroundColor="Transparent"
+              VerticalScrollBarVisibility="Never"
+              ItemsSource="{Binding SelectedCompetitionStatistics}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid HorizontalOptions="FillAndExpand">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0" BindingContext="{Binding FirstPlayer}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="25" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" Grid.RowSpan="2" Text="{Binding NumberOrder}" TextColor="Gray" />
+                            <Label Grid.Column="1" Text="{Binding FirstName}" HorizontalOptions="StartAndExpand" HorizontalTextAlignment="Start" />
+                            <Label Grid.Column="2" Grid.RowSpan="2" Text="{Binding Goal}" TextColor="DarkKhaki"/>
+                            <Label Grid.Column="1" Grid.Row="1" Text="{Binding TeamName}" HorizontalOptions="StartAndExpand" HorizontalTextAlignment="Start" TextColor="Gray" />
+                            <BoxView Grid.Row="2" Grid.ColumnSpan="3" BackgroundColor="DimGray" HeightRequest="1" Margin="0,3" />
+                        </Grid>
+                        <Grid Grid.Column="1" BindingContext="{Binding SecondPlayer}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="25" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Label Grid.Column="0" Grid.RowSpan="2" Text="{Binding NumberOrder}" TextColor="Gray" />
+                            <Label Grid.Column="1" Text="{Binding FirstName}" HorizontalOptions="StartAndExpand" HorizontalTextAlignment="Start" />
+                            <Label Grid.Column="2" Grid.RowSpan="2" Text="{Binding Assist}" TextColor="DarkKhaki"/>
+                            <Label Grid.Column="1" Grid.Row="1" Text="{Binding TeamName}" HorizontalOptions="StartAndExpand" HorizontalTextAlignment="Start" TextColor="Gray" />
+                            <BoxView Grid.Row="2" Grid.ColumnSpan="3" BackgroundColor="DimGray" HeightRequest="1" Margin="0,3" />
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentView>

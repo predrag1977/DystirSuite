@@ -1,0 +1,28 @@
+﻿@{
+    List<string> TabsList()
+    {
+        List<string> tabs = new List<string>();
+        tabs.Add("Úrtak");
+        tabs.Add("Fyrstu 11");
+        tabs.Add("Eyka");
+        tabs.Add("Hendingar");
+        tabs.Add("Hagtøl");
+        return tabs;
+    }
+}
+
+<table class="table" style="font-size:0.9em;font-weight:bold;margin:2px 0">
+    <tbody class="tab-match-details">
+        <tr>
+            @for (int i = 0; i < TabsList().Count; i++)
+            {
+                <td class="selected_tab">
+                    <div class="selected_tab-layout" onclick="showSelectedTab(@(i + 1));" >
+                        @TabsList()[i]
+                    </div>
+                </td>
+            }
+        </tr>
+    </tbody>
+</table>
+

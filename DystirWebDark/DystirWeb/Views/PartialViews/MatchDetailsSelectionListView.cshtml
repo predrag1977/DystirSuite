@@ -1,0 +1,67 @@
+﻿@using DystirWeb.ModelViews
+@model FullMatchDetailsModelView
+
+<div id="matches-list-view" style="overflow:auto; margin-bottom:2px">
+    <table style="font-size:9px;font-weight:bold;">
+        <tbody>
+            <tr>
+                @foreach (Matches match in Model.MatchesListSelection)
+                {
+                    <td style="padding:0">
+                        <div class="selection_matches" onclick="getMatchDetails('@match.MatchId', '@((match.HomeTeam+" - "+match.AwayTeam))');">
+                            <table class="table" style="width:120px;">
+                                <tr>
+                                    <td style="text-align:right">
+                                        <span class="match_time" id="@("match-in-header-time" + match.MatchId)" />
+                                        <script>calculateMatchTime(@(match.StatusId), $("#match-in-header-time" +@match.MatchId), @((match.StatusTime.Value - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds), @((match.Time.Value - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds))</script>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="table" style="width:120px;">
+                                <tr>
+                                    <td style="padding:1px 3px;text-align:left;">
+                                        @((match.HomeTeam + " " + match.HomeCategoriesName + " " + match.HomeSquadName).Trim())
+                                    </td>
+
+                                    <td style="width:20px;padding:1px 3px;text-align:right;">
+                                        @if (match.StatusId > 1)
+                                        {
+                                            @(match.HomeTeamScore);
+                                        }
+                                        else
+                                        {
+                                            @('-')
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="table" style="width:120px">
+                                <tr>
+                                    <td style="padding:1px 3px;text-align:left;">
+                                        @((match.AwayTeam + " " + match.AwayCategoriesName + " " + match.AwaySquadName).Trim())
+                                    </td>
+                                    <td style="width:20px;padding:1px 3px;text-align:right;">
+                                        @if (match.StatusId > 1)
+                                        {
+                                            @(match.AwayTeamScore)
+                                        }
+                                        else
+                                        {
+                                            @('-')
+                                        }
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                }
+                @if (Model != null && Model.MatchesListSelection.Count > 0)
+                {
+                    <td style="padding:0;width:100%;">
+                        <div class="selection_matches_empty_space"></div>
+                    </td>
+                }
+            </tr>
+        </tbody>
+    </table>
+</div>

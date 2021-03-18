@@ -1,0 +1,141 @@
+﻿@page "/"
+
+@using DystirWeb.Models
+@using DystirWeb.Services
+@using System.Collections.ObjectModel 
+@inject NavigationManager NavigationManager
+@inject Blazored.Localisation.Services.IBrowserDateTimeProvider BrowserDateTimeProvider
+@layout MainFootballLayout
+@implements IDisposable
+
+
+<div class="container-fluid d-flex h-100 flex-column p-0">
+    <div class="row">
+        <ChooseDays DaysOnClick="@DaysOnClick" TimeZoneOffset="@timeZoneOffset" />
+    </div>
+    <div class="row flex-fill d-flex justify-content-start">
+        <div class="col">
+            @if (isLoading)
+            {
+                <div style="position:relative; width:100%;height:100%;">
+                    <img src="images/icons/loadingicon.gif" style="position:absolute; width:3rem;top:calc(50% - 1.5rem);left:calc(50% - 1.5rem);" />
+                </div>
+            }
+            else
+            {
+                <div class="matches_container">
+                    @if (SelectedMatchListGroup == null || SelectedMatchListGroup?.Count == 0)
+                    {
+                        <div class="no-matches">Eingin dystur</div>
+                    }
+                    else
+                    {
+                        @foreach (var matchgroup in SelectedMatchListGroup)
+                        {
+                            <div class="match-group-competition-name">@(matchgroup.Key)</div>
+                            @foreach (var match in matchgroup)
+                            {
+                                @if (match.StatusId <= 12)
+                                {
+                                    <NavLink class="nav-link" style="cursor: pointer;" href="@("football/matchdetails/" + match.MatchId)">
+                                        <Match MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
+                                    </NavLink>
+                                }
+                                else
+                                {
+                                    <Match MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
+                                }
+                            }
+                        }
+                    }
+                    <NewsView />
+                    <SponsorsView ShowOnSideBar="false" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@code {
+    private int _daysFrom = 0;
+    private int _dayAfter = 0;
+    private List<IGrouping<string, Matches>> SelectedMatchListGroup;
+    private int timeZoneOffset = 0;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        DystirService.OnLoadData += LoadData;
+        DystirService.OnUpdateData += UpdateData;
+        DystirService.TimerService.OnTimerElapsed += TimerElapsed;
+        await Task.CompletedTask;
+    }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var browserDateTime = await BrowserDateTimeProvider.GetInstance();
+            int serverTimeZoneHours = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
+            int clientTimeZoneHours = browserDateTime.LocalTimeZoneInfo.BaseUtcOffset.Hours;
+            timeZoneOffset = clientTimeZoneHours - serverTimeZoneHours;
+            await GetSelectedMatchListGroup();
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        DystirService.OnLoadData -= LoadData;
+        DystirService.OnUpdateData -= UpdateData;
+        DystirService.TimerService.OnTimerElapsed -= TimerElapsed;
+    }
+
+    private async void LoadData(object sender, EventArgs arg)
+    {
+        await GetSelectedMatchListGroup();
+        Refresh();
+    }
+
+    private async void UpdateData(object sender, string matchDetailsJson)
+    {
+        await GetSelectedMatchListGroup();
+        Refresh();
+    }
+
+    private void TimerElapsed(object sender, EventArgs e)
+    {
+        Refresh();
+    }
+
+    private void Refresh()
+    {
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    public string GetMatchDetailsInfo(Matches match)
+    {
+        string matchDetailsInfo = (match.HomeTeam + "-" + match.AwayTeam)
+            .Replace(" ", "").Replace("/", "").Replace(".", "");
+        return matchDetailsInfo;
+    }
+
+    private void DaysOnClick(int[] parameters)
+    {
+        _daysFrom = parameters[0];
+        _dayAfter = parameters[1];
+        isLoading = true;
+        _ = GetSelectedMatchListGroup();
+    }
+
+    public async Task GetSelectedMatchListGroup()
+    {
+        await Task.Run(() => { 
+            var fromDate = DateTime.UtcNow.AddHours(timeZoneOffset).Date.AddDays(_daysFrom);
+            var toDate = fromDate.AddDays(_dayAfter);
+            SelectedMatchListGroup = DystirService.AllMatches?.OrderBy(x => x.MatchTypeId).ThenBy(x => x.Time).ThenBy(x => x.MatchId)
+            .Where(x => x.Time.Value.ToLocalTime().Date >= fromDate
+            && x.Time.Value.ToLocalTime().Date <= toDate).GroupBy(x => x.MatchTypeName).ToList() ?? new List<IGrouping<string, Matches>>();
+        });
+        isLoading = false;
+    }
+}

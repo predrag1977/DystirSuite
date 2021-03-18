@@ -1,0 +1,192 @@
+﻿@using ModelViews
+
+<table class="summary_main_table table">
+    <tbody>
+        <tr>
+            <td style="padding:0">
+                @foreach (SummaryEventOfMatch summaryEventOfMatch in SummaryEventsOfMatch?.Where(x => x.EventName.ToUpper() != "ASSIST") ?? new List<SummaryEventOfMatch>())
+                {
+                    <div class="event-list-item" style="padding:0px 10px">
+                        @if (!string.IsNullOrWhiteSpace(summaryEventOfMatch.HomeTeam))
+                        {
+                            <table style="height:40px;text-align:left">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="event_time">
+                                                @summaryEventOfMatch.EventMinute
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @if ((summaryEventOfMatch.EventName == "GOAL"))
+                                            {
+                                                <div style="font-weight:bold;padding:0 7px">
+                                                    <span style="background-color:darkgreen;padding:2px">&#9917;</span>
+                                                    <span class="goal" style="padding:0 0 0 7px">Mál</span>
+                                                </div>
+                                            }
+                                            else if ((summaryEventOfMatch.EventName == "OWNGOAL"))
+                                            {
+                                                <div style="font-weight:bold;padding:0 7px">
+                                                    <span style="background-color:darkred;padding:2px">&#9917;</span>
+                                                    <span class="goal" style="padding:0 0 0 7px">Sjálvmál</span>
+                                                </div>
+                                            }
+                                            else if ((summaryEventOfMatch.EventName == "PENALTYSCORED"))
+                                            {
+                                                <div style="font-weight:bold;padding:0 7px">
+                                                    <span style="background-color:darkgreen;padding:2px">&#9917;</span>
+                                                    <span class="goal" style="padding:0 0 0 7px">Brotsspark skora</span>
+                                                </div>
+                                            }
+                                            else if ((summaryEventOfMatch.EventName == "PENALTYMISSED"))
+                                            {
+                                                <div style="padding:0 7px">
+                                                    <span class="penalty_missed" style="padding:0 0 0 3px;">Brotsspark brent</span>
+                                                </div>
+                                            }
+                                            else if (summaryEventOfMatch.EventName == "BIGCHANCE")
+                                            {
+                                                <div style="padding:0 7px">
+                                                    <span class="big_chance" style="padding:0 0 0 3px;">Stórur møguleiki</span>
+                                                </div>
+                                            }
+                                            else if ((summaryEventOfMatch.EventName == "YELLOW"))
+                                            {
+                                                <div class="yellow_card">0</div>
+                                            }
+                                            else if ((summaryEventOfMatch.EventName == "RED"))
+                                            {
+                                                <div class="red_card">0</div>
+                                            }
+                                        </td>
+                                        @if (summaryEventOfMatch.EventName == "GOAL" || summaryEventOfMatch.EventName == "OWNGOAL" || summaryEventOfMatch.EventName == "PENALTYSCORED")
+                                        {
+                                            <td style="padding:0 7px 0 0">
+                                                <div class="score">
+                                                    @summaryEventOfMatch.HomeTeamScore:@summaryEventOfMatch.AwayTeamScore
+                                                </div>
+                                            </td>
+                                        }
+                                        <td>
+                                            @if (summaryEventOfMatch.EventName == "GOAL")
+                                            {
+                                                <div class="main_player">@(summaryEventOfMatch.HomeMainPlayer)</div>
+                                                if (!string.IsNullOrWhiteSpace(summaryEventOfMatch.HomeSecondPlayer))
+                                                {
+                                                    <div class="second_player">@(summaryEventOfMatch.HomeSecondPlayer)</div>
+                                                }
+                                            }
+                                            else if (summaryEventOfMatch.EventName == "OWNGOAL")
+                                            {
+                                                <div class="owngoal_player">@(summaryEventOfMatch.HomeMainPlayer)</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="main_player">@(summaryEventOfMatch.HomeMainPlayer)</div>
+                                                <div class="second_player">@(summaryEventOfMatch.HomeSecondPlayer)</div>
+                                            }
+                                        </td>
+                                        <td style="width:100%"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(summaryEventOfMatch.AwayTeam))
+                        {
+                            <table style="height:40px;text-align:right">
+                                <tbody>
+                                    <tr>
+                                        <td style="width:100%"></td>
+                                        <td>
+                                            @if (summaryEventOfMatch.EventName == "GOAL")
+                                            {
+                                                <div class="main_player">@(summaryEventOfMatch.AwayMainPlayer)</div>
+                                                if (!string.IsNullOrWhiteSpace(summaryEventOfMatch.AwaySecondPlayer))
+                                                {
+                                                    <div class="second_player">@(summaryEventOfMatch.AwaySecondPlayer)</div>
+                                                }
+                                            }
+                                            else if (summaryEventOfMatch.EventName == "OWNGOAL")
+                                            {
+                                                <div class="owngoal_player">@(summaryEventOfMatch.AwayMainPlayer)</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="main_player">@(summaryEventOfMatch.AwayMainPlayer)</div>
+                                                <div class="second_player">@(summaryEventOfMatch.AwaySecondPlayer)</div>
+                                            }
+                                        </td>
+                                        @if (summaryEventOfMatch.EventName == "GOAL" || summaryEventOfMatch.EventName == "OWNGOAL" || summaryEventOfMatch.EventName == "PENALTYSCORED")
+                                        {
+                                            <td style="padding:0 0 0 7px">
+                                                <div class="score">
+                                                    @summaryEventOfMatch.HomeTeamScore:@summaryEventOfMatch.AwayTeamScore
+                                                </div>
+                                            </td>
+
+                                        }
+                                        <td>
+                                            @if ((summaryEventOfMatch.EventName == "GOAL"))
+                                            {
+                                                <div style="font-weight:bold; padding:0px 7px">
+                                                    <span class="goal" style="padding:0px 7px 0 0">Mál</span>
+                                                    <span style="background-color:darkgreen;padding:2px">&#9917;</span>
+                                                </div>
+                                            }
+                                            else if ((summaryEventOfMatch.EventName == "OWNGOAL"))
+                                            {
+                                                <div style="font-weight:bold; padding:0 7px">
+                                                    <span class="goal" style="padding:0 7px 0 0">Sjálvmál</span>
+                                                    <span style="background-color:darkred;padding:2px">&#9917;</span>
+                                                </div>
+                                            }
+                                            else if ((summaryEventOfMatch.EventName == "PENALTYSCORED"))
+                                            {
+                                                <div style="font-weight:bold; padding:0 7px">
+                                                    <span class="goal" style="padding:0 7px 0 0">Brotsspark skora</span>
+                                                    <span style="background-color:darkgreen;padding:2px">&#9917;</span>
+                                                </div>
+                                            }
+                                            else if ((summaryEventOfMatch.EventName == "PENALTYMISSED"))
+                                            {
+                                                <div style="padding:0 7px">
+                                                    <span class="penalty_missed" style="padding:0 3px 0 0;">Brotsspark brent</span>
+                                                </div>
+                                            }
+                                            else if (summaryEventOfMatch.EventName == "BIGCHANCE")
+                                            {
+                                                <div style="padding:0 7px">
+                                                    <span class="big_chance" style="padding:0 3px 0 0;">Stórur møguleiki</span>
+                                                </div>
+                                            }
+                                            else if ((summaryEventOfMatch.EventName == "YELLOW"))
+                                            {
+                                                <div class="yellow_card">0</div>
+                                            }
+                                            else if ((summaryEventOfMatch.EventName == "RED"))
+                                            {
+                                                <div class="red_card">0</div>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="event_time">
+                                                @summaryEventOfMatch.EventMinute
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                }
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public List<SummaryEventOfMatch> SummaryEventsOfMatch { get; set; }
+}

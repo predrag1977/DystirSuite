@@ -1,0 +1,71 @@
+﻿@using DystirWeb.Services
+@using DystirWeb.Models
+@inject DystirService DystirService
+@inherits MatchBase
+
+<div class="match_item @(BorderStyle())">
+    <div class="match_info">
+        <span>@HandballMatchItem.Time?.ToLocalTime().ToString("ddd dd.MM. HH:mm")</span>
+        <span>@(string.IsNullOrWhiteSpace(HandballMatchItem.RoundName) ? "" : " - ")</span>
+        <span>@HandballMatchItem.RoundName</span>
+        <span>@(string.IsNullOrWhiteSpace(HandballMatchItem.Location) ? "" : " - ")</span>
+        <span>@HandballMatchItem.Location</span>
+    </div>
+    <table class="table">
+        <tr class="match_item_teams_name">
+            <td style="text-align:right;padding:0">
+                <img src="team_logos/@(GetTeamLogo(HandballMatchItem.HomeTeam, DystirService.AllTeams))" onerror="this.src='team_logos/empty.png'" height="30" />
+                <span>@((HandballMatchItem.HomeTeam + " " + HandballMatchItem.HomeSquadName + " " + HandballMatchItem.HomeCategoriesName).Trim())</span>
+            </td>
+            <td style="text-align:center;width:20px;padding:0 3px;">-</td>
+            <td style="text-align:left;padding:0">
+                <span>@((HandballMatchItem.AwayTeam + " " + HandballMatchItem.AwaySquadName + " " + HandballMatchItem.AwayCategoriesName).Trim())</span>
+                <img src="team_logos/@(GetTeamLogo(HandballMatchItem.AwayTeam, DystirService.AllTeams))" onerror="this.src='team_logos/empty.png'" height="30" />
+            </td>
+        </tr>
+    </table>
+    <table class="table">
+        <tr class="match_item_text_color">
+            @if (HandballMatchItem.StatusId < 14)
+            {
+                <td style="text-align:left;">
+                    <span class="match_time" style="color:@GetStatusColor(HandballMatchItem.StatusId)">@GetMatchTime(HandballMatchItem.StatusTime, HandballMatchItem.Time, HandballMatchItem.StatusId)</span>
+                </td>
+                @if (HandballMatchItem.StatusId > 1)
+                {
+                    <td style="text-align:right;padding:0 5px">
+                        @(HandballMatchItem.HomeTeamScore)
+                    </td>
+                    <td style="text-align:center;width:20px;padding:0 5px">:</td>
+                    <td style="text-align:left;padding:0 5px">
+                        @(HandballMatchItem.AwayTeamScore)
+                    </td>
+                }
+                else
+                {
+                    <td style="text-align:center;padding:0 5px"> - : - </td>
+                }
+                <td style="text-align:right;">
+                    @if (HandballMatchItem.StatusId < 13 && ShowMore)
+                    {
+                        <span>Vís meira &#10095;</span>
+                    }
+                </td>
+            }
+        </tr>
+    </table>
+</div>
+
+@code {
+
+    [Parameter]
+    public bool ShowMore { get; set; }
+
+    [Parameter]
+    public HandballMatches HandballMatchItem { get; set; }
+
+    string BorderStyle()
+    {
+        return ShowMore ? "match_item_border" : "";
+    }
+}

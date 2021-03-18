@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Dystir.App">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <OnPlatform x:TypeArguments="x:String" x:Key="BoldFont">
+                <On Platform="Android" Value="Fonts/OpenSans-Bold.ttf#Open Sans" />
+                <On Platform="UWP" Value="/Assets/Fonts/OpenSans-Bold.ttf#Open Sans" />
+                <On Platform="iOS" Value="OpenSans-Bold" />
+            </OnPlatform>
+            <OnPlatform x:TypeArguments="x:String" x:Key="NormalFont">
+                <On Platform="Android" Value="Fonts/OpenSans-Regular.ttf#Open Sans" />
+                <On Platform="UWP" Value="/Assets/Fonts/OpenSans-Regular.ttf#Open Sans" />
+                <On Platform="iOS" Value="OpenSans-Regular" />
+            </OnPlatform>
+            <!--Global Styles-->
+            <Color x:Key="NavigationPrimary">#222222</Color>
+            <Color x:Key="BackgroundPageColor">#222222</Color>
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="#222222" />
+                <Setter Property="BarTextColor" Value="White" />
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="LineBreakMode" Value="TailTruncation"/>
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontFamily" Value="{StaticResource NormalFont}" />
+            </Style>
+            <Style TargetType="Grid">
+                <Setter Property="RowSpacing" Value="0" />
+            </Style>
+            <Style TargetType="StackLayout">
+                <Setter Property="Spacing" Value="0" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+    
+    
+</Application>

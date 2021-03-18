@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:Dystir.Converter"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:properties="clr-namespace:Dystir.Properties"
+             xmlns:local="clr-namespace:Dystir.Views"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="Dystir.Views.FixturesPage">
+
+    <ContentView.Resources>
+        <converter:LanguageConverter x:Key="LanguageConverter" />
+        <converter:LanguageToVisibleConverter x:Key="LanguageToVisibleConverter" />
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    </ContentView.Resources>
+
+    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,5,0,3" >
+            <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never" HorizontalOptions="CenterAndExpand" >
+                <StackLayout x:Name="FixturesCompetitionsMenuView" Spacing="3" Orientation="Horizontal" BindingContext="{Binding FixturesCompetitions}" BindingContextChanged="FixturesCompetitionsMenuView_BindingContextChanged"/>
+            </ScrollView>
+        </Grid>
+
+        <ListView x:Name="MatchesListView" Grid.Row="2"
+            SelectionMode="None" HasUnevenRows="True"
+            CachingStrategy="RecycleElement"
+            SeparatorVisibility="None"
+            BackgroundColor="Transparent"
+            IsGroupingEnabled="True"
+            VerticalOptions="FillAndExpand"
+            ItemsSource="{Binding FixturesGroupList}"
+            Footer="">
+            <ListView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid BackgroundColor="#2F4F2F" Padding="6" Margin="0,2,0,0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
+                            <Label Text="{Binding Key}" FontSize="12" TextColor="White" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.GroupHeaderTemplate>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <local:MatchViewResultsAndFixtures />
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</ContentView>

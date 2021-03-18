@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DystirXamarin.Views.ResultPage"
+             BackgroundColor="{StaticResource LightBackgroundColor}"
+             Title="Pick match result">
+    <ContentPage.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="Margin" Value="5,0" />
+            <Setter Property="BorderWidth" Value="2" />
+            <Setter Property="BorderColor" Value="Goldenrod" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems >
+        <ToolbarItem Name="OK" Order="Primary" Text="OK" Clicked="OK_Tapped" />
+    </ContentPage.ToolbarItems>
+    <StackLayout HorizontalOptions="Center" VerticalOptions="Start">
+        <Label x:Name="TimeLabel" Margin="0,0,0,15" />
+        <Grid HorizontalOptions="Center" VerticalOptions="Center" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="60"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="45" />
+            </Grid.RowDefinitions>
+
+            <Button Grid.Column="0" Grid.Row="2" Text="-" Clicked="HomeScoreDown_Tapped"   />
+            <Label x:Name="HomeScore" WidthRequest="40" HorizontalTextAlignment="Center" Grid.Column="0" Grid.Row="1"  BackgroundColor="Transparent" Text="{Binding TotalHomeScore}" />
+            <Button Grid.Column="0" Grid.Row="0" Text="+" Clicked="HomeScoreUp_Tapped"  />
+
+            <Label Grid.Column="1" Grid.Row="1" BackgroundColor="Transparent" Text=":" />
+
+            <Button Grid.Column="2" Grid.Row="2" Text="-" Clicked="AwayScoreDown_Tapped" />
+            <Label x:Name="AwayScore" WidthRequest="40" HorizontalTextAlignment="Center" Grid.Column="2" Grid.Row="1" BackgroundColor="Transparent" Text="{Binding TotalAwayScore}" />
+            <Button  Grid.Column="2" Grid.Row="0" Text="+" Clicked="AwayScoreUp_Tapped" />
+        </Grid>
+    </StackLayout>
+</ContentPage>

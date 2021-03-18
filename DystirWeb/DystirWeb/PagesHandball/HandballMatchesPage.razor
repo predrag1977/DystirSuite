@@ -1,0 +1,122 @@
+﻿@page "/handball/matches"
+
+@using DystirWeb.Models
+@using DystirWeb.Services
+@using System.Timers
+@inject NavigationManager NavigationManager
+@layout MainHandballLayout
+@implements IDisposable
+
+<div class="container-fluid d-flex h-100 flex-column p-0">
+    <div class="row">
+        @*<ChooseDays DaysOnClick="@DaysOnClick" />*@
+    </div>
+    <div class="row flex-fill d-flex justify-content-start">
+        <div class="col">
+            <div class="matches_container">
+                <div>
+                    @foreach (var matchgroup in SelectedHandballMatchListGroup)
+                    {
+                        <div class="match-group-competition-name">@(matchgroup.Key)</div>
+                        @foreach (var handballMatch in matchgroup)
+                        {
+                            @if (handballMatch.StatusId <= 12)
+                            {
+                                <NavLink class="nav-link" style="cursor: pointer;" href="@("handball/matchdetails/" + handballMatch.HandballMatchId)">
+                                    <HandballMatch HandballMatchItem="@handballMatch" ShowMore="@(true)" />
+                                </NavLink>
+                            }
+                            else
+                            {
+                                <HandballMatch HandballMatchItem="@handballMatch" ShowMore="@(true)" />
+                            }
+                        }
+                    }
+                    @if (SelectedHandballMatchListGroup.Count == 0)
+                    {
+                        <div class="no-matches">Eingin dystur</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int _daysFrom = 0;
+    private int _dayAfter = 0;
+    private List<IGrouping<string, HandballMatches>> SelectedHandballMatchListGroup;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetSelectedMatchListGroup();
+        DystirService.OnLoadData += LoadData;
+        DystirService.OnUpdateData += UpdateData;
+        DystirService.OnConnectDystirHub += ConnectDystirHub;
+    }
+
+    void IDisposable.Dispose()
+    {
+        DystirService.OnLoadData -= LoadData;
+        DystirService.OnUpdateData -= UpdateData;
+        DystirService.OnConnectDystirHub -= ConnectDystirHub;
+    }
+
+    private void LoadData(object sender, EventArgs arg)
+    {
+        Refresh();
+    }
+
+    private void UpdateData(object sender, string matchDetailsJson)
+    {
+        Refresh();
+    }
+
+    private void ConnectDystirHub(object sender, EventArgs arg)
+    {
+
+    }
+
+    private void Refresh()
+    {
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    private void StartCountdown()
+    {
+        Timer timer = new Timer(1000);
+        timer.Elapsed += Timer_Elapsed;
+        timer.Start();
+    }
+
+    private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+    {
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    public string GetMatchDetailsInfo(Matches match)
+    {
+        string matchDetailsInfo = (match.HomeTeam + "-" + match.AwayTeam)
+            .Replace(" ", "").Replace("/", "").Replace(".", "");
+        return matchDetailsInfo;
+    }
+
+    private async Task DaysOnClick(int[] parameters)
+    {
+        _daysFrom = parameters[0];
+        _dayAfter = parameters[1];
+        await GetSelectedMatchListGroup();
+    }
+
+    public async Task GetSelectedMatchListGroup()
+    {
+        var fromDate = DateTime.Today.ToLocalTime().AddDays(_daysFrom);
+        var toDate = fromDate.AddDays(_dayAfter);
+        SelectedHandballMatchListGroup = DystirService.AllHandballMatches?
+            .OrderBy(x => x.MatchTypeId).ThenBy(x => x.Time)
+            //.Where(x => x.Time.Value.Date.ToLocalTime().Date >= fromDate
+            //&& x.Time.Value.Date.ToLocalTime().Date <= toDate)
+            .GroupBy(x => x.MatchTypeName).ToList() ?? new List<IGrouping<string, HandballMatches>>();
+        await Task.CompletedTask;
+    }
+}

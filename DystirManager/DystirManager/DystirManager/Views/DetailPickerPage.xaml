@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DystirManager.Views.DetailPickerPage"
+             xmlns:converter="clr-namespace:DystirManager.Converter"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="DimGray"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontFamily" Value="{StaticResource NormalFont}"/>
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="HeightRequest" Value="28" />
+        </Style>
+        <converter:LanguageConverter x:Key="LanguageConverter" />
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid RowSpacing="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <ff:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="Fill" Source="resource://DystirManager.Images.background.png" />
+        </Grid>
+        <Grid Margin="5,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <Grid RowSpacing="0" Grid.Row="0" BackgroundColor="#2F4F2F" Opacity="0.9" Padding="5,13">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="80" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Back_Tapped" NumberOfTapsRequired="1" />
+                    </Grid.GestureRecognizers>
+                    <Label Text="{Binding Converter={StaticResource LanguageConverter}, ConverterParameter=BackButtonText}" TextColor="White" FontSize="16" />
+                </Grid>
+                <Grid Grid.Column="1">
+                    <Label x:Name="TitleLabel" FontSize="16" FontFamily="{StaticResource BoldFont}" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" />
+                </Grid>
+                <Grid Grid.Column="2">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OK_Tapped" NumberOfTapsRequired="1" />
+                    </Grid.GestureRecognizers>
+                    <Label Text="OK" TextColor="White"  />
+                </Grid>
+            </Grid>
+            
+            <Entry x:Name="ValueEntry" Grid.Row="1" FontFamily="{StaticResource NormalFont}" FontSize="20" Margin="0,10" BackgroundColor="DarkGray" Opacity="0.9" HorizontalTextAlignment="Center" TextColor="Black" Text="{Binding SelectedValue}" />
+
+            <ListView Grid.Row="2" x:Name="DetailsMatchListView"
+			      ItemsSource="{Binding DetailList}"
+                  VerticalOptions="FillAndExpand"
+                  HasUnevenRows="true"
+                  CachingStrategy="RecycleElementAndDataTemplate"
+                  ItemSelected="DetailsMatchListView_ItemSelected"
+                  SeparatorVisibility="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ContentView Padding="0,3" BackgroundColor="Transparent" Opacity="0.9">
+                                <StackLayout BackgroundColor="DimGray">
+                                    <ContentView Padding="1" BackgroundColor="DimGray" HorizontalOptions="Fill">
+                                        <StackLayout BackgroundColor="DimGray" Padding="5,10">
+                                            <Label Text="{Binding}" />
+                                        </StackLayout>
+                                    </ContentView>
+                                </StackLayout>
+                                <ContentView.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="DetailsItem_Tapped" CommandParameter="{Binding}" NumberOfTapsRequired="1" />
+                                </ContentView.GestureRecognizers>
+                            </ContentView>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</ContentPage>

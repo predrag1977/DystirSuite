@@ -1,0 +1,24 @@
+﻿@model IEnumerable<IGrouping<string, Matches>>
+
+@{
+    ViewData["Title"] = "Úrslit";
+    ViewData["PageIndex"] = 1;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section HeaderContent {
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-170595956-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-170595956-1', { cookie_flags: 'SameSite=None;Secure' });
+    </script>
+    <!-- End Google Analytics -->
+    <link href="~/css/site.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    <script src="~/js/dystir_script.js?version=1.0.2"></script>
+}

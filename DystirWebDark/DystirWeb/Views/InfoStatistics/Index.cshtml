@@ -1,0 +1,24 @@
+﻿@using DystirWeb.ModelViews
+@model IEnumerable<CompetitionStatistic>
+
+@{
+    ViewData["PageIndex"] = 7;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section HeaderContent {
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-133739157-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-133739157-1', { cookie_flags: 'SameSite=None;Secure' });
+    </script>
+    <!-- End Google Analytics -->
+    <link href="~/css/info_site.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    <script src="~/js/info_script.js?version=1.0.1"></script>
+}

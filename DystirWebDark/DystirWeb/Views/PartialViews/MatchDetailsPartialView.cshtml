@@ -1,0 +1,121 @@
+﻿@using DystirWeb.ModelViews
+@model FullMatchDetailsModelView
+
+@section Scripts {
+}
+
+    <table class="table" style="width:100%;height:100%;">
+        <tr>
+            <td id="matches-list-details" style="position:relative;width:100%;padding:0;">
+                <partial name="~/Views/PartialViews/MatchDetailsSelectionListView.cshtml" model="@Model" />
+            </td>
+        </tr>
+        <tr id="selected_match_header">
+            <td style="text-align:center;padding:0;">
+                <table class="table">
+                    <tr class="match_info">
+                        <td colspan="5" style="padding:0 5px;text-align:left">
+                            <span id="@("full-date-time" + Model.MatchDetails.Match.MatchId)"></span>
+                            <span> - </span>
+                            <span>@Model.MatchDetails.Match.RoundName - </span>
+                            <span>@Model.MatchDetails.Match.Location</span>
+                            <script>convertToLocalTime("@("full-date-time" + Model.MatchDetails.Match.MatchId)","@(Model.MatchDetails.Match.Time?.ToString("dd.MM.yyyy HH:mm"))")</script>
+                        </td>
+                    </tr>
+                </table>
+                <table id="selected_match_teams" class="table">
+                    <tr>
+                        <td style="text-align:right;padding:0;">@((Model.MatchDetails.Match.HomeTeam + " " + Model.MatchDetails.Match.HomeCategoriesName + " " + Model.MatchDetails.Match.HomeSquadName).Trim())</td>
+                        <td style="width:20px;padding:0"> - </td>
+                        <td style="text-align:left;padding:0;">@((Model.MatchDetails.Match.AwayTeam + " " + Model.MatchDetails.Match.AwayCategoriesName + " " + Model.MatchDetails.Match.AwaySquadName).Trim())</td>
+                    </tr>
+                </table>
+                @if (Model.MatchDetails.Match.StatusId < 14)
+                {
+                    <table class="table">
+                        <tbody>
+                            <tr class="match_item_text_color">
+                                <td style="text-align:left;padding:3px 8px 5px 8px">
+                                    <span class="match_time" id="@("match-time" + Model.MatchDetails.Match.MatchId)">00:00</span>
+                                    <script>calculateMatchTime(@(Model.MatchDetails.Match.StatusId), $("#match-time" +@Model.MatchDetails.Match.MatchId), @((Model.MatchDetails.Match.StatusTime.Value - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds), @((Model.MatchDetails.Match.Time.Value - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds))</script>
+                                </td>
+                                @if (Model.MatchDetails.Match.StatusId > 1)
+                                {
+                                    <td style="text-align:right;padding:0 5px">
+                                        @(Model.MatchDetails.Match.HomeTeamScore)
+                                    </td>
+                                    <td style="text-align:center;width:20px;padding:0 5px">:</td>
+                                    <td style="text-align:left;padding:0 5px">
+                                        @(Model.MatchDetails.Match.AwayTeamScore)
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td style="text-align:center;padding:0 5px">- : -</td>
+                                }
+                                <td style="text-align:right;padding:0 8px;" />
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:0;">
+                <partial name="~/Views/PartialViews/SelectionTabsMatchDetailsView.cshtml" />
+            </td>
+        </tr>
+        <tr>
+            <td style="position:relative;width:100%;height:100%;padding:0;">
+                <div id="match_details_view" class="matches-view">
+                    <table class="table" style="color:white">
+                        <tbody class="details-tab">
+                            @*SUMMARY*@
+                            <tr>
+                                <td colspan="2" style="text-align:center;vertical-align:top;padding:5px 0">
+                                    <partial name="~/Views/PartialViews/SummaryView.cshtml" model="@Model.Summary" />
+                                </td>
+                            </tr>
+                            @*FIRST 11*@
+                            <tr>
+                                <td style="text-align:center;vertical-align:top;padding:5px 0">
+                                    <partial name="~/Views/PartialViews/PlayersView.cshtml" model="@Model.MatchDetails.PlayersOfMatch.Where(x => x.TeamName.Trim() == Model.MatchDetails.Match.HomeTeam.Trim() && x.PlayingStatus == 1)" />
+                                </td>
+                                <td style="text-align:center;vertical-align:top;padding:5px 0">
+                                    <partial name="~/Views/PartialViews/PlayersView.cshtml" model="@Model.MatchDetails.PlayersOfMatch.Where(x => x.TeamName.Trim() == Model.MatchDetails.Match.AwayTeam.Trim() && x.PlayingStatus == 1)" />
+                                </td>
+                            </tr>
+                            @*SUBSTITUTIONS*@
+                            <tr>
+                                <td style="text-align:center;vertical-align:top;padding:5px 0">
+                                    <partial name="~/Views/PartialViews/PlayersView.cshtml" model="@Model.MatchDetails.PlayersOfMatch.Where(x => x.TeamName.Trim() == Model.MatchDetails.Match.HomeTeam.Trim() && x.PlayingStatus == 2)" />
+                                </td>
+                                <td style="text-align:center;vertical-align:top;padding:5px 0">
+                                    <partial name="~/Views/PartialViews/PlayersView.cshtml" model="@Model.MatchDetails.PlayersOfMatch.Where(x => x.TeamName.Trim() == Model.MatchDetails.Match.AwayTeam.Trim() && x.PlayingStatus == 2)" />
+                                </td>
+                            </tr>
+                            @*COMMENTARY*@
+                            <tr>
+                                <td colspan="2" style="text-align:center;padding:5px 0">
+                                    <partial name="~/Views/PartialViews/CommentaryView.cshtml" model="@Model.Commentary" />
+                                </td>
+                            </tr>
+                            @*STATISTICS*@
+                            <tr>
+                                <td colspan="2" style="text-align:center;padding:5px 0">
+                                    <partial name="~/Views/PartialViews/StatisticsView.cshtml" model="@Model.Statistics" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td id="sponsors-main-parent">
+                <section id="sponsors-main" />
+            </td>
+        </tr>
+    </table>
+
+

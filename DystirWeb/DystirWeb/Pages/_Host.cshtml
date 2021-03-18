@@ -1,0 +1,47 @@
+﻿@page "/"
+@namespace DystirWeb.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name=”description” content="Live scores, results, fixtures and standings of football matches in the Faroe Islands" />
+
+    <title>Dystir</title>
+    <base href="~/" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link href="https://fonts.googleapis.com/css?family=Graduate|Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro" rel="stylesheet">
+    <link href="css/fontawesome/css/all.min.css" rel="stylesheet" />
+    <link href="css/fontawesome/css/fontawesome.min.css" rel="stylesheet" />
+    <link href="css/fontawesome/css/brands.min.css" rel="stylesheet" />
+    <link href="css/fontawesome/css/regular.min.css" rel="stylesheet" />
+    <link href="css/fontawesome/css/solid.min.css" rel="stylesheet" />
+    <link href="css/fontawesome/css/v4-shims.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link href="css/site.css?v=9" rel="stylesheet" />
+</head>
+<body>
+
+    <app>
+        <component type="typeof(App)" render-mode="Server" />
+    </app>
+
+    <div id="components-reconnect-modal" class="my-reconnect-modal components-reconnect-hide">
+        <div class="show"></div>
+        <div class="failed"></div>
+        <div class="refused"></div>
+    </div>
+    <script src="jquery/jquery.js"></script>
+    <script src="signalr/dist/browser/signalr.js"></script>
+    <script src="scripts/dystir_script.js?version=3"></script>
+    <script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
+    <script src="_framework/blazor.server.js"></script>
+    <script src="scripts/google_analytics.js"></script>
+</body>
+</html>

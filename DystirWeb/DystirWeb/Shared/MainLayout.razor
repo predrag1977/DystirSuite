@@ -1,0 +1,61 @@
+﻿@using DystirWeb.Services
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager uriHelper
+@inject DystirService DystirService
+@inject NavigationManager NavigationManager
+@inherits LayoutComponentBase
+@implements IDisposable
+    
+<link href="css/site.css?v=4" rel="stylesheet" />
+
+<Header ToggleOnClick="ToggleNavMenu" />
+
+<div class="main">
+    @Body
+</div>
+
+<div class="no-connection" style="top:calc(50% - 1.5rem);left:calc(50% - 1.5rem);">
+    <img src="images/icons/loadingicon.gif" style="width:3rem" />
+</div>
+
+@code {
+    [Parameter]
+    public static string NavMenuCssClass { get; set; } = "collapse";
+    [Parameter]
+    public static bool CollapseNavMenu { get; set; } = true;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        DystirService.OnConnectDystirHub += ConnectDystirHub;
+        DystirService.OnDisconnectDystirHub += DisconnectDystirHub;
+    }
+
+    void IDisposable.Dispose()
+    {
+        DystirService.OnConnectDystirHub -= ConnectDystirHub;
+        DystirService.OnDisconnectDystirHub -= DisconnectDystirHub;
+    }
+
+    private void ConnectDystirHub(object sender, EventArgs arg)
+    {
+
+    }
+
+    private void DisconnectDystirHub(object sender, Exception e)
+    {
+        
+    }
+
+    public static void ToggleNavMenu()
+    {
+        CollapseNavMenu = !CollapseNavMenu;
+        NavMenuCssClass = CollapseNavMenu ? "collapse" : "";
+    }
+}
+
+
+
+
+
+

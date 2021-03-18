@@ -1,0 +1,173 @@
+﻿@page "/football/matchdetails/{matchid}"
+
+@using DystirWeb.Services
+@using DystirWeb.Models
+@using DystirWeb.ModelViews
+@using Microsoft.AspNetCore.Components
+@using Newtonsoft.Json
+@inject NavigationManager NavigationManager
+@inject DystirService DystirService
+@inject Blazored.Localisation.Services.IBrowserDateTimeProvider BrowserDateTimeProvider
+@layout MainFootballLayout
+@implements IDisposable
+@inherits MatchBase
+
+<div class="container-match-details">
+    <div class="box">
+        <div class="matches_list_same_day">
+            @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
+            {
+                <NavLink style="cursor:pointer;" @onclick="@(()=>isLoading = true)" href="@("football/matchdetails/" + match.MatchId)">
+                    <div class="table tab" style="height: 3.0rem;padding:0 4px">
+                        <div style="width:6rem; height:0.8rem;font-size:0.6rem;white-space: nowrap; overflow: hidden; text-overflow: ellipsis;text-align:right;">
+                            <span class="match_time" style="color:@GetStatusColor(match.StatusId)">@GetMatchTime(match.StatusTime, match.Time, match.StatusId)</span>
+                        </div>
+                        <div class="d-table-cell" style="height:2.2rem;text-align: left;">
+                            <div style="width:5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                @((match.HomeTeam + " " + match.HomeCategoriesName + " " + match.HomeSquadName).Trim())
+                            </div>
+                            <div style="width:5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left;">
+                                @((match.AwayTeam + " " + match.AwayCategoriesName + " " + match.AwaySquadName).Trim())
+                            </div>
+                        </div>
+                        <div class="d-table-cell" style="height:2.2rem;text-align:left;" >
+                            <div style="width:1rem;text-align: right;">
+                                @if (match.StatusId > 1)
+                                {
+                                    @(match.HomeTeamScore);
+                                }
+                                else
+                                {
+                                    @('-')
+                                }
+                            </div>
+                            <div style="width:1rem;text-align: right;">
+                                @if (match.StatusId > 1)
+                                {
+                                    @(match.AwayTeamScore)
+                                }
+                                else
+                                {
+                                    @('-')
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </NavLink>
+            }
+        </div>
+    </div>
+    <div class="box" style="padding:0.3rem 0">
+        <Match MatchItem="@SelectedMatch" ShowMore="@(false)" TimeZoneOffset="@timeZoneOffset" />
+    </div>
+    <div class="box">
+        <MatchDetailsTabs TabOnClick="OnTabClick" />
+    </div>
+    <div class="box box-scroll">
+        @if (isLoading)
+        {
+            <div style="position:relative; width:100%;height:100%;">
+                <img src="images/icons/loadingicon.gif" style="position:absolute; width:3rem;top:calc(50% - 1.5rem);left:calc(50% - 1.5rem);" />
+            </div>
+        }
+        else
+        {
+            <div style="position:absolute;top:0;bottom:0;width:100%;overflow:auto; margin: 0; padding: 0 5px;">
+                <div class="@(selectedTab == "0" ? "active_tab" : "no_active_tab")">
+                    <SummaryView SummaryEventsOfMatch="@(fullMatchDetails?.Summary)" />
+                </div>
+                <div class="@(selectedTab == "1" ? "active_tab" : "no_active_tab")">
+                    <LineupsView PlayersOfMatch="@(fullMatchDetails?.MatchDetails?.PlayersOfMatch)" Match="@(fullMatchDetails?.MatchDetails?.Match)" />
+                </div>
+                <div class="@(selectedTab == "2" ? "active_tab" : "no_active_tab")">
+                    <CommentariesView Commentaries="@(fullMatchDetails?.Commentary)" />
+                </div>
+                <div class="@(selectedTab == "3" ? "active_tab" : "no_active_tab")">
+                    <StatisticView StatisticOfMatch="@(fullMatchDetails?.Statistics)" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string matchid { get; set; }
+
+    private Matches SelectedMatch = new Matches();
+    private FullMatchDetailsModelView fullMatchDetails;
+    private List<Matches> MatchesListSameDay = new List<Matches>();
+    private int timeZoneOffset = 0;
+    private bool isLoading = true;
+    private string selectedTab = "0";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var browserDateTime = await BrowserDateTimeProvider.GetInstance();
+        int serverTimeZoneHours = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
+        int clientTimeZoneHours = browserDateTime.LocalTimeZoneInfo.BaseUtcOffset.Hours;
+        timeZoneOffset = clientTimeZoneHours - serverTimeZoneHours;
+        DystirService.OnLoadData += LoadData;
+        DystirService.OnUpdateData += UpdateData;
+        DystirService.TimerService.OnTimerElapsed += TimerElapsed;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        isLoading = true;
+        SelectedMatch = DystirService.AllMatches.FirstOrDefault(x => x.MatchId == int.Parse(matchid));
+        MatchesListSameDay = DystirService.GetMatchesListSameDay(SelectedMatch);
+        await LoadMatchDetails();
+    }
+
+    void IDisposable.Dispose()
+    {
+        DystirService.OnLoadData -= LoadData;
+        DystirService.OnUpdateData -= UpdateData;
+        DystirService.TimerService.OnTimerElapsed -= TimerElapsed;
+    }
+
+    private async void LoadData(object sender, EventArgs arg)
+    {
+        await LoadMatchDetails();
+        Refresh();
+    }
+
+    private void UpdateData(object sender, string matchDetailsJson)
+    {
+        var matchDetails = JsonConvert.DeserializeObject<MatchDetails>(matchDetailsJson);
+        if (matchDetails != null)
+        {
+            if (matchDetails.Match?.MatchId.ToString() == matchid)
+            {
+                fullMatchDetails = DystirService.GetFullMatchDetails(matchDetails);
+                SelectedMatch = matchDetails.Match;
+            }
+            MatchesListSameDay = DystirService.GetMatchesListSameDay(SelectedMatch);
+        }
+        Refresh();
+    }
+
+    private void TimerElapsed(object sender, EventArgs e)
+    {
+        Refresh();
+    }
+
+    private void Refresh()
+    {
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    private void OnTabClick(string tabIndex)
+    {
+        selectedTab = tabIndex;
+    }
+
+    public async Task LoadMatchDetails()
+    {
+        fullMatchDetails = await DystirService.LoadMatchDetailsAsync(matchid);
+        SelectedMatch = fullMatchDetails?.MatchDetails?.Match;
+        MatchesListSameDay = fullMatchDetails?.MatchesListSelection;
+        isLoading = false;
+    }
+}

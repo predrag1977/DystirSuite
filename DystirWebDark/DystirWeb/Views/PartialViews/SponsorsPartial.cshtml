@@ -1,0 +1,10 @@
+﻿@using System.Collections.ObjectModel
+@model ObservableCollection<Sponsors>
+
+
+@foreach (Sponsors sponsor in Model ?? new ObservableCollection<Sponsors>())
+{
+    <a href="@(sponsor.SponsorWebSite)" target="_blank">
+        <img src="@(sponsor.SponsorsName)">
+    </a>
+}

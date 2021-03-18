@@ -1,0 +1,49 @@
+﻿@using DystirWeb.Services
+@using Microsoft.AspNetCore.Components
+@inject DystirService DystirService
+@inject NavigationManager NavigationManager
+@layout MainLayout
+@inherits LayoutComponentBase
+@inject IJSRuntime JSRuntime
+
+<link href="css/site.css?v=4" rel="stylesheet" />
+<link href="css/football.css?v=1" rel="stylesheet" />
+
+<div style="position:absolute; height:100%; width:100%">
+    <img src="images/background/grass-background.png" style="height:100%; width:100%" />
+</div>
+
+<div class="sidebar">
+    <div class="@MainLayout.NavMenuCssClass">
+        <NavMenuFootball ToggleOnClick="ToggleNavMenu" />
+    </div>
+</div>
+
+<div class="container-layout">
+    @Body
+</div>
+
+<div class="sponsor-bar">
+    <SponsorsView ShowOnSideBar="true" />
+</div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("loadGoogleAnalytics", "170595956-1");
+        }
+    }
+
+    public void ToggleNavMenu()
+    {
+        MainLayout.ToggleNavMenu();
+    }
+}
+
+
+
+
+
+

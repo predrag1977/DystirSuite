@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:Dystir.Converter"
+             xmlns:local="clr-namespace:Dystir.Views"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             x:Class="Dystir.Views.FirstElevenView">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converter:TwoItemsTovisibleConverter x:Key="TwoItemsTovisibleConverter" />
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <ListView SelectionMode="None" Margin="3,0"
+              IsGroupingEnabled="True"
+              CachingStrategy="RecycleElement"
+              HasUnevenRows="True"
+              SeparatorVisibility="None"
+              BackgroundColor="Transparent"
+              VerticalScrollBarVisibility="Never"
+              ItemsSource="{Binding PlayersInRowGroupList}">
+        <ListView.GroupHeaderTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <Label HeightRequest="3" Margin="0,5" BackgroundColor="DarkKhaki" 
+                               IsVisible="{Binding Key, Converter={StaticResource TwoItemsTovisibleConverter}}"
+                               VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" />
+                </ViewCell>
+            </DataTemplate>
+        </ListView.GroupHeaderTemplate>
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <Grid HorizontalOptions="FillAndExpand">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <local:PlayerView Grid.Column="0" BindingContext="{Binding FirstPlayer}" />
+                        <local:PlayerView Grid.Column="1" BindingContext="{Binding SecondPlayer}" />
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</ContentView>

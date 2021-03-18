@@ -1,0 +1,86 @@
+﻿@using DystirWeb.ModelViews
+@model IEnumerable<PlayersOfMatches>
+
+    <table class="table" style="text-align:center;margin:0 auto;color:white">
+        <tbody>
+            <tr>
+                <td style="padding:0;">
+                    @foreach (PlayersOfMatches player in Model)
+                    {
+                        <div class="player-list-item" >
+                            <table class="table" style="text-align:left;">
+                                <tbody>
+                                    <tr>
+                                        <td style="width:35px;text-align:center;vertical-align:central">
+                                            <div class="player_number">@(player.Number)</div>
+                                        </td>
+                                        <td>
+                                            <div class="player_name">
+                                                @((player.FirstName + " " + player.Lastname).Trim())
+                                            </div>
+                                            <div style="color:#a6a6a6;">
+                                                <span style="color:#a6a6a6;margin-right:2px">
+                                                    @if (player.Position == "GK")
+                                                    {
+                                                    @("MM")
+                                                    }
+                                                    else if (player.Position == "DEF")
+                                                    {
+                                                    @("VL")
+                                                    }
+                                                    else if (player.Position == "MID")
+                                                    {
+                                                    @("MV")
+                                                    }
+                                                    else if (player.Position == "ATT")
+                                                    {
+                                                    @("AL")
+                                                    }
+                                                    else
+                                                    {
+                                                    @("---")
+                                                    }
+                                                </span>
+                                                @if (player.Goal > 0)
+                                                {
+                                                <span style="background-color:darkgreen">&#9917;</span>
+                                                <span>@(player.Goal)</span>
+                                                }
+                                                @if (player.OwnGoal > 0)
+                                                {
+                                                <span style="background-color:darkred">&#9917;</span>
+                                                <span>@(player.OwnGoal)</span>
+                                                }
+                                                @if (player.YellowCard > 0)
+                                                {
+                                                <span style="padding: 0 1px;font-weight:bold;background-color:gold;color:gold;">0</span>
+                                                }
+                                                @if (player.YellowCard > 1)
+                                                {
+                                                <span style="padding: 0 1px;font-weight:bold;background-color:gold;color:gold;">0</span>
+                                                }
+                                                @if (player.RedCard > 0)
+                                                {
+                                                <span style="padding: 0 1px;font-weight:bold;background-color:red;color:red;">0</span>
+                                                }
+                                                @if (player.SubIn > -1)
+                                                {
+                                                <span style="color:green;">&#9650;</span>
+                                                <span>@(player.SubIn)'</span>
+                                                }
+                                                @if (player.SubOut > -1)
+                                                {
+                                                <span style="color:red;">&#9660;</span>
+                                                <span>@(player.SubOut)'</span>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>

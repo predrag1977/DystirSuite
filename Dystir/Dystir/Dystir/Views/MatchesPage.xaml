@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:Dystir.Converter"
+             xmlns:properties="clr-namespace:Dystir.Properties"
+             xmlns:views="clr-namespace:Dystir.Views"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="Dystir.Views.MatchesPage">
+
+    <ContentView.Resources>
+        <converter:LanguageConverter x:Key="LanguageConverter" />
+        <converter:LanguageToVisibleConverter x:Key="LanguageToVisibleConverter" />
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <converter:InverseItemsCountToBooleanConverter x:Key="InverseItemsCountToBooleanConverter" />
+    </ContentView.Resources>
+
+    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1" x:Name="DaysView" HorizontalOptions="FillAndExpand" ColumnSpacing="3" Margin="0,5,0,2" 
+              BindingContext="{Binding MatchesDays}" 
+              BindingContextChanged="DaysView_BindingContextChanged" />
+        <ListView x:Name="MatchesListView"
+            SeparatorVisibility="None" HasUnevenRows="True"
+            CachingStrategy="RecycleElement"
+            Grid.Row="2" SelectionMode="None"
+            BackgroundColor="Transparent"
+            IsGroupingEnabled="True"
+            VerticalOptions="FillAndExpand"
+            Footer=""
+            ItemsSource="{Binding MatchesGroupList}">
+            <ListView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid BackgroundColor="#2F4F2F" Padding="6" Margin="0,2,0,0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
+                            <Label Text="{Binding Key}" FontSize="12" TextColor="White" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.GroupHeaderTemplate>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <views:MatchView />
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Grid x:Name="NoMatchesPanel" Grid.Row="2"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" IsVisible="{Binding MatchesGroupList.Count, Converter={StaticResource InverseItemsCountToBooleanConverter}}">
+            <Grid  BackgroundColor="#222222" Margin="5,0" HeightRequest="80"  IsVisible="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}" VerticalOptions="Start" HorizontalOptions="FillAndExpand" >
+                <Label Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=NoMatches}" FontFamily="{StaticResource NormalFont}" FontSize="Small" TextColor="#a6a6a6" VerticalOptions="Center" HorizontalOptions="Center" />
+            </Grid>
+        </Grid>
+
+        <!--<Grid x:Name="NewsPanel" Grid.Row="2" IsVisible="{Binding MatchesGroupList.Count, Converter={StaticResource InverseItemsCountToBooleanConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="#2F4F2F" Padding="6" Margin="0,5,0,3" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
+                <Label Text="News" FontSize="12" TextColor="White" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
+            </Grid>
+            <ff:CachedImage Grid.Row="1" VerticalOptions="Start" Margin="5,0" Source="https://i.pinimg.com/originals/ab/14/62/ab146250963313c75b9415c7ea61b220.jpg" />
+            <Grid Grid.Column="1" Grid.Row="1" BackgroundColor="#222222" Margin="5,0" HeightRequest="50" IsVisible="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}" VerticalOptions="Start" HorizontalOptions="FillAndExpand" >
+                <Label Text="Liverpool won Premier league" MaxLines="10" FontFamily="{StaticResource NormalFont}" FontSize="14" TextColor="White" VerticalOptions="Center" HorizontalOptions="StartAndExpand" />
+            </Grid>
+            <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Margin="5,0" BackgroundColor="#222222" HeightRequest="50" IsVisible="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}" VerticalOptions="Start" HorizontalOptions="FillAndExpand" >
+                <Label MaxLines="10" Text="Many people in the Faroe Islands celebrated winning Liverpool's Premier League title. The celebration was organized by Liverpool's biggest fan in the Faroe Islands, Áki Johansen. :)" FontFamily="{StaticResource NormalFont}" FontSize="12" TextColor="#a6a6a6" HorizontalTextAlignment="Start" VerticalOptions="Center" HorizontalOptions="StartAndExpand" />
+            </Grid>
+        </Grid>-->
+    </Grid>
+</ContentView>

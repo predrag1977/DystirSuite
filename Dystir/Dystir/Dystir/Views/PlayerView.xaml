@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:converter="clr-namespace:Dystir.Converter"
+             x:Class="Dystir.Views.PlayerView">
+
+    <ContentView.Resources>
+        <Style TargetType="Label">
+            <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+            <Setter Property="VerticalOptions" Value="FillAndExpand" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+            <Setter Property="VerticalTextAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="FontFamily" Value="{StaticResource NormalFont}" />
+        </Style>
+
+        <converter:LanguageConverter x:Key="LanguageConverter" />
+        <converter:LanguageToVisibleConverter x:Key="LanguageToVisibleConverter" />
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <converter:ItemsCountToBooleanConverter x:Key="ItemsCountToBooleanConverter" />
+        <converter:PlayersPositionLanguageConverter x:Key="PlayersPositionLanguageConverter" />
+    </ContentView.Resources>
+    
+    <Grid RowSpacing="3" ColumnSpacing="3" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="13" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0" TextColor="Khaki" Text="{Binding Number}" FontSize="13" />
+        <Label Grid.Column="1" HorizontalTextAlignment="Start" Text="{Binding FirstName}" FontSize="13" />
+        <Label Grid.Column="0" Grid.Row="1" TextColor="#a6a6a6" Text="{Binding Converter={StaticResource PlayersPositionLanguageConverter}}"  />
+        <StackLayout Grid.Row="1" Grid.Column="1" HorizontalOptions="StartAndExpand"  Orientation="Horizontal" Spacing="3">
+            <ff:CachedImage WidthRequest="12" HeightRequest="12" IsVisible="{Binding GoalVisible}"  Source="resource://Dystir.Images.goal.png" />
+            <Label Text="{Binding Goal}" HorizontalTextAlignment="Start" TextColor="#a6a6a6" IsVisible="{Binding GoalVisible}"/>
+            <ff:CachedImage WidthRequest="12" HeightRequest="12" IsVisible="{Binding OwnGoalVisible}"  Source="resource://Dystir.Images.owngoal.png" />
+            <Label Text="{Binding OwnGoal}" HorizontalTextAlignment="Start" TextColor="#a6a6a6" IsVisible="{Binding OwnGoalVisible}"/>
+            <BoxView WidthRequest="9" BackgroundColor="Gold" IsVisible="{Binding YellowCardVisible}" />
+            <BoxView WidthRequest="9" BackgroundColor="Gold" IsVisible="{Binding SecondYellowCardVisible}"/>
+            <BoxView WidthRequest="9" BackgroundColor="Red" IsVisible="{Binding RedCardVisible}"/>
+            <Grid IsVisible="{Binding SubInVisible}" HorizontalOptions="Start" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Text="&#x25b2;" FontSize="12" TextColor="DarkGreen" HorizontalTextAlignment="Start" />
+                <Label Grid.Column="1" TextColor="#a6a6a6" Text="{Binding SubIn, StringFormat='{0}.'}" HorizontalTextAlignment="Start" />
+            </Grid>
+            <Grid IsVisible="{Binding SubOutVisible}" HorizontalOptions="Start" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Text="&#x25bc;" FontSize="12" TextColor="Red" HorizontalTextAlignment="Start" />
+                <Label Grid.Column="1" Text="{Binding SubOut, StringFormat='{0}.'}" TextColor="#a6a6a6" HorizontalTextAlignment="Start" />
+            </Grid>
+        </StackLayout>
+        <BoxView Grid.Row="2" Grid.ColumnSpan="2" BackgroundColor="DimGray" HeightRequest="1" Margin="0,3" />
+    </Grid>
+</ContentView>

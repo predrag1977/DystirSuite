@@ -1,0 +1,102 @@
+﻿@using DystirWeb.ModelViews
+@model MatchesModelView
+
+<div class="matches-view">
+    <table class="table">
+        <tbody>
+            @foreach (var group in Model.MatchesGroups)
+            {
+                <tr>
+                    <td>
+                        <div class="competition_name">
+                            @group.Key
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @foreach (var item in group)
+                        {
+                            <div style="@(item.StatusId < 13 ? "pointer-events:auto" : "pointer-events:none");">
+                                <a class="nav-link text-dark see-more-link" asp-area="" asp-controller="MatchDetailsView" asp-action="@("index"+ Model.WebSite)" asp-route-matchID="@item.MatchId" asp-route-matchInfo="@((item.HomeTeam+"-"+item.AwayTeam).Replace(" ", "").Replace("/", "" ).Replace(".", ""))">
+                                    <div class="match_item">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr class="match_info">
+                                                    <td colspan="5" style="padding:0 5px">
+                                                        <span id="@("full-date-time" + item.MatchId)"></span>
+                                                        <span> - </span>
+                                                        <span>@item.RoundName - </span>
+                                                        <span>@item.Location</span>
+                                                        <script>convertToLocalTime("@("full-date-time" + item.MatchId)","@(item.Time?.ToString("dd.MM.yyyy HH:mm"))")</script>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <table class="table">
+                                            <tbody>
+                                                <tr class="match_item_teams_name">
+                                                    <td style="text-align:right;padding:0">
+                                                        <span>@((item.HomeTeam + " " + item.HomeSquadName + " " + item.HomeCategoriesName).Trim())</span>
+                                                    </td>
+                                                    <td style="text-align:center;width:20px;padding:0 3px;">-</td>
+                                                    <td style="text-align:left;padding:0">
+                                                        <span>@((item.AwayTeam + " " + item.AwaySquadName + " " + item.AwayCategoriesName).Trim())</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        @if (@item.StatusId < 14)
+                                        {
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr class="match_item_text_color">
+                                                        <td style="text-align:left;padding:0px 8px">
+                                                            <span class="match_time" id="@("match-time" + item.MatchId)">00:00</span>
+                                                            <script>calculateMatchTime(@(item.StatusId), $("#match-time" +@item.MatchId), @((item.StatusTime.Value - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds), @((item.Time.Value - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds))</script>
+                                                        </td>
+                                                        @if (item.StatusId > 1)
+                                                        {
+                                                            <td style="text-align:right;padding:0 5px">
+                                                                @(item.HomeTeamScore)
+                                                            </td>
+                                                            <td style="text-align:center;width:20px;padding:0 5px">:</td>
+                                                            <td style="text-align:left;padding:0 5px">
+                                                                @(item.AwayTeamScore)
+                                                            </td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td style="text-align:center;padding:0 5px">- : -</td>
+                                                        }
+                                                        <td style="text-align:right;padding:0 8px;">
+                                                            @if (@item.StatusId < 13)
+                                                            {
+                                                                <span>Vís meira &#10095;</span>
+                                                            }
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        }
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    </td>
+                </tr>
+            }
+            @if (Model.MatchesGroups.Count() == 0)
+            {
+                <tr>
+                    <td style="text-align:center;background-color:#222222;color:#a6a6a6;opacity:0.9;padding:40px 0">
+                        Eingin dystur
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+

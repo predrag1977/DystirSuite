@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:DystirManager.Converter"
+             xmlns:properties="clr-namespace:DystirManager.Properties"
+             xmlns:local="clr-namespace:DystirManager.Views"
+             x:Class="DystirManager.Views.StartPage"
+             BackgroundColor="DarkGreen"
+             NavigationPage.HasNavigationBar="False"
+             xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
+
+    <ContentPage.Resources>
+        <converter:FullMatchInfoTextConverter x:Key="FullMatchInfoTextConverter" />
+        <converter:MatchInfoTextConverter x:Key="MatchInfoTextConverter" />
+        <converter:HomeTeamFullConverter x:Key="HomeTeamFullConverter" />
+        <converter:AwayTeamFullConverter x:Key="AwayTeamFullConverter" />
+        <converter:ToLocalTimeConverter x:Key="ToLocalTimeConverter" />
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <StackLayout x:Name="LoadingPanel" IsVisible="True" VerticalOptions="Center" HorizontalOptions="Center">
+                <ff:CachedImage x:Name="Gif" WidthRequest="70" HeightRequest="70" VerticalOptions="Center" HorizontalOptions="Center" Source="resource://DystirManager.Images.loadingicon.gif" />
+            </StackLayout>
+        </Grid>
+        <Grid x:Name="ConnectionStatusGrid" Grid.Row="1" HeightRequest="40" IsVisible="false" BackgroundColor="DarkRed">
+            <Label Text="{x:Static properties:Resources.ConnectionLost}" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" />
+        </Grid>
+    </Grid>
+</ContentPage>

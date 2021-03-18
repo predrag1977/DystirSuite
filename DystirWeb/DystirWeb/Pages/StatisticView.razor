@@ -1,0 +1,159 @@
+﻿@using Models
+
+<table class="table statistic_table statistic_text">
+    <tr>
+        <td class="statistic_cell">
+            @(StatisticOfMatch?.HomeTeamStatistic.Goal)
+        </td>
+        <td colspan="2" class="statistic_cell" style="width: 200px; font-weight: normal;">
+            MÁL
+        </td>
+        <td class="statistic_cell">
+            @(StatisticOfMatch?.AwayTeamStatistic.Goal)
+        </td>
+    </tr>
+</table>
+<table class="table statistic_table">
+    <tr>
+        <td colspan="2" class="statistic-home" style="width: @(StatisticOfMatch?.HomeTeamStatistic.GoalProcent+"%")"></td>
+        <td colspan="2" class="statistic-away" style="width: @(StatisticOfMatch?.AwayTeamStatistic.GoalProcent+"%")"></td>
+    </tr>
+</table>
+<table class="table statistic_table statistic_text">
+    <tr>
+        <td class="statistic_cell">
+            @(StatisticOfMatch?.HomeTeamStatistic.YellowCard)
+        </td>
+        <td colspan="2" class="statistic_cell" style="width: 200px; font-weight: normal;">
+            GUL KORT
+        </td>
+        <td class="statistic_cell">
+            @(StatisticOfMatch?.AwayTeamStatistic.YellowCard)
+        </td>
+    </tr>
+</table>
+<table class="table statistic_table">
+    <tr>
+        <td colspan="2" class="statistic-home" style="width: @(StatisticOfMatch?.HomeTeamStatistic.YellowCardProcent+"%")"></td>
+        <td colspan="2" class="statistic-away" style="width: @(StatisticOfMatch?.AwayTeamStatistic.YellowCardProcent+"%")"></td>
+    </tr>
+</table>
+<table class="table statistic_table statistic_text">
+    <tr>
+        <td class="statistic_cell">
+            @(StatisticOfMatch?.HomeTeamStatistic.RedCard)
+        </td>
+        <td colspan="2" class="statistic_cell" style="width: 200px; font-weight: normal;">
+            REYÐ KORT
+        </td>
+        <td class="statistic_cell">
+            @(StatisticOfMatch?.AwayTeamStatistic.RedCard)
+        </td>
+    </tr>
+</table>
+<table class="table statistic_table">
+    <tr>
+        <td colspan="2" class="statistic-home" style="width: @(StatisticOfMatch?.HomeTeamStatistic.RedCardProcent+"%")"></td>
+        <td colspan="2" class="statistic-away" style="width: @(StatisticOfMatch?.AwayTeamStatistic.RedCardProcent+"%")"></td>
+    </tr>
+</table>
+<table class="table statistic_table statistic_text">
+    <tr>
+        <td class="statistic_cell">
+            @(StatisticOfMatch?.HomeTeamStatistic.Corner)
+        </td>
+        <td colspan="2" class="statistic_cell" style="width: 200px; font-weight: normal;">
+            HORNA
+        </td>
+        <td class="statistic_cell">
+            @(StatisticOfMatch?.AwayTeamStatistic.Corner)
+        </td>
+    </tr>
+</table>
+<table class="table statistic_table">
+    <tr>
+        <td colspan="2" class="statistic-home" style="width: @(StatisticOfMatch?.HomeTeamStatistic.CornerProcent+"%")"></td>
+        <td colspan="2" class="statistic-away" style="width: @(StatisticOfMatch?.AwayTeamStatistic.CornerProcent+"%")"></td>
+    </tr>
+</table>
+<table class="table statistic_table statistic_text">
+    <tr>
+        <td class="statistic_cell">
+            @(StatisticOfMatch?.HomeTeamStatistic.OnTarget)
+        </td>
+        <td colspan="2" class="statistic_cell" style="width: 200px; font-weight: normal;">
+            ROYNDIR Á MÀL
+        </td>
+        <td class="statistic_cell">
+            @(StatisticOfMatch?.AwayTeamStatistic.OnTarget)
+        </td>
+    </tr>
+</table>
+<table class="table statistic_table">
+    <tr>
+        <td colspan="2" class="statistic-home" style="width: @(StatisticOfMatch?.HomeTeamStatistic.OnTargetProcent+"%")"></td>
+        <td colspan="2" class="statistic-away" style="width: @(StatisticOfMatch?.AwayTeamStatistic.OnTargetProcent+"%")"></td>
+    </tr>
+</table>
+<table class="table statistic_table statistic_text">
+    <tr>
+        <td class="statistic_cell">
+            @(StatisticOfMatch?.HomeTeamStatistic.OffTarget)
+        </td>
+        <td colspan="2" class="statistic_cell" style="width: 200px; font-weight: normal;">
+            ROYNDIR FRAMVIÐ MÀL
+        </td>
+        <td class="statistic_cell">
+            @(StatisticOfMatch?.AwayTeamStatistic.OffTarget)
+        </td>
+    </tr>
+</table>
+<table class="table statistic_table">
+    <tr>
+        <td colspan="2" class="statistic-home" style="width: @(StatisticOfMatch?.HomeTeamStatistic.OffTargetProcent+"%")"></td>
+        <td colspan="2" class="statistic-away" style="width: @(StatisticOfMatch?.AwayTeamStatistic.OffTargetProcent+"%")"></td>
+    </tr>
+</table>
+<table class="table statistic_table statistic_text">
+    <tr>
+        <td class="statistic_cell">
+            @(StatisticOfMatch?.HomeTeamStatistic.BlockedShot)
+        </td>
+        <td colspan="2" class="statistic_cell" style="width: 200px; font-weight: normal;">
+            BLOKERA SKOT
+        </td>
+        <td class="statistic_cell">
+            @(StatisticOfMatch?.AwayTeamStatistic.BlockedShot)
+        </td>
+    </tr>
+</table>
+<table class="table statistic_table">
+    <tr>
+        <td colspan="2" class="statistic-home" style="width: @(StatisticOfMatch?.HomeTeamStatistic.BlockedShotProcent+"%")"></td>
+        <td colspan="2" class="statistic-away" style="width: @(StatisticOfMatch?.AwayTeamStatistic.BlockedShotProcent+"%")"></td>
+    </tr>
+</table>
+<table class="table statistic_table statistic_text">
+    <tr>
+        <td class="statistic_cell">
+            @(StatisticOfMatch?.HomeTeamStatistic.BigChance)
+        </td>
+        <td colspan="2" class="statistic_cell" style="width: 200px; font-weight: normal;">
+            STÓRUR MØGULEIKI
+        </td>
+        <td class="statistic_cell">
+            @(StatisticOfMatch?.AwayTeamStatistic.BigChance)
+        </td>
+    </tr>
+</table>
+<table class="table statistic_table">
+    <tr>
+        <td colspan="2" class="statistic-home" style="width: @(StatisticOfMatch?.HomeTeamStatistic.BigChanceProcent+"%")"></td>
+        <td colspan="2" class="statistic-away" style="width: @(StatisticOfMatch?.AwayTeamStatistic.BigChanceProcent+"%")"></td>
+    </tr>
+</table>
+
+@code {
+    [Parameter]
+    public Statistic StatisticOfMatch { get; set; }
+}

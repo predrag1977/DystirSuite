@@ -1,0 +1,38 @@
+﻿<div @onclick="@(() => ToggleOnClick.InvokeAsync(""))">
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <NavLink class="nav-link" href="handball/matches">
+                <span class="fa fa-futbol p-2" aria-hidden="true"></span>
+                <span class="pl-2">DYSTIR</span>
+            </NavLink>
+        </li>
+        @*<li class="nav-item px-3">
+                <NavLink class="nav-link" href="handball/results">
+                    <span class="fa fa-futbol p-2" aria-hidden="true"></span>
+                    <span class="pl-2">Results</span>
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="handball/fixtures">
+                    <span class="fa fa-futbol p-2" aria-hidden="true"></span>
+                    <span class="pl-2">Fixtures</span>
+                </NavLink>
+            </li>*@
+        <li class="nav-item">
+            <NavLink class="nav-link" href="handball/standings">
+                <span class="fas fa-table p-2" aria-hidden="true"></span>
+                <span class="pl-2">STØÐAN</span>
+            </NavLink>
+        </li>
+        @*<li class="nav-item px-3">
+                <NavLink class="nav-link" href="handball/statistics">
+                    <span class="fas fa-clipboard-list p-2" aria-hidden="true"></span>
+                    <span class="pl-2">Statistics</span>
+                </NavLink>
+            </li>*@
+    </ul>
+</div>
+
+@code {
+    [Parameter] public EventCallback ToggleOnClick { get; set; }
+}
