@@ -126,10 +126,11 @@ namespace DystirWeb.Services
                 await Task.FromResult(new HandballStandingsController(_dystirDBContext).Get()));
         }
 
-        public async Task<bool> StartDystirHub()
+        public Task<bool> StartDystirHub()
         {
             try
             {
+
                 if (DystirHubConnection == null)
                 {
                     DystirHubConnection = new HubConnectionBuilder()
@@ -145,16 +146,16 @@ namespace DystirWeb.Services
 
                     if (DystirHubConnection.State == HubConnectionState.Disconnected)
                     {
-                        await DystirHubConnection.StartAsync();
+                        DystirHubConnection.StartAsync();
                     }
                 }
                 OnConnectDystirHub?.Invoke(this, new EventArgs());
-                return true;
+                return Task.FromResult(true);
             }
             catch (Exception ex)
             {
                 OnDisconnectDystirHub?.Invoke(this, ex);
-                return false;
+                return Task.FromResult(false);
             }
         }
 

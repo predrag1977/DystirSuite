@@ -129,7 +129,8 @@
     {
         await Task.Run(() =>
         {
-            var allResultMatchByCompetition = DystirService.AllMatches?.Where(x => x.StatusId == 12 || x.StatusId == 13)
+            var allResultMatchByCompetition = DystirService.AllMatches?.Where(x => (x.StatusId == 12 || x.StatusId == 13)
+            && x.MatchTypeId != 3 && x.MatchTypeId != 4 && x.MatchTypeId != 100 && x.MatchTypeId != 103)
             .OrderBy(x => x.MatchTypeId)
             .ThenByDescending(x => x.RoundId).ThenBy(x => x.Time).ThenBy(x => x.MatchId)
             .GroupBy(x => x.MatchTypeName)?.ToList() ?? new List<IGrouping<string, Matches>>();
