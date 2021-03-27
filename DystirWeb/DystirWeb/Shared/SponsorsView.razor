@@ -7,11 +7,11 @@
 @if (ShowOnSideBar)
 {
     <div class="@MainLayout.NavMenuCssClass">
-        <div class="sponsors">
-            <div style="cursor:pointer;font:bold;padding:15px 0;font-size:0.8em">
+        <div class="sponsors" style="margin:10px 0 10px 0">
+            <div style="cursor:pointer;font:bold;padding:5px 0;font-size:0.8em">
                 <a style="color:white;text-decoration: none" href="mailto: dystir@dystir.fo">
                     <span class="fa fa-envelope p-1" style="color:white" aria-hidden="true" />
-                    <span>dystir@dystir.fo</span>
+                    <span style="text-decoration: underline">dystir@dystir.fo</span>
                 </a>
             </div>
             @foreach (var sponsor in DystirService.Sponsors?.Where(x => x.SponsorId < 100) ?? new ObservableCollection<Sponsors>())
@@ -34,7 +34,7 @@
 }
 else
 {
-    <div class="sponsors_below_matches" style="margin:50px 0 10px 0">
+    <div class="sponsors_below_matches" style="margin:10px 0">
         <div class="box">
             <div class="matches_list_same_day" style="background-color:transparent;text-align:center">
                 @foreach (var sponsor in DystirService.Sponsors?.Where(x => x.SponsorId < 100) ?? new ObservableCollection<Sponsors>())

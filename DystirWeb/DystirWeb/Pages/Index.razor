@@ -2,7 +2,6 @@
 
 @using DystirWeb.Models
 @using DystirWeb.Services
-@using System.Collections.ObjectModel 
 @inject NavigationManager NavigationManager
 @inject Blazored.Localisation.Services.IBrowserDateTimeProvider BrowserDateTimeProvider
 @layout MainFootballLayout
@@ -129,7 +128,7 @@
 
     public async Task GetSelectedMatchListGroup()
     {
-        await Task.Run(() => { 
+        await Task.Run(() => {
             var fromDate = DateTime.UtcNow.AddHours(timeZoneOffset).Date.AddDays(_daysFrom);
             var toDate = fromDate.AddDays(_dayAfter);
             SelectedMatchListGroup = DystirService.AllMatches?.OrderBy(x => x.MatchTypeId).ThenBy(x => x.Time).ThenBy(x => x.MatchId)
