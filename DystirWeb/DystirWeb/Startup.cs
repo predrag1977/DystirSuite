@@ -41,7 +41,7 @@ namespace DystirWeb
             services.AddSingleton<TimeService>();
             services.AddSingleton<StandingService>();
             services.AddSingleton<StatisticCompetitionsService>();
-            services.AddTransient<DystirService>();
+            services.AddSingleton<DystirService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

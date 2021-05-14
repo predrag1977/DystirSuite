@@ -1,12 +1,17 @@
-﻿<div class="navbar navbar-dark header p-0">
+﻿
+<div class="navbar navbar-dark header p-0">
     <div style="font-size:1.3rem;font-weight:bold;padding-left:10px">
         <a class="navbar-brand p-0" href="">
             <span>
                 <img src="images/icons/dystir-header-icon.png" height="45" />
             </span>
         </a>
-        <button class="navbar-toggler p-0" style="height:45px;width:45px" @onclick="@(() => ToggleOnClick.InvokeAsync(""))">
-            <span class="navbar-toggler-icon" style="height:35px;width:35px"></span>
+        <button class="navbar-toggler p-0" style="height:45px;width:45px"
+                @onblur="@(() => ToggleCloseClick.InvokeAsync(""))"
+                @onclick="@(() => ToggleOnClick.InvokeAsync(""))">
+            <div class="@MainLayout.TogglerIcon" style="color:white;width:40px">
+                <div class="@MainLayout.NavMenuCssClass">X</div>
+            </div>
         </button>
     </div>
     <div class="navbar p-0" style="font-size:0.6rem;text-align:left;padding-left:10px">
@@ -48,5 +53,9 @@
 </div>
 
 @code {
-    [Parameter] public EventCallback ToggleOnClick { get; set; }
+    [Parameter]
+    public EventCallback ToggleOnClick { get; set; }
+    [Parameter] 
+    public EventCallback ToggleCloseClick { get; set; }
 }
+

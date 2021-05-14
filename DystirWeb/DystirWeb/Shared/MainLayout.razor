@@ -6,9 +6,9 @@
 @inherits LayoutComponentBase
 @implements IDisposable
     
-<link href="css/site.css?v=4" rel="stylesheet" />
+@*<link href="css/site.css?v=4" rel="stylesheet" />*@
 
-<Header ToggleOnClick="ToggleNavMenu" />
+<Header ToggleOnClick="ToggleNavMenu" ToggleCloseClick="ToggleCloseClick" />
 
 <div class="main">
     @Body
@@ -21,6 +21,8 @@
 @code {
     [Parameter]
     public static string NavMenuCssClass { get; set; } = "collapse";
+    [Parameter]
+    public static string TogglerIcon { get; set; } = "navbar-toggler-icon";
     [Parameter]
     public static bool CollapseNavMenu { get; set; } = true;
 
@@ -44,13 +46,21 @@
 
     private void DisconnectDystirHub(object sender, Exception e)
     {
-        
+
     }
 
     public static void ToggleNavMenu()
     {
         CollapseNavMenu = !CollapseNavMenu;
         NavMenuCssClass = CollapseNavMenu ? "collapse" : "";
+        TogglerIcon = CollapseNavMenu ? "navbar-toggler-icon" : "close";
+    }
+
+    public static void ToggleCloseClick()
+    {
+        CollapseNavMenu = true;
+        TogglerIcon = "navbar-toggler-icon";
+        NavMenuCssClass = "collapse";
     }
 }
 
