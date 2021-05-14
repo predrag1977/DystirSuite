@@ -7,20 +7,19 @@ using System.Threading.Tasks;
 using DystirWeb.ModelViews;
 using Microsoft.AspNetCore.SignalR.Client;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
-using DystirWeb.ApiControllers;
 using System.Threading;
-using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
 
 namespace DystirWeb.Services
 {
     public class DystirService
     {
-        private DystirDBContext _dystirDBContext;
-        private DbContextOptions<DystirDBContext> _dbContextOptions;
-        private NavigationManager _navigationManager;
-        private ILoggerProvider _loggerProvider;
+        const string URL = "https://www.dystir.fo";
+        //const string URL = "http://localhost:64974";
+
+        private static DystirDBContext _dystirDBContext;
+        private static DbContextOptions<DystirDBContext> _dbContextOptions;
         public static HubConnection DystirHubConnection;
         public static ObservableCollection<Matches> AllMatches;
         public static ObservableCollection<Teams> AllTeams;
@@ -37,51 +36,43 @@ namespace DystirWeb.Services
         public static StatisticCompetitionsService StatisticCompetitionsService;
 
         public DystirService(
-            DbContextOptions<DystirDBContext> dbContextOptions,
             DystirDBContext dystirDBContext,
-            NavigationManager navigationManager,
+            DbContextOptions<DystirDBContext> dbContextOptions,
             TimeService timeService,
             StandingService standingService,
-            StatisticCompetitionsService statisticCompetitionsService,
-            ILoggerProvider loggerProvider)
+            StatisticCompetitionsService statisticCompetitionsService)
         {
+            _dystirDBContext = dystirDBContext;
             _dbContextOptions = dbContextOptions;
-            _navigationManager = navigationManager;
-            _loggerProvider = loggerProvider;
             TimerService = timeService;
             StandingService = standingService;
             StatisticCompetitionsService = statisticCompetitionsService;
-            _dystirDBContext = dystirDBContext;
+
+            _ = StartupAsync();
         }
 
         public async Task StartupAsync()
         {
             try
             {
-                if (AllMatches == null)
-                {
-                    await LoadDataAsync();
-                }
+                await LoadDataAsync();
+
             }
             catch (Exception)
             {
-                Thread.Sleep(2000);
-                await LoadDataAsync();
+                Thread.Sleep(1000);
+                await StartupAsync();
             }
         }
 
         public async Task LoadDataAsync()
         {
+            _dystirDBContext = new DystirDBContext(_dbContextOptions);
             var startDystirHubTask = StartDystirHub();
             var loadAllMatchesTask = LoadAllMatchesAsync();
             var loadAllTeamsTask = LoadAllTeamsAsync();
             var loadSponsorsTask = LoadSponsorsAsync();
-            //var loadStandingsTask = LoadStandingsAsync();
-            //var loadStatisticsTask = LoadStatisticsAsync();
-            //var loadAllHandballMatchesTask = LoadAllHandballMatchesAsync();
-            //var loadHandballStandingsTask = LoadHandballStandingsAsync();
-            await Task.WhenAll(startDystirHubTask, loadAllMatchesTask, loadAllTeamsTask/*, loadAllHandballMatchesTask*/, loadSponsorsTask);
-            //await Task.WhenAll(loadStandingsTask, loadStatisticsTask/*, loadHandballStandingsTask*/);
+            await Task.WhenAll(startDystirHubTask, loadAllMatchesTask, loadAllTeamsTask, loadSponsorsTask);
             OnLoadData?.Invoke(this, new EventArgs());
             if (!startDystirHubTask.Result)
             {
@@ -109,38 +100,17 @@ namespace DystirWeb.Services
             Sponsors = new ObservableCollection<Sponsors>(await Task.FromResult(_dystirDBContext.Sponsors));
         }
 
-        public async Task LoadAllHandballMatchesAsync()
-        {
-            int year = DateTime.UtcNow.Year - 1;
-            var fromDate = new DateTime(year, 1, 1);
-            AllHandballMatches = new ObservableCollection<HandballMatches>(
-                await Task.FromResult(_dystirDBContext.HandballMatches
-                .Where(y => y.MatchActivation != 1
-                && y.MatchActivation != 2
-                && y.Time > fromDate)));
-        }
-
-        private async Task LoadHandballStandingsAsync()
-        {
-            HandballStandings = new ObservableCollection<Standing>(
-                await Task.FromResult(new HandballStandingsController(_dystirDBContext).Get()));
-        }
-
         public Task<bool> StartDystirHub()
         {
             try
             {
-
                 if (DystirHubConnection == null)
                 {
-                    DystirHubConnection = new HubConnectionBuilder()
-                        .WithUrl(_navigationManager.ToAbsoluteUri("/dystirhub"))
-                        .ConfigureLogging(logging => logging.AddProvider(_loggerProvider)).Build();
+                    DystirHubConnection = new HubConnectionBuilder().WithUrl(URL + "/dystirhub").Build();
                     DystirHubConnection.On<string, string>("ReceiveMatchDetails", (matchID, matchDetailsJson) =>
                     {
                         MatchDetails matchDetails = JsonConvert.DeserializeObject<MatchDetails>(matchDetailsJson);
-                        UpdateData(matchDetails);
-                        OnUpdateData?.Invoke(this, matchDetailsJson);
+                        UpdateData(matchDetailsJson);
                     });
                     DystirHubConnection.Closed += DystirHubConnection_Closed;
 
@@ -164,19 +134,18 @@ namespace DystirWeb.Services
             OnDisconnectDystirHub?.Invoke(this, ex);
             Thread.Sleep(1000);
             DystirHubConnection = null;
-            _dystirDBContext = new DystirDBContext(_dbContextOptions);
-            await LoadDataAsync();
+            await StartupAsync();
         }
 
-        private void UpdateData(MatchDetails matchDetails)
+        private void UpdateData(string matchDetailsJson)
         {
             _dystirDBContext = new DystirDBContext(_dbContextOptions);
-
             var fromDate = new DateTime(DateTime.UtcNow.Year, 1, 1);
             AllMatches = new ObservableCollection<Matches>(_dystirDBContext.Matches
                 .Where(y => y.Time > fromDate
                 && y.MatchActivation != 1
                 && y.MatchActivation != 2));
+            OnUpdateData?.Invoke(this, matchDetailsJson);
         }
 
         public async Task<FullMatchDetailsModelView> LoadMatchDetailsAsync(string matchID)
@@ -240,6 +209,7 @@ namespace DystirWeb.Services
 
         private Task<List<PlayersOfMatches>> GetPlayersOfMatch(string matchID)
         {
+           
             var playersOfMatchList = _dystirDBContext.PlayersOfMatches?.Where(x => x.MatchId.ToString() == matchID);
             var sortedPlayersList = playersOfMatchList?
                 .OrderBy(x => x.PlayingStatus == 3)
@@ -506,5 +476,31 @@ namespace DystirWeb.Services
             StatisticCompetitions = new ObservableCollection<CompetitionStatistic>(StatisticCompetitionsService.GetCompetitionsStatistic(_dystirDBContext));
             await Task.CompletedTask;
         }
+
+        [JSInvokable]
+        public static void ReloadData()
+        {
+            OnLoadData?.Invoke(null, new EventArgs());
+        }
+
+        //*******************//
+        //  NO USED METHODs //
+        //*****************//  
+        //public async Task LoadAllHandballMatchesAsync()
+        //{
+        //    int year = DateTime.UtcNow.Year - 1;
+        //    var fromDate = new DateTime(year, 1, 1);
+        //    AllHandballMatches = new ObservableCollection<HandballMatches>(
+        //        await Task.FromResult(_dystirDBContext.HandballMatches
+        //        .Where(y => y.MatchActivation != 1
+        //        && y.MatchActivation != 2
+        //        && y.Time > fromDate)));
+        //}
+
+        //private async Task LoadHandballStandingsAsync()
+        //{
+        //    HandballStandings = new ObservableCollection<Standing>(
+        //        await Task.FromResult(new HandballStandingsController(_dystirDBContext).Get()));
+        //}
     }
 }

@@ -9,6 +9,11 @@
 
 
 <div class="container-fluid d-flex h-100 flex-column p-0">
+    @*<div class="row">
+        <button onclick="stopHub()">
+            <div id="result">TEST</div>
+        </button>
+    </div>*@
     <div class="row">
         <ChooseDays DaysOnClick="@DaysOnClick" TimeZoneOffset="@timeZoneOffset" />
     </div>
@@ -54,6 +59,7 @@
         </div>
     </div>
 </div>
+
 @code {
     private int _daysFrom = 0;
     private int _dayAfter = 0;

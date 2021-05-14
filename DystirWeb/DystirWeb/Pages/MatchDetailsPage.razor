@@ -13,6 +13,11 @@
 @inherits MatchBase
 
 <div class="container-match-details">
+    @*<div class="box">
+        <button onclick="stopHub()">
+            <div id="result">TEST</div>
+        </button>
+    </div>*@
     <div class="box">
         <div class="matches_list_same_day">
             @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
@@ -103,19 +108,19 @@
 
     protected override async Task OnInitializedAsync()
     {
+        DystirService.OnLoadData += LoadData;
+        DystirService.OnUpdateData += UpdateData;
+        DystirService.TimerService.OnTimerElapsed += TimerElapsed;
         var browserDateTime = await BrowserDateTimeProvider.GetInstance();
         int serverTimeZoneHours = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
         int clientTimeZoneHours = browserDateTime.LocalTimeZoneInfo.BaseUtcOffset.Hours;
         timeZoneOffset = clientTimeZoneHours - serverTimeZoneHours;
-        DystirService.OnLoadData += LoadData;
-        DystirService.OnUpdateData += UpdateData;
-        DystirService.TimerService.OnTimerElapsed += TimerElapsed;
     }
 
     protected override async Task OnParametersSetAsync()
     {
         isLoading = true;
-        SelectedMatch = DystirService.AllMatches.FirstOrDefault(x => x.MatchId == int.Parse(matchid));
+        SelectedMatch = DystirService.AllMatches?.FirstOrDefault(x => x.MatchId == int.Parse(matchid));
         MatchesListSameDay = DystirService.GetMatchesListSameDay(SelectedMatch);
         await LoadMatchDetails();
     }
