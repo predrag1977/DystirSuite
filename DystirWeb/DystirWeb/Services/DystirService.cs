@@ -36,18 +36,16 @@ namespace DystirWeb.Services
         public static StatisticCompetitionsService StatisticCompetitionsService;
 
         public DystirService(
-            DystirDBContext dystirDBContext,
             DbContextOptions<DystirDBContext> dbContextOptions,
             TimeService timeService,
             StandingService standingService,
             StatisticCompetitionsService statisticCompetitionsService)
         {
-            _dystirDBContext = dystirDBContext;
             _dbContextOptions = dbContextOptions;
             TimerService = timeService;
             StandingService = standingService;
             StatisticCompetitionsService = statisticCompetitionsService;
-
+            _dystirDBContext = new DystirDBContext(_dbContextOptions);
             _ = StartupAsync();
         }
 
