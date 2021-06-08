@@ -394,10 +394,10 @@ namespace DystirXamarin.Views
             switch (playingStatus)
             {
                 case 1:
-                    if (subOUT != null && subOUT > -1) return 2;
+                    //if (subOUT != null && subOUT > -1) return 2;
                     return 1;
                 case 2:
-                    if (subIN != null && subIN > -1) return 1;
+                    //if (subIN != null && subIN > -1) return 1;
                     return 2;
                 case 0:
                     return 3;

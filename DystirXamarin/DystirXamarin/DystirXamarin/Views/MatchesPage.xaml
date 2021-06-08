@@ -146,8 +146,8 @@
                 <StackLayout x:Name="NewMatchButton" >
                     <BoxView HeightRequest="1" Margin="10,0,10,5" BackgroundColor="Gray"/>
                     <ContentView Padding="1" Margin="20,0" BackgroundColor="DarkGreen" HorizontalOptions="Fill">
-                        <StackLayout BackgroundColor="Black" Padding="10">
-                            <Label Text="NEW MATCH" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontAttributes="Bold" TextColor="DarkGreen" />
+                        <StackLayout BackgroundColor="DarkGreen" Padding="10">
+                            <Label Text="NEW MATCH" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontAttributes="Bold" TextColor="White" />
                         </StackLayout>
                         <ContentView.GestureRecognizers>
                             <TapGestureRecognizer Tapped="NewMatch_Tapped" NumberOfTapsRequired="1" />
