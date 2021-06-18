@@ -41,18 +41,58 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid BackgroundColor="DimGray" IsVisible="{Binding IsLoading}" Padding="5"
                   VerticalOptions="FillAndExpand"  HorizontalOptions="FillAndExpand">
                 <Label Text="Loading data..." TextColor="White" VerticalOptions="CenterAndExpand"/>
             </Grid>
-            <StackLayout Grid.Row="1" >
+
+            <Grid Grid.Row="1" Margin="0,7,0,0" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackLayout Grid.Column="0" >
+                    <ContentView Padding="1" Margin="5,0" BackgroundColor="DarkKhaki" HorizontalOptions="Fill">
+                        <StackLayout BackgroundColor="Black" Padding="10">
+                            <Label Text="Before" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontAttributes="Bold" TextColor="DarkKhaki" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Before_Tapped" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                </StackLayout>
+                <StackLayout Grid.Column="1" >
+                    <ContentView Padding="1" Margin="5,0" BackgroundColor="DarkKhaki" HorizontalOptions="Fill">
+                        <StackLayout BackgroundColor="Black" Padding="10">
+                            <Label Text="Today" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontAttributes="Bold" TextColor="DarkKhaki" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Today_Tapped" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                </StackLayout>
+                <StackLayout Grid.Column="2" >
+                    <ContentView Padding="1" Margin="5,0" BackgroundColor="DarkKhaki" HorizontalOptions="Fill">
+                        <StackLayout BackgroundColor="Black" Padding="10">
+                            <Label Text="Next" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontAttributes="Bold" TextColor="DarkKhaki" />
+                        </StackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="Next_Tapped" NumberOfTapsRequired="1" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                </StackLayout>
+            </Grid>
+            
+            <StackLayout Grid.Row="2" >
                 <ListView x:Name="MatchesListView"
 				    ItemsSource="{Binding Matches}"
                     VerticalOptions="FillAndExpand"
                     HasUnevenRows="True"
-                    IsPullToRefreshEnabled="True"
+                    IsPullToRefreshEnabled="False"
                     CachingStrategy="RecycleElement"
                     SeparatorVisibility="None"
                     SeparatorColor="#d3d3d3"
@@ -63,7 +103,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <Grid >
+                                <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
@@ -143,9 +183,10 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                
                 <StackLayout x:Name="NewMatchButton" >
                     <BoxView HeightRequest="1" Margin="10,0,10,5" BackgroundColor="Gray"/>
-                    <ContentView Padding="1" Margin="20,0" BackgroundColor="DarkGreen" HorizontalOptions="Fill">
+                    <ContentView Padding="1" Margin="10,0" BackgroundColor="DarkGreen" HorizontalOptions="Fill">
                         <StackLayout BackgroundColor="Black" Padding="10">
                             <Label Text="NEW MATCH" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontAttributes="Bold" TextColor="DarkGreen" />
                         </StackLayout>
@@ -158,7 +199,7 @@
                     <Label x:Name="VersionLabel" Text="1.0.0" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontAttributes="Bold" />
                 </StackLayout>
             </StackLayout>
-            <ContentView x:Name="ErrorLayout" Grid.Row="1" IsVisible="False" VerticalOptions="Center" HorizontalOptions="Fill" Margin="20,0" Padding="15" BackgroundColor="LightGray">
+            <ContentView x:Name="ErrorLayout" Grid.Row="2" IsVisible="False" VerticalOptions="Center" HorizontalOptions="Fill" Margin="20,0" Padding="15" BackgroundColor="LightGray">
                 <Label Text="{Binding MainException.Message}" LineBreakMode="WordWrap" TextColor="Black" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
             </ContentView>
         </Grid>

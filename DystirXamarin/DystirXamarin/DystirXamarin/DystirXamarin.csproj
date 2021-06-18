@@ -20,6 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\ManagerPickerPage.xaml.cs">
+      <DependentUpon>ManagerPickerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\RoundPickerPage.xaml.cs">
       <DependentUpon>RoundPickerPage.xaml</DependentUpon>
     </Compile>
