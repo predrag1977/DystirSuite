@@ -12,7 +12,7 @@ namespace Dystir.ViewModels
 
         internal IDystirHub GetDystirHubService()
         {
-            return DependencyService.Get<IDystirHub>() ?? new DystirHub(this);
+            return DependencyService.Get<IDystirHub>();
         }
     }
 }
