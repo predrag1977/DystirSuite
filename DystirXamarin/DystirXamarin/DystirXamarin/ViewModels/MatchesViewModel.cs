@@ -58,7 +58,15 @@ namespace DystirXamarin.ViewModels
 
         public async Task GetMatches()
         {
-            Matches = await GetDataStore().GetMatchesAsync("active", this);
+            AllMatches = await GetDataStore().GetMatchesAsync("active", this);
+            if (AdministratorLoggedIn.AdministratorTeamID == 0)
+            {
+                Matches = new ObservableCollection<Match>(AllMatches.Where(x => x.Time.Value.ToLocalTime().Date == DateTime.Now.ToLocalTime().Date));
+            }
+            else
+            {
+                Matches = new ObservableCollection<Match>(AllMatches);
+            }
         }
 
         public async Task GetTeams()

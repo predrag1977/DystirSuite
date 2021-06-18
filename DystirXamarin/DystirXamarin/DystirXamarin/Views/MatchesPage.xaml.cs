@@ -6,6 +6,7 @@ using DystirXamarin.Models;
 using DystirXamarin.ViewModels;
 using DystirXamarin.Converter;
 using System.Globalization;
+using System.Collections.ObjectModel;
 
 namespace DystirXamarin.Views
 {
@@ -126,6 +127,21 @@ namespace DystirXamarin.Views
                 matchTimeLabel.Text = fullMatchTime;
                 return true;
             });
+        }
+
+        private void Before_Tapped(object sender, EventArgs e)
+        {
+            _viewModel.Matches = new ObservableCollection<Match>(_viewModel.AllMatches.Where(x => x.Time.Value.ToLocalTime().Date < DateTime.Now.ToLocalTime().Date));
+        }
+
+        private void Today_Tapped(object sender, EventArgs e)
+        {
+            _viewModel.Matches = new ObservableCollection<Match>(_viewModel.AllMatches.Where(x => x.Time.Value.ToLocalTime().Date == DateTime.Now.ToLocalTime().Date));
+        }
+
+        private void Next_Tapped(object sender, EventArgs e)
+        {
+            _viewModel.Matches = new ObservableCollection<Match>(_viewModel.AllMatches.Where(x => x.Time.Value.ToLocalTime().Date > DateTime.Now.ToLocalTime().Date));
         }
     }
 }

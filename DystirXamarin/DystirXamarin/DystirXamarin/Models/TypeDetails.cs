@@ -12,6 +12,7 @@
         Date,
         Time,
         Result,
-        Round
+        Round,
+        Manager
     }
 }

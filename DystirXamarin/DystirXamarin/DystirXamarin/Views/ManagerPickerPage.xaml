@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DystirXamarin.Views.ManagerPickerPage"
+             BackgroundColor="{StaticResource LightBackgroundColor}"
+             Title="Select round of match">
+    <ContentPage.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="Margin" Value="5,0" />
+            <Setter Property="BorderWidth" Value="2" />
+            <Setter Property="BorderColor" Value="Goldenrod" />
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems >
+        <ToolbarItem Name="OK" Order="Primary" Text="OK" Clicked="OK_Tapped" />
+    </ContentPage.ToolbarItems>
+    <StackLayout Padding="20,0">
+        <ListView x:Name="ManagersListView" 
+                  ItemsSource="{Binding AdministratorList}"
+                  VerticalOptions="FillAndExpand"
+                  HasUnevenRows="true" BackgroundColor="{StaticResource LightBackgroundColor}"
+                  ItemSelected="ManagersListView_ItemSelected" CachingStrategy="RecycleElementAndDataTemplate"
+                  SeparatorVisibility="None">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ContentView Padding="1.5" BackgroundColor="White" Margin="0,3">
+                            <StackLayout BackgroundColor="{StaticResource LightBackgroundColor}">
+                                <ContentView HorizontalOptions="Fill">
+                                    <StackLayout Padding="5,10">
+                                        <Label Text="{Binding AdministratorFirstName}" TextColor="White" HorizontalOptions="Center"
+                                                   VerticalOptions="Center" FontSize="14" FontAttributes="Bold" />
+                                        <Label Text="{Binding AdministratorLastName}" TextColor="White" HorizontalOptions="Center"
+                                                   VerticalOptions="Center" FontSize="14" FontAttributes="Bold" />
+                                    </StackLayout>
+                                </ContentView>
+                            </StackLayout>
+                            <ContentView.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="Managers_Tapped" CommandParameter="{Binding}" NumberOfTapsRequired="1" />
+                            </ContentView.GestureRecognizers>
+                        </ContentView>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>

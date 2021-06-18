@@ -25,6 +25,13 @@ namespace DystirXamarin.ViewModels
             set { SetProperty(ref title, value); }
         }
 
+        ObservableCollection<Match> _allMatches = new ObservableCollection<Match>();
+        public ObservableCollection<Match> AllMatches
+        {
+            get { return _allMatches; }
+            set { SetProperty(ref _allMatches, value); }
+        }
+
         ObservableCollection<Match> _matches = new ObservableCollection<Match>();
         public ObservableCollection<Match> Matches
         {

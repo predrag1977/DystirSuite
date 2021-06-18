@@ -227,6 +227,11 @@ namespace DystirXamarin.Views
             NavigateToDetails(TypeDetails.Result, sender as Label);
         }
 
+        private void ManagerControl_Tapped(object sender, EventArgs e)
+        {
+            NavigateToDetails(TypeDetails.Manager, ManagersLabel);
+        }
+
         private async void NavigateToDetails(TypeDetails typeDetails, Label label)
         {
             switch (typeDetails)
@@ -242,6 +247,9 @@ namespace DystirXamarin.Views
                     break;
                 case TypeDetails.Round:
                     await Navigation.PushAsync(new RoundPickerPage(Match, label), false);
+                    break;
+                case TypeDetails.Manager:
+                    await Navigation.PushAsync(new ManagerPickerPage(_viewModel, Match, label), false);
                     break;
                 default:
                     await Navigation.PushAsync(new DetailPickerPage(Match, typeDetails, label), false);

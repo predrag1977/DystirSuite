@@ -25,15 +25,15 @@
         <Grid Grid.Row="1" x:Name="DaysView" HorizontalOptions="FillAndExpand" ColumnSpacing="3" Margin="0,5,0,2" 
               BindingContext="{Binding MatchesDays}" 
               BindingContextChanged="DaysView_BindingContextChanged" />
-        <ListView x:Name="MatchesListView"
-            SeparatorVisibility="None" HasUnevenRows="True"
-            CachingStrategy="RecycleElement"
-            Grid.Row="2" SelectionMode="None"
-            BackgroundColor="Transparent"
-            IsGroupingEnabled="True"
-            VerticalOptions="FillAndExpand"
-            Footer=""
-            ItemsSource="{Binding MatchesGroupList}">
+        <ListView x:Name="MatchesListView" Grid.Row="2"
+                  SeparatorVisibility="None" HasUnevenRows="True"
+                  CachingStrategy="RecycleElement"
+                  SelectionMode="None"
+                  BackgroundColor="Transparent"
+                  IsGroupingEnabled="True"
+                  VerticalOptions="FillAndExpand"
+                  Footer=""
+                  ItemsSource="{Binding MatchesGroupList}">
             <ListView.GroupHeaderTemplate>
                 <DataTemplate>
                     <ViewCell>
