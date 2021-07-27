@@ -10,10 +10,10 @@
 
 <div class="container-fluid d-flex h-100 flex-column p-0">
     @*<div class="row">
-        <button onclick="stopHub()">
-            <div id="result">TEST</div>
-        </button>
-    </div>*@
+            <button onclick="stopHub()">
+                <div id="result">TEST</div>
+            </button>
+        </div>*@
     <div class="row">
         <ChooseDays DaysOnClick="@DaysOnClick" TimeZoneOffset="@timeZoneOffset" />
     </div>
@@ -75,7 +75,6 @@
         await Task.CompletedTask;
     }
 
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -134,13 +133,28 @@
 
     public async Task GetSelectedMatchListGroup()
     {
-        await Task.Run(() => {
+        await Task.Run(() =>
+        {
             var fromDate = DateTime.UtcNow.AddHours(timeZoneOffset).Date.AddDays(_daysFrom);
             var toDate = fromDate.AddDays(_dayAfter);
-            SelectedMatchListGroup = DystirService.AllMatches?.OrderBy(x => x.MatchTypeId).ThenBy(x => x.Time).ThenBy(x => x.MatchId)
+            SelectedMatchListGroup = DystirService.AllMatches?.OrderBy(x => GetOrder(x.MatchTypeId)).ThenBy(x => x.Time).ThenBy(x => x.MatchId)
             .Where(x => x.Time.Value.ToLocalTime().Date >= fromDate
             && x.Time.Value.ToLocalTime().Date <= toDate).GroupBy(x => x.MatchTypeName).ToList() ?? new List<IGrouping<string, Matches>>();
         });
         isLoading = false;
+        Refresh();
+    }
+
+    private object GetOrder(int? matchTypeId)
+    {
+        switch (matchTypeId)
+        {
+            case 101:
+                return 6;
+            case 6:
+                return 101;
+            default:
+                return matchTypeId;
+        }
     }
 }
