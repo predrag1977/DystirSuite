@@ -8,14 +8,17 @@
 <link href="css/volleyball.css?v=1" rel="stylesheet" />
 
 @*<div style="position:absolute; height:100%; width:100%">
-    <img src="images/background/handball-background.png" style="height:100%; width:100%" />
-</div>*@
+        <img src="images/background/handball-background.png" style="height:100%; width:100%" />
+    </div>*@
 
 <div class="sidebar">
-    <div class="@MainLayout.NavMenuCssClass">
-        @*<VolleyballNavMenu ToggleOnClick="ToggleNavMenu" />*@
-    </div>
+    <VolleyballNavMenu />
 </div>
+
+<div class="header">
+    <Header />
+</div>
+
 <div class="container-layout">
     @*@Body*@
 </div>
@@ -28,11 +31,6 @@
     protected override async Task OnInitializedAsync()
     {
         await Task.CompletedTask;
-    }
-
-    public void ToggleNavMenu()
-    {
-        MainLayout.ToggleNavMenu();
     }
 }
 

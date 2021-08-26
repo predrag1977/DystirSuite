@@ -12,17 +12,23 @@ namespace DystirWeb.ApiControllers
     [ApiController]
     public class StandingsController : ControllerBase
     {
+        private DystirService _dystirService;
+        public StandingsController(DystirService dystirService)
+        {
+            _dystirService = dystirService;
+        }
+
         // GET api/Standings
         [HttpGet]
         public IEnumerable<Standing> Get()
         {
-            var teamsList = DystirService.AllTeams;
+            var teamsList = _dystirService.AllTeams;
             DateTime date = new DateTime(DateTime.Now.Year, 1, 1);
-            var matchesList = DystirService.AllMatches?.Where(x => x.MatchTypeId != null
+            var matchesList = _dystirService.AllMatches?.Where(x => x.MatchTypeId != null
                     && x.MatchActivation != 1
                     && x.MatchActivation != 2
                     && x.Time > date);
-            return DystirService.StandingService.GetStandings(teamsList, matchesList);
+            return _dystirService.StandingService.GetStandings(teamsList, matchesList);
         }
 
         // POST api/<controller>

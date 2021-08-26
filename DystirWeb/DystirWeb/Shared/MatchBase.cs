@@ -1,7 +1,5 @@
 ﻿using DystirWeb.Models;
-using DystirWeb.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -31,7 +29,8 @@ namespace DystirWeb.Shared
 
         public string MatchPeriod(double minutes, double seconds, int? matchStatus, double milsecToStart)
         {
-            bool isDisconnected = DystirService.DystirHubConnection?.State != HubConnectionState.Connected;
+            //bool isDisconnected = DystirService.DystirHubConnection?.State != HubConnectionState.Connected;
+            bool isDisconnected = false;
             if (isDisconnected && matchStatus > 1 && matchStatus < 12)
             {
                 return "";

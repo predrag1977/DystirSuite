@@ -2,8 +2,9 @@
 
 @using DystirWeb.Models
 @using DystirWeb.Services
+@using Microsoft.AspNetCore.SignalR.Client;
 @inject DystirService DystirService
-@inject NavigationManager NavigationManager
+@inject ClientService ClientService
 @inject Blazored.Localisation.Services.IBrowserDateTimeProvider BrowserDateTimeProvider
 @layout MainFootballLayout
 @implements IDisposable
@@ -16,46 +17,44 @@
     </div>
     <div class="row flex-fill d-flex justify-content-start">
         <div class="col">
-            @if (isLoading)
-            {
-                <div style="position:relative; width:100%;height:100%;">
-                    <img src="images/icons/loadingicon.gif" style="position:absolute; width:3rem;top:calc(50% - 1.5rem);left:calc(50% - 1.5rem);" />
-                </div>
-            }
-            else
-            {
-                <div class="matches_container">
-                    @if (FixturesMatchesList == null || FixturesMatchesList?.Count == 0)
+            <div class="matches_container">
+                @if (FixturesMatchesList == null || FixturesMatchesList?.Count == 0)
+                {
+                    <div class="no-matches">Eingin dystur</div>
+                }
+                else
+                {
+                    @if (FixturesMatchesList.Count > 0)
                     {
-                        <div class="no-matches">Eingin dystur</div>
+                        <div class="match-group-competition-name">@SelectedFixturesCompetition</div>
                     }
-                    else
+                    @foreach (var match in FixturesMatchesList)
                     {
-                        @if (FixturesMatchesList.Count > 0)
+                        @if (match.StatusId <= 12)
                         {
-                            <div class="match-group-competition-name">@SelectedFixturesCompetition</div>
-                        }
-                        @foreach (var match in FixturesMatchesList)
-                        {
-                            @if (match.StatusId <= 12)
-                            {
-                                <NavLink class="nav-link" style="cursor: pointer;" href="@("football/matchdetails/" + match.MatchId)">
-                                    <Match MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
-                                </NavLink>
-                            }
-                            else
-                            {
+                            <NavLink class="nav-link" style="cursor: pointer;" href="@("football/matchdetails/" + match.MatchId)">
                                 <Match MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
-                            }
+                            </NavLink>
+                        }
+                        else
+                        {
+                            <Match MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
                         }
                     }
-                    <NewsView />
-                    <SponsorsView ShowOnSideBar="false" />
-                </div>
-            }
+                }
+                <NewsView />
+                <SponsorsView ShowOnSideBar="false" />
+            </div>
         </div>
     </div>
 </div>
+
+@if (isLoading)
+{
+    <div style="position:fixed; top:calc(50% - 1.5rem);left:calc(50% - 1.5rem);">
+        <img src="images/icons/loadingicon.gif" style="width:3rem" />
+    </div>
+}
 
 @code {
     private string SelectedFixturesCompetition { get; set; }
@@ -66,45 +65,47 @@
 
     protected override async Task OnInitializedAsync()
     {
-        DystirService.OnLoadData += LoadData;
-        DystirService.OnUpdateData += UpdateData;
-        DystirService.TimerService.OnTimerElapsed += TimerElapsed;
-        await Task.CompletedTask;
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            var browserDateTime = await BrowserDateTimeProvider.GetInstance();
-            int serverTimeZoneHours = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
-            int clientTimeZoneHours = browserDateTime.LocalTimeZoneInfo.BaseUtcOffset.Hours;
-            timeZoneOffset = clientTimeZoneHours - serverTimeZoneHours;
-            await LoadFixturesMatches();
-        }
+        //ClientService.DystirHubConnection.On<string, string>("UpdateCommand", (matchID, matchDetails) =>
+        //{
+        //    _ = LoadFixturesMatches();
+        //});
+        ClientService.OnConnected += ClientService_OnConnected;
+        ClientService.OnReconnected += ClientService_OnReconnected;
+        ClientService.OnUpdated += ClientService_OnUpdated;
+        DystirService.OnConnected += HubConnection_OnConnected;
+        var browserDateTime = await BrowserDateTimeProvider.GetInstance();
+        int serverTimeZoneHours = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
+        int clientTimeZoneHours = browserDateTime.LocalTimeZoneInfo.BaseUtcOffset.Hours;
+        timeZoneOffset = clientTimeZoneHours - serverTimeZoneHours;
+        _ = LoadFixturesMatches();
     }
 
     void IDisposable.Dispose()
     {
-        DystirService.OnLoadData -= LoadData;
-        DystirService.OnUpdateData -= UpdateData;
-        DystirService.TimerService.OnTimerElapsed -= TimerElapsed;
+        ClientService.OnConnected -= ClientService_OnConnected;
+        ClientService.OnReconnected -= ClientService_OnReconnected;
+        ClientService.OnUpdated -= ClientService_OnUpdated;
+        DystirService.OnConnected -= HubConnection_OnConnected;
     }
 
-    private void LoadData(object sender, EventArgs arg)
-    {
-        Refresh();
-    }
-
-    private async void UpdateData(object sender, string matchDetailsJson)
+    private async void ClientService_OnConnected()
     {
         await LoadFixturesMatches();
-        Refresh();
     }
 
-    private void TimerElapsed(object sender, EventArgs e)
+    private async void ClientService_OnReconnected()
     {
-        Refresh();
+        await LoadFixturesMatches();
+    }
+
+    private async void ClientService_OnUpdated(string matchID)
+    {
+        await LoadFixturesMatches();
+    }
+
+    private async void HubConnection_OnConnected()
+    {
+        await LoadFixturesMatches();
     }
 
     private void Refresh()
@@ -121,6 +122,7 @@
 
     private async void CompetitionsOnClick(string competition)
     {
+        isLoading = true;
         SelectedFixturesCompetition = competition;
         await LoadFixturesMatches();
     }
@@ -130,7 +132,7 @@
         await Task.Run(() =>
         {
             var allResultMatchByCompetition = DystirService.AllMatches?.Where(x => x.StatusId < 12 || x.StatusId == 14)
-            .OrderBy(x => x.MatchTypeId)
+            .OrderBy(x => x.MatchTypeId).OrderBy(x => GetOrder(x.MatchTypeId))
             .ThenBy(x => x.RoundId).ThenBy(x => x.Time).ThenBy(x => x.MatchId)
             .GroupBy(x => x.MatchTypeName)?.ToList() ?? new List<IGrouping<string, Matches>>();
 
@@ -145,6 +147,20 @@
             FixturesMatchesList = allResultMatchByCompetition.FirstOrDefault(x => x.Key == SelectedFixturesCompetition)?.ToList() ?? new List<Matches>();
         });
         isLoading = false;
+        Refresh();
+    }
+
+    private object GetOrder(int? matchTypeId)
+    {
+        switch (matchTypeId)
+        {
+            case 101:
+                return 6;
+            case 6:
+                return 101;
+            default:
+                return matchTypeId;
+        }
     }
 }
 

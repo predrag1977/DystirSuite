@@ -8,29 +8,29 @@ namespace DystirWeb.Services
 {
     public class StatisticCompetitionsService
     {
-        public IEnumerable<CompetitionStatistic> GetCompetitionsStatistic(DystirDBContext _dystirDBContext)
+        public IEnumerable<CompetitionStatistic> GetCompetitionsStatistic(ObservableCollection<Matches> allMatches, DystirDBContext dystirDBContext)
         {
             DateTime date = new DateTime(DateTime.Now.Year, 1, 1);
-            var matchesList = DystirService.AllMatches ?? new ObservableCollection<Matches>();
-            var playersList = new ObservableCollection<PlayersOfMatches>(_dystirDBContext.PlayersOfMatches?
+            var matchesList = allMatches ?? new ObservableCollection<Matches>();
+            var playersList = new ObservableCollection<PlayersOfMatches>(dystirDBContext.PlayersOfMatches?
                 .Where(x => x.Goal > 0 || x.Assist > 0).ToList().Where(p => matchesList.Any(m => m.MatchId == p.MatchId)));
             List<CompetitionStatistic> competitionStatisticsList = new List<CompetitionStatistic>();
             var competititionNamesArray = new string[] { "Betri deildin", "1. deild", "Betri deildin kvinnur" };
             foreach (string competititionName in competititionNamesArray)
             {
-                competitionStatisticsList.Add(GetStatistics(competititionName, playersList));
+                competitionStatisticsList.Add(GetStatistics(allMatches, competititionName, playersList));
             }
             return competitionStatisticsList;
         }
 
-        internal CompetitionStatistic GetStatistics(string competititionName, ObservableCollection<PlayersOfMatches> playersList)
+        internal CompetitionStatistic GetStatistics(ObservableCollection<Matches> allMatches, string competititionName, ObservableCollection<PlayersOfMatches> playersList)
         {
             CompetitionStatistic competitionStatistic = new CompetitionStatistic();
             try
             {
                 competitionStatistic.CompetitionName = competititionName;
                 competitionStatistic.TeamStatistics = new List<TeamStatistic>();
-                var matches = DystirService.AllMatches?.Where(x => x.MatchTypeName == competititionName && (x.RoundId < 1000));
+                var matches = allMatches?.Where(x => x.MatchTypeName == competititionName && (x.RoundId < 1000));
                 //&& (string.Equals(x.HomeTeam, team.TeamName, StringComparison.OrdinalIgnoreCase)
                 //|| string.Equals(x.AwayTeam, team.TeamName, StringComparison.OrdinalIgnoreCase)));
                 foreach (Matches match in matches)

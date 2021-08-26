@@ -1,71 +1,88 @@
 ﻿@using DystirWeb.Services
 @using Microsoft.AspNetCore.Components
-@inject NavigationManager uriHelper
+@using Microsoft.AspNetCore.SignalR.Client
+@using System.Threading
 @inject DystirService DystirService
-@inject NavigationManager NavigationManager
+@inject NavigationManager navigationManager
+@inject ClientService ClientService
+@inject IJSRuntime JSRuntime
 @inherits LayoutComponentBase
 @implements IDisposable
-    
-@*<link href="css/site.css?v=4" rel="stylesheet" />*@
-
-<Header ToggleOnClick="ToggleNavMenu" ToggleCloseClick="ToggleCloseClick" />
 
 <div class="main">
     @Body
 </div>
 
-<div class="no-connection" style="top:calc(50% - 1.5rem);left:calc(50% - 1.5rem);">
-    <img src="images/icons/loadingicon.gif" style="width:3rem" />
-</div>
+@if (!IsDystirHubConnected)
+{
+    <div style="position:fixed; top:calc(50% - 1.5rem);left:calc(50% - 1.5rem);">
+        <img src="images/icons/loadingicon.gif" style="width:3rem" />
+    </div>
+}
 
-@code {
-    [Parameter]
-    public static string NavMenuCssClass { get; set; } = "collapse";
-    [Parameter]
-    public static string TogglerIcon { get; set; } = "navbar-toggler-icon";
-    [Parameter]
-    public static bool CollapseNavMenu { get; set; } = true;
+@code
+{
+    public bool IsDystirHubConnected { get; set; }
+    private DotNetObjectReference<ClientService> clientServiceRef;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
-        DystirService.OnConnectDystirHub += ConnectDystirHub;
-        DystirService.OnDisconnectDystirHub += DisconnectDystirHub;
+        ClientService.OnConnected += ClientService_OnConnected;
+        ClientService.OnReconnected += ClientService_OnReconnected;
+        ClientService.OnDisconnected += ClientService_OnDisconnected;
+        DystirService.OnConnected += DystirService_OnConnected;
+        DystirService.OnDisconnected += DystirService_OnDisconnected;
+        IsDystirHubConnected = DystirService?.DystirHub?.DystirHubConnection?.State == HubConnectionState.Connected;
+        Refresh();
+        clientServiceRef = DotNetObjectReference.Create(ClientService);
+        await JSRuntime.InvokeAsync<object>("initClientService", clientServiceRef);
     }
 
     void IDisposable.Dispose()
     {
-        DystirService.OnConnectDystirHub -= ConnectDystirHub;
-        DystirService.OnDisconnectDystirHub -= DisconnectDystirHub;
+        ClientService.OnConnected -= ClientService_OnConnected;
+        ClientService.OnReconnected -= ClientService_OnReconnected;
+        ClientService.OnDisconnected -= ClientService_OnDisconnected;
+        DystirService.OnConnected -= DystirService_OnConnected;
+        DystirService.OnDisconnected -= DystirService_OnDisconnected;
+        clientServiceRef?.Dispose();
     }
 
-    private void ConnectDystirHub(object sender, EventArgs arg)
+    private async void ClientService_OnConnected()
     {
-
+        IsDystirHubConnected = true;
+        Refresh();
+        await Task.CompletedTask;
     }
 
-    private void DisconnectDystirHub(object sender, Exception e)
+    private async void ClientService_OnReconnected()
     {
-
+        IsDystirHubConnected = true;
+        Refresh();
+        await Task.CompletedTask;
     }
 
-    public static void ToggleNavMenu()
+    private async void ClientService_OnDisconnected()
     {
-        CollapseNavMenu = !CollapseNavMenu;
-        NavMenuCssClass = CollapseNavMenu ? "collapse" : "";
-        TogglerIcon = CollapseNavMenu ? "navbar-toggler-icon" : "close";
+        IsDystirHubConnected = false;
+        Refresh();
+        await Task.CompletedTask;
     }
 
-    public static void ToggleCloseClick()
+    private void DystirService_OnConnected()
     {
-        CollapseNavMenu = true;
-        TogglerIcon = "navbar-toggler-icon";
-        NavMenuCssClass = "collapse";
+        IsDystirHubConnected = true;
+        Refresh();
+    }
+
+    private void DystirService_OnDisconnected()
+    {
+        IsDystirHubConnected = false;
+        Refresh();
+    }
+
+    private void Refresh()
+    {
+        InvokeAsync(() => StateHasChanged());
     }
 }
-
-
-
-
-
-

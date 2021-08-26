@@ -52,29 +52,9 @@
     protected override async Task OnInitializedAsync()
     {
         await GetSelectedMatchListGroup();
-        DystirService.OnLoadData += LoadData;
-        DystirService.OnUpdateData += UpdateData;
-        DystirService.OnConnectDystirHub += ConnectDystirHub;
     }
 
     void IDisposable.Dispose()
-    {
-        DystirService.OnLoadData -= LoadData;
-        DystirService.OnUpdateData -= UpdateData;
-        DystirService.OnConnectDystirHub -= ConnectDystirHub;
-    }
-
-    private void LoadData(object sender, EventArgs arg)
-    {
-        Refresh();
-    }
-
-    private void UpdateData(object sender, string matchDetailsJson)
-    {
-        Refresh();
-    }
-
-    private void ConnectDystirHub(object sender, EventArgs arg)
     {
 
     }

@@ -16,16 +16,11 @@ namespace DystirWeb.Controllers
     public class EventsOfMatchesController : ControllerBase
     {
         private DystirDBContext _dystirDBContext;
+        private readonly DystirHub _dystirHub;
 
-
-        private readonly IHubContext<DystirHub> _hubContext;
-
-        public EventsOfMatchesController(IHubContext<DystirHub> hubContext, DystirDBContext dystirDBContext)
+        public EventsOfMatchesController(DystirHub dystirHub, DystirDBContext dystirDBContext)
         {
-            if (hubContext != null)
-            {
-                _hubContext = hubContext;
-            }
+            _dystirHub = dystirHub;
             _dystirDBContext = dystirDBContext;
         }
 
@@ -447,16 +442,15 @@ namespace DystirWeb.Controllers
 
         private void HubSend(Matches match)
         {
-            HubSender hubSender = new HubSender();
-            hubSender.SendMatch(_hubContext, match);
+            _dystirHub.SendMatch(match);
             HubSendMatchDetails(match);
         }
 
         private void HubSendMatchDetails(Matches match)
         {
-            HubSender hubSender = new HubSender();
             MatchDetails matchDetails = new MatchDetailsController(_dystirDBContext).Get(match.MatchId);
-            hubSender.SendMatchDetails(_hubContext, matchDetails);
+            matchDetails.Match = match;
+            _dystirHub.SendMatchDetails(matchDetails);
         }
     }
 }

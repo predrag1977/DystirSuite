@@ -1,5 +1,6 @@
 ﻿@using DystirWeb.Services
 @using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.SignalR.Client;
 @inject DystirService DystirService
 @inject NavigationManager NavigationManager
 @layout MainLayout
@@ -11,9 +12,11 @@
 </div>
 
 <div class="sidebar">
-    <div class="@MainLayout.NavMenuCssClass">
-        <NavMenuFootball ToggleOnClick="ToggleNavMenu" />
-    </div>
+    <NavMenuFootball />
+</div>
+
+<div class="header">
+    <Header />
 </div>
 
 <div class="container-layout">
@@ -31,11 +34,6 @@
         {
             await JSRuntime.InvokeVoidAsync("loadGoogleAnalytics", "170595956-1");
         }
-    }
-
-    public void ToggleNavMenu()
-    {
-        MainLayout.ToggleNavMenu();
     }
 }
 

@@ -4,6 +4,7 @@
 @using DystirWeb.Services
 @using System.Timers
 @inject NavigationManager NavigationManager
+@inject DystirService DystirService
 @layout MainHandballLayout
 @implements IDisposable
 
@@ -50,46 +51,14 @@
     protected override async Task OnInitializedAsync()
     {
         await GetSelectedMatchListGroup();
-        DystirService.OnLoadData += LoadData;
-        DystirService.OnUpdateData += UpdateData;
-        DystirService.OnConnectDystirHub += ConnectDystirHub;
     }
 
     void IDisposable.Dispose()
-    {
-        DystirService.OnLoadData -= LoadData;
-        DystirService.OnUpdateData -= UpdateData;
-        DystirService.OnConnectDystirHub -= ConnectDystirHub;
-    }
-
-    private void LoadData(object sender, EventArgs arg)
-    {
-        Refresh();
-    }
-
-    private void UpdateData(object sender, string matchDetailsJson)
-    {
-        Refresh();
-    }
-
-    private void ConnectDystirHub(object sender, EventArgs arg)
     {
 
     }
 
     private void Refresh()
-    {
-        InvokeAsync(() => StateHasChanged());
-    }
-
-    private void StartCountdown()
-    {
-        Timer timer = new Timer(1000);
-        timer.Elapsed += Timer_Elapsed;
-        timer.Start();
-    }
-
-    private void Timer_Elapsed(object sender, ElapsedEventArgs e)
     {
         InvokeAsync(() => StateHasChanged());
     }

@@ -1,6 +1,6 @@
 ﻿
 <div class="navbar navbar-dark header p-0">
-    <div style="font-size:1.3rem;font-weight:bold;padding-left:10px">
+    @*<div style="font-size:1.3rem;font-weight:bold;padding-left:10px">
         <a class="navbar-brand p-0" href="">
             <span>
                 <img src="images/icons/dystir-header-icon.png" height="45" />
@@ -13,30 +13,30 @@
                 <div class="@MainLayout.NavMenuCssClass">X</div>
             </div>
         </button>
-    </div>
+    </div>*@
     <div class="navbar p-0" style="font-size:0.6rem;text-align:left;padding-left:10px">
-        <div style="float:left;padding:0">
+        <!--<div style="float:left;padding:0">
             <NavLink class="nav-link text-center" href="" Match="NavLinkMatch.All">
                 <img class="sport-icon football-icon" src="images/icons/football.png" />
                 <div class="nav-link text-white football-text">Fótbóltur</div>
             </NavLink>
         </div>
-        <div style="float:left;padding:0 10px;">
+        <div style="float:left;padding:0 10px;">-->
             @*<NavLink class="nav-link text-center" href="handball/matches">*@
-            <div class="nav-link text-center" style="opacity:0.7">
+            <!--<div class="nav-link text-center" style="opacity:0.7">
                 <img class="sport-icon handball-icon" src="images/icons/handball-disabled.png" />
                 <div class="nav-link text-white handball-text">Hondbóltur</div>
-            </div>
+            </div>-->
             @*</NavLink>*@
-        </div>
-        <div style="float:left;padding:0">
+        <!--</div>
+        <div style="float:left;padding:0">-->
             @*<NavLink class="nav-link text-center" href="volleyball/matches">*@
-            <div class="nav-link text-center" style="opacity:0.7">
+            <!--<div class="nav-link text-center" style="opacity:0.7">
                 <img class="sport-icon volleyball-icon" src="images/icons/volleyball-disabled.png" />
                 <div class="nav-link text-white volleyball-text">Flogbóltur</div>
-            </div>
+            </div>-->
             @*</NavLink>*@
-        </div>
+        <!--</div>-->
     </div>
     <div class="store-buttons">
         <span style="padding-right:10px">
@@ -53,9 +53,9 @@
 </div>
 
 @code {
-    [Parameter]
-    public EventCallback ToggleOnClick { get; set; }
-    [Parameter] 
-    public EventCallback ToggleCloseClick { get; set; }
+    //[Parameter]
+    //public EventCallback ToggleOnClick { get; set; }
+    //[Parameter] 
+    //public EventCallback ToggleCloseClick { get; set; }
 }
 
