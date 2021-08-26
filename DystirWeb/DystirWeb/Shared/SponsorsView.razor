@@ -2,33 +2,32 @@
 @using DystirWeb.Models
 @using System.Collections.ObjectModel
 @inject DystirService DystirService
+@inject TimeService TimeService
 @implements IDisposable
 
 @if (ShowOnSideBar)
 {
-    <div class="@MainLayout.NavMenuCssClass">
-        <div class="sponsors" style="margin:10px 0 10px 0">
-            <div style="cursor:pointer;font:bold;padding:5px 0;font-size:0.8em">
-                <a style="color:white;text-decoration: none" href="mailto: dystir@dystir.fo">
-                    <span class="fa fa-envelope p-1" style="color:white" aria-hidden="true" />
-                    <span style="text-decoration: underline">dystir@dystir.fo</span>
-                </a>
-            </div>
-            @foreach (var sponsor in DystirService.Sponsors?.Where(x => x.SponsorId < 100) ?? new ObservableCollection<Sponsors>())
-            {
-                <a href="@(sponsor.SponsorWebSite)" target="_blank">
-                    <img class="sponsors-main-img" src="@(sponsor.SponsorsName)">
-                </a>
-            }
-            @foreach (var sponsor in DystirService.Sponsors ?? new ObservableCollection<Sponsors>())
-            {
-                <a href="@(sponsor.SponsorWebSite)" target="_blank">
-                    <img class="sponsors-img" src="@(sponsor.SponsorsName)">
-                </a>
-            }
-            <div style="color: white;padding: 10px 0; font-size: 0.8em; white-space: nowrap ">
-                &copy;2021 - Dystir.fo
-            </div>
+    <div class="sponsors" style="margin:10px 0 10px 0">
+        <div style="cursor:pointer;font:bold;padding:5px 0;font-size:0.8em">
+            <a style="color:white;text-decoration: none" href="mailto: dystir@dystir.fo">
+                <span class="fa fa-envelope p-1" style="color:white" aria-hidden="true" />
+                <span style="text-decoration: underline">dystir@dystir.fo</span>
+            </a>
+        </div>
+        @foreach (var sponsor in DystirService.Sponsors?.Where(x => x.SponsorId < 100) ?? new ObservableCollection<Sponsors>())
+        {
+            <a href="@(sponsor.SponsorWebSite)" target="_blank">
+                <img class="sponsors-main-img" src="@(sponsor.SponsorsName)">
+            </a>
+        }
+        @foreach (var sponsor in DystirService.Sponsors ?? new ObservableCollection<Sponsors>())
+        {
+            <a href="@(sponsor.SponsorWebSite)" target="_blank">
+                <img class="sponsors-img" src="@(sponsor.SponsorsName)">
+            </a>
+        }
+        <div style="color: white;padding: 10px 0; font-size: 0.8em; white-space: nowrap ">
+            &copy;2021 - Dystir.fo
         </div>
     </div>
 }
@@ -64,13 +63,13 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        DystirService.TimerService.OnSponsorsTimerElapsed += SponsorsTimerElapsed;
+        TimeService.OnSponsorsTimerElapsed += SponsorsTimerElapsed;
         await Task.CompletedTask;
     }
 
     void IDisposable.Dispose()
     {
-        DystirService.TimerService.OnSponsorsTimerElapsed -= SponsorsTimerElapsed;
+        TimeService.OnSponsorsTimerElapsed -= SponsorsTimerElapsed;
     }
 
     private void SponsorsTimerElapsed(object sender, EventArgs e)

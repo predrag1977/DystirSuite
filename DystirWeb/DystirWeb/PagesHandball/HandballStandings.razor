@@ -60,24 +60,11 @@
     protected override async Task OnInitializedAsync()
     {
         await LoadStandings(string.Empty);
-        DystirService.OnLoadData += LoadData;
-        DystirService.OnUpdateData += UpdateData;
     }
 
     void IDisposable.Dispose()
     {
-        DystirService.OnLoadData -= LoadData;
-        DystirService.OnUpdateData -= UpdateData;
-    }
 
-    private void LoadData(object sender, EventArgs arg)
-    {
-        Refresh();
-    }
-
-    private void UpdateData(object sender, string matchDetailsJson)
-    {
-        Refresh();
     }
 
     private void Refresh()
@@ -88,7 +75,7 @@
     private async void CompetitionsOnClick(string competition)
     {
         await LoadStandings(competition);
-        StateHasChanged();
+        Refresh();
     }
 
     public async Task LoadStandings(string selectedCompetition)

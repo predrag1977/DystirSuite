@@ -4,6 +4,7 @@
 @using DystirWeb.Services
 @using System.Collections.ObjectModel
 @inject DystirService DystirService
+@inject ClientService ClientService
 @layout MainFootballLayout
 @implements IDisposable
 
@@ -54,30 +55,51 @@
     </tr>
 </table>
 
+@if (isLoading)
+{
+    <div style="position:fixed; top:calc(50% - 1.5rem);left:calc(50% - 1.5rem);">
+        <img src="images/icons/loadingicon.gif" style="width:3rem" />
+    </div>
+}
+
 @code {
+    private IEnumerable<Standing> _standings;
     private StandingsModelView StandingsView;
+    private bool isLoading = true;
+    private string _competition;
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadStandings(string.Empty);
-        DystirService.OnLoadData += LoadData;
-        DystirService.OnUpdateData += UpdateData;
+        ClientService.OnConnected += ClientService_OnConnected;
+        ClientService.OnReconnected += ClientService_OnReconnected;
+        DystirService.OnConnected += HubConnection_OnConnected;
+        _ = LoadStandings(_competition);
+        await Task.CompletedTask;
     }
 
     void IDisposable.Dispose()
     {
-        DystirService.OnLoadData -= LoadData;
-        DystirService.OnUpdateData -= UpdateData;
+        ClientService.OnConnected -= ClientService_OnConnected;
+        ClientService.OnReconnected -= ClientService_OnReconnected;
+        DystirService.OnConnected -= HubConnection_OnConnected;
     }
 
-    private void LoadData(object sender, EventArgs arg)
+    private async void ClientService_OnConnected()
     {
-        Refresh();
+        _standings = null;
+        await LoadStandings(_competition);
     }
 
-    private void UpdateData(object sender, string matchDetailsJson)
+    private async void ClientService_OnReconnected()
     {
-        Refresh();
+        _standings = null;
+        await LoadStandings(_competition);
+    }
+
+    private async void HubConnection_OnConnected()
+    {
+        _standings = null;
+        await LoadStandings(_competition);
     }
 
     private void Refresh()
@@ -87,26 +109,35 @@
 
     private async void CompetitionsOnClick(string competition)
     {
-        await LoadStandings(competition);
+        isLoading = true;
+        Refresh();
+        _competition = competition;
+        await LoadStandings(_competition);
     }
 
     public async Task LoadStandings(string selectedCompetition)
     {
-        selectedCompetition = string.IsNullOrWhiteSpace(selectedCompetition) ? DystirService.GetStandings()?.FirstOrDefault().StandingCompetitionName ?? string.Empty : selectedCompetition;
-        Standing standing = DystirService.GetStandings()?.FirstOrDefault(x => x.StandingCompetitionName == selectedCompetition);
+        if (_standings == null)
+        {
+            _standings = DystirService.GetStandings();
+        }
+        selectedCompetition = string.IsNullOrWhiteSpace(selectedCompetition) ? _standings?.FirstOrDefault().StandingCompetitionName ?? string.Empty : selectedCompetition;
+        Standing standing = _standings?.FirstOrDefault(x => x.StandingCompetitionName == selectedCompetition);
         StandingsView = new StandingsModelView()
         {
             SelectedCompetition = selectedCompetition,
             CompetitionsList = GetCompetitionsList(),
             Standing = standing
         };
+        isLoading = false;
+        Refresh();
         await Task.CompletedTask;
     }
 
     private IEnumerable<string> GetCompetitionsList()
     {
         List<string> competitionsList = new List<string>();
-        foreach (var standing in DystirService.GetStandings() ?? new ObservableCollection<Standing>())
+        foreach (var standing in _standings ?? new ObservableCollection<Standing>())
         {
             competitionsList.Add(standing.StandingCompetitionName);
         }

@@ -6,13 +6,14 @@
 @using Microsoft.AspNetCore.Components
 @using Newtonsoft.Json
 @using DystirWeb.Pages
-@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.SignalR.Client;
 @inject DystirService DystirService
+@inject ClientService ClientService
 @inject Blazored.Localisation.Services.IBrowserDateTimeProvider BrowserDateTimeProvider
 @layout MainShareWebSiteLayout
 @implements IDisposable
 @inherits MatchBase
-    
+
 <div style="width:100%; position:absolute; height:60px; background-color:white; z-index:-1" />
 
 <div style="background-color:#f5f5f5; height:100%; margin:0 auto; max-width:1200px;">
@@ -78,33 +79,30 @@
         </div>
 
         <div class="box box-scroll" style="background-color:white">
-            @if (isLoading)
-            {
-                <div style="position:relative; width:100%;height:100%;">
-                    <img src="images/icons/loadingicon.gif" style="position:absolute; width:3rem;top:calc(50% - 1.5rem);left:calc(50% - 1.5rem);" />
+            <div style="position:absolute;top:0;bottom:0;width:100%;overflow:auto; margin: 0; padding: 0 5px;">
+                <div class="@(selectedTab == "0" ? "active_tab" : "no_active_tab")">
+                    <SummaryView SummaryEventsOfMatch="@(fullMatchDetails?.Summary)" />
                 </div>
-            }
-            else
-            {
-                <div style="position:absolute;top:0;bottom:0;width:100%;overflow:auto; margin: 0; padding: 0 5px;">
-                    <div class="@(selectedTab == "0" ? "active_tab" : "no_active_tab")">
-                        <SummaryView SummaryEventsOfMatch="@(fullMatchDetails?.Summary)" />
-                    </div>
-                    <div class="@(selectedTab == "1" ? "active_tab" : "no_active_tab")">
-                        <LineupsView PlayersOfMatch="@(fullMatchDetails?.MatchDetails?.PlayersOfMatch)" Match="@(fullMatchDetails?.MatchDetails?.Match)" />
-                    </div>
-                    <div class="@(selectedTab == "2" ? "active_tab" : "no_active_tab")">
-                        <CommentariesView Commentaries="@(fullMatchDetails?.Commentary)" />
-                    </div>
-                    <div class="@(selectedTab == "3" ? "active_tab" : "no_active_tab")">
-                        <StatisticView StatisticOfMatch="@(fullMatchDetails?.Statistics)" />
-                    </div>
+                <div class="@(selectedTab == "1" ? "active_tab" : "no_active_tab")">
+                    <LineupsView PlayersOfMatch="@(fullMatchDetails?.MatchDetails?.PlayersOfMatch)" Match="@(fullMatchDetails?.MatchDetails?.Match)" />
                 </div>
-            }
+                <div class="@(selectedTab == "2" ? "active_tab" : "no_active_tab")">
+                    <CommentariesView Commentaries="@(fullMatchDetails?.Commentary)" />
+                </div>
+                <div class="@(selectedTab == "3" ? "active_tab" : "no_active_tab")">
+                    <StatisticView StatisticOfMatch="@(fullMatchDetails?.Statistics)" />
+                </div>
+            </div>
         </div>
-
     </div>
 </div>
+
+@if (isLoading)
+{
+    <div style="position:fixed; top:calc(50% - 1.5rem);left:calc(50% - 1.5rem);">
+        <img src="images/icons/loadingicon.gif" style="width:3rem" />
+    </div>
+}
 
 @code {
     [Parameter]
@@ -120,52 +118,55 @@
 
     protected override async Task OnInitializedAsync()
     {
+        ClientService.OnConnected += ClientService_OnConnected;
+        ClientService.OnReconnected += ClientService_OnReconnected;
+        ClientService.OnUpdated += ClientService_OnUpdated;
+        DystirService.OnConnected += HubConnection_OnConnected;
         var browserDateTime = await BrowserDateTimeProvider.GetInstance();
         int serverTimeZoneHours = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
         int clientTimeZoneHours = browserDateTime.LocalTimeZoneInfo.BaseUtcOffset.Hours;
         timeZoneOffset = clientTimeZoneHours - serverTimeZoneHours;
-        DystirService.OnLoadData += LoadData;
-        DystirService.OnUpdateData += UpdateData;
-        DystirService.TimerService.OnTimerElapsed += TimerElapsed;
     }
 
     protected override async Task OnParametersSetAsync()
     {
-        isLoading = true;
-        SelectedMatch = GetSelelectedMatch();
-        await LoadMatchDetails();
+        int parseMatchID = int.TryParse(matchid, out int m) ? int.Parse(matchid) : 0;
+        SelectedMatch = DystirService.AllMatches?.FirstOrDefault(x => x.MatchId == parseMatchID);
+        selectedCompetitionName = SelectedMatch?.MatchTypeName ?? string.Empty;
+        _ = LoadMatchDetails();
+        await Task.CompletedTask;
     }
 
     void IDisposable.Dispose()
     {
-        DystirService.OnLoadData -= LoadData;
-        DystirService.OnUpdateData -= UpdateData;
-        DystirService.TimerService.OnTimerElapsed -= TimerElapsed;
+        ClientService.OnConnected -= ClientService_OnConnected;
+        ClientService.OnReconnected -= ClientService_OnReconnected;
+        ClientService.OnUpdated -= ClientService_OnUpdated;
+        DystirService.OnConnected -= HubConnection_OnConnected;
     }
 
-    private async void LoadData(object sender, EventArgs arg)
+    private async void ClientService_OnConnected()
     {
         await LoadMatchDetails();
-        Refresh();
     }
 
-    private async void UpdateData(object sender, string matchDetailsJson)
+    private async void ClientService_OnReconnected()
     {
-        var matchDetails = JsonConvert.DeserializeObject<MatchDetails>(matchDetailsJson);
-        if (matchDetails != null)
+        await LoadMatchDetails();
+    }
+
+    private async void HubConnection_OnConnected()
+    {
+        await LoadMatchDetails();
+    }
+
+    private async void ClientService_OnUpdated(string matchIDForUpdate)
+    {
+        if (matchid == matchIDForUpdate)
         {
-            if (matchDetails.Match?.MatchId.ToString() == matchid)
-            {
-                fullMatchDetails = DystirService.GetFullMatchDetails(matchDetails);
-            }
-            SelectedMatch = fullMatchDetails?.MatchDetails?.Match;
-            await GetSelectedMatchListGroup();
+            await LoadMatchDetails();
         }
-        Refresh();
-    }
-
-    private void TimerElapsed(object sender, EventArgs e)
-    {
+        await GetSelectedMatchListGroup();
         Refresh();
     }
 
@@ -192,9 +193,14 @@
 
     public async Task LoadMatchDetails()
     {
-        fullMatchDetails = await DystirService.LoadMatchDetailsAsync(matchid);
-        SelectedMatch = fullMatchDetails?.MatchDetails?.Match;
-        await GetSelectedMatchListGroup();
+        if (SelectedMatch != null)
+        {
+            fullMatchDetails = await DystirService.LoadMatchDetailsAsync(matchid);
+            SelectedMatch = fullMatchDetails?.MatchDetails?.Match;
+            await GetSelectedMatchListGroup();
+        }
+        isLoading = false;
+        Refresh();
     }
 
     public async Task GetSelectedMatchListGroup()
@@ -209,9 +215,8 @@
             .GroupBy(x => x.MatchTypeName)?.ToList() ?? new List<IGrouping<string, Matches>>();
             if (string.IsNullOrWhiteSpace(selectedCompetitionName))
             {
-                selectedCompetitionName = SelectedMatchListGroup?.FirstOrDefault().Key ?? "";
+                selectedCompetitionName = SelectedMatchListGroup?.FirstOrDefault()?.Key ?? "";
             }
         });
-        isLoading = false;
     }
 }

@@ -38,7 +38,9 @@ namespace DystirWeb
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSignalR();
+            services.AddSingleton<DystirHub>();
             services.AddSingleton<TimeService>();
+            services.AddScoped<ClientService>();
             services.AddSingleton<StandingService>();
             services.AddSingleton<StatisticCompetitionsService>();
             services.AddSingleton<DystirService>();

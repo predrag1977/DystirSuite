@@ -4,7 +4,7 @@
 @inject NavigationManager NavigationManager
 @layout MainLayout
 @inherits LayoutComponentBase
-    
+
 <link href="css/site.css?v=4" rel="stylesheet" />
 <link href="css/handball.css?v=1" rel="stylesheet" />
 
@@ -13,10 +13,13 @@
 </div>
 
 <div class="sidebar">
-    <div class="@MainLayout.NavMenuCssClass">
-        @*<HandballNavMenu ToggleOnClick="ToggleNavMenu" />*@
-    </div>
+    <HandballNavMenu />
 </div>
+
+<div class="header">
+    <Header />
+</div>
+
 <div class="container-layout">
     @*@Body*@
 </div>
@@ -29,10 +32,5 @@
     protected override async Task OnInitializedAsync()
     {
         await Task.CompletedTask;
-    }
-
-    public void ToggleNavMenu()
-    {
-        MainLayout.ToggleNavMenu();
     }
 }

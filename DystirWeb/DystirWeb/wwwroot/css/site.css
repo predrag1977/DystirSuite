@@ -38,15 +38,16 @@ app {
 }
 
 .top-row {
-    height: 4rem;
+    border-bottom: 2px solid dimgray;
     display: flex;
     align-items: center;
+    height:70px;
 }
 
 .main {
     color: white;
     position: absolute;
-    top: 70px;
+    top: 0;
     left: 0;
     right:0;
     bottom:0;
@@ -56,14 +57,21 @@ app {
     opacity: 0.9;
     background-color: #222222;
     position: absolute;
-    top: 0;
+    top: 70px;
     left: 180px;
     right: 180px;
     bottom: 0;
+    border-right: 2px solid dimgray;
+    border-left: 2px solid dimgray;
 }
 
 .header {
+    z-index: 2000;
     opacity: 0.97;
+    position: fixed;
+    top: 0;
+    left: 180px;
+    right: 0;
     height: 70px;
     border-bottom: 2px solid dimgray;
 }
@@ -94,9 +102,8 @@ app {
 
 .sidebar {
     z-index:1000;
-    position: relative;
     opacity: 0.97;
-    border-right: 2px solid dimgray;
+    position: relative;
 }
 
     .sidebar .nav-item {
@@ -136,11 +143,10 @@ app {
     overflow-x: hidden;
     overflow-y: auto;
     width: 180px;
-    height: 100%;
-    top: 0;
+    top: 70px;
     right: 0;
     opacity: 0.97;
-    border-left: 2px solid dimgray;
+    bottom: 0;
 }
 
     .sponsor-bar .nav-item {
