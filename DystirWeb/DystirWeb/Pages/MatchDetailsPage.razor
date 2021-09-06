@@ -4,10 +4,10 @@
 @using DystirWeb.Models
 @using DystirWeb.ModelViews
 @using Microsoft.AspNetCore.Components
-@using Newtonsoft.Json
 @using Microsoft.AspNetCore.SignalR.Client;
 @inject DystirService DystirService
-@inject ClientService ClientService
+@inject HubConnection HubConnection
+@inject TimeService TimeService
 @inject Blazored.Localisation.Services.IBrowserDateTimeProvider BrowserDateTimeProvider
 @layout MainFootballLayout
 @implements IDisposable
@@ -18,7 +18,7 @@
         <div class="matches_list_same_day">
             @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
             {
-                <NavLink style="cursor:pointer;" @onclick="@(()=>isLoading = true)" href="@("football/matchdetails/" + match.MatchId)">
+                <NavLink style="cursor:pointer;" @onclick="@(()=>isLoading = true)" href="@("football/matchdetails/" + match.MatchID)">
                     <Match MatchItem="@match" ShowMore="@(false)" TimeZoneOffset="@timeZoneOffset" IsMatchForSameDayList="@true" />
                 </NavLink>
             }
@@ -68,14 +68,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //ClientService.DystirHubConnection.On<string, string>("UpdateCommand", (matchID, matchDetails) =>
-        //{
-        //    _ = UpdateMatchDetails(matchDetails);
-        //});
-        ClientService.OnConnected += ClientService_OnConnected;
-        ClientService.OnReconnected += ClientService_OnReconnected;
-        ClientService.OnUpdated += ClientService_OnUpdated;
         DystirService.OnConnected += HubConnection_OnConnected;
+        TimeService.OnTimerElapsed += TimerElapsed;
+        HubConnection.On<string>("UpdateCommand", (matchID) =>
+        {
+            _ = MatchUpdate(matchID);
+        });
         var browserDateTime = await BrowserDateTimeProvider.GetInstance();
         int serverTimeZoneHours = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
         int clientTimeZoneHours = browserDateTime.LocalTimeZoneInfo.BaseUtcOffset.Hours;
@@ -85,34 +83,23 @@
     protected override async Task OnParametersSetAsync()
     {
         int parseMatchID = int.TryParse(matchid, out int m) ? int.Parse(matchid) : 0;
-        SelectedMatch = DystirService.AllMatches?.FirstOrDefault(x => x.MatchId == parseMatchID);
+        SelectedMatch = DystirService.AllMatches?.FirstOrDefault(x => x.MatchID == parseMatchID);
         _ = LoadMatchDetails();
         await Task.CompletedTask;
     }
 
     void IDisposable.Dispose()
     {
-        ClientService.OnConnected -= ClientService_OnConnected;
-        ClientService.OnReconnected -= ClientService_OnReconnected;
-        ClientService.OnUpdated -= ClientService_OnUpdated;
         DystirService.OnConnected -= HubConnection_OnConnected;
+        TimeService.OnTimerElapsed -= TimerElapsed;
     }
 
-    private async void ClientService_OnConnected()
-    {
-        await LoadMatchDetails();
-    }
-
-    private async void ClientService_OnReconnected()
-    {
-        await LoadMatchDetails();
-    }
-    private async void ClientService_OnUpdated(string matchIDForUpdate)
+    private async Task MatchUpdate(string matchIDForUpdate)
     {
         if (matchid == matchIDForUpdate)
         {
             await LoadMatchDetails();
-        }  
+        }
         MatchesListSameDay = DystirService.GetMatchesListSameDay(SelectedMatch);
         Refresh();
     }
@@ -120,6 +107,14 @@
     private async void HubConnection_OnConnected()
     {
         await LoadMatchDetails();
+    }
+
+    private void TimerElapsed(object sender, EventArgs e)
+    {
+        if (HubConnection.State == HubConnectionState.Connected)
+        {
+            InvokeAsync(() => StateHasChanged());
+        }
     }
 
     private void Refresh()

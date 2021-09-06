@@ -4,11 +4,11 @@
 @using DystirWeb.Models
 @using DystirWeb.ModelViews
 @using Microsoft.AspNetCore.Components
-@using Newtonsoft.Json
 @using DystirWeb.Pages
 @using Microsoft.AspNetCore.SignalR.Client;
 @inject DystirService DystirService
-@inject ClientService ClientService
+@inject TimeService TimeService
+@inject HubConnection HubConnection
 @inject Blazored.Localisation.Services.IBrowserDateTimeProvider BrowserDateTimeProvider
 @layout MainShareWebSiteLayout
 @implements IDisposable
@@ -55,7 +55,7 @@
                             @foreach (Matches match in matches)
                             {
                                 <td>
-                                    <NavLink class="nav-link" style="cursor: pointer;" href="@("infomatchdetails/" + match.MatchId)">
+                                    <NavLink class="nav-link" style="cursor: pointer;" href="@("infomatchdetails/" + match.MatchID)">
                                         <MatchShare MatchItem="@match" ShowMore="@(false)" TimeZoneOffset="@timeZoneOffset" />
                                     </NavLink>
                                 </td>
@@ -118,10 +118,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        ClientService.OnConnected += ClientService_OnConnected;
-        ClientService.OnReconnected += ClientService_OnReconnected;
-        ClientService.OnUpdated += ClientService_OnUpdated;
         DystirService.OnConnected += HubConnection_OnConnected;
+        TimeService.OnTimerElapsed += TimerElapsed;
+        HubConnection.On<string>("UpdateCommand", (matchID) =>
+        {
+            _ = MatchUpdate(matchID);
+        });
         var browserDateTime = await BrowserDateTimeProvider.GetInstance();
         int serverTimeZoneHours = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
         int clientTimeZoneHours = browserDateTime.LocalTimeZoneInfo.BaseUtcOffset.Hours;
@@ -131,7 +133,7 @@
     protected override async Task OnParametersSetAsync()
     {
         int parseMatchID = int.TryParse(matchid, out int m) ? int.Parse(matchid) : 0;
-        SelectedMatch = DystirService.AllMatches?.FirstOrDefault(x => x.MatchId == parseMatchID);
+        SelectedMatch = DystirService.AllMatches?.FirstOrDefault(x => x.MatchID == parseMatchID);
         selectedCompetitionName = SelectedMatch?.MatchTypeName ?? string.Empty;
         _ = LoadMatchDetails();
         await Task.CompletedTask;
@@ -139,20 +141,8 @@
 
     void IDisposable.Dispose()
     {
-        ClientService.OnConnected -= ClientService_OnConnected;
-        ClientService.OnReconnected -= ClientService_OnReconnected;
-        ClientService.OnUpdated -= ClientService_OnUpdated;
         DystirService.OnConnected -= HubConnection_OnConnected;
-    }
-
-    private async void ClientService_OnConnected()
-    {
-        await LoadMatchDetails();
-    }
-
-    private async void ClientService_OnReconnected()
-    {
-        await LoadMatchDetails();
+        TimeService.OnTimerElapsed -= TimerElapsed;
     }
 
     private async void HubConnection_OnConnected()
@@ -160,7 +150,15 @@
         await LoadMatchDetails();
     }
 
-    private async void ClientService_OnUpdated(string matchIDForUpdate)
+    private void TimerElapsed(object sender, EventArgs e)
+    {
+        if (HubConnection.State == HubConnectionState.Connected)
+        {
+            InvokeAsync(() => StateHasChanged());
+        }
+    }
+
+    private async Task MatchUpdate(string matchIDForUpdate)
     {
         if (matchid == matchIDForUpdate)
         {
@@ -188,7 +186,7 @@
 
     private Matches GetSelelectedMatch()
     {
-        return DystirService.AllMatches.FirstOrDefault(x => x.MatchId == int.Parse(matchid));
+        return DystirService.AllMatches.FirstOrDefault(x => x.MatchID == int.Parse(matchid));
     }
 
     public async Task LoadMatchDetails()
@@ -210,7 +208,7 @@
             var fromDate = DateTime.UtcNow.AddHours(timeZoneOffset).Date.AddDays(0);
             var toDate = fromDate.AddDays(0);
             SelectedMatchListGroup = DystirService.AllMatches?
-            .OrderBy(x => x.MatchTypeId).ThenBy(x => x.Time).ThenBy(x => x.MatchId)
+            .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
             .Where(x => x.Time.Value.ToLocalTime().Date >= fromDate && x.Time.Value.ToLocalTime().Date <= toDate)
             .GroupBy(x => x.MatchTypeName)?.ToList() ?? new List<IGrouping<string, Matches>>();
             if (string.IsNullOrWhiteSpace(selectedCompetitionName))

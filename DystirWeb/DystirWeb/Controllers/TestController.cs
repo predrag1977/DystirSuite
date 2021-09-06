@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using DystirWeb.Server.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
-namespace DystirWeb.ApiControllers
+namespace DystirWeb.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DystirWeb.ApiControllers
+namespace DystirWeb.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DystirWeb.ApiControllers;
+using DystirWeb.Server.Hubs;
 using DystirWeb.Models;
-using DystirWeb.ModelViews;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using DystirWeb.ModelViews;
 
 namespace DystirWeb.Controllers
 {
@@ -15,12 +15,12 @@ namespace DystirWeb.Controllers
     [ApiController]
     public class EventsOfMatchesController : ControllerBase
     {
+        private readonly IHubContext<DystirHub> _hubContext;
         private DystirDBContext _dystirDBContext;
-        private readonly DystirHub _dystirHub;
 
-        public EventsOfMatchesController(DystirHub dystirHub, DystirDBContext dystirDBContext)
+        public EventsOfMatchesController(IHubContext<DystirHub> hubContext , DystirDBContext dystirDBContext)
         {
-            _dystirHub = dystirHub;
+            _hubContext = hubContext;
             _dystirDBContext = dystirDBContext;
         }
 
@@ -47,7 +47,7 @@ namespace DystirWeb.Controllers
                 selectedMatch.HomeTeamCorner = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "CORNER" && x.EventTeam?.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())?.Count();
                 selectedMatch.AwayTeamCorner = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "CORNER" && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())?.Count();
 
-                var playersOfMatch = _dystirDBContext.PlayersOfMatches.Where(x => x.MatchId == selectedMatch.MatchId)?.ToList();
+                var playersOfMatch = _dystirDBContext.PlayersOfMatches.Where(x => x.MatchId == selectedMatch.MatchID)?.ToList();
                 foreach (PlayersOfMatches playerOfMatch in playersOfMatch ?? new List<PlayersOfMatches>())
                 {
                     playerOfMatch.Goal = 0;
@@ -183,7 +183,7 @@ namespace DystirWeb.Controllers
                     _dystirDBContext.SaveChanges();
                     AddSecondEvent(sendingText, eventsOfMatches);
                     SetNewEventsList((int)eventsOfMatches.MatchId);
-                    Matches match = _dystirDBContext.Matches.FirstOrDefault(x => x.MatchId == eventsOfMatches.MatchId);
+                    Matches match = _dystirDBContext.Matches.FirstOrDefault(x => x.MatchID == eventsOfMatches.MatchId);
                     HubSend(match);
                 }
             }
@@ -221,7 +221,7 @@ namespace DystirWeb.Controllers
                 AddSecondEvent(sendingText, eventsOfMatches);
                 SetNewEventsList((int)eventsOfMatches.MatchId);
             }
-            Matches match = _dystirDBContext.Matches.FirstOrDefault(x => x.MatchId == eventsOfMatches.MatchId);
+            Matches match = _dystirDBContext.Matches.FirstOrDefault(x => x.MatchID == eventsOfMatches.MatchId);
             HubSend(match);
 
             return Ok();
@@ -241,7 +241,7 @@ namespace DystirWeb.Controllers
             _dystirDBContext.EventsOfMatches.Remove(eventsOfMatches);
             _dystirDBContext.SaveChanges();
             SetNewEventsList((int)eventsOfMatches.MatchId);
-            Matches match = _dystirDBContext.Matches.FirstOrDefault(x => x.MatchId == eventsOfMatches.MatchId);
+            Matches match = _dystirDBContext.Matches.FirstOrDefault(x => x.MatchID == eventsOfMatches.MatchId);
             HubSend(match);
             return Ok(eventsOfMatches.EventOfMatchId);
         }
@@ -387,7 +387,7 @@ namespace DystirWeb.Controllers
             Matches match = _dystirDBContext.Matches.Find(MatchId);
             if (match != null)
             {
-                var selectedMatch = _dystirDBContext.Matches.FirstOrDefault(x => x.MatchId == MatchId);
+                var selectedMatch = _dystirDBContext.Matches.FirstOrDefault(x => x.MatchID == MatchId);
                 var eventsList = _dystirDBContext.EventsOfMatches.Where(x => x.MatchId == MatchId);
                 SetPlayersListByEventsOfMatch(eventsList.ToList(), selectedMatch);
             }
@@ -442,15 +442,17 @@ namespace DystirWeb.Controllers
 
         private void HubSend(Matches match)
         {
-            _dystirHub.SendMatch(match);
-            HubSendMatchDetails(match);
+            HubSender hubSender = new HubSender();
+            hubSender.SendMatch(_hubContext, match);
+            HubSendMatchDetails(hubSender, match);
         }
 
-        private void HubSendMatchDetails(Matches match)
+        private void HubSendMatchDetails(HubSender hubSender, Matches match)
         {
-            MatchDetails matchDetails = new MatchDetailsController(_dystirDBContext).Get(match.MatchId);
+            MatchDetails matchDetails = new MatchDetailsController(_dystirDBContext).Get(match.MatchID);
             matchDetails.Match = match;
-            _dystirHub.SendMatchDetails(matchDetails);
+            hubSender.SendMatchDetails(_hubContext, matchDetails);
         }
+
     }
 }

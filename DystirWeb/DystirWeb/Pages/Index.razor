@@ -2,19 +2,21 @@
 
 @using DystirWeb.Models
 @using DystirWeb.Services
+@using Microsoft.AspNetCore.SignalR.Client
 @inject IJSRuntime JSRuntime
 @inject DystirService DystirService
-@inject ClientService ClientService
+@inject TimeService TimeService
+@inject HubConnection HubConnection
 @inject Blazored.Localisation.Services.IBrowserDateTimeProvider BrowserDateTimeProvider
 @layout MainFootballLayout
 @implements IDisposable
 
 <div class="container-fluid d-flex h-100 flex-column p-0">
     @*<div class="row">
-        <button @onclick="@StopHub">
-            <div id="result">StopHub</div>
-        </button>
-    </div>*@
+            <button @onclick="@StopHub">
+                <div id="result">StopHub</div>
+            </button>
+        </div>*@
     <div class="row">
         <ChooseDays DaysOnClick="@DaysOnClick" TimeZoneOffset="@timeZoneOffset" />
     </div>
@@ -32,9 +34,9 @@
                         <div class="match-group-competition-name">@(matchgroup.Key)</div>
                         @foreach (var match in matchgroup)
                         {
-                            @if (match.StatusId <= 12)
+                            @if (match.StatusID <= 12)
                             {
-                                <NavLink class="nav-link" style="cursor: pointer;" href="@("football/matchdetails/" + match.MatchId)">
+                                <NavLink class="nav-link" style="cursor: pointer;" href="@("football/matchdetails/" + match.MatchID)">
                                     <Match MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
                                 </NavLink>
                             }
@@ -68,10 +70,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        ClientService.OnConnected += ClientService_OnConnected;
-        ClientService.OnReconnected += ClientService_OnReconnected;
-        ClientService.OnUpdated += ClientService_OnUpdated;
         DystirService.OnConnected += HubConnection_OnConnected;
+        TimeService.OnTimerElapsed += TimerElapsed;
+        HubConnection.On<string>("UpdateCommand", (matchID) => {
+            _ = GetSelectedMatchListGroup();
+        });
         var browserDateTime = await BrowserDateTimeProvider.GetInstance();
         int serverTimeZoneHours = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
         int clientTimeZoneHours = browserDateTime.LocalTimeZoneInfo.BaseUtcOffset.Hours;
@@ -81,30 +84,21 @@
 
     void IDisposable.Dispose()
     {
-        ClientService.OnConnected -= ClientService_OnConnected;
-        ClientService.OnReconnected -= ClientService_OnReconnected;
-        ClientService.OnUpdated -= ClientService_OnUpdated;
         DystirService.OnConnected -= HubConnection_OnConnected;
-    }
-
-    private async void ClientService_OnConnected()
-    {
-        await GetSelectedMatchListGroup();
-    }
-
-    private async void ClientService_OnReconnected()
-    {
-        await GetSelectedMatchListGroup();
-    }
-
-    private async void ClientService_OnUpdated(string matchID)
-    {
-        await GetSelectedMatchListGroup();
+        TimeService.OnTimerElapsed -= TimerElapsed;
     }
 
     private async void HubConnection_OnConnected()
     {
         await GetSelectedMatchListGroup();
+    }
+
+    private void TimerElapsed(object sender, EventArgs e)
+    {
+        if (HubConnection.State == HubConnectionState.Connected)
+        {
+            InvokeAsync(() => StateHasChanged());
+        }
     }
 
     public string GetMatchDetailsInfo(Matches match)
@@ -128,7 +122,7 @@
         {
             var fromDate = DateTime.UtcNow.AddHours(timeZoneOffset).Date.AddDays(_daysFrom);
             var toDate = fromDate.AddDays(_dayAfter);
-            SelectedMatchListGroup = DystirService.AllMatches?.OrderBy(x => GetOrder(x.MatchTypeId)).ThenBy(x => x.Time).ThenBy(x => x.MatchId)
+            SelectedMatchListGroup = DystirService.AllMatches?.OrderBy(x => GetOrder(x.MatchTypeID)).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
             .Where(x => x.Time.Value.ToLocalTime().Date >= fromDate
             && x.Time.Value.ToLocalTime().Date <= toDate).GroupBy(x => x.MatchTypeName).ToList() ?? new List<IGrouping<string, Matches>>();
         });
@@ -157,6 +151,6 @@
     private async Task StopHub()
     {
         //await JSRuntime.InvokeAsync<object>("stopConnection");
-        await DystirService.DystirHub.DystirHubConnection.StopAsync();
+        await HubConnection.StopAsync();
     }
 }

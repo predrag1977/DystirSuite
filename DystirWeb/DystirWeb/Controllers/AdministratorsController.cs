@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace DystirWeb.ApiControllers
+namespace DystirWeb.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class AdministratorsController : ControllerBase
     {
         private DystirDBContext _dystirDBContext;

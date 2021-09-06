@@ -1,11 +1,10 @@
-﻿using DystirWeb.Controllers;
-using DystirWeb.Models;
+﻿using DystirWeb.Models;
 using DystirWeb.ModelViews;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DystirWeb.ApiControllers
+namespace DystirWeb.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

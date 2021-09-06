@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Linq;
-using DystirWeb.ApiControllers;
+using System.Threading.Tasks;
+
+using DystirWeb.Server.Hubs;
+using DystirWeb.Services;
 using DystirWeb.Models;
-using DystirWeb.ModelViews;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using DystirWeb.ModelViews;
 
 namespace DystirWeb.Controllers
 {
@@ -14,44 +17,43 @@ namespace DystirWeb.Controllers
     [ApiController]
     public class MatchesController : ControllerBase
     {
+        private readonly IHubContext<DystirHub> _hubContext;
         private DystirDBContext _dystirDBContext;
-        private readonly DystirHub _dystirHub;
 
-        public MatchesController(DystirHub dystirHub, DystirDBContext dystirDBContext)
+        public MatchesController(IHubContext<DystirHub> hubContext, DystirDBContext dystirDBContext)
         {
-            _dystirHub = dystirHub;
+            _hubContext = hubContext;
             _dystirDBContext = dystirDBContext;
         }
 
         // GET: api/Matches
         [HttpGet]
-        public IQueryable<Matches> GetMatches(string action)
+        public async Task<IQueryable<Matches>> GetMatches(string action)
         {
             IQueryable<Matches> matches;
             switch (action?.ToLower())
             {
                 case "matches":
-                    var fromDate = DateTime.UtcNow.Date.AddDays(-5);
-                    var toDate = DateTime.UtcNow.Date.AddDays(5);
-                    matches = _dystirDBContext.Matches.Where(x => x.Time > fromDate && x.Time < toDate && x.MatchActivation != 1 && x.MatchActivation != 2);
+                    var fromDate = DateTime.UtcNow.Date.AddDays(-15);
+                    var toDate = DateTime.UtcNow.Date.AddDays(15);
+                    matches = _dystirDBContext.Matches?.Where(x => x.Time > fromDate && x.Time < toDate && x.MatchActivation != 1 && x.MatchActivation != 2);
                     break;
                 case "results":
-                    matches = _dystirDBContext.Matches.Where(y => y.MatchActivation != 1 && y.MatchActivation != 2);
+                    matches = _dystirDBContext.Matches?.Where(y => y.MatchActivation != 1 && y.MatchActivation != 2);
                     break;
                 case "fixtures":
-                    matches = _dystirDBContext.Matches.Where(y => y.MatchActivation != 1 && y.MatchActivation != 2);
+                    matches = _dystirDBContext.Matches?.Where(y => y.MatchActivation != 1 && y.MatchActivation != 2);
                     break;
                 case "archived":
-                    matches = _dystirDBContext.Matches.Where(y => y.MatchActivation == 1);
+                    matches = _dystirDBContext.Matches?.Where(y => y.MatchActivation == 1);
                     break;
                 default:
                     int year = DateTime.UtcNow.Year;
                     fromDate = new DateTime(year, 1, 1);
-                    matches = _dystirDBContext.Matches.Where(y => y.MatchActivation != 1 && y.MatchActivation != 2 && y.Time > fromDate);
+                    matches = _dystirDBContext.Matches?.Where(y => y.MatchActivation != 1 && y.MatchActivation != 2 && y.Time > fromDate);
                     break;
             }
-            var t = matches?.ToList();
-            return matches;
+            return await Task.FromResult(matches);
         }
 
         // GET: api/Matches/5
@@ -76,14 +78,14 @@ namespace DystirWeb.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != matches.MatchId)
+            if (id != matches.MatchID)
             {
                 return BadRequest();
             }
             try
             {
                 Matches matchInDB = _dystirDBContext.Matches.Find(id);
-                if (!(matches.ExtraMinutes == 0 && matches.ExtraSeconds == 0) || matchInDB.StatusId != matches.StatusId)
+                if (!(matches.ExtraMinutes == 0 && matches.ExtraSeconds == 0) || matchInDB.StatusID != matches.StatusID)
                 {
                     matches.StatusTime = DateTime.UtcNow.AddMinutes(-matches.ExtraMinutes).AddSeconds(-matches.ExtraSeconds);
                 }
@@ -123,7 +125,7 @@ namespace DystirWeb.Controllers
                 _dystirDBContext.SaveChanges();
 
                 HubSend(matches);
-                IActionResult result = CreatedAtRoute("DefaultApi", new { id = matches.MatchId }, matches);
+                IActionResult result = CreatedAtRoute("DefaultApi", new { id = matches.MatchID }, matches);
                 return Ok("Successful");
             }
             catch (Exception ex)
@@ -151,23 +153,21 @@ namespace DystirWeb.Controllers
 
         private bool MatchesExists(int id)
         {
-            return _dystirDBContext.Matches.Count(e => e.MatchId == id) > 0;
+            return _dystirDBContext.Matches.Count(e => e.MatchID == id) > 0;
         }
 
         private void HubSend(Matches match)
         {
-            //HubSender hubSender = new HubSender();
-            //hubSender.SendMatch(_hubContext, match);
-            _dystirHub.SendMatch(match);
-            HubSendMatchDetails(match);
+            HubSender hubSender = new HubSender();
+            hubSender.SendMatch(_hubContext, match);
+            HubSendMatchDetails(hubSender, match);
         }
 
-        private void HubSendMatchDetails(Matches match)
+        private void HubSendMatchDetails(HubSender hubSender, Matches match)
         {
-            //HubSender hubSender = new HubSender();
-            MatchDetails matchDetails = new MatchDetailsController(_dystirDBContext).Get(match.MatchId);
+            MatchDetails matchDetails = new MatchDetailsController(_dystirDBContext).Get(match.MatchID);
             matchDetails.Match = match;
-            _dystirHub.SendMatchDetails(matchDetails);
+            hubSender.SendMatchDetails(_hubContext, matchDetails);
         }
     }
 }

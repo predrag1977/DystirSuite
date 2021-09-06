@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using DystirWeb.Models;
 using Microsoft.AspNetCore.Mvc;
 using Blazored.Localisation;
+using Microsoft.AspNetCore.SignalR.Client;
+using DystirWeb.Server.Hubs;
 
 namespace DystirWeb
 {
@@ -24,6 +26,9 @@ namespace DystirWeb
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            const string url = "https://www.dystir.fo/dystirHub";
+            //const string url = "http://localhost:64974/dystirHub";
+
             //services.AddDbContext<DystirDBContext>(options =>
             //options.UseSqlServer(Configuration.GetConnectionString("DystirDatabase")));
             services.AddDbContextPool<DystirDBContext>(options =>
@@ -38,9 +43,12 @@ namespace DystirWeb
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSignalR();
+            services.AddSingleton(sp => 
+                new HubConnectionBuilder()
+                  .WithUrl(url)
+                  .Build());
             services.AddSingleton<DystirHub>();
             services.AddSingleton<TimeService>();
-            services.AddScoped<ClientService>();
             services.AddSingleton<StandingService>();
             services.AddSingleton<StatisticCompetitionsService>();
             services.AddSingleton<DystirService>();

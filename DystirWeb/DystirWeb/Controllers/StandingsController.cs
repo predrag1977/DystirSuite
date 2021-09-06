@@ -1,34 +1,37 @@
 ﻿using DystirWeb.Models;
-using DystirWeb.ModelViews;
-using DystirWeb.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DystirWeb.Services;
+using DystirWeb.ModelViews;
 
-namespace DystirWeb.ApiControllers
+namespace DystirWeb.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class StandingsController : ControllerBase
     {
-        private DystirService _dystirService;
-        public StandingsController(DystirService dystirService)
+        private readonly StandingService _standingService;
+        private readonly DystirDBContext _dystirDBContext;
+
+        public StandingsController(DystirDBContext dystirDBContext, StandingService standingService)
         {
-            _dystirService = dystirService;
+            _standingService = standingService;
+            _dystirDBContext = dystirDBContext;
         }
 
         // GET api/Standings
         [HttpGet]
         public IEnumerable<Standing> Get()
         {
-            var teamsList = _dystirService.AllTeams;
+            var teamsList = _dystirDBContext.Teams;
             DateTime date = new DateTime(DateTime.Now.Year, 1, 1);
-            var matchesList = _dystirService.AllMatches?.Where(x => x.MatchTypeId != null
+            var matchesList = _dystirDBContext.Matches?.Where(x => x.MatchTypeID != null
                     && x.MatchActivation != 1
                     && x.MatchActivation != 2
                     && x.Time > date);
-            return _dystirService.StandingService.GetStandings(teamsList, matchesList);
+            return _standingService.GetStandings(teamsList, matchesList);
         }
 
         // POST api/<controller>

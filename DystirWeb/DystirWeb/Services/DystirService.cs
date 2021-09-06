@@ -9,22 +9,25 @@ using Microsoft.AspNetCore.SignalR.Client;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Threading;
+using Microsoft.AspNetCore.SignalR;
+using DystirWeb.Server.Hubs;
 
 namespace DystirWeb.Services
 {
     public class DystirService
     {
         private DystirDBContext _dystirDBContext;
+        private StandingService _standingService;
         private DbContextOptions<DystirDBContext> _dbContextOptions;
-        public DystirHub DystirHub;
+        private StatisticCompetitionsService _statisticCompetitionsService;
+        private HubConnection _hubConnection;
+        private IHubContext<DystirHub> _hubContext;
         public ObservableCollection<Matches> AllMatches;
         public ObservableCollection<MatchDetails> AllMatchesDetails;
         public ObservableCollection<Teams> AllTeams;
         public ObservableCollection<Sponsors> Sponsors;
         public ObservableCollection<HandballMatches> AllHandballMatches;
         public ObservableCollection<Standing> HandballStandings;
-        public StandingService StandingService;
-        public StatisticCompetitionsService StatisticCompetitionsService;
         public event Action OnConnected;
         public event Action OnDisconnected;
         public void HubConnectionConnected() => OnConnected?.Invoke();
@@ -34,28 +37,30 @@ namespace DystirWeb.Services
             DbContextOptions<DystirDBContext> dbContextOptions,
             StandingService standingService,
             StatisticCompetitionsService statisticCompetitionsService,
-            DystirHub dystirHub)
+            HubConnection hubConnection, 
+            IHubContext<DystirHub> hubContext)
         {
             _dbContextOptions = dbContextOptions;
-            StandingService = standingService;
-            StatisticCompetitionsService = statisticCompetitionsService;
             _dystirDBContext = new DystirDBContext(_dbContextOptions);
-            DystirHub = dystirHub;
+            _standingService = standingService;
+            _statisticCompetitionsService = statisticCompetitionsService;
+            _hubConnection = hubConnection;
+            _hubContext = hubContext;
             AllMatchesDetails = new ObservableCollection<MatchDetails>();
             _ = StartupAsync();
-            DystirHub.DystirHubConnection.On<string, string>("ReceiveMatchDetails", (matchID, matchDetailsJson) =>
+            _hubConnection.On<string, string>("ReceiveMatchDetails", (matchID, matchDetailsJson) =>
             {
                 MatchDetails matchDetails = JsonConvert.DeserializeObject<MatchDetails>(matchDetailsJson);
-                UpdateMatchDetails(matchDetails?.Match?.MatchId.ToString(), matchDetails);
+                UpdateMatchDetails(matchDetails?.Match?.MatchID.ToString(), matchDetails);
                 _dystirDBContext = new DystirDBContext(_dbContextOptions);
                 var fromDate = new DateTime(DateTime.UtcNow.Year, 1, 1);
                 AllMatches = new ObservableCollection<Matches>(_dystirDBContext.Matches
                     .Where(y => y.Time > fromDate
                     && y.MatchActivation != 1
                     && y.MatchActivation != 2));
-                _ = DystirHub.SendUpdateCommand(matchID);
+                new HubSender().SendUpdateCommand(_hubContext, matchID);
             });
-            DystirHub.DystirHubConnection.Closed += DystirHubConnection_Closed;
+            _hubConnection.Closed += DystirHubConnection_Closed;
         }
 
         public async Task StartupAsync()
@@ -110,9 +115,9 @@ namespace DystirWeb.Services
         {
             try
             {
-                if(DystirHub.DystirHubConnection.State == HubConnectionState.Disconnected)
+                if(_hubConnection.State == HubConnectionState.Disconnected)
                 {
-                    await DystirHub.DystirHubConnection.StartAsync();
+                    await _hubConnection.StartAsync();
                 }
                 return true;
             }
@@ -131,7 +136,7 @@ namespace DystirWeb.Services
 
         private void UpdateMatchDetails(string matchID, MatchDetails matchDetailsJson)
         {
-            var matchDetails = AllMatchesDetails.FirstOrDefault(x => x.Match?.MatchId.ToString() == matchID);
+            var matchDetails = AllMatchesDetails.FirstOrDefault(x => x.Match?.MatchID.ToString() == matchID);
             if(matchDetails != null)
             {
                 AllMatchesDetails.Remove(matchDetails);
@@ -144,8 +149,8 @@ namespace DystirWeb.Services
             var fullMatchDetails = new FullMatchDetailsModelView();
             try
             {
-                Matches match = AllMatches?.FirstOrDefault(x => x.MatchId.ToString() == matchID);
-                var matchDetails = AllMatchesDetails.FirstOrDefault(x => x.Match?.MatchId.ToString() == matchID);
+                Matches match = AllMatches?.FirstOrDefault(x => x.MatchID.ToString() == matchID);
+                var matchDetails = AllMatchesDetails.FirstOrDefault(x => x.Match?.MatchID.ToString() == matchID);
                 if (matchDetails == null)
                 {
                     var eventsOfMatchTask = GetEventsOfMatchAsync(matchID);
@@ -190,8 +195,8 @@ namespace DystirWeb.Services
             if(match != null)
             {
                 DateTime date = match.Time.Value.Date;
-                return AllMatches?.Where(x => x.Time.Value.Date == date && x.MatchId != match.MatchId && x.StatusId < 13)
-                        .OrderBy(x => x.MatchTypeId).ThenBy(x => x.Time).ThenBy(x => x.MatchId).ToList();
+                return AllMatches?.Where(x => x.Time.Value.Date == date && x.MatchID != match.MatchID && x.StatusID < 13)
+                        .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID).ToList();
             } 
             else
             {
@@ -235,7 +240,7 @@ namespace DystirWeb.Services
         private List<SummaryEventOfMatch> GetSummary(MatchDetails matchDetails)
         {
             List<SummaryEventOfMatch> listSummaryEvents = GetSummaryEventsList(matchDetails);
-            if (matchDetails.Match?.StatusId < 12)
+            if (matchDetails.Match?.StatusID < 12)
             {
                 listSummaryEvents.Reverse();
             }
@@ -429,7 +434,6 @@ namespace DystirWeb.Services
                 statistic.HomeTeamStatistic.BigChanceProcent = statistic.HomeTeamStatistic.BigChance * 100 / (statistic.HomeTeamStatistic.BigChance + statistic.AwayTeamStatistic.BigChance);
                 statistic.AwayTeamStatistic.BigChanceProcent = statistic.AwayTeamStatistic.BigChance * 100 / (statistic.HomeTeamStatistic.BigChance + statistic.AwayTeamStatistic.BigChance);
             }
-
             return statistic;
         }
 
@@ -471,12 +475,12 @@ namespace DystirWeb.Services
 
         internal IEnumerable<Standing> GetStandings()
         {
-            return StandingService.GetStandings(AllTeams, AllMatches);
+            return _standingService.GetStandings(AllTeams, AllMatches);
         }
 
         internal ObservableCollection<CompetitionStatistic> GetCompetitionStatistics()
         {
-            return new ObservableCollection<CompetitionStatistic>(StatisticCompetitionsService.GetCompetitionsStatistic(AllMatches, _dystirDBContext));
+            return new ObservableCollection<CompetitionStatistic>(_statisticCompetitionsService.GetCompetitionsStatistic(AllMatches, _dystirDBContext));
         }
     }
 }

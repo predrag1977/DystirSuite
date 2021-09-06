@@ -22,23 +22,51 @@
     <link href="css/fontawesome/css/solid.min.css" rel="stylesheet" />
     <link href="css/fontawesome/css/v4-shims.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
-    <link href="css/site.css?v=40" rel="stylesheet" />
+    <link href="css/site.css?v=41" rel="stylesheet" />
 </head>
-<body>
 
+<body>
     <app>
         <component type="typeof(App)" render-mode="Server" />
     </app>
 
     <div id="components-reconnect-modal" class="my-reconnect-modal components-reconnect-hide">
-        <div class="show"></div>
-        <div class="failed"></div>
-        <div class="refused"></div>
+        <div class="show">
+            <div style="position:fixed; top:calc(50% - 1.5rem);left:calc(50% - 1.5rem);">
+                <img src="images/icons/loadingicon.gif" style="width:3rem" />
+            </div>
+        </div>
+        <div class="failed">
+            <div style="position:fixed; top:calc(50% - 1.5rem);left:calc(50% - 1.5rem);">
+                <img src="images/icons/loadingicon.gif" style="width:3rem" />
+            </div>
+        </div>
+        <div class="rejected">
+            <div style="position:fixed; top:calc(50% - 1.5rem);left:calc(50% - 1.5rem);">
+                <img src="images/icons/loadingicon.gif" style="width:3rem" />
+            </div>
+        </div>
     </div>
+
     <script src="jquery/jquery.js"></script>
     <script src="signalr/dist/browser/signalr.js"></script>
-    <script src="scripts/dystir_script.js?version=72" ></script>
+    <script src="scripts/dystir_script.js?version=73"></script>
     <script src="_framework/blazor.server.js"></script>
     <script src="scripts/google_analytics.js"></script>
+
+    <script>
+        async function attemptReload() {
+            await fetch('').then(function (response) {
+                document.location.reload(true);
+            }).catch(function (error) {
+                setTimeout(function () {
+                    attemptReload();
+                }, 300);
+            });
+        }
+        Blazor.defaultReconnectionHandler._reconnectCallback = function (d) {
+            attemptReload();
+        }
+    </script>
 </body>
 </html>

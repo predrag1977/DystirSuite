@@ -66,7 +66,7 @@ app {
 }
 
 .header {
-    z-index: 2000;
+    z-index: 3000;
     opacity: 0.97;
     position: fixed;
     top: 0;
@@ -101,7 +101,7 @@ app {
 }
 
 .sidebar {
-    z-index:1000;
+    z-index:2000;
     opacity: 0.97;
     position: relative;
 }
@@ -610,9 +610,21 @@ app {
 
 
 /*-----------------------*/
-/*  HIDE ERROR MESSAGES  */
+/*  ERROR MESSAGES  */
 /*-----------------------*/
-/*.components-reconnect-hide > div {
+.my-reconnect-modal > div {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3000;
+    overflow: hidden;
+    text-align: center;
+    font-weight: bold;
+}
+
+.components-reconnect-hide > div {
     display: none;
 }
 
@@ -632,10 +644,10 @@ app {
     display: block;
 }
 
-.components-reconnect-refused > div {
+.components-reconnect-rejected > div {
     display: none;
 }
 
-.components-reconnect-refused > .refused {
+.components-reconnect-rejected > .rejected {
     display: block;
-}*/
+}
