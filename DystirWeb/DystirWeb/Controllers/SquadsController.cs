@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Net;
+
 using DystirWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,50 +10,50 @@ namespace DystirWeb.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TeamsController : ControllerBase
+    public class SquadsController : ControllerBase
     {
         private DystirDBContext _dystirDBContext;
 
-        public TeamsController(DystirDBContext dystirDBContext)
+        public SquadsController(DystirDBContext dystirDBContext)
         {
             _dystirDBContext = dystirDBContext;
         }
 
-        // GET: api/Teams
+        // GET: api/Squads
         [HttpGet]
-        public IQueryable<Teams> GetTeams()
+        public IQueryable<Squad> GetSquad()
         {
-            return _dystirDBContext.Teams;
+            return _dystirDBContext.Squad;
         }
 
-        // GET: api/Teams/5
-        [HttpGet("{id}", Name = "GetTeam")]
-        public IActionResult GetTeams(int id)
+        // GET: api/Squads/5
+        [HttpGet("{id}", Name = "GetSquad")]
+        public IActionResult GetSquad(int id)
         {
-            Teams teams = _dystirDBContext.Teams.Find(id);
-            if (teams == null)
+            Squad squad = _dystirDBContext.Squad.Find(id);
+            if (squad == null)
             {
                 return NotFound();
             }
 
-            return Ok(teams);
+            return Ok(squad);
         }
 
-        // PUT: api/Teams/5
+        // PUT: api/Squads/5
         [HttpPut("{id}")]
-        public IActionResult PutTeams(int id, Teams teams)
+        public IActionResult PutSquad(int id, Squad squad)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != teams.TeamId)
+            if (id != squad.Id)
             {
                 return BadRequest();
             }
 
-            _dystirDBContext.Entry(teams).State = EntityState.Modified;
+            _dystirDBContext.Entry(squad).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +61,7 @@ namespace DystirWeb.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TeamsExists(id))
+                if (!SquadExists(id))
                 {
                     return NotFound();
                 }
@@ -73,40 +74,40 @@ namespace DystirWeb.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        // POST: api/Teams
+        // POST: api/Squads
         [HttpPost]
-        public IActionResult PostTeams(Teams teams)
+        public IActionResult PostSquad(Squad squad)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _dystirDBContext.Teams.Add(teams);
+            _dystirDBContext.Squad.Add(squad);
             _dystirDBContext.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = teams.TeamId }, teams);
+            return CreatedAtRoute("DefaultApi", new { id = squad.Id }, squad);
         }
 
-        // DELETE: api/Teams/5
+        // DELETE: api/Squads/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteTeams(int id)
+        public IActionResult DeleteSquad(int id)
         {
-            Teams teams = _dystirDBContext.Teams.Find(id);
-            if (teams == null)
+            Squad squad = _dystirDBContext.Squad.Find(id);
+            if (squad == null)
             {
                 return NotFound();
             }
 
-            _dystirDBContext.Teams.Remove(teams);
+            _dystirDBContext.Squad.Remove(squad);
             _dystirDBContext.SaveChanges();
 
-            return Ok(teams);
+            return Ok(squad);
         }
 
-        private bool TeamsExists(int id)
+        private bool SquadExists(int id)
         {
-            return _dystirDBContext.Teams.Count(e => e.TeamId == id) > 0;
+            return _dystirDBContext.Squad.Count(e => e.Id == id) > 0;
         }
     }
 }

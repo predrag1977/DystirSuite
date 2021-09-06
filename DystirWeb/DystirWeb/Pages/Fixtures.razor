@@ -4,7 +4,8 @@
 @using DystirWeb.Services
 @using Microsoft.AspNetCore.SignalR.Client;
 @inject DystirService DystirService
-@inject ClientService ClientService
+@inject TimeService TimeService
+@inject HubConnection HubConnection
 @inject Blazored.Localisation.Services.IBrowserDateTimeProvider BrowserDateTimeProvider
 @layout MainFootballLayout
 @implements IDisposable
@@ -30,9 +31,9 @@
                     }
                     @foreach (var match in FixturesMatchesList)
                     {
-                        @if (match.StatusId <= 12)
+                        @if (match.StatusID <= 12)
                         {
-                            <NavLink class="nav-link" style="cursor: pointer;" href="@("football/matchdetails/" + match.MatchId)">
+                            <NavLink class="nav-link" style="cursor: pointer;" href="@("football/matchdetails/" + match.MatchID)">
                                 <Match MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
                             </NavLink>
                         }
@@ -65,14 +66,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //ClientService.DystirHubConnection.On<string, string>("UpdateCommand", (matchID, matchDetails) =>
-        //{
-        //    _ = LoadFixturesMatches();
-        //});
-        ClientService.OnConnected += ClientService_OnConnected;
-        ClientService.OnReconnected += ClientService_OnReconnected;
-        ClientService.OnUpdated += ClientService_OnUpdated;
         DystirService.OnConnected += HubConnection_OnConnected;
+        TimeService.OnTimerElapsed += TimerElapsed;
+        HubConnection.On<string>("UpdateCommand", (matchID) =>
+        {
+            _ = LoadFixturesMatches();
+        });
         var browserDateTime = await BrowserDateTimeProvider.GetInstance();
         int serverTimeZoneHours = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
         int clientTimeZoneHours = browserDateTime.LocalTimeZoneInfo.BaseUtcOffset.Hours;
@@ -82,30 +81,21 @@
 
     void IDisposable.Dispose()
     {
-        ClientService.OnConnected -= ClientService_OnConnected;
-        ClientService.OnReconnected -= ClientService_OnReconnected;
-        ClientService.OnUpdated -= ClientService_OnUpdated;
         DystirService.OnConnected -= HubConnection_OnConnected;
-    }
-
-    private async void ClientService_OnConnected()
-    {
-        await LoadFixturesMatches();
-    }
-
-    private async void ClientService_OnReconnected()
-    {
-        await LoadFixturesMatches();
-    }
-
-    private async void ClientService_OnUpdated(string matchID)
-    {
-        await LoadFixturesMatches();
+        TimeService.OnTimerElapsed -= TimerElapsed;
     }
 
     private async void HubConnection_OnConnected()
     {
         await LoadFixturesMatches();
+    }
+
+    private void TimerElapsed(object sender, EventArgs e)
+    {
+        if (HubConnection.State == HubConnectionState.Connected)
+        {
+            InvokeAsync(() => StateHasChanged());
+        }
     }
 
     private void Refresh()
@@ -131,9 +121,9 @@
     {
         await Task.Run(() =>
         {
-            var allResultMatchByCompetition = DystirService.AllMatches?.Where(x => x.StatusId < 12 || x.StatusId == 14)
-            .OrderBy(x => x.MatchTypeId).OrderBy(x => GetOrder(x.MatchTypeId))
-            .ThenBy(x => x.RoundId).ThenBy(x => x.Time).ThenBy(x => x.MatchId)
+            var allResultMatchByCompetition = DystirService.AllMatches?.Where(x => x.StatusID < 12 || x.StatusID == 14)
+            .OrderBy(x => x.MatchTypeID).OrderBy(x => GetOrder(x.MatchTypeID))
+            .ThenBy(x => x.RoundID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
             .GroupBy(x => x.MatchTypeName)?.ToList() ?? new List<IGrouping<string, Matches>>();
 
             CompetitionsList = new List<string>();

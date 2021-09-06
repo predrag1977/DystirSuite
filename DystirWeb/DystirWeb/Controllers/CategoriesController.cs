@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Net;
 using DystirWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,50 +8,50 @@ namespace DystirWeb.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StatusesController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
         private DystirDBContext _dystirDBContext;
 
-        public StatusesController(DystirDBContext dystirDBContext)
+        public CategoriesController(DystirDBContext dystirDBContext)
         {
             _dystirDBContext = dystirDBContext;
         }
 
-        // GET: api/Statuses
+        // GET: api/Categories
         [HttpGet]
-        public IQueryable<Statuses> GetStatuses()
+        public IQueryable<Categories> GetCategories()
         {
-            return _dystirDBContext.Statuses;
+            return _dystirDBContext.Categories;
         }
 
-        // GET: api/Statuses/5
-        [HttpGet("{id}", Name = "GetStatus")]
-        public IActionResult GetStatuses(int id)
+        // GET: api/Categories/5
+        [HttpGet("{id}", Name = "GetCategorie")]
+        public IActionResult GetCategories(int id)
         {
-            Statuses statuses = _dystirDBContext.Statuses.Find(id);
-            if (statuses == null)
+            Categories categories = _dystirDBContext.Categories.Find(id);
+            if (categories == null)
             {
                 return NotFound();
             }
 
-            return Ok(statuses);
+            return Ok(categories);
         }
 
-        // PUT: api/Statuses/5
+        // PUT: api/Categories/5
         [HttpPut("{id}")]
-        public IActionResult PutStatuses(int id, Statuses statuses)
+        public IActionResult PutCategories(int id, Categories categories)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != statuses.Id)
+            if (id != categories.Id)
             {
                 return BadRequest();
             }
 
-            _dystirDBContext.Entry(statuses).State = EntityState.Modified;
+            _dystirDBContext.Entry(categories).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +59,7 @@ namespace DystirWeb.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StatusesExists(id))
+                if (!CategoriesExists(id))
                 {
                     return NotFound();
                 }
@@ -73,40 +72,40 @@ namespace DystirWeb.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        // POST: api/Statuses
+        // POST: api/Categories
         [HttpPost]
-        public IActionResult PostStatuses(Statuses statuses)
+        public IActionResult PostCategories(Categories categories)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _dystirDBContext.Statuses.Add(statuses);
+            _dystirDBContext.Categories.Add(categories);
             _dystirDBContext.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = statuses.Id }, statuses);
+            return CreatedAtRoute("DefaultApi", new { id = categories.Id }, categories);
         }
 
-        // DELETE: api/Statuses/5
+        // DELETE: api/Categories/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteStatuses(int id)
+        public IActionResult DeleteCategories(int id)
         {
-            Statuses statuses = _dystirDBContext.Statuses.Find(id);
-            if (statuses == null)
+            Categories categories = _dystirDBContext.Categories.Find(id);
+            if (categories == null)
             {
                 return NotFound();
             }
 
-            _dystirDBContext.Statuses.Remove(statuses);
+            _dystirDBContext.Categories.Remove(categories);
             _dystirDBContext.SaveChanges();
 
-            return Ok(statuses);
+            return Ok(categories);
         }
 
-        private bool StatusesExists(int id)
+        private bool CategoriesExists(int id)
         {
-            return _dystirDBContext.Statuses.Count(e => e.Id == id) > 0;
+            return _dystirDBContext.Categories.Count(e => e.Id == id) > 0;
         }
     }
 }

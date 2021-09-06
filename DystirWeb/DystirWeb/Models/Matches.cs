@@ -7,7 +7,7 @@ namespace DystirWeb.Models
         public int ExtraMinutes { get; set; }
         public int ExtraSeconds { get; set; }
 
-        public int MatchId { get; set; }
+        public int MatchID { get; set; }
         public DateTime? Time { get; set; }
         public string Location { get; set; }
         public string HomeTeam { get; set; }
@@ -16,7 +16,7 @@ namespace DystirWeb.Models
         public string HomeCategoriesName { get; set; }
         public string AwayCategoriesName { get; set; }
         public string HomeSquadName { get; set; }
-        public int? StatusId { get; set; }
+        public int? StatusID { get; set; }
         public int? HomeTeamScore { get; set; }
         public int? AwayTeamScore { get; set; }
         public int? HomeTeamOnTarget { get; set; }
@@ -30,8 +30,8 @@ namespace DystirWeb.Models
         public string StatusName { get; set; }
         public int? MatchActivation { get; set; }
         public DateTime? StatusTime { get; set; }
-        public int? MatchTypeId { get; set; }
-        public int? RoundId { get; set; }
+        public int? MatchTypeID { get; set; }
+        public int? RoundID { get; set; }
         public string RoundName { get; set; }
     }
 }

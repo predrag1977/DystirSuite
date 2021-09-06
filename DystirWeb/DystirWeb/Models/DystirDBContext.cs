@@ -133,11 +133,11 @@ namespace DystirWeb.Models
 
             modelBuilder.Entity<Matches>(entity =>
             {
-                entity.HasKey(e => e.MatchId);
+                entity.HasKey(e => e.MatchID);
 
                 entity.ToTable("Matches", "dbo");
 
-                entity.Property(e => e.MatchId).HasColumnName("MatchID");
+                entity.Property(e => e.MatchID).HasColumnName("MatchID");
 
                 entity.Property(e => e.AwayTeam).IsUnicode(false);
 
@@ -149,13 +149,13 @@ namespace DystirWeb.Models
 
                 entity.Property(e => e.Location).IsUnicode(false);
 
-                entity.Property(e => e.MatchTypeId).HasColumnName("MatchTypeID");
+                entity.Property(e => e.MatchTypeID).HasColumnName("MatchTypeID");
 
-                entity.Property(e => e.RoundId).HasColumnName("RoundID");
+                entity.Property(e => e.RoundID).HasColumnName("RoundID");
 
                 entity.Property(e => e.RoundName).IsUnicode(false);
 
-                entity.Property(e => e.StatusId).HasColumnName("StatusID");
+                entity.Property(e => e.StatusID).HasColumnName("StatusID");
 
                 entity.Property(e => e.StatusTime).HasColumnType("datetime");
 

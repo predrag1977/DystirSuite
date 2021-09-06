@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Net;
+
 using DystirWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,50 +10,50 @@ namespace DystirWeb.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RoundsController : ControllerBase
+    public class StatusesController : ControllerBase
     {
         private DystirDBContext _dystirDBContext;
 
-        public RoundsController(DystirDBContext dystirDBContext)
+        public StatusesController(DystirDBContext dystirDBContext)
         {
             _dystirDBContext = dystirDBContext;
         }
 
-        // GET: api/Rounds
+        // GET: api/Statuses
         [HttpGet]
-        public IQueryable<Round> GetRounds()
+        public IQueryable<Statuses> GetStatuses()
         {
-            return _dystirDBContext.Round;
+            return _dystirDBContext.Statuses;
         }
 
-        // GET: api/Rounds/5
-        [HttpGet("{id}", Name = "GetRounds")]
-        public IActionResult GetRounds(int id)
+        // GET: api/Statuses/5
+        [HttpGet("{id}", Name = "GetStatus")]
+        public IActionResult GetStatuses(int id)
         {
-            Round round = _dystirDBContext.Round.Find(id);
-            if (round == null)
+            Statuses statuses = _dystirDBContext.Statuses.Find(id);
+            if (statuses == null)
             {
                 return NotFound();
             }
 
-            return Ok(round);
+            return Ok(statuses);
         }
 
-        // PUT: api/Rounds/5
+        // PUT: api/Statuses/5
         [HttpPut("{id}")]
-        public IActionResult PutRounds(int id, Round round)
+        public IActionResult PutStatuses(int id, Statuses statuses)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != round.Id)
+            if (id != statuses.Id)
             {
                 return BadRequest();
             }
 
-            _dystirDBContext.Entry(round).State = EntityState.Modified;
+            _dystirDBContext.Entry(statuses).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +61,7 @@ namespace DystirWeb.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RoundsExists(id))
+                if (!StatusesExists(id))
                 {
                     return NotFound();
                 }
@@ -73,40 +74,40 @@ namespace DystirWeb.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        // POST: api/Rounds
+        // POST: api/Statuses
         [HttpPost]
-        public IActionResult PostRounds(Round round)
+        public IActionResult PostStatuses(Statuses statuses)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _dystirDBContext.Round.Add(round);
+            _dystirDBContext.Statuses.Add(statuses);
             _dystirDBContext.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = round.Id }, round);
+            return CreatedAtRoute("DefaultApi", new { id = statuses.Id }, statuses);
         }
 
-        // DELETE: api/Rounds/5
+        // DELETE: api/Statuses/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteRounds(int id)
+        public IActionResult DeleteStatuses(int id)
         {
-            Round round = _dystirDBContext.Round.Find(id);
-            if (round == null)
+            Statuses statuses = _dystirDBContext.Statuses.Find(id);
+            if (statuses == null)
             {
                 return NotFound();
             }
 
-            _dystirDBContext.Round.Remove(round);
+            _dystirDBContext.Statuses.Remove(statuses);
             _dystirDBContext.SaveChanges();
 
-            return Ok(round);
+            return Ok(statuses);
         }
 
-        private bool RoundsExists(int id)
+        private bool StatusesExists(int id)
         {
-            return _dystirDBContext.Round.Count(e => e.Id == id) > 0;
+            return _dystirDBContext.Statuses.Count(e => e.Id == id) > 0;
         }
     }
 }

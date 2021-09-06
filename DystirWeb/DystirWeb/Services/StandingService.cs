@@ -2,13 +2,14 @@
 using DystirWeb.ModelViews;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace DystirWeb.Services
 {
     public class StandingService
     {
-        internal IEnumerable<Standing> GetStandings(IEnumerable<Teams> teamsList, IEnumerable<Matches> matchesList)
+        internal IEnumerable<Standing> GetStandings(IEnumerable<Teams> allTeams, IEnumerable<Matches> allMatches)
         {
             List<Standing> standingsList = new List<Standing>();
             var competititionNamesArray = new string[] { "Betri deildin", "1. deild", "Betri deildin kvinnur", "2. deild" };
@@ -17,7 +18,7 @@ namespace DystirWeb.Services
                 Standing standing = new Standing()
                 {
                     StandingCompetitionName = competititionName,
-                    TeamStandings = GetStandings(competititionName, teamsList, matchesList)
+                    TeamStandings = GetStandings(competititionName, allTeams, allMatches)
                 };
                 foreach (TeamStanding teamStanding in standing.TeamStandings)
                 {
@@ -34,7 +35,7 @@ namespace DystirWeb.Services
             List<TeamStanding> teamStandings = new List<TeamStanding>();
             try
             {
-                List<Matches> matches = matchesList?.Where(x => x.MatchTypeName == competitionName && /*(x.StatusId == 13 || x.StatusId == 12)&& */ (x.RoundId < 1000)).ToList();
+                List<Matches> matches = matchesList?.Where(x => x.MatchTypeName == competitionName && /*(x.StatusId == 13 || x.StatusId == 12)&& */ (x.RoundID < 1000)).ToList();
                 foreach (Matches match in matches)
                 {
                     if (!teamStandings.Any(x => x.Team.Trim() == match.HomeTeam.Trim()))
@@ -78,7 +79,7 @@ namespace DystirWeb.Services
 
             }
 
-            //ReducePenaltiesPoint(teamStandings);
+            ReducePenaltiesPoint(teamStandings);
 
             teamStandings.RemoveAll(x => x.TeamID == 0);
             return teamStandings.OrderByDescending(x => x.Points)
@@ -94,7 +95,7 @@ namespace DystirWeb.Services
             //{
             //    return;
             //}
-            if (match.StatusId != 12 && match.StatusId != 13)
+            if (match.StatusID != 12 && match.StatusID != 13)
             {
                 return;
             }
@@ -127,7 +128,8 @@ namespace DystirWeb.Services
         {
             List<Tuple<string, string, int>> teamPenatiesPointList = new List<Tuple<string, string, int>>
             {
-                new Tuple<string, string, int>("2. deild", "B68", 3)
+                new Tuple<string, string, int>("2. deild", "NSÍ", 3),
+                new Tuple<string, string, int>("2. deild", "TB", 3)
             };
             foreach (TeamStanding teamStanding in teamStandingsList)
             {

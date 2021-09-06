@@ -13,7 +13,7 @@ namespace DystirWeb.Services
             DateTime date = new DateTime(DateTime.Now.Year, 1, 1);
             var matchesList = allMatches ?? new ObservableCollection<Matches>();
             var playersList = new ObservableCollection<PlayersOfMatches>(dystirDBContext.PlayersOfMatches?
-                .Where(x => x.Goal > 0 || x.Assist > 0).ToList().Where(p => matchesList.Any(m => m.MatchId == p.MatchId)));
+                .Where(x => x.Goal > 0 || x.Assist > 0).ToList().Where(p => matchesList.Any(m => m.MatchID == p.MatchId)));
             List<CompetitionStatistic> competitionStatisticsList = new List<CompetitionStatistic>();
             var competititionNamesArray = new string[] { "Betri deildin", "1. deild", "Betri deildin kvinnur" };
             foreach (string competititionName in competititionNamesArray)
@@ -30,12 +30,12 @@ namespace DystirWeb.Services
             {
                 competitionStatistic.CompetitionName = competititionName;
                 competitionStatistic.TeamStatistics = new List<TeamStatistic>();
-                var matches = allMatches?.Where(x => x.MatchTypeName == competititionName && (x.RoundId < 1000));
+                var matches = allMatches?.Where(x => x.MatchTypeName == competititionName && (x.RoundID < 1000));
                 //&& (string.Equals(x.HomeTeam, team.TeamName, StringComparison.OrdinalIgnoreCase)
                 //|| string.Equals(x.AwayTeam, team.TeamName, StringComparison.OrdinalIgnoreCase)));
                 foreach (Matches match in matches)
                 {
-                    var players = playersList?.Where(p => p.MatchId == match.MatchId);
+                    var players = playersList?.Where(p => p.MatchId == match.MatchID);
                     //HOME TEAM STATISTICS
                     bool isNewHomeTeamStatistics = false;
                     TeamStatistic homeTeamFullStatistic = new TeamStatistic();

@@ -1,13 +1,12 @@
-﻿using DystirWeb.Controllers;
-using DystirWeb.Models;
-using DystirWeb.ModelViews;
+﻿using DystirWeb.Models;
+
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace DystirWeb.ApiControllers
+namespace DystirWeb.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -27,12 +26,12 @@ namespace DystirWeb.ApiControllers
         public IEnumerable<CompetitionStatistic> Get()
         {
             DateTime date = new DateTime(DateTime.Now.Year, 1, 1);
-            _matchesList = new ObservableCollection<Matches>(_dystirDBContext.Matches?.Where(x => x.MatchTypeId != null
+            _matchesList = new ObservableCollection<Matches>(_dystirDBContext.Matches?.Where(x => x.MatchTypeID != null
                     && x.MatchActivation != 1
                     && x.MatchActivation != 2
                     && x.Time > date));
             _playersList = new ObservableCollection<PlayersOfMatches>(_dystirDBContext.PlayersOfMatches?
-                .Where(x => x.Goal > 0 || x.Assist > 0).ToList().Where(p => _matchesList.Any(m => m.MatchId == p.MatchId)));
+                .Where(x => x.Goal > 0 || x.Assist > 0).ToList().Where(p => _matchesList.Any(m => m.MatchID == p.MatchId)));
             List<CompetitionStatistic> competitionStatisticsList = new List<CompetitionStatistic>();
             var competititionNamesArray = new string[] { "Betri deildin", "1. deild", "Betri deildin kvinnur" };
             foreach (string competititionName in competititionNamesArray)
@@ -49,12 +48,12 @@ namespace DystirWeb.ApiControllers
             {
                 competitionStatistic.CompetitionName = competititionName;
                 competitionStatistic.TeamStatistics = new List<TeamStatistic>();
-                var matches = _matchesList?.Where(x => x.MatchTypeName == competititionName && (x.RoundId < 1000));
+                var matches = _matchesList?.Where(x => x.MatchTypeName == competititionName && (x.RoundID < 1000));
                 //&& (string.Equals(x.HomeTeam, team.TeamName, StringComparison.OrdinalIgnoreCase)
                 //|| string.Equals(x.AwayTeam, team.TeamName, StringComparison.OrdinalIgnoreCase)));
                 foreach (Matches match in matches)
                 {
-                    var players = _playersList?.Where(p => p.MatchId == match.MatchId);
+                    var players = _playersList?.Where(p => p.MatchId == match.MatchID);
                     //HOME TEAM STATISTICS
                     bool isNewHomeTeamStatistics = false;
                     TeamStatistic homeTeamFullStatistic = new TeamStatistic();

@@ -3,8 +3,9 @@
 @using DystirWeb.ModelViews
 @using DystirWeb.Services
 @using System.Collections.ObjectModel
+@using Microsoft.AspNetCore.SignalR.Client
 @inject DystirService DystirService
-@inject ClientService ClientService
+@inject HubConnection HubConnection
 @layout MainFootballLayout
 @implements IDisposable
 
@@ -70,8 +71,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        ClientService.OnConnected += ClientService_OnConnected;
-        ClientService.OnReconnected += ClientService_OnReconnected;
         DystirService.OnConnected += HubConnection_OnConnected;
         _ = LoadStandings(_competition);
         await Task.CompletedTask;
@@ -79,21 +78,7 @@
 
     void IDisposable.Dispose()
     {
-        ClientService.OnConnected -= ClientService_OnConnected;
-        ClientService.OnReconnected -= ClientService_OnReconnected;
         DystirService.OnConnected -= HubConnection_OnConnected;
-    }
-
-    private async void ClientService_OnConnected()
-    {
-        _standings = null;
-        await LoadStandings(_competition);
-    }
-
-    private async void ClientService_OnReconnected()
-    {
-        _standings = null;
-        await LoadStandings(_competition);
     }
 
     private async void HubConnection_OnConnected()

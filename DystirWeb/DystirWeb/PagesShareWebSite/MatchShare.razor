@@ -1,10 +1,6 @@
 ﻿@using DystirWeb.Services
 @using DystirWeb.Models
-@using Microsoft.AspNetCore.SignalR.Client
 @inject DystirService DystirService
-@inject ClientService ClientService
-@inject TimeService TimeService
-@implements IDisposable
 @inherits MatchBase
 
 @if (MatchItem != null)
@@ -27,7 +23,7 @@
                                     <span>@((MatchItem.HomeTeam + " " + MatchItem.HomeSquadName + " " + MatchItem.HomeCategoriesName).Trim())</span>
                                 </td>
                                 <td style="width:30px; background-color:#999999;border-radius:5px; color:white; text-align:center;">
-                                    @if (MatchItem.StatusId > 1 && MatchItem.StatusId < 14)
+                                    @if (MatchItem.StatusID > 1 && MatchItem.StatusID < 14)
                                     {
                                         @(MatchItem.HomeTeamScore)
                                     }
@@ -38,7 +34,7 @@
                                 </td>
                                 <td style="width:20px;"> : </td>
                                 <td style="width:30px; background-color:#999999;border-radius:5px; color:white;text-align:center;">
-                                    @if (MatchItem.StatusId > 1 && MatchItem.StatusId < 14)
+                                    @if (MatchItem.StatusID > 1 && MatchItem.StatusID < 14)
                                     {
                                         @(MatchItem.AwayTeamScore)
                                     }
@@ -58,9 +54,9 @@
                 else
                 {
                     <td style="text-align:right;">
-                        @if (MatchItem.StatusId > 1 && MatchItem.StatusId < 14)
+                        @if (MatchItem.StatusID > 1 && MatchItem.StatusID < 14)
                         {
-                            <div class="match_time" style="color:@GetStatusColor(MatchItem.StatusId)">@GetMatchTime(MatchItem.StatusTime, MatchItem.Time, MatchItem.StatusId)</div>
+                            <div class="match_time" style="color:@GetStatusColor(MatchItem.StatusID)">@GetMatchTime(MatchItem.StatusTime, MatchItem.Time, MatchItem.StatusID)</div>
                         }
                         else
                         {
@@ -76,7 +72,7 @@
         </table>
         @if (ShowMore)
         {
-            <div class="match_time" style="font-size:1rem;color:@GetStatusColor(MatchItem.StatusId)">@(MatchItem.Time?.ToString("HH:mm") == "00:00" && MatchItem.StatusId > 13 ? "-- : --" : GetMatchTime(MatchItem.StatusTime, MatchItem.Time, MatchItem.StatusId))</div>
+            <div class="match_time" style="font-size:1rem;color:@GetStatusColor(MatchItem.StatusID)">@(MatchItem.Time?.ToString("HH:mm") == "00:00" && MatchItem.StatusID > 13 ? "-- : --" : GetMatchTime(MatchItem.StatusTime, MatchItem.Time, MatchItem.StatusID))</div>
         }
         else
         {
@@ -86,7 +82,7 @@
                         @((MatchItem.HomeTeam + " " + MatchItem.HomeCategoriesName + " " + MatchItem.HomeSquadName).Trim().ToUpper())
                     </td>
                     <td style="width:1em;padding:0 0.1em;text-align:right;">
-                        @if (MatchItem.StatusId > 1 && MatchItem.StatusId < 14)
+                        @if (MatchItem.StatusID > 1 && MatchItem.StatusID < 14)
                         {
                             @(MatchItem.HomeTeamScore)
                         }
@@ -103,7 +99,7 @@
                         @((MatchItem.AwayTeam + " " + MatchItem.AwayCategoriesName + " " + MatchItem.AwaySquadName).Trim().ToUpper())
                     </td>
                     <td style="width:1em;padding:0 0.1em;text-align:right;">
-                        @if (MatchItem.StatusId > 1 && MatchItem.StatusId < 14)
+                        @if (MatchItem.StatusID > 1 && MatchItem.StatusID < 14)
                         {
                             @(MatchItem.AwayTeamScore)
                         }
@@ -132,24 +128,5 @@
     string BorderStyle()
     {
         return ShowMore ? "match_item_border" : "";
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        TimeService.OnTimerElapsed += TimerElapsed;
-        await Task.CompletedTask;
-    }
-
-    void IDisposable.Dispose()
-    {
-        TimeService.OnTimerElapsed -= TimerElapsed;
-    }
-
-    private void TimerElapsed(object sender, EventArgs e)
-    {
-        if (DystirService.DystirHub.DystirHubConnection.State == HubConnectionState.Connected && ClientService.IsConnected)
-        {
-            InvokeAsync(() => StateHasChanged());
-        }
     }
 }

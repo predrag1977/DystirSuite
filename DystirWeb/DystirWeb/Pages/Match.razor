@@ -1,21 +1,16 @@
 ﻿@using DystirWeb.Services
 @using DystirWeb.Models
 @using System.Globalization
-@using Microsoft.AspNetCore.SignalR.Client
 @inject DystirService DystirService
-@inject ClientService ClientService
-@inject TimeService TimeService
-@implements IDisposable
 @inherits MatchBase
 
 @if (MatchItem != null)
 {
     @if (IsMatchForSameDayList)
     {
-
         <div class="table tab" style="height: 3.0rem;padding:0 4px">
             <div style="width:6rem; height:0.8rem;font-size:0.6rem;white-space: nowrap; overflow: hidden; text-overflow: ellipsis;text-align:right;">
-                <span class="match_time" style="color:@GetStatusColor(MatchItem.StatusId)">@GetMatchTime(MatchItem.StatusTime, MatchItem.Time, MatchItem.StatusId)</span>
+                <span class="match_time" style="color:@GetStatusColor(MatchItem.StatusID)">@GetMatchTime(MatchItem.StatusTime, MatchItem.Time, MatchItem.StatusID)</span>
             </div>
             <div class="d-table-cell" style="height:2.2rem;text-align: left;">
                 <div style="width:5rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
@@ -27,7 +22,7 @@
             </div>
             <div class="d-table-cell" style="height:2.2rem;text-align:left;">
                 <div style="width:1rem;text-align: right;">
-                    @if (MatchItem.StatusId > 1)
+                    @if (MatchItem.StatusID > 1)
                     {
                         @(MatchItem.HomeTeamScore);
                     }
@@ -37,7 +32,7 @@
                     }
                 </div>
                 <div style="width:1rem;text-align: right;">
-                    @if (MatchItem.StatusId > 1)
+                    @if (MatchItem.StatusID > 1)
                     {
                         @(MatchItem.AwayTeamScore)
                     }
@@ -79,12 +74,12 @@
             </table>
             <table class="table">
                 <tr class="match_item_text_color">
-                    @if (MatchItem.StatusId < 14)
+                    @if (MatchItem.StatusID < 14)
                     {
                         <td style="text-align:left;">
-                            <span class="match_time" style="color:@GetStatusColor(MatchItem.StatusId)">@GetMatchTime(MatchItem.StatusTime, MatchItem.Time, MatchItem.StatusId)</span>
+                            <span class="match_time" style="color:@GetStatusColor(MatchItem.StatusID)">@GetMatchTime(MatchItem.StatusTime, MatchItem.Time, MatchItem.StatusID)</span>
                         </td>
-                        @if (MatchItem.StatusId > 1)
+                        @if (MatchItem.StatusID > 1)
                         {
                             <td style="text-align:right;padding:0 5px">
                                 @(MatchItem.HomeTeamScore)
@@ -99,7 +94,7 @@
                             <td style="text-align:center;padding:0 5px"> - : - </td>
                         }
                         <td style="text-align:right;">
-                            @if (MatchItem.StatusId < 13 && ShowMore)
+                            @if (MatchItem.StatusID < 13 && ShowMore)
                             {
                                 <span>Vís meira &#10095;</span>
                             }
@@ -131,24 +126,5 @@
     string BorderStyle()
     {
         return ShowMore ? "match_item_border" : "";
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        TimeService.OnTimerElapsed += TimerElapsed;
-        await Task.CompletedTask;
-    }
-
-    void IDisposable.Dispose()
-    {
-        TimeService.OnTimerElapsed -= TimerElapsed;
-    }
-
-    private void TimerElapsed(object sender, EventArgs e)
-    {
-        if (DystirService.DystirHub.DystirHubConnection.State == HubConnectionState.Connected && ClientService.IsConnected)
-        {
-            InvokeAsync(() => StateHasChanged());
-        }
     }
 }

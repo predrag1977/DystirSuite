@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
+
 using DystirWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,50 +11,50 @@ namespace DystirWeb.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class SponsorsController : ControllerBase
     {
         private DystirDBContext _dystirDBContext;
 
-        public CategoriesController(DystirDBContext dystirDBContext)
+        public SponsorsController(DystirDBContext dystirDBContext)
         {
             _dystirDBContext = dystirDBContext;
         }
 
-        // GET: api/Categories
+        // GET: api/Sponsors
         [HttpGet]
-        public IQueryable<Categories> GetCategories()
+        public async Task<IQueryable<Sponsors>> GetSponsors()
         {
-            return _dystirDBContext.Categories;
+            return await Task.FromResult(_dystirDBContext.Sponsors);
         }
 
-        // GET: api/Categories/5
-        [HttpGet("{id}", Name = "GetCategorie")]
-        public IActionResult GetCategories(int id)
+        // GET: api/Sponsors/5
+        [HttpGet("{id}", Name = "GetSponsor")]
+        public IActionResult GetSponsors(int id)
         {
-            Categories categories = _dystirDBContext.Categories.Find(id);
-            if (categories == null)
+            Sponsors sponsors = _dystirDBContext.Sponsors.Find(id);
+            if (sponsors == null)
             {
                 return NotFound();
             }
 
-            return Ok(categories);
+            return Ok(sponsors);
         }
 
-        // PUT: api/Categories/5
+        // PUT: api/Sponsors/5
         [HttpPut("{id}")]
-        public IActionResult PutCategories(int id, Categories categories)
+        public IActionResult PutSponsors(int id, Sponsors sponsors)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != categories.Id)
+            if (id != sponsors.Id)
             {
                 return BadRequest();
             }
 
-            _dystirDBContext.Entry(categories).State = EntityState.Modified;
+            _dystirDBContext.Entry(sponsors).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +62,7 @@ namespace DystirWeb.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoriesExists(id))
+                if (!SponsorsExists(id))
                 {
                     return NotFound();
                 }
@@ -73,40 +75,40 @@ namespace DystirWeb.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        // POST: api/Categories
+        // POST: api/Sponsors
         [HttpPost]
-        public IActionResult PostCategories(Categories categories)
+        public IActionResult PostSponsors(Sponsors sponsors)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _dystirDBContext.Categories.Add(categories);
+            _dystirDBContext.Sponsors.Add(sponsors);
             _dystirDBContext.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = categories.Id }, categories);
+            return CreatedAtRoute("DefaultApi", new { id = sponsors.Id }, sponsors);
         }
 
-        // DELETE: api/Categories/5
+        // DELETE: api/Sponsors/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteCategories(int id)
+        public IActionResult DeleteSponsors(int id)
         {
-            Categories categories = _dystirDBContext.Categories.Find(id);
-            if (categories == null)
+            Sponsors sponsors = _dystirDBContext.Sponsors.Find(id);
+            if (sponsors == null)
             {
                 return NotFound();
             }
 
-            _dystirDBContext.Categories.Remove(categories);
+            _dystirDBContext.Sponsors.Remove(sponsors);
             _dystirDBContext.SaveChanges();
 
-            return Ok(categories);
+            return Ok(sponsors);
         }
 
-        private bool CategoriesExists(int id)
+        private bool SponsorsExists(int id)
         {
-            return _dystirDBContext.Categories.Count(e => e.Id == id) > 0;
+            return _dystirDBContext.Sponsors.Count(e => e.Id == id) > 0;
         }
     }
 }

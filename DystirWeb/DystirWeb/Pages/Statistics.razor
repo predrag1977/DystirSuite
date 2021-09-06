@@ -5,7 +5,6 @@
 @using DystirWeb.Services
 @using System.Collections.ObjectModel
 @inject DystirService DystirService
-@inject ClientService ClientService
 @layout MainFootballLayout
 @implements IDisposable
 
@@ -83,8 +82,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        ClientService.OnConnected += ClientService_OnConnected;
-        ClientService.OnReconnected += ClientService_OnReconnected;
         DystirService.OnConnected += HubConnection_OnConnected;
         _ = GetStatisticsList(_competition);
         await Task.CompletedTask;
@@ -92,21 +89,7 @@
 
     void IDisposable.Dispose()
     {
-        ClientService.OnConnected -= ClientService_OnConnected;
-        ClientService.OnReconnected -= ClientService_OnReconnected;
         DystirService.OnConnected -= HubConnection_OnConnected;
-    }
-
-    private async void ClientService_OnConnected()
-    {
-        _statisticCompetitions= null;
-        await GetStatisticsList(_competition);
-    }
-
-    private async void ClientService_OnReconnected()
-    {
-        _statisticCompetitions = null;
-        await GetStatisticsList(_competition);
     }
 
     private async void HubConnection_OnConnected()

@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
+
 using DystirWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,50 +11,50 @@ namespace DystirWeb.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SponsorsController : ControllerBase
+    public class TeamsController : ControllerBase
     {
         private DystirDBContext _dystirDBContext;
 
-        public SponsorsController(DystirDBContext dystirDBContext)
+        public TeamsController(DystirDBContext dystirDBContext)
         {
             _dystirDBContext = dystirDBContext;
         }
 
-        // GET: api/Sponsors
+        // GET: api/Teams
         [HttpGet]
-        public IQueryable<Sponsors> GetSponsors()
+        public async Task<IQueryable<Teams>> GetTeams()
         {
-            return _dystirDBContext.Sponsors;
+            return await Task.FromResult(_dystirDBContext.Teams);
         }
 
-        // GET: api/Sponsors/5
-        [HttpGet("{id}", Name = "GetSponsor")]
-        public IActionResult GetSponsors(int id)
+        // GET: api/Teams/5
+        [HttpGet("{id}", Name = "GetTeam")]
+        public IActionResult GetTeams(int id)
         {
-            Sponsors sponsors = _dystirDBContext.Sponsors.Find(id);
-            if (sponsors == null)
+            Teams teams = _dystirDBContext.Teams.Find(id);
+            if (teams == null)
             {
                 return NotFound();
             }
 
-            return Ok(sponsors);
+            return Ok(teams);
         }
 
-        // PUT: api/Sponsors/5
+        // PUT: api/Teams/5
         [HttpPut("{id}")]
-        public IActionResult PutSponsors(int id, Sponsors sponsors)
+        public IActionResult PutTeams(int id, Teams teams)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != sponsors.Id)
+            if (id != teams.TeamId)
             {
                 return BadRequest();
             }
 
-            _dystirDBContext.Entry(sponsors).State = EntityState.Modified;
+            _dystirDBContext.Entry(teams).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +62,7 @@ namespace DystirWeb.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SponsorsExists(id))
+                if (!TeamsExists(id))
                 {
                     return NotFound();
                 }
@@ -73,40 +75,40 @@ namespace DystirWeb.Controllers
             return StatusCode(StatusCodes.Status204NoContent);
         }
 
-        // POST: api/Sponsors
+        // POST: api/Teams
         [HttpPost]
-        public IActionResult PostSponsors(Sponsors sponsors)
+        public IActionResult PostTeams(Teams teams)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _dystirDBContext.Sponsors.Add(sponsors);
+            _dystirDBContext.Teams.Add(teams);
             _dystirDBContext.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = sponsors.Id }, sponsors);
+            return CreatedAtRoute("DefaultApi", new { id = teams.TeamId }, teams);
         }
 
-        // DELETE: api/Sponsors/5
+        // DELETE: api/Teams/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteSponsors(int id)
+        public IActionResult DeleteTeams(int id)
         {
-            Sponsors sponsors = _dystirDBContext.Sponsors.Find(id);
-            if (sponsors == null)
+            Teams teams = _dystirDBContext.Teams.Find(id);
+            if (teams == null)
             {
                 return NotFound();
             }
 
-            _dystirDBContext.Sponsors.Remove(sponsors);
+            _dystirDBContext.Teams.Remove(teams);
             _dystirDBContext.SaveChanges();
 
-            return Ok(sponsors);
+            return Ok(teams);
         }
 
-        private bool SponsorsExists(int id)
+        private bool TeamsExists(int id)
         {
-            return _dystirDBContext.Sponsors.Count(e => e.Id == id) > 0;
+            return _dystirDBContext.Teams.Count(e => e.TeamId == id) > 0;
         }
     }
 }

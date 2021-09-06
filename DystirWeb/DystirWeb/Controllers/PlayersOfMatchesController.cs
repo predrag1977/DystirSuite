@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DystirWeb.ApiControllers;
+
+using DystirWeb.Server.Hubs;
 using DystirWeb.Models;
-using DystirWeb.ModelViews;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using DystirWeb.ModelViews;
 
 namespace DystirWeb.Controllers
 {
@@ -15,12 +16,12 @@ namespace DystirWeb.Controllers
     [ApiController]
     public class PlayersOfMatchesController : ControllerBase
     {
+        private readonly IHubContext<DystirHub> _hubContext;
         private DystirDBContext _dystirDBContext;
-        private readonly DystirHub _dystirHub;
 
-        public PlayersOfMatchesController(DystirHub dystirHub, DystirDBContext dystirDBContext)
+        public PlayersOfMatchesController(IHubContext<DystirHub> hubContext, DystirDBContext dystirDBContext)
         {
-            _dystirHub = dystirHub;
+            _hubContext = hubContext;
             _dystirDBContext = dystirDBContext;
         }
 
@@ -57,7 +58,7 @@ namespace DystirWeb.Controllers
         {
             hometeamname = hometeamname != null ? hometeamname.Trim() : string.Empty;
             awayteamname = awayteamname != null ? awayteamname.Trim() : string.Empty;
-            Matches selectedMatch = _dystirDBContext.Matches?.FirstOrDefault(x => x.MatchId == selectedmatchid);
+            Matches selectedMatch = _dystirDBContext.Matches?.FirstOrDefault(x => x.MatchID == selectedmatchid);
             if (selectedMatch == null)
             {
                 return Enumerable.Empty<PlayersOfMatches>().AsQueryable();
@@ -65,17 +66,17 @@ namespace DystirWeb.Controllers
             selectedMatch.MatchTypeName = selectedMatch.MatchTypeName != null ? selectedMatch.MatchTypeName.Trim() : string.Empty;
 
             var lastmatches = _dystirDBContext.Matches?.Where(x => x.MatchTypeName.ToLower() == selectedMatch.MatchTypeName.ToLower()
-            && (x.StatusId == 12 || x.StatusId == 13)
+            && (x.StatusID == 12 || x.StatusID == 13)
             && (x.HomeTeam.ToLower() == hometeamname.ToLower()
             || x.AwayTeam.ToLower() == hometeamname.ToLower()
             || x.HomeTeam.ToLower() == awayteamname.ToLower()
             || x.AwayTeam.ToLower() == awayteamname.ToLower())).OrderByDescending(x => x.Time);
 
             int? hometeamLastMatchID = lastmatches?.FirstOrDefault(x => x.HomeTeam.ToLower() == hometeamname.ToLower()
-            || x.AwayTeam.ToLower() == hometeamname.ToLower())?.MatchId;
+            || x.AwayTeam.ToLower() == hometeamname.ToLower())?.MatchID;
 
             int? awayteamLastMatchID = lastmatches?.FirstOrDefault(x => x.HomeTeam.ToLower() == awayteamname.ToLower()
-            || x.AwayTeam.ToLower() == awayteamname.ToLower())?.MatchId;
+            || x.AwayTeam.ToLower() == awayteamname.ToLower())?.MatchID;
 
             var playersByMatchID = GetPlayersOfMatchesByMatchID(selectedmatchid).ToList();
 
@@ -170,7 +171,7 @@ namespace DystirWeb.Controllers
             try
             {
                 _dystirDBContext.SaveChanges();
-                Matches match = _dystirDBContext.Matches.FirstOrDefault(x => x.MatchId == playersOfMatches.MatchId);
+                Matches match = _dystirDBContext.Matches.FirstOrDefault(x => x.MatchID == playersOfMatches.MatchId);
                 HubSend(match);
             }
             catch (DbUpdateConcurrencyException)
@@ -204,7 +205,7 @@ namespace DystirWeb.Controllers
             }
             _dystirDBContext.PlayersOfMatches.Add(playersOfMatches);
             _dystirDBContext.SaveChanges();
-            Matches match = _dystirDBContext.Matches.FirstOrDefault(x => x.MatchId == playersOfMatches.MatchId);
+            Matches match = _dystirDBContext.Matches.FirstOrDefault(x => x.MatchID == playersOfMatches.MatchId);
             HubSend(match);
 
             return CreatedAtRoute("DefaultApi", new { id = playersOfMatches.PlayerOfMatchId }, playersOfMatches);
@@ -236,7 +237,7 @@ namespace DystirWeb.Controllers
 
             _dystirDBContext.PlayersOfMatches.Remove(playersOfMatches);
             _dystirDBContext.SaveChanges();
-            Matches match = _dystirDBContext.Matches.FirstOrDefault(x => x.MatchId == playersOfMatches.MatchId);
+            Matches match = _dystirDBContext.Matches.FirstOrDefault(x => x.MatchID == playersOfMatches.MatchId);
             HubSend(match);
             return Ok(playersOfMatches);
         }
@@ -248,15 +249,16 @@ namespace DystirWeb.Controllers
 
         private void HubSend(Matches match)
         {
-            _dystirHub.SendMatch(match);
-            HubSendMatchDetails(match);
+            HubSender hubSender = new HubSender();
+            hubSender.SendMatch(_hubContext, match);
+            HubSendMatchDetails(hubSender, match);
         }
 
-        private void HubSendMatchDetails(Matches match)
+        private void HubSendMatchDetails(HubSender hubSender, Matches match)
         {
-            MatchDetails matchDetails = new MatchDetailsController(_dystirDBContext).Get(match.MatchId);
+            MatchDetails matchDetails = new MatchDetailsController(_dystirDBContext).Get(match.MatchID);
             matchDetails.Match = match;
-            _dystirHub.SendMatchDetails(matchDetails);
+            hubSender.SendMatchDetails(_hubContext, matchDetails);
         }
     }
 }

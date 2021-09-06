@@ -1,11 +1,9 @@
 ﻿@using DystirWeb.Services
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.SignalR.Client
-@using System.Threading
 @inject DystirService DystirService
 @inject NavigationManager navigationManager
-@inject ClientService ClientService
-@inject IJSRuntime JSRuntime
+@inject HubConnection HubConnection
 @inherits LayoutComponentBase
 @implements IDisposable
 
@@ -23,50 +21,20 @@
 @code
 {
     public bool IsDystirHubConnected { get; set; }
-    private DotNetObjectReference<ClientService> clientServiceRef;
 
     protected override async Task OnInitializedAsync()
     {
-        ClientService.OnConnected += ClientService_OnConnected;
-        ClientService.OnReconnected += ClientService_OnReconnected;
-        ClientService.OnDisconnected += ClientService_OnDisconnected;
         DystirService.OnConnected += DystirService_OnConnected;
         DystirService.OnDisconnected += DystirService_OnDisconnected;
-        IsDystirHubConnected = DystirService?.DystirHub?.DystirHubConnection?.State == HubConnectionState.Connected;
+        IsDystirHubConnected = HubConnection?.State == HubConnectionState.Connected;
         Refresh();
-        clientServiceRef = DotNetObjectReference.Create(ClientService);
-        await JSRuntime.InvokeAsync<object>("initClientService", clientServiceRef);
+        await Task.CompletedTask;
     }
 
     void IDisposable.Dispose()
     {
-        ClientService.OnConnected -= ClientService_OnConnected;
-        ClientService.OnReconnected -= ClientService_OnReconnected;
-        ClientService.OnDisconnected -= ClientService_OnDisconnected;
         DystirService.OnConnected -= DystirService_OnConnected;
         DystirService.OnDisconnected -= DystirService_OnDisconnected;
-        clientServiceRef?.Dispose();
-    }
-
-    private async void ClientService_OnConnected()
-    {
-        IsDystirHubConnected = true;
-        Refresh();
-        await Task.CompletedTask;
-    }
-
-    private async void ClientService_OnReconnected()
-    {
-        IsDystirHubConnected = true;
-        Refresh();
-        await Task.CompletedTask;
-    }
-
-    private async void ClientService_OnDisconnected()
-    {
-        IsDystirHubConnected = false;
-        Refresh();
-        await Task.CompletedTask;
     }
 
     private void DystirService_OnConnected()
