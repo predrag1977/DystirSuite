@@ -103,7 +103,8 @@ app {
 .sidebar {
     z-index:2000;
     opacity: 0.97;
-    position: relative;
+    position: fixed;
+    width:100%;
 }
 
     .sidebar .nav-item {
