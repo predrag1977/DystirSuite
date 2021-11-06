@@ -47,6 +47,7 @@ namespace DystirWeb.Services
                 _ = StartUpAsync();
             });
             _hubConnection.Closed += DystirHubConnection_Closed;
+            _ = StartUpAsync();
         }
 
         public async Task StartUpAsync()
