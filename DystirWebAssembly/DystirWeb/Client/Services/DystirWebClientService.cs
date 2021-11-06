@@ -15,12 +15,13 @@ namespace DystirWeb.Services
     public class DystirWebClientService
     {
         static readonly object lockUpdateData = new object();
+        static SemaphoreSlim semaphoreLoadMatchDetails = new SemaphoreSlim(1, 1);
 
         private readonly HubConnection _hubConnection;
         private readonly HttpClient _httpClient;
 
-        public ObservableCollection<Matches> AllMatches;
-        public ObservableCollection<MatchDetails> AllMatchesDetails;
+        public List<Matches> AllMatches;
+        public List<MatchDetails> AllMatchesDetails;
         public ObservableCollection<Teams> AllTeams;
         public ObservableCollection<Sponsors> AllSponsors;
         public ObservableCollection<Standing> Standings;
@@ -77,11 +78,10 @@ namespace DystirWeb.Services
         {
             var fromDate = new DateTime(DateTime.UtcNow.Year, 1, 1);
             var matches = await _httpClient.GetFromJsonAsync<Matches[]>("api/matches");
-            AllMatches = new ObservableCollection<Matches>(matches
-                    .Where(y => y.Time > fromDate
+            AllMatches = matches.Where(y => y.Time > fromDate
                     && y.MatchActivation != 1
-                    && y.MatchActivation != 2));
-            AllMatchesDetails = new ObservableCollection<MatchDetails>();
+                    && y.MatchActivation != 2).ToList();
+            AllMatchesDetails = new List<MatchDetails>();
         }
 
         private async Task LoadAllTeamsAsync()
@@ -127,20 +127,13 @@ namespace DystirWeb.Services
             {
                 Matches match = matchDetails?.Match;
                 if (matchDetails?.Match == null) return;
-
-                var findMatch = AllMatches.FirstOrDefault(x => x.MatchID == match?.MatchID);
-                if (findMatch != null)
-                {
-                    AllMatches.Remove(findMatch);
-                }
+                    
+                AllMatches.RemoveAll(x => x.MatchID == matchDetails?.MatchDetailsID);
                 AllMatches.Add(match);
-
-                var findMatchDetails = AllMatchesDetails.FirstOrDefault(x => x.MatchDetailsID == matchDetails?.MatchDetailsID);
-                if (findMatchDetails != null)
-                {
-                    AllMatchesDetails.Remove(findMatchDetails);
-                }
+                    
+                AllMatchesDetails.RemoveAll(x=>x.MatchDetailsID == matchDetails?.MatchDetailsID);
                 AllMatchesDetails.Add(matchDetails);
+
                 RefreshMatchDetails(matchDetails);
             }
             await Task.CompletedTask;
@@ -148,24 +141,26 @@ namespace DystirWeb.Services
 
         public async Task<FullMatchDetailsModelView> LoadMatchDetailsAsync(int matchID)
         {
+            await semaphoreLoadMatchDetails.WaitAsync();
             var fullMatchDetails = new FullMatchDetailsModelView();
             try
             {
-                var allMatchesDetails = AllMatchesDetails;
-                var matchDetails = allMatchesDetails?.FirstOrDefault(x => x.MatchDetailsID == matchID);
+                var matchDetails = AllMatchesDetails?.FirstOrDefault(x => x.MatchDetailsID == matchID);
                 if (matchDetails == null)
                 {
                     matchDetails = await _httpClient.GetFromJsonAsync<MatchDetails>("api/matchDetails/" + matchID);
-                    
+
                     if (matchDetails != null)
                     {
-                        allMatchesDetails.Add(matchDetails);
-                        AllMatchesDetails = new ObservableCollection<MatchDetails>(allMatchesDetails);
+                        AllMatchesDetails.Add(matchDetails);
                     }
                 }
                 fullMatchDetails = GetFullMatchDetails(matchDetails);
             }
-            catch (Exception) {}
+            finally
+            {
+                semaphoreLoadMatchDetails.Release();
+            }
             return fullMatchDetails;
         }
 
