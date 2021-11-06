@@ -1,18 +1,57 @@
-﻿@inject IJSRuntime JSRuntime
-@layout MainLayout
+﻿@using DystirWeb.Services
+@inject DystirWebClientService DystirWebClientService
+@inject IJSRuntime JSRuntime
 @inherits LayoutComponentBase
+@implements IDisposable
 
-<link rel="icon" type="image/x-icon" href="https://www.in.fo/favicon.ico" />
 <link href="css/info_site.css?v=55" rel="stylesheet" />
 
 <div class="container-layout-share">
     @Body
 </div>
 
+@if (!IsDystirHubConnected)
+{
+    <div class="loading-spinner-parent">
+        <img class="loading-spinner" src="images/icons/loadingicon.gif" />
+    </div>
+}
+
 @code {
+
+    public bool IsDystirHubConnected = true;
+
     protected override async Task OnInitializedAsync()
     {
+        DystirWebClientService.OnConnected += HubConnection_OnConnected;
+        DystirWebClientService.OnDisconnected += HubConnection_OnDisconnected;
+        _ = DystirWebClientService.StartUpAsync();
         await JSRuntime.InvokeVoidAsync("setTitle", "in.fo - dystir");
+    }
+
+    void IDisposable.Dispose()
+    {
+        DystirWebClientService.OnConnected -= HubConnection_OnConnected;
+        DystirWebClientService.OnDisconnected -= HubConnection_OnDisconnected;
+    }
+
+    private async void HubConnection_OnConnected()
+    {
+        IsDystirHubConnected = true;
+        Refresh();
+        await Task.CompletedTask;
+    }
+
+    private async void HubConnection_OnDisconnected()
+    {
+        IsDystirHubConnected = false;
+        Refresh();
+        await Task.CompletedTask;
+    }
+
+    private void Refresh()
+    {
+        InvokeAsync(() => StateHasChanged());
     }
 }
 

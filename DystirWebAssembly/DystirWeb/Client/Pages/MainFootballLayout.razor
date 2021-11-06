@@ -1,6 +1,8 @@
-﻿@inject IJSRuntime JSRuntime
-@layout MainLayout
+﻿@using DystirWeb.Services
+@inject DystirWebClientService DystirWebClientService
+@inject IJSRuntime JSRuntime
 @inherits LayoutComponentBase
+@implements IDisposable
 
 <link href="css/football.css?v=55" rel="stylesheet" />
 
@@ -20,18 +22,49 @@
     <SponsorsView ShowOnSideBar="true" />
 </div>
 
+@if (!IsDystirHubConnected)
+{
+    <div class="loading-spinner-parent">
+        <img class="loading-spinner" src="images/icons/loadingicon.gif"/>
+    </div>
+}
+
 @code {
+
+    public bool IsDystirHubConnected = true;
+
     protected override async Task OnInitializedAsync()
     {
+        DystirWebClientService.OnConnected += HubConnection_OnConnected;
+        DystirWebClientService.OnDisconnected += HubConnection_OnDisconnected;
+        _ = DystirWebClientService.StartUpAsync();
         await JSRuntime.InvokeVoidAsync("setTitle", "Dystir");
+        await JSRuntime.InvokeVoidAsync("loadGoogleAnalytics", "170595956-1");
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    void IDisposable.Dispose()
     {
-        if (firstRender)
-        {
-            await JSRuntime.InvokeVoidAsync("loadGoogleAnalytics", "170595956-1");
-        }
+        DystirWebClientService.OnConnected -= HubConnection_OnConnected;
+        DystirWebClientService.OnDisconnected -= HubConnection_OnDisconnected;
+    }
+
+    private async void HubConnection_OnConnected()
+    {
+        IsDystirHubConnected = true;
+        Refresh();
+        await Task.CompletedTask;
+    }
+
+    private async void HubConnection_OnDisconnected()
+    {
+        IsDystirHubConnected = false;
+        Refresh();
+        await Task.CompletedTask;
+    }
+
+    private void Refresh()
+    {
+        InvokeAsync(() => StateHasChanged());
     }
 }
 
