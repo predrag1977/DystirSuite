@@ -1,0 +1,148 @@
+﻿@page "/"
+
+@using DystirWeb.Shared
+@using DystirWeb.Services
+@using Microsoft.AspNetCore.SignalR.Client
+@inject DystirWebClientService DystirWebClientService
+@inject TimeService TimeService
+@inject HubConnection HubConnection
+@layout MainFootballLayout
+@implements IDisposable
+
+<div class="container-fluid d-flex h-100 flex-column p-0">
+    @*<div class="row">
+            <button @onclick="@StopHub">
+                <div id="result">StopHub</div>
+            </button>
+        </div>*@
+    <div class="row">
+        <ChooseDays DaysOnClick="@DaysOnClick" TimeZoneOffset="@timeZoneOffset" />
+    </div>
+    <div class="row flex-fill d-flex justify-content-start">
+        <div class="col">
+            <div class="matches_container">
+                @if (SelectedMatchListGroup?.Count > 0)
+                {
+                    foreach (var matchgroup in SelectedMatchListGroup)
+                    {
+                        <div class="match-group-competition-name">@(matchgroup.Key)</div>
+                        @foreach (var match in matchgroup)
+                        {
+                            @if (match.StatusID <= 12)
+                            {
+                                <NavLink class="nav-link" style="cursor: pointer;" href="@("football/matchdetails/" + match.MatchID)">
+                                    <MatchView MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
+                                </NavLink>
+                            }
+                            else
+                            {
+                                <Match MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    <div class="no-matches">Eingin dystur</div>
+                }
+                <NewsView />
+                <SponsorsView ShowOnSideBar="false" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (isLoading)
+{
+    <div class="loading-spinner-parent">
+        <img class="loading-spinner" src="images/icons/loadingicon.gif" />
+    </div>
+}
+
+@code {
+    private int _daysFrom = 0;
+    private int _dayAfter = 0;
+    private List<IGrouping<string, Matches>> SelectedMatchListGroup;
+    private int timeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).Hours;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        DystirWebClientService.OnConnected += HubConnection_OnConnected;
+        DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
+        TimeService.OnTimerElapsed += TimerElapsed;
+        isLoading = true;
+        await GetSelectedMatchListGroup();
+    }
+
+    void IDisposable.Dispose()
+    {
+        DystirWebClientService.OnConnected -= HubConnection_OnConnected;
+        DystirWebClientService.OnRefreshMatchDetails -= DystirWebClientService_OnRefreshMatchDetails;
+        TimeService.OnTimerElapsed -= TimerElapsed;
+    }
+
+    private async void HubConnection_OnConnected()
+    {
+        await GetSelectedMatchListGroup();
+    }
+
+    private async void DystirWebClientService_OnRefreshMatchDetails(MatchDetails matchDetails)
+    {
+        await GetSelectedMatchListGroup();
+    }
+
+    private void TimerElapsed(object sender, EventArgs e)
+    {
+        if (HubConnection.State == HubConnectionState.Connected)
+        {
+            InvokeAsync(() => StateHasChanged());
+        }
+    }
+
+    private async void DaysOnClick(int[] parameters)
+    {
+        isLoading = true;
+        _daysFrom = parameters[0];
+        _dayAfter = parameters[1];
+        _ = GetSelectedMatchListGroup();
+        await Task.CompletedTask;
+    }
+
+    public async Task GetSelectedMatchListGroup()
+    {
+        await Task.Run(() =>
+        {
+            var fromDate = DateTime.Now.Date.AddDays(_daysFrom);
+            var toDate = fromDate.AddDays(_dayAfter);
+            SelectedMatchListGroup = DystirWebClientService.AllMatches?.OrderBy(x => GetOrder(x.MatchTypeID)).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
+            .Where(x => x.Time.Value.ToLocalTime().Date >= fromDate
+            && x.Time.Value.ToLocalTime().Date <= toDate).GroupBy(x => x.MatchTypeName).ToList() ?? new List<IGrouping<string, Matches>>();
+        });
+        isLoading = false;
+        Refresh();
+    }
+
+    private object GetOrder(int? matchTypeId)
+    {
+        switch (matchTypeId)
+        {
+            case 101:
+                return 6;
+            case 6:
+                return 101;
+            default:
+                return matchTypeId;
+        }
+    }
+
+    private void Refresh()
+    {
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    private async Task StopHub()
+    {
+        await HubConnection.StopAsync();
+    }
+}

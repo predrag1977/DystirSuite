@@ -1,0 +1,152 @@
+﻿@page "/football/fixtures"
+
+@using DystirWeb.Shared
+@using DystirWeb.Services
+@using Microsoft.AspNetCore.SignalR.Client;
+@inject DystirWebClientService DystirWebClientService
+@inject TimeService TimeService
+@inject HubConnection HubConnection
+@layout MainFootballLayout
+@implements IDisposable
+
+<div class="container-fluid d-flex h-100 flex-column p-0">
+    <div class="row">
+        <div class="col p-0" style="background-color:dimgray">
+            <ChooseCompetitions CompetitionsList="@(CompetitionsList)" SelectedCompetition="@(SelectedFixturesCompetition)" CompetitionsOnClick="@(CompetitionsOnClick)" />
+        </div>
+    </div>
+    <div class="row flex-fill d-flex justify-content-start">
+        <div class="col">
+            <div class="matches_container">
+                @if (FixturesMatchesList == null || FixturesMatchesList?.Count == 0)
+                {
+                    <div class="no-matches">Eingin dystur</div>
+                }
+                else
+                {
+                    @if (FixturesMatchesList.Count > 0)
+                    {
+                        <div class="match-group-competition-name">@SelectedFixturesCompetition</div>
+                    }
+                    @foreach (var match in FixturesMatchesList)
+                    {
+                        @if (match.StatusID <= 12)
+                        {
+                            <NavLink class="nav-link" style="cursor: pointer;" href="@("football/matchdetails/" + match.MatchID)">
+                                <Match MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
+                            </NavLink>
+                        }
+                        else
+                        {
+                            <Match MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
+                        }
+                    }
+                }
+                <NewsView />
+                <SponsorsView ShowOnSideBar="false" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (isLoading)
+{
+    <div class="loading-spinner-parent">
+        <img class="loading-spinner" src="images/icons/loadingicon.gif" />
+    </div>
+}
+
+@code {
+    private string SelectedFixturesCompetition { get; set; }
+    private List<string> CompetitionsList { get; set; }
+    private List<Matches> FixturesMatchesList { get; set; }
+    private int timeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        DystirWebClientService.OnConnected += HubConnection_OnConnected;
+        DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
+        TimeService.OnTimerElapsed += TimerElapsed;
+        isLoading = true;
+        _ = LoadFixturesMatches();
+        await Task.CompletedTask;
+    }
+
+    void IDisposable.Dispose()
+    {
+        DystirWebClientService.OnConnected -= HubConnection_OnConnected;
+        DystirWebClientService.OnRefreshMatchDetails -= DystirWebClientService_OnRefreshMatchDetails;
+        TimeService.OnTimerElapsed -= TimerElapsed;
+    }
+
+    private async void HubConnection_OnConnected()
+    {
+        await LoadFixturesMatches();
+    }
+
+    private async void DystirWebClientService_OnRefreshMatchDetails(MatchDetails matchDetails)
+    {
+        await LoadFixturesMatches();
+    }
+
+    private void TimerElapsed(object sender, EventArgs e)
+    {
+        if (HubConnection.State == HubConnectionState.Connected)
+        {
+            InvokeAsync(() => StateHasChanged());
+        }
+    }
+
+    private void Refresh()
+    {
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    private async void CompetitionsOnClick(string competition)
+    {
+        isLoading = true;
+        SelectedFixturesCompetition = competition;
+        _ = LoadFixturesMatches();
+        await Task.CompletedTask;
+    }
+
+    public async Task LoadFixturesMatches()
+    {
+        await Task.Run(() =>
+        {
+            var allResultMatchByCompetition = DystirWebClientService.AllMatches?.Where(x => x.StatusID < 12 || x.StatusID == 14)
+            .OrderBy(x => x.MatchTypeID).OrderBy(x => GetOrder(x.MatchTypeID))
+            .ThenBy(x => x.RoundID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
+            .GroupBy(x => x.MatchTypeName)?.ToList() ?? new List<IGrouping<string, Matches>>();
+
+            CompetitionsList = new List<string>();
+            foreach (var matchGroup in allResultMatchByCompetition)
+            {
+                CompetitionsList.Add(matchGroup.Key);
+            }
+
+            if (string.IsNullOrWhiteSpace(SelectedFixturesCompetition))
+            {
+                SelectedFixturesCompetition = CompetitionsList?.FirstOrDefault() ?? "";
+            }
+
+            FixturesMatchesList = allResultMatchByCompetition.FirstOrDefault(x => x.Key == SelectedFixturesCompetition)?.ToList() ?? new List<Matches>();
+        });
+        isLoading = false;
+        Refresh();
+    }
+
+    private object GetOrder(int? matchTypeId)
+    {
+        switch (matchTypeId)
+        {
+            case 101:
+                return 6;
+            case 6:
+                return 101;
+            default:
+                return matchTypeId;
+        }
+    }
+}

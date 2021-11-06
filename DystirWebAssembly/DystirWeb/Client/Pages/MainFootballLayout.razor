@@ -1,0 +1,42 @@
+﻿@inject IJSRuntime JSRuntime
+@layout MainLayout
+@inherits LayoutComponentBase
+
+<link href="css/football.css?v=55" rel="stylesheet" />
+
+<div class="header">
+    <Header />
+</div>
+
+<div class="container-layout">
+    @Body
+</div>
+
+<div class="sidebar">
+    <NavMenuFootball />
+</div>
+
+<div class="sponsor-bar">
+    <SponsorsView ShowOnSideBar="true" />
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("setTitle", "Dystir");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("loadGoogleAnalytics", "170595956-1");
+        }
+    }
+}
+
+
+
+
+
+

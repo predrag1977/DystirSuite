@@ -1,0 +1,23 @@
+﻿@inject IJSRuntime JSRuntime
+@layout MainLayout
+@inherits LayoutComponentBase
+
+<link rel="icon" type="image/x-icon" href="https://www.in.fo/favicon.ico" />
+<link href="css/info_site.css?v=55" rel="stylesheet" />
+
+<div class="container-layout-share">
+    @Body
+</div>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("setTitle", "in.fo - dystir");
+    }
+}
+
+
+
+
+
+

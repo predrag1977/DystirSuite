@@ -1,0 +1,55 @@
+﻿@using DystirWeb.Shared
+
+@if (PlayersOfMatch != null)
+{
+    <table class="lineups table">
+        <tr>
+            <td style="text-align:center;vertical-align:top;padding:5px 0">
+                @foreach (PlayersOfMatches player in PlayersOfMatch?.Where(x => x.TeamName.Trim() == Match?.HomeTeam.Trim() && x.PlayingStatus == 1))
+                {
+                    <PlayerView Player="player" />
+                }
+            </td>
+            <td style="text-align:center;vertical-align:top;padding:5px 0">
+                @foreach (PlayersOfMatches player in PlayersOfMatch?.Where(x => x.TeamName.Trim() == Match?.AwayTeam.Trim() && x.PlayingStatus == 1))
+                {
+                    <PlayerView Player="player" />
+                }
+            </td>
+        </tr>
+        @if (PlayersOfMatch?.Count(x => x.PlayingStatus == 1 || x.PlayingStatus == 2) > 0)
+        {
+            <tr>
+                <td>
+                    <div style="height:3px;background-color:darkkhaki;margin:0.5rem 0 0.5rem 0" />
+                </td>
+                <td>
+                    <div style="height:3px;background-color:darkkhaki;margin:0.5rem 0 0.5rem 0" />
+                </td>
+            </tr>
+        }
+        <tr>
+            <td style="text-align:center;vertical-align:top;padding:5px 0">
+                @foreach (PlayersOfMatches player in PlayersOfMatch?.Where(x => x.TeamName.Trim() == Match?.HomeTeam.Trim() && x.PlayingStatus == 2))
+                {
+                    <PlayerView Player="player" />
+                }
+            </td>
+            <td style="text-align:center;vertical-align:top;padding:5px 0">
+                @foreach (PlayersOfMatches player in PlayersOfMatch?.Where(x => x.TeamName.Trim() == Match?.AwayTeam.Trim() && x.PlayingStatus == 2))
+                {
+                    <PlayerView Player="player" />
+                }
+            </td>
+        </tr>
+    </table>
+}
+
+@code {
+
+    [Parameter]
+    public List<PlayersOfMatches> PlayersOfMatch { get; set; }
+
+    [Parameter]
+    public Matches Match { get; set; }
+}

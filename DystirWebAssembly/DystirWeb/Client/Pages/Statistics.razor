@@ -1,0 +1,138 @@
+﻿@page "/football/statistics"
+
+@using DystirWeb.Shared
+@using DystirWeb.Services
+@using System.Collections.ObjectModel
+@inject DystirWebClientService DystirWebClientService
+@layout MainFootballLayout
+@implements IDisposable
+
+@if (isLoading)
+{
+    <div class="loading-spinner-parent">
+        <img class="loading-spinner" src="images/icons/loadingicon.gif" />
+    </div>
+}
+
+<div class="container-fluid d-flex h-100 flex-column p-0">
+    <div style="position:relative;width:100%;padding:0;background-color:dimgray">
+        <ChooseCompetitions CompetitionsList="@(FullStatistics?.CompetitionsList?.ToList())" SelectedCompetition="@(FullStatistics?.SelectedCompetition)" CompetitionsOnClick="@(CompetitionsOnClick)" />
+    </div>
+    @if (FullStatistics?.CompetitionStatistic != null)
+    {
+        <div class="row" style="padding-top:10px;">
+            <div class="statistics-title">
+                MÁLSKJÚTTAR<div class="statistics-border" />
+            </div>
+            <div class="statistics-title">
+                UPPLEGG<div class="statistics-border" />
+            </div>
+        </div>
+        <div class="row flex-fill d-flex justify-content-start">
+            <div class="col">
+                <div class="matches_container">
+                    <table class="table text-white">
+                        <tr>
+                            <td style="vertical-align: top; padding: 0 2px; margin: 0 auto">
+                                @for (int i = 0; i < FullStatistics.CompetitionStatistic.GoalPlayers.Count; i++)
+                                {
+                                    PlayersOfMatches player = FullStatistics.CompetitionStatistic.GoalPlayers[i];
+                                    <table class="table player-list-item">
+                                        <tr>
+                                            <td class="statistics-number">@(string.Format("{0}.", i + 1))</td>
+                                            <td class="player_name">
+                                                @player.FirstName<br />
+                                                <span style="color: gray">@player.TeamName</span>
+                                            </td>
+                                            <td class="statistics-goal">@player.Goal</td>
+                                        </tr>
+                                    </table>
+                                }
+                            </td>
+                            <td style="vertical-align:top;padding:0 2px;margin:0 auto">
+                                @for (int i = 0; i < FullStatistics.CompetitionStatistic.AssistPlayers.Count; i++)
+                                {
+                                    PlayersOfMatches player = FullStatistics.CompetitionStatistic.AssistPlayers[i];
+                                    <table class="table player-list-item">
+                                        <tr>
+                                            <td class="statistics-number">@(string.Format("{0}.", i + 1))</td>
+                                            <td class="player_name">
+                                                @player.FirstName<br />
+                                                <span style="color: gray">@player.TeamName</span>
+                                            </td>
+                                            <td class="statistics-asist">@player.Assist</td>
+                                        </tr>
+                                    </table>
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+
+    private FullStatisticModelView FullStatistics;
+    private bool isLoading = true;
+    string _competition;
+
+    protected override async Task OnInitializedAsync()
+    {
+        DystirWebClientService.OnConnected += HubConnection_OnConnected;
+        await GetStatisticsList(_competition, false);
+        isLoading = true;
+        _ = GetStatisticsList(_competition, true);
+    }
+
+    void IDisposable.Dispose()
+    {
+        DystirWebClientService.OnConnected -= HubConnection_OnConnected;
+    }
+
+    private async void HubConnection_OnConnected()
+    {
+        await GetStatisticsList(_competition, true);
+    }
+
+    private void Refresh()
+    {
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    private void CompetitionsOnClick(string competition)
+    {
+        isLoading = true;
+        _competition = competition;
+        _ = GetStatisticsList(_competition, false);
+    }
+
+    public async Task GetStatisticsList(string selectedCompetition, bool loadFromServer)
+    {
+        var statisticCompetitions = loadFromServer ? await DystirWebClientService.GetCompetitionStatistics() : DystirWebClientService.CompetitionStatistics;
+        selectedCompetition = string.IsNullOrWhiteSpace(selectedCompetition) ? statisticCompetitions?.FirstOrDefault()?.CompetitionName ?? string.Empty : selectedCompetition;
+        CompetitionStatistic competitionStatistic = statisticCompetitions?.FirstOrDefault(x => x.CompetitionName == selectedCompetition);
+        FullStatisticModelView fullStatistics = new FullStatisticModelView()
+        {
+            SelectedCompetition = selectedCompetition,
+            CompetitionsList = GetCompetitionsList(statisticCompetitions),
+            CompetitionStatistic = competitionStatistic
+        };
+        FullStatistics = fullStatistics;
+
+        isLoading = false;
+        Refresh();
+    }
+
+    private IEnumerable<string> GetCompetitionsList(ObservableCollection<CompetitionStatistic> statisticCompetitions)
+    {
+        List<string> competitionsList = new List<string>();
+        foreach (var statistic in statisticCompetitions ?? new ObservableCollection<CompetitionStatistic>())
+        {
+            competitionsList.Add(statistic.CompetitionName);
+        }
+        return competitionsList;
+    }
+}
