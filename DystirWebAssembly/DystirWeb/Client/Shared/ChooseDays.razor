@@ -1,0 +1,79 @@
+﻿@using System.Globalization
+
+<table class="table">
+    <tr>
+        <td class="tab @(_selectedDaysIndex == 0 ? "selected_tab" : "")">
+            <div class="selected_tab-layout" @onclick="(() => SelectDays(0))">
+                Í FARNU VIKU
+            </div>
+        </td>
+        <td class="tab @(_selectedDaysIndex == 1 ? "selected_tab" : "")">
+            <div class="selected_tab-layout" @onclick="(() => SelectDays(1))">
+                Í GJÁR
+            </div>
+        </td>
+        <td class="tab @(_selectedDaysIndex == 2 ? "selected_tab" : "")">
+            <div class="selected_tab-layout" @onclick="(() => SelectDays(2))">
+                Í DAG
+            </div>
+        </td>
+        <td class="tab @(_selectedDaysIndex == 3 ? "selected_tab" : "")">
+            <div class="selected_tab-layout" @onclick="(() => SelectDays(3))">
+                Í MORGIN
+            </div>
+        </td>
+        <td class="tab @(_selectedDaysIndex == 4 ? "selected_tab" : "")">
+            <div class="selected_tab-layout" @onclick="(() => SelectDays(4))">
+                Í VIKUNI
+            </div>
+        </td>
+    </tr>
+</table>
+
+@code {
+        [Parameter]
+        public EventCallback<int[]> DaysOnClick { get; set; } 
+
+        [Parameter]
+        public int TimeZoneOffset { get; set; }
+
+    private CultureInfo _cultureInfo = new CultureInfo("fo-FO");
+
+    public int _selectedDaysIndex = 2;
+
+    private void SelectDays(int tabIndex)
+    {
+        int daysFrom = 0;
+        int daysAfter = 0;
+        _selectedDaysIndex = tabIndex;
+        DateTime dateToday = DateTime.Now;
+        int offset = _cultureInfo.DateTimeFormat.FirstDayOfWeek - dateToday.DayOfWeek;
+        DateTime firstDayOfWeekDate = DateTime.Now.AddDays(offset);
+
+        switch (tabIndex)
+        {
+            case 0:
+                daysFrom = offset - 7;
+                daysAfter = 6;
+                break;
+            case 1:
+                daysFrom = -1;
+                daysAfter = 0;
+                break;
+            case 2:
+                daysFrom = 0;
+                daysAfter = 0;
+                break;
+            case 3:
+                daysFrom = 1;
+                daysAfter = 0;
+                break;
+            case 4:
+                daysFrom = offset;
+                daysAfter = 6;
+                break;
+        }
+        int[] parameters = new int[] { daysFrom, daysAfter };
+        DaysOnClick.InvokeAsync(parameters);
+    }
+}

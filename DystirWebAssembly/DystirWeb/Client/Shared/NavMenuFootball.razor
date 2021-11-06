@@ -1,0 +1,57 @@
+﻿<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">
+        <img src="images/icons/dystir-header-icon.png" height="45" />
+    </a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <div class="@NavMenuReverseCssClass navbar-toggler-icon"></div>
+        <div class="@NavMenuCssClass" style="font-size:1.5rem;height:1.85rem;width:1.85rem" >X</div>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="fa fa-futbol p-2" aria-hidden="true"></span>
+                <span class="pl-2">DYSTIR</span>
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link" href="football/results">
+                <span class="fa fa-futbol p-2" aria-hidden="true"></span>
+                <span class="pl-2">ÚRSLIT</span>
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link" href="football/fixtures">
+                <span class="fa fa-futbol p-2" aria-hidden="true"></span>
+                <span class="pl-2">KOMANDI</span>
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link" href="football/standings">
+                <span class="fas fa-table p-2" aria-hidden="true"></span>
+                <span class="pl-2">STØÐAN</span>
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link" href="football/statistics">
+                <span class="fas fa-clipboard-list p-2" aria-hidden="true"></span>
+                <span class="pl-2">HAGTØL</span>
+            </NavLink>
+        </li>
+    </ul>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : "";
+
+    private string NavMenuReverseCssClass => collapseNavMenu ? "" : "collapse";
+
+        private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

@@ -1,0 +1,25 @@
+@import 'site.css';
+
+.header, .sidebar, .sponsor-bar, .match-group-competition-name, .selected_tab, .statistic-home {
+    background-color: #560000;
+}
+
+.volleyball-icon {
+    height: 6vw;
+    max-height: 35px;
+    min-height: 25px;
+}
+
+.football-icon, .handball-icon {
+    height: 4.5vw;
+    max-height: 25px;
+    min-height: 17px;
+}
+
+.volleyball-text {
+    font-weight: bold;
+}
+
+.football-text, .handball-text {
+    font-weight: normal;
+}

@@ -1,0 +1,77 @@
+﻿@using DystirWeb.Shared
+
+<div class="player-list-item">
+    <table class="table" style="text-align:left;">
+        <tr>
+            <td style="width:35px;text-align:center;vertical-align:central">
+                <div class="player_number">@(Player.Number)</div>
+            </td>
+            <td>
+                <div class="player_name">
+                    @((Player.FirstName + " " + Player.Lastname).Trim())
+                </div>
+                <div style="color:#a6a6a6;">
+                    <span style="color:#a6a6a6;margin-right:4px">
+                        @if (Player.Position == "GK")
+                        {
+                            @("MM")
+                        }
+                        else if (Player.Position == "DEF")
+                        {
+                            @("VL")
+                        }
+                        else if (Player.Position == "MID")
+                        {
+                            @("MV")
+                        }
+                        else if (Player.Position == "ATT")
+                        {
+                            @("AL")
+                        }
+                        else
+                        {
+                            @("---")
+                        }
+                    </span>
+                    @if (Player.Goal > 0)
+                    {
+                        <span style="background-color:darkgreen">&#9917;</span>
+                        <span>@(Player.Goal)</span>
+                    }
+                    @if (Player.OwnGoal > 0)
+                    {
+                        <span style="background-color:darkred">&#9917;</span>
+                        <span>@(Player.OwnGoal)</span>
+                    }
+                    @if (Player.YellowCard > 0)
+                    {
+                        <span style="padding:0 1px;margin-right:2px;font-weight:bold;background-color:gold;color:gold;">0</span>
+                    }
+                    @if (Player.YellowCard > 1)
+                    {
+                        <span style="padding:0 1px;margin-right:2px;font-weight:bold;background-color:gold;color:gold;">0</span>
+                    }
+                    @if (Player.RedCard > 0)
+                    {
+                        <span style="padding:0 1px;margin-right:2px;font-weight:bold;background-color:red;color:red;">0</span>
+                    }
+                    @if (Player.SubIn > -1)
+                    {
+                        <span style="color:green;">&#9650;</span>
+                        <span>@(Player.SubIn)'</span>
+                    }
+                    @if (Player.SubOut > -1)
+                    {
+                        <span style="color:red;">&#9660;</span>
+                        <span>@(Player.SubOut)'</span>
+                    }
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+@code {
+    [Parameter]
+    public PlayersOfMatches Player { get; set; }
+}

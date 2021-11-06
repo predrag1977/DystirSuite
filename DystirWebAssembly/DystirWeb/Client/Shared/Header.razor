@@ -1,0 +1,61 @@
+﻿
+<div class="navbar navbar-dark header p-0">
+    @*<div style="font-size:1.3rem;font-weight:bold;padding-left:10px">
+        <a class="navbar-brand p-0" href="">
+            <span>
+                <img src="images/icons/dystir-header-icon.png" height="45" />
+            </span>
+        </a>
+        <button class="navbar-toggler p-0" style="height:45px;width:45px"
+                @onblur="@(() => ToggleCloseClick.InvokeAsync(""))"
+                @onclick="@(() => ToggleOnClick.InvokeAsync(""))">
+            <div class="@MainLayout.TogglerIcon" style="color:white;width:40px">
+                <div class="@MainLayout.NavMenuCssClass">X</div>
+            </div>
+        </button>
+    </div>*@
+    <div class="navbar p-0" style="font-size:0.6rem;text-align:left;padding-left:10px">
+        <!--<div style="float:left;padding:0">
+            <NavLink class="nav-link text-center" href="" Match="NavLinkMatch.All">
+                <img class="sport-icon football-icon" src="images/icons/football.png" />
+                <div class="nav-link text-white football-text">Fótbóltur</div>
+            </NavLink>
+        </div>
+        <div style="float:left;padding:0 10px;">-->
+            @*<NavLink class="nav-link text-center" href="handball/matches">*@
+            <!--<div class="nav-link text-center" style="opacity:0.7">
+                <img class="sport-icon handball-icon" src="images/icons/handball-disabled.png" />
+                <div class="nav-link text-white handball-text">Hondbóltur</div>
+            </div>-->
+            @*</NavLink>*@
+        <!--</div>
+        <div style="float:left;padding:0">-->
+            @*<NavLink class="nav-link text-center" href="volleyball/matches">*@
+            <!--<div class="nav-link text-center" style="opacity:0.7">
+                <img class="sport-icon volleyball-icon" src="images/icons/volleyball-disabled.png" />
+                <div class="nav-link text-white volleyball-text">Flogbóltur</div>
+            </div>-->
+            @*</NavLink>*@
+        <!--</div>-->
+    </div>
+    <div class="store-buttons">
+        <span style="padding-right:10px">
+            <a href='https://play.google.com/store/apps/details?id=fo.Dystir&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+                <img alt='Get it on Google Play' height="48" src="images/icons/google-play-square.png" />
+            </a>
+        </span>
+        <span style="padding:0 10px 0 5px">
+            <a href='https://apps.apple.com/us/app/dystir/id1460781430?ls=1'>
+                <img alt='Download on Apple Store' height="48" src="images/icons/apple-store-square.png" />
+            </a>
+        </span>
+    </div>
+</div>
+
+@code {
+    //[Parameter]
+    //public EventCallback ToggleOnClick { get; set; }
+    //[Parameter] 
+    //public EventCallback ToggleCloseClick { get; set; }
+}
+

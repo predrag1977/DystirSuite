@@ -1,0 +1,31 @@
+@import 'site.css';
+
+body {
+    background-image: url('../images/background/grass-background.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.header, .sidebar, .sponsor-bar, .match-group-competition-name, .selected_tab, .statistic-home {
+    background-color: #2F4F2F;
+}
+
+.football-icon {
+    height: 6vw;
+    max-height: 35px;
+    min-height: 25px;
+}
+
+.handball-icon, .volleyball-icon {
+    height: 4.5vw;
+    max-height: 25px;
+    min-height: 17px;
+}
+
+.football-text {
+    font-weight: bold;
+}
+
+.handball-text, .volleyball-text {
+    font-weight: normal;
+}

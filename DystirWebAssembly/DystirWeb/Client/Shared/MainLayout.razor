@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Components
+@using DystirWeb.Services
+@inject DystirWebClientService DystirWebClientService
+@inherits LayoutComponentBase
+@implements IDisposable
+
+<div class="main">
+    @Body
+</div>
+
+@if (!IsDystirHubConnected)
+{
+    <div class="loading-spinner-parent">
+        <img class="loading-spinner" src="images/icons/loadingicon.gif"/>
+    </div>
+}
+
+@code
+{
+    public bool IsDystirHubConnected { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        DystirWebClientService.OnConnected += HubConnection_OnConnected;
+        DystirWebClientService.OnDisconnected += HubConnection_OnDisconnected;
+        await DystirWebClientService.StartUpAsync();
+    }
+
+    void IDisposable.Dispose()
+    {
+        DystirWebClientService.OnConnected -= HubConnection_OnConnected;
+        DystirWebClientService.OnDisconnected -= HubConnection_OnDisconnected;
+    }
+
+    private async void HubConnection_OnConnected()
+    {
+        IsDystirHubConnected = true;
+        Refresh();
+        await Task.CompletedTask;
+    }
+
+    private async void HubConnection_OnDisconnected()
+    {
+        IsDystirHubConnected = false;
+        Refresh();
+        await Task.CompletedTask;
+    }
+
+    private void Refresh()
+    {
+        InvokeAsync(() => StateHasChanged());
+    }
+}
