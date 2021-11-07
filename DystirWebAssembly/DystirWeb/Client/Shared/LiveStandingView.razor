@@ -1,0 +1,46 @@
+﻿@using DystirWeb.Shared
+
+<table class="table live-standing-text" style="margin:15px auto;max-width:1100px">
+    <tbody>
+        @if (standing?.TeamStandings?.Count() > 0 == true)
+        {
+            <tr class="standings-header">
+                <td class="standings-cell" style="width:40%;text-align:left;font-weight:bold;">
+                    <div class="standings-number d-inline-block" style="color:transparent;margin: 6px;">Nr</div><span>LIÐ</span>
+                </td>
+                <td class="standings-cell">DS</td>
+                <td class="standings-cell">VD</td>
+                <td class="standings-cell">JD</td>
+                <td class="standings-cell">TD</td>
+                <td class="standings-cell">MF</td>
+                <td class="standings-cell">MÍ</td>
+                <td class="standings-cell">MM</td>
+                <td class="standings-cell">St.</td>
+            </tr>
+        }
+        @foreach (var teamStanding in standing?.TeamStandings ?? new List<TeamStanding>())
+        {
+            <tr style="border-bottom:1px solid @teamStanding.PositionColor">
+                <td class="standings-cell" style="width: 40%;  text-align: left; font-weight: bold;">
+                    <div style="margin: 8px;" class="standings-number d-inline-block @(Match.HomeTeam == teamStanding.Team || Match.AwayTeam == teamStanding.Team ? "live-standing-team" : "")">@(teamStanding.Position).</div>@teamStanding.Team
+                </td>
+                <td class="standings-cell">@teamStanding.MatchesNo</td>
+                <td class="standings-cell">@teamStanding.Victories</td>
+                <td class="standings-cell">@teamStanding.Draws</td>
+                <td class="standings-cell">@teamStanding.Losses</td>
+                <td class="standings-cell">@teamStanding.GoalScored</td>
+                <td class="standings-cell">@teamStanding.GoalAgainst</td>
+                <td class="standings-cell">@teamStanding.GoalDifference</td>
+                <td class="standings-cell" style="font-weight: bold;padding-right:3px">@teamStanding.Points</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter]
+    public Standing standing { get; set; }
+
+    [Parameter]
+    public Matches Match { get; set; }
+}
