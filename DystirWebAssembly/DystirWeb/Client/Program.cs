@@ -25,6 +25,7 @@ namespace DystirWeb.Client
             });
             builder.Services.AddSingleton<DystirWebClientService>();
             builder.Services.AddSingleton<TimeService>();
+            builder.Services.AddSingleton<LiveStandingService>();
 
             await builder.Build().RunAsync();
         }

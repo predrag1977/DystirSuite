@@ -1,12 +1,12 @@
 ﻿@import "site.css";
 
 html {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
 }
 
 @media (min-width: 700px) {
     html {
-        font-size: 0.9rem;
+        font-size: 0.98rem;
     }
 }
 
@@ -427,4 +427,13 @@ footer {
 
 .tab-match-details {
     font-size: 1em;
+}
+
+.live-standing-team {
+    border: 2px solid #d88802;
+    border-radius: 8px;
+}
+
+.live-standing-text {
+    color: black;
 }

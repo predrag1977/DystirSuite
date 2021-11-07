@@ -29,3 +29,12 @@ body {
 .handball-text, .volleyball-text {
     font-weight: normal;
 }
+
+.live-standing-team {
+    border: 2px solid darkkhaki;
+    border-radius: 8px;
+}
+
+.live-standing-text {
+    color: white;
+}

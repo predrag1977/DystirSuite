@@ -6,6 +6,7 @@
 @using Microsoft.AspNetCore.SignalR.Client;
 @inject DystirWebClientService DystirWebClientService
 @inject TimeService TimeService
+@inject LiveStandingService LiveStandingService
 @inject HubConnection HubConnection
 @layout MainShareWebSiteLayout
 @implements IDisposable
@@ -71,7 +72,7 @@
         @if (SelectedMatch != null)
         {
             <div class="box">
-                <MatchDetailsTabs TabOnClick="OnTabClick" />
+                <MatchDetailsTabs TabOnClick="OnTabClick" Match="@(SelectedMatch)" />
             </div>
         }
 
@@ -88,6 +89,9 @@
                 </div>
                 <div class="@(selectedTab == "3" ? "active_tab" : "no_active_tab")">
                     <StatisticView StatisticOfMatch="@(fullMatchDetails?.Statistics)" />
+                </div>
+                <div class="@(selectedTab == "4" ? "active_tab" : "no_active_tab")">
+                    <LiveStandingView Standing="@(standing)" Match="@(SelectedMatch)" />
                 </div>
             </div>
         </div>
@@ -108,6 +112,7 @@
     private List<IGrouping<string, Matches>> SelectedMatchListGroup = new List<IGrouping<string, Matches>>();
     private Matches SelectedMatch = new Matches();
     private FullMatchDetailsModelView fullMatchDetails;
+    private Standing standing = new Standing();
     private int timeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
     private bool isLoading = true;
     private string selectedTab = "0";
@@ -144,20 +149,19 @@
 
     private void DystirWebClientService_OnRefreshMatchDetails(MatchDetails matchDetails)
     {
-        MatchUpdate(matchDetails?.MatchDetailsID.ToString());
+        MatchUpdate(matchDetails);
     }
 
-    private async void MatchUpdate(string matchIDForUpdate)
+    private async void MatchUpdate(MatchDetails matchDetails)
     {
+        string matchIDForUpdate = matchDetails?.MatchDetailsID.ToString();
         if (matchid == matchIDForUpdate)
         {
             await LoadMatchDetails();
         }
-        else
-        {
-            await GetSelectedMatchListGroup();
-            Refresh();
-        }
+        await GetSelectedMatchListGroup();
+        await LoadLiveStandingAsync(SelectedMatch);
+        Refresh();
     }
 
     private void TimerElapsed(object sender, EventArgs e)
@@ -190,6 +194,7 @@
         selectedCompetitionName = SelectedMatch?.MatchTypeName ?? string.Empty;
         fullMatchDetails = await DystirWebClientService.LoadMatchDetailsAsync(parseMatchID);
         await GetSelectedMatchListGroup();
+        await LoadLiveStandingAsync(SelectedMatch);
         isLoading = false;
         Refresh();
     }
@@ -206,6 +211,12 @@
         {
             selectedCompetitionName = SelectedMatchListGroup?.FirstOrDefault()?.Key ?? "";
         }
+        await Task.CompletedTask;
+    }
+
+    private async Task LoadLiveStandingAsync(Matches selectedMatch)
+    {
+        standing = LiveStandingService.GetStanding(selectedMatch);
         await Task.CompletedTask;
     }
 }

@@ -1,4 +1,6 @@
-﻿<div class="tab-match-details">
+﻿@using DystirWeb.Shared
+
+<div class="tab-match-details">
     <table class="table" style="font-size:0.9em;font-weight:bold;margin:0.2rem 0;">
         <tr>
             <td class="tab @(selectedTab == 0 ? "selected_tab" : "")">
@@ -21,13 +23,24 @@
                     Hagtøl
                 </div>
             </td>
+            @if(ShowLiveStandings(Match))
+            {
+                <td class="tab @(selectedTab == 4 ? "selected_tab" : "")">
+                    <div class="selected_tab-layout" @onclick="(() => SelectTab(4))">
+                        Støðan
+                    </div>
+                </td>
+            }
         </tr>
     </table>
 </div>
 
 @code {
-    [Parameter] 
+    [Parameter]
     public EventCallback<string> TabOnClick { get; set; }
+
+    [Parameter]
+    public Matches Match { get; set; }
 
     public int selectedTab = 0;
 
@@ -35,5 +48,11 @@
     {
         selectedTab = tabIndex;
         TabOnClick.InvokeAsync(tabIndex.ToString());
+    }
+
+    private bool ShowLiveStandings(Matches match)
+    {
+        var competititionNamesArray = new string[] { "Betri deildin", "1. deild", "Betri deildin kvinnur", "2. deild" };
+        return competititionNamesArray.Any(x => x == match?.MatchTypeName);
     }
 }
