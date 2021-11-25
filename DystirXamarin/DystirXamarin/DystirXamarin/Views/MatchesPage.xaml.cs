@@ -45,7 +45,7 @@ namespace DystirXamarin.Views
                 NewMatchButton.IsVisible = false;
             }
             //TODO Change this
-            VersionLabel.Text = "4.0.0.42";
+            VersionLabel.Text = "4.0.0.45";
         }
 
         private void MatchesListView_Refreshing(object sender, EventArgs e)
@@ -108,11 +108,15 @@ namespace DystirXamarin.Views
             }
         }
 
-        private void LogOut_Clicked(object sender, EventArgs e)
+        private async void LogOut_Clicked(object sender, EventArgs e)
         {
-            Application.Current.Properties.Remove("username");
-            Application.Current.Properties.Remove("password");
-            Application.Current.MainPage = new NavigationPage(new LogInPage(_viewModel));
+            var answer = await DisplayAlert("Log out", "Do you want to log out?", "yes", "cancel");
+            if (answer)
+            {
+                Application.Current.Properties.Remove("username");
+                Application.Current.Properties.Remove("password");
+                Application.Current.MainPage = new NavigationPage(new LogInPage(_viewModel));
+            }
         }
 
         private void MatchTimeLayout_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

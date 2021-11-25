@@ -22,5 +22,8 @@ namespace DystirXamarin.Models
         [JsonProperty("AdministratorTeamID")]
         public int AdministratorTeamID { get; set; }
 
+        [JsonProperty("AdministratorToken")]
+        public string AdministratorToken { get; set; }
+
     }
 }
