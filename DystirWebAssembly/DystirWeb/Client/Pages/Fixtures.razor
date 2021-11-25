@@ -52,7 +52,7 @@
 @if (isLoading)
 {
     <div class="loading-spinner-parent">
-        <img class="loading-spinner" src="images/icons/loadingicon.gif" />
+        <i class="fas fa-spin fa-spinner fa-2x" style="color: darkgrey"></i>
     </div>
 }
 
@@ -65,19 +65,25 @@
 
     protected override async Task OnInitializedAsync()
     {
+        DystirWebClientService.OnFullDataLoaded += DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed += TimerElapsed;
-        isLoading = true;
         _ = LoadFixturesMatches();
         await Task.CompletedTask;
     }
 
     void IDisposable.Dispose()
     {
+        DystirWebClientService.OnFullDataLoaded -= DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected -= HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails -= DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed -= TimerElapsed;
+    }
+
+    private async void DystirWebClientService_FullDataLoaded()
+    {
+        await LoadFixturesMatches();
     }
 
     private async void HubConnection_OnConnected()
@@ -115,13 +121,15 @@
     {
         await Task.Run(() =>
         {
-            var allResultMatchByCompetition = DystirWebClientService.AllMatches?.Where(x => x.StatusID < 12 || x.StatusID == 14)
+            var allFixturesMatchByCompetition = DystirWebClientService.AllMatches?.Where(x => x.StatusID < 12 || x.StatusID == 14)
             .OrderBy(x => x.MatchTypeID).OrderBy(x => GetOrder(x.MatchTypeID))
             .ThenBy(x => x.RoundID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
             .GroupBy(x => x.MatchTypeName)?.ToList() ?? new List<IGrouping<string, Matches>>();
 
+            if (allFixturesMatchByCompetition == null) return;
+
             CompetitionsList = new List<string>();
-            foreach (var matchGroup in allResultMatchByCompetition)
+            foreach (var matchGroup in allFixturesMatchByCompetition)
             {
                 CompetitionsList.Add(matchGroup.Key);
             }
@@ -131,7 +139,7 @@
                 SelectedFixturesCompetition = CompetitionsList?.FirstOrDefault() ?? "";
             }
 
-            FixturesMatchesList = allResultMatchByCompetition.FirstOrDefault(x => x.Key == SelectedFixturesCompetition)?.ToList() ?? new List<Matches>();
+            FixturesMatchesList = allFixturesMatchByCompetition.FirstOrDefault(x => x.Key == SelectedFixturesCompetition)?.ToList() ?? new List<Matches>();
         });
         isLoading = false;
         Refresh();

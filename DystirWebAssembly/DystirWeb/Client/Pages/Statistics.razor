@@ -10,7 +10,7 @@
 @if (isLoading)
 {
     <div class="loading-spinner-parent">
-        <img class="loading-spinner" src="images/icons/loadingicon.gif" />
+        <i class="fas fa-spin fa-spinner fa-2x" style="color:darkgrey"></i>
     </div>
 }
 
@@ -81,6 +81,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        DystirWebClientService.OnFullDataLoaded += DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         await GetStatisticsList(_competition, false);
         isLoading = true;
@@ -89,7 +90,13 @@
 
     void IDisposable.Dispose()
     {
+        DystirWebClientService.OnFullDataLoaded -= DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected -= HubConnection_OnConnected;
+    }
+
+    private async void DystirWebClientService_FullDataLoaded()
+    {
+        await GetStatisticsList(_competition, true);
     }
 
     private async void HubConnection_OnConnected()

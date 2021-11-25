@@ -8,4 +8,30 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="MatchTypes.cs" />
+    <Compile Remove="Events.cs" />
+    <Compile Remove="Categories.cs" />
+    <Compile Remove="Teams.cs" />
+    <Compile Remove="Sponsors.cs" />
+    <Compile Remove="WeatherForecast.cs" />
+    <Compile Remove="FullMatchDetailsModelView.cs" />
+    <Compile Remove="CompetitionStatistics.cs" />
+    <Compile Remove="SummaryModelView.cs" />
+    <Compile Remove="StandingsModelView.cs" />
+    <Compile Remove="Matches.cs" />
+    <Compile Remove="ErrorViewModel.cs" />
+    <Compile Remove="HandballMatches.cs" />
+    <Compile Remove="HandballTeams.cs" />
+    <Compile Remove="EventsOfMatches.cs" />
+    <Compile Remove="FullStatisticModelView.cs" />
+    <Compile Remove="MatchDetails.cs" />
+    <Compile Remove="Squad.cs" />
+    <Compile Remove="Administrators.cs" />
+    <Compile Remove="Round.cs" />
+    <Compile Remove="Statuses.cs" />
+    <Compile Remove="Players.cs" />
+    <Compile Remove="PlayersOfMatches.cs" />
+    <Compile Remove="TeamStatistic.cs" />
+  </ItemGroup>
 </Project>

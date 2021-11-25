@@ -4,7 +4,7 @@
 @inherits LayoutComponentBase
 @implements IDisposable
 
-<link href="css/football.css?v=56" rel="stylesheet" />
+<link href="css/football.css?v=57" rel="stylesheet" />
 
 <div class="header">
     <Header />
@@ -25,7 +25,7 @@
 @if (!IsDystirHubConnected)
 {
     <div class="loading-spinner-parent">
-        <img class="loading-spinner" src="images/icons/loadingicon.gif"/>
+        <i class="fas fa-spin fa-spinner fa-2x" style="color: darkgrey"></i>
     </div>
 }
 
@@ -37,9 +37,10 @@
     {
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnDisconnected += HubConnection_OnDisconnected;
+        _ = JSRuntime.InvokeVoidAsync("setTitle", "Dystir");
+        _ = JSRuntime.InvokeVoidAsync("loadGoogleAnalytics", "170595956-1");
         _ = DystirWebClientService.StartUpAsync();
-        await JSRuntime.InvokeVoidAsync("setTitle", "Dystir");
-        await JSRuntime.InvokeVoidAsync("loadGoogleAnalytics", "170595956-1");
+        await Task.CompletedTask;
     }
 
     void IDisposable.Dispose()

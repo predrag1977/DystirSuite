@@ -59,13 +59,13 @@
 @if (isLoading)
 {
     <div class="loading-spinner-parent">
-        <img class="loading-spinner" src="images/icons/loadingicon.gif" />
+        <i class="fas fa-spin fa-spinner fa-2x" style="color: darkgrey"></i>
     </div>
 }
 
 @code {
-        [Parameter]
-        public string matchid { get; set; }
+    [Parameter]
+    public string matchid { get; set; }
 
     private Matches SelectedMatch = new Matches();
     private FullMatchDetailsModelView fullMatchDetails;
@@ -77,6 +77,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        DystirWebClientService.OnFullDataLoaded += DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed += TimerElapsed;
@@ -95,9 +96,15 @@
 
     void IDisposable.Dispose()
     {
+        DystirWebClientService.OnFullDataLoaded -= DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected -= HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails -= DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed -= TimerElapsed;
+    }
+
+    private async void DystirWebClientService_FullDataLoaded()
+    {
+        await LoadMatchDetails();
     }
 
     private async void HubConnection_OnConnected()

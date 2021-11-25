@@ -3,6 +3,7 @@ using DystirWeb.Services;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Mvc;
 using DystirWeb.Server.Hubs;
+using DystirWeb.Shared;
 
 namespace DystirWeb.Controllers
 {
@@ -59,6 +60,7 @@ namespace DystirWeb.Controllers
         public void Delete(int id)
         {
         }
+        
         private void HubSend()
         {
             HubSender hubSender = new HubSender();

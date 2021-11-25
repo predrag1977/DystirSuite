@@ -5,6 +5,7 @@
     <RazorLangVersion>3.0</RazorLangVersion>
   </PropertyGroup>
   
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'DystirWeb' " />
   <ItemGroup>
     <None Include="Pages\Index.razor" />
     <None Include="Shared\MainLayout.razor" />
@@ -28,4 +29,110 @@
     <ProjectReference Include="..\Shared\DystirWeb.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\favicon.ico" />
+    <Content Remove="wwwroot\index.html" />
+    <Content Remove="wwwroot\team_logos\iceland.png" />
+    <Content Remove="wwwroot\team_logos\kí.png" />
+    <Content Remove="wwwroot\team_logos\scotland.png" />
+    <Content Remove="wwwroot\team_logos\fcsuduroy.png" />
+    <Content Remove="wwwroot\team_logos\b68.png" />
+    <Content Remove="wwwroot\team_logos\tb.png" />
+    <Content Remove="wwwroot\team_logos\nsí.png" />
+    <Content Remove="wwwroot\team_logos\ab.png" />
+    <Content Remove="wwwroot\team_logos\skála.png" />
+    <Content Remove="wwwroot\team_logos\empty.png" />
+    <Content Remove="wwwroot\team_logos\moldova.png" />
+    <Content Remove="wwwroot\team_logos\eysturríki.png" />
+    <Content Remove="wwwroot\team_logos\greece.png" />
+    <Content Remove="wwwroot\team_logos\liktinstein.png" />
+    <Content Remove="wwwroot\team_logos\ebstreymur.png" />
+    <Content Remove="wwwroot\team_logos\07vestur.png" />
+    <Content Remove="wwwroot\team_logos\b36.png" />
+    <Content Remove="wwwroot\team_logos\ab-b71.png" />
+    <Content Remove="wwwroot\team_logos\faroeislands.png" />
+    <Content Remove="wwwroot\team_logos\hb.png" />
+    <Content Remove="wwwroot\team_logos\íf.png" />
+    <Content Remove="wwwroot\team_logos\undrið.png" />
+    <Content Remove="wwwroot\team_logos\israel.png" />
+    <Content Remove="wwwroot\team_logos\royn.png" />
+    <Content Remove="wwwroot\team_logos\serbia.png" />
+    <Content Remove="wwwroot\team_logos\víkingur.png" />
+    <Content Remove="wwwroot\team_logos\denmark.png" />
+    <Content Remove="wwwroot\team_logos\fchoyvik.png" />
+    <Content Remove="wwwroot\team_logos\b71.png" />
+    <Content Remove="wwwroot\team_logos\ebs-skála.png" />
+    <Content Remove="wwwroot\css\handball.css" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\volume-off.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\virus.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\wind.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\viruses.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-cog.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-secret.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\utensil-spoon.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\volume-down.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\wave-square.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\users-cog.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\weight-hanging.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-tag.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-astronaut.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\wine-glass-alt.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\voicemail.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\x-ray.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\venus-mars.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-ninja.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-clock.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\yen-sign.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-md.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\utensils.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\vihara.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-plus.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-minus.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\wallet.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-lock.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\volleyball-ball.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-times.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-graduate.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\wifi.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\venus.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-nurse.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\virus-slash.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\vector-square.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\vr-cardboard.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\volume-mute.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-edit.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\users-slash.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\wine-glass.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-friends.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\window-maximize.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\volume-up.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\wrench.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\wheelchair.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\warehouse.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-circle.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-tie.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\vial.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\venus-double.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\window-close.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\vest.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\vest-patches.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\window-minimize.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\wine-bottle.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-injured.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\vials.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\video.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\water.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\won-sign.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\video-slash.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-alt.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-check.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\yin-yang.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\window-restore.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\user-slash.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\vote-yea.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\users.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\walking.svg" />
+    <Content Remove="wwwroot\css\fontawesome\svgs\solid\weight.svg" />
+  </ItemGroup>
 </Project>

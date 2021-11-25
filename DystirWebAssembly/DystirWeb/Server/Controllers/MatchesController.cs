@@ -19,16 +19,19 @@ namespace DystirWeb.Controllers
     public class MatchesController : ControllerBase
     {
         private readonly IHubContext<DystirHub> _hubContext;
+        private readonly AuthService _authService;
         private readonly DystirService _dystirService;
         private readonly MatchDetailsService _matchDetailsService;
         private DystirDBContext _dystirDBContext;
 
         public MatchesController (IHubContext<DystirHub> hubContext,
+            AuthService authService,
             DystirDBContext dystirDBContext,
             DystirService dystirService,
             MatchDetailsService matchDetailsService)
         {
             _hubContext = hubContext;
+            _authService = authService;
             _dystirDBContext = dystirDBContext;
             _dystirService = dystirService;
             _matchDetailsService = matchDetailsService;
@@ -80,9 +83,14 @@ namespace DystirWeb.Controllers
         }
 
         // PUT: api/Matches/5
-        [HttpPut("{id}")]
-        public IActionResult PutMatches(int id, [FromBody] Matches matches)
+        [HttpPut("{id}/{token}")]
+        public IActionResult PutMatches(int id, string token, [FromBody] Matches matches)
         {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -99,11 +107,12 @@ namespace DystirWeb.Controllers
                 {
                     matches.StatusTime = DateTime.UtcNow.AddMinutes(-matches.ExtraMinutes).AddSeconds(-matches.ExtraSeconds);
                 }
+                
                 _dystirDBContext.Entry(matchInDB).CurrentValues.SetValues(matches);
                 _dystirDBContext.Entry(matchInDB).State = EntityState.Modified;
                 _dystirDBContext.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (!MatchesExists(id))
                 {
@@ -111,18 +120,23 @@ namespace DystirWeb.Controllers
                 }
                 else
                 {
-                    throw;
+                    throw ex;
                 }
             }
             HubSend(matches);
 
-            return StatusCode(StatusCodes.Status204NoContent);
+            return Ok(matches);
         }
 
         // POST: api/Matches
-        [HttpPost]
-        public IActionResult PostMatches([FromBody] Matches matches)
+        [HttpPost("{token}")]
+        public IActionResult PostMatches(string token, [FromBody] Matches matches)
         {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -130,7 +144,6 @@ namespace DystirWeb.Controllers
             try
             {
                 matches.StatusTime = DateTime.UtcNow;
-                //matches.Time = matches.Time.Value.ToUniversalTime();
                 _dystirDBContext.Matches.Add(matches);
                 _dystirDBContext.SaveChanges();
 
@@ -145,9 +158,14 @@ namespace DystirWeb.Controllers
         }
 
         // DELETE: api/Matches/5
-        [HttpDelete("{id}")]
-        public IActionResult DeleteMatches(int id)
+        [HttpDelete("{id}/{token}")]
+        public IActionResult DeleteMatches(int id, string token)
         {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
             Matches matches = _dystirDBContext.Matches.Find(id);
             if (matches == null)
             {
@@ -165,6 +183,7 @@ namespace DystirWeb.Controllers
         {
             return _dystirDBContext.Matches.Count(e => e.MatchID == id) > 0;
         }
+
         private void HubSend(Matches match)
         {
             HubSender hubSender = new HubSender();

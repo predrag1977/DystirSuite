@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DystirWeb.Server.DystirDB;
@@ -17,16 +18,19 @@ namespace DystirWeb.Controllers
     public class PlayersOfMatchesController : ControllerBase
     {
         private readonly IHubContext<DystirHub> _hubContext;
+        private readonly AuthService _authService;
         private DystirDBContext _dystirDBContext;
         private readonly DystirService _dystirService;
         private readonly MatchDetailsService _matchDetailsService;
 
-        public PlayersOfMatchesController (IHubContext<DystirHub> hubContext,
+        public PlayersOfMatchesController(IHubContext<DystirHub> hubContext,
+            AuthService authService,
             DystirDBContext dystirDBContext,
             DystirService dystirService,
             MatchDetailsService matchDetailsService)
         {
             _hubContext = hubContext;
+            _authService = authService;
             _dystirDBContext = dystirDBContext;
             _dystirService = dystirService;
             _matchDetailsService = matchDetailsService;
@@ -39,7 +43,7 @@ namespace DystirWeb.Controllers
             var playersOfMatchList = _matchDetailsService.GetPlayersOfMatches(matchID);
             return SortedPlayersOfMatchList(playersOfMatchList) ?? Enumerable.Empty<PlayersOfMatches>();
         }
-        
+
         // GET: api/PlayersOfMatches?matchID=1203
         [HttpGet(Name = "GetPlayersOfMatchByTeam")]
         public IEnumerable<PlayersOfMatches> GetPlayersOfMatchByTeam([FromQuery] string hometeamname, [FromQuery] string awayteamname, [FromQuery] int competitionid, [FromQuery] int selectedmatchid)
@@ -108,7 +112,7 @@ namespace DystirWeb.Controllers
             {
                 _dystirDBContext.SaveChanges();
             }
-            catch {}
+            catch { }
 
             var allPlayersList = GetPlayersOfMatchesByMatchID(selectedmatchid)?.ToList();
             var playersListByTeams = _dystirDBContext.Players?
@@ -140,10 +144,15 @@ namespace DystirWeb.Controllers
             return SortedPlayersOfMatchList(allPlayersList.AsQueryable());
         }
 
-        // PUT: api/PlayersOfMatches??id=1203
-        [HttpPut(Name = "PutPlayersOfMatches")]
-        public IActionResult PutPlayersOfMatches([FromQuery]int id, PlayersOfMatches playersOfMatches)
+        // PUT: api/PlayersOfMatches/1203/token
+        [HttpPut("{id}/{token}")]
+        public IActionResult PutPlayersOfMatches(int id, string token, [FromBody] PlayersOfMatches playersOfMatches)
         {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -177,32 +186,48 @@ namespace DystirWeb.Controllers
         }
 
         // POST: api/PlayersOfMatches
-        [HttpPost]
-        public IActionResult PostPlayersOfMatches(PlayersOfMatches playersOfMatches)
+        [HttpPost("{token}")]
+        public IActionResult PostPlayersOfMatches(string token, [FromBody] PlayersOfMatches playersOfMatches)
         {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            if (playersOfMatches.PlayerId == null)
+            try
             {
-                Players newPlayer = SetNewPlayer(playersOfMatches);
+                if (playersOfMatches.PlayerId == null)
+                {
+                    Players newPlayer = SetNewPlayer(playersOfMatches);
 
-                playersOfMatches.PlayerId = newPlayer.PlayerId;
+                    playersOfMatches.PlayerId = newPlayer.PlayerId;
+                }
+                _dystirDBContext.PlayersOfMatches.Add(playersOfMatches);
+                _dystirDBContext.SaveChanges();
+                Matches match = _dystirDBContext.Matches.FirstOrDefault(x => x.MatchID == playersOfMatches.MatchId);
+                HubSend(match);
+                IActionResult result = CreatedAtRoute("DefaultApi", new { id = playersOfMatches.PlayerOfMatchId }, playersOfMatches);
+                return Ok("Successful");
             }
-            _dystirDBContext.PlayersOfMatches.Add(playersOfMatches);
-            _dystirDBContext.SaveChanges();
-            Matches match = _dystirDBContext.Matches.FirstOrDefault(x => x.MatchID == playersOfMatches.MatchId);
-            HubSend(match);
-
-            return CreatedAtRoute("DefaultApi", new { id = playersOfMatches.PlayerOfMatchId }, playersOfMatches);
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
         }
 
         // DELETE: api/PlayersOfMatches/5
-        [HttpDelete("{id}")]
-        public IActionResult DeletePlayersOfMatches(int id)
+        [HttpDelete("{id}/{token}")]
+        public IActionResult DeletePlayersOfMatches(int id, string token)
         {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
             PlayersOfMatches playersOfMatches = _dystirDBContext.PlayersOfMatches.Find(id);
             if (playersOfMatches == null)
             {

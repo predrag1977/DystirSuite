@@ -13,37 +13,40 @@
     <tr>
         <td style="position:relative;width:100%;height:auto;padding:0;vertical-align:middle;">
             <div id="header-match-list box" style="overflow:hidden; margin:3px 0">
-                <table class="table">
-                    <tr>
-                        @foreach (var matchesGroup in SelectedMatchListGroup)
-                        {
-                            var matches = matchesGroup.Select(x => x);
-                            <td style="padding-left:0px;">
-                                <div class="competition-item tab @(selectedCompetitionName == matchesGroup.Key ? "selected_tab" : "")" @onclick="(() => OnCompetitionClick(matchesGroup.Key))">@(matchesGroup.Key?.ToUpper())</div>
-                            </td>
-                        }
-                    </tr>
-                </table>
-                <table class="table" style="border-collapse: separate; border-spacing: 4px 0;">
-                    <tr>
-                        @foreach (var matchesGroup in SelectedMatchListGroup)
-                        {
-                            if (selectedCompetitionName == matchesGroup.Key)
+                @if (SelectedMatchListGroup?.Count > 0)
+                {
+                    <table class="table">
+                        <tr>
+                            @foreach (var matchesGroup in SelectedMatchListGroup)
                             {
                                 var matches = matchesGroup.Select(x => x);
-                                @foreach (Matches match in matches)
+                                <td style="padding-left:0px;">
+                                    <div class="competition-item tab @(selectedCompetitionName == matchesGroup.Key ? "selected_tab" : "")" @onclick="(() => OnCompetitionClick(matchesGroup.Key))">@(matchesGroup.Key?.ToUpper())</div>
+                                </td>
+                            }
+                        </tr>
+                    </table>
+                    <table class="table" style="border-collapse: separate; border-spacing: 4px 0;">
+                        <tr>
+                            @foreach (var matchesGroup in SelectedMatchListGroup)
+                            {
+                                if (selectedCompetitionName == matchesGroup.Key)
                                 {
-                                    <td>
-                                        <NavLink class="nav-link" style="cursor: pointer;" target="_new" href="@("infomatchdetails/" + match.MatchID)">
-                                            <MatchShare MatchItem="@match" ShowMore="@(false)" TimeZoneOffset="@timeZoneOffset" />
-                                        </NavLink>
-                                    </td>
+                                    var matches = matchesGroup.Select(x => x);
+                                    @foreach (Matches match in matches)
+                                    {
+                                        <td>
+                                            <NavLink class="nav-link" style="cursor: pointer;" target="_new" href="@("infomatchdetails/" + match.MatchID)">
+                                                <MatchShare MatchItem="@match" ShowMore="@(false)" TimeZoneOffset="@timeZoneOffset" />
+                                            </NavLink>
+                                        </td>
+                                    }
                                 }
                             }
-                        }
-                    </tr>
-                </table>
-                @if (SelectedMatchListGroup?.Count == 0)
+                        </tr>
+                    </table>
+                }
+                else if (SelectedMatchListGroup?.Count == 0)
                 {
                     <div style="width:100%;text-align:center;padding:35px;background-color:white">Eingin dystur í dag</div>
                 }
@@ -55,7 +58,7 @@
 @if (isLoading)
 {
     <div class="loading-spinner-parent">
-        <img class="loading-spinner" src="images/icons/loadingicon.gif" />
+        <i class="fas fa-spin fa-spinner fa-2x" style="color: darkgrey"></i>
     </div>
 }
 
@@ -67,6 +70,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        DystirWebClientService.OnFullDataLoaded += DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed += TimerElapsed;
@@ -76,9 +80,15 @@
 
     void IDisposable.Dispose()
     {
+        DystirWebClientService.OnFullDataLoaded -= DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected -= HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails -= DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed -= TimerElapsed;
+    }
+
+    private async void DystirWebClientService_FullDataLoaded()
+    {
+        await GetSelectedMatchListGroup();
     }
 
     private async void HubConnection_OnConnected()
@@ -117,7 +127,10 @@
         SelectedMatchListGroup = DystirWebClientService.AllMatches?
         .Where(x => x.Time.Value.ToLocalTime().Date >= fromDate && x.Time.Value.ToLocalTime().Date <= toDate)
         .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
-        .GroupBy(x => x.MatchTypeName)?.ToList() ?? new List<IGrouping<string, Matches>>();
+        .GroupBy(x => x.MatchTypeName)?.ToList();
+
+        if (SelectedMatchListGroup == null) return;
+
         if (string.IsNullOrWhiteSpace(selectedCompetitionName))
         {
             selectedCompetitionName = SelectedMatchListGroup?.FirstOrDefault()?.Key ?? "";

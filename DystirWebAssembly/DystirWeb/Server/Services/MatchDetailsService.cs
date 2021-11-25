@@ -36,7 +36,7 @@ namespace DystirWeb.Services
                         .ThenBy(x => x.EventTotalTime)
                         .ThenBy(x => x.EventMinute)
                         .ThenBy(x => x.EventOfMatchId).ToList(),
-                        PlayersOfMatch = playersOfMatch.Where(x => x.PlayingStatus != 3).ToList()
+                        PlayersOfMatch = playersOfMatch?.Where(x => x.PlayingStatus != 3).ToList()
                     };
                     _dystirService.UpdateDataAsync(matchDetails);
                 }

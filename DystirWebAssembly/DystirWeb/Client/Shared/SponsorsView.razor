@@ -66,8 +66,7 @@ else
     {
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         TimeService.OnSponsorsTimerElapsed += SponsorsTimerElapsed;
-        Refresh();
-        await Task.CompletedTask;
+        await GetSponsors();
     }
 
     void IDisposable.Dispose()
@@ -76,17 +75,17 @@ else
         TimeService.OnSponsorsTimerElapsed -= SponsorsTimerElapsed;
     }
 
-    private void HubConnection_OnConnected()
+    private async void HubConnection_OnConnected()
     {
-        Refresh();
+        await GetSponsors();
     }
 
-    private void SponsorsTimerElapsed(object sender, EventArgs e)
+    private async void SponsorsTimerElapsed(object sender, EventArgs e)
     {
-        Refresh();
+        await GetSponsors();
     }
 
-    private async void Refresh()
+    private async Task GetSponsors()
     {
         AllSponsors = new ObservableCollection<Sponsors>(DystirWebClientService.AllSponsors?.OrderBy(a => Guid.NewGuid()) ?? Enumerable.Empty<Sponsors>());
         await InvokeAsync(() => StateHasChanged());

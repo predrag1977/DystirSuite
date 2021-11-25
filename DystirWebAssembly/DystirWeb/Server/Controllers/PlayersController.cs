@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
 using DystirWeb.Server.DystirDB;
+using DystirWeb.Services;
 using DystirWeb.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +15,12 @@ namespace DystirWeb.Controllers
     public class PlayersController : ControllerBase
     {
         private DystirDBContext _dystirDBContext;
+        private readonly AuthService _authService;
 
-        public PlayersController(DystirDBContext dystirDBContext)
+        public PlayersController(DystirDBContext dystirDBContext, AuthService authService)
         {
             _dystirDBContext = dystirDBContext;
+            _authService = authService;
         }
 
         // GET: api/Players
@@ -46,9 +50,14 @@ namespace DystirWeb.Controllers
         }
 
         // PUT: api/Players/5
-        [HttpPut("{id}")]
-        public IActionResult PutPlayers(int id, Players players)
+        [HttpPut("{id}/{token}")]
+        public IActionResult PutPlayers(int id, string token, [FromBody] Players players)
         {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -81,9 +90,14 @@ namespace DystirWeb.Controllers
         }
 
         // POST: api/Players
-        [HttpPost]
-        public IActionResult PostPlayers(Players players)
+        [HttpPost("{token}")]
+        public IActionResult PostPlayers(string token, [FromBody] Players players)
         {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -96,9 +110,14 @@ namespace DystirWeb.Controllers
         }
 
         // DELETE: api/Players/5
-        [HttpDelete("{id}")]
-        public IActionResult DeletePlayers(int id)
+        [HttpDelete("{id}/{token}")]
+        public IActionResult DeletePlayers(int id, string token)
         {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
             Players players = _dystirDBContext.Players.Find(id);
             if (players == null)
             {
