@@ -14,7 +14,6 @@ namespace DystirXamarin
         {
             InitializeComponent();
             AppAnalytics();
-            var username = Current.Properties.ContainsKey("username") ? Current.Properties["username"] : "";
             MainPage = new NavigationPage(new LogInPage());
         }
 

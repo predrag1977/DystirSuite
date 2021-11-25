@@ -1,9 +1,7 @@
 ﻿using DystirXamarin.Models;
 using DystirXamarin.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DystirXamarin.Services
@@ -11,7 +9,7 @@ namespace DystirXamarin.Services
     public interface IDataStore<T>
     {
         Task<bool> AddMatchAsync(T item);
-        Task<bool> UpdateMatchAsync(T item);
+        Task<Match> UpdateMatchAsync(T item);
         Task<bool> DeleteMatchAsync(T item);
         Task<Match> GetMatchAsync(Match match);
         Task<ObservableCollection<Match>> GetMatchesAsync(string typeOfMatches, MatchesViewModel matchesViewModel);
@@ -33,5 +31,6 @@ namespace DystirXamarin.Services
         Task<ObservableCollection<Administrator>> GetAdministratorsAsync();
         Task<bool> UpdateEventOfMatchAsync(EventOfMatch eventOfMatch);
         Task<MatchDetails> GetMatchDetailsAsync(string matchID);
+        Task<Administrator> LoginAsync(string token);
     }
 }

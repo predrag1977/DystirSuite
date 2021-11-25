@@ -9,7 +9,8 @@ namespace DystirXamarin.ViewModels
     public class MatchesViewModel : BaseViewModel
     {
         //public Command RefreshPlayersOfMatchCommand { get; private set; }
-        public Administrator AdministratorLoggedIn { get; internal set; }
+        public Administrator AdministratorLoggedIn { get; set; }
+        public static string Token = null;
 
         public MatchesViewModel()
         {
@@ -145,23 +146,23 @@ namespace DystirXamarin.ViewModels
             MainException = null;
             try
             {
-                if(!changeMatchTime)
+                if (!changeMatchTime)
                 {
                     match.ExtraMinutes = 0;
                     match.ExtraSeconds = 0;
                 }
-                await GetDataStore().UpdateMatchAsync(match);
+                match = await GetDataStore().UpdateMatchAsync(match);
             }
             catch (Exception ex)
             {
                 MainException = ex;
-                var mat = Matches.FirstOrDefault(m => m.MatchID == match.MatchID);
-                if (mat != null)
-                {
-                    Matches.Remove(mat);
-                }
-                Matches.Add(match);
             }
+            var mat = Matches.FirstOrDefault(m => m.MatchID == match.MatchID);
+            if (mat != null)
+            {
+                Matches.Remove(mat);
+            }
+            Matches.Add(match);
             IsLoading = false;
         }
 
