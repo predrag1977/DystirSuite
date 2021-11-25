@@ -16,16 +16,19 @@ namespace DystirWeb.Controllers
     public class EventsOfMatchesController : ControllerBase
     {
         private readonly IHubContext<DystirHub> _hubContext;
+        private readonly AuthService _authService;
         private DystirDBContext _dystirDBContext;
         private readonly DystirService _dystirService;
         private readonly MatchDetailsService _matchDetailsService;
 
-        public EventsOfMatchesController (IHubContext<DystirHub> hubContext,
+        public EventsOfMatchesController(IHubContext<DystirHub> hubContext,
+            AuthService authService,
             DystirDBContext dystirDBContext,
             DystirService dystirService,
             MatchDetailsService matchDetailsService)
         {
             _hubContext = hubContext;
+            _authService = authService;
             _dystirDBContext = dystirDBContext;
             _dystirService = dystirService;
             _matchDetailsService = matchDetailsService;
@@ -159,9 +162,14 @@ namespace DystirWeb.Controllers
         }
 
         // PUT: api/EventsOfMatches/5
-        [HttpPut("{id}")]
-        public IActionResult PutEventsOfMatches(int id, EventsOfMatches eventsOfMatches)
+        [HttpPut("{id}/{token}")]
+        public IActionResult PutEventsOfMatches(int id, string token, [FromBody] EventsOfMatches eventsOfMatches)
         {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -203,9 +211,14 @@ namespace DystirWeb.Controllers
         }
 
         // POST: api/EventsOfMatches
-        [HttpPost]
-        public IActionResult PostEventsOfMatches(EventsOfMatches eventsOfMatches)
+        [HttpPost("{token}")]
+        public IActionResult PostEventsOfMatches(string token, [FromBody] EventsOfMatches eventsOfMatches)
         {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -228,9 +241,14 @@ namespace DystirWeb.Controllers
         }
 
         // DELETE: api/EventsOfMatches/5
-        [HttpDelete("{id}")]
-        public IActionResult DeleteEventsOfMatches(int id)
+        [HttpDelete("{id}/{token}")]
+        public IActionResult DeleteEventsOfMatches(int id, string token)
         {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
             EventsOfMatches eventsOfMatches = _dystirDBContext.EventsOfMatches.Find(id);
             if (eventsOfMatches == null)
             {

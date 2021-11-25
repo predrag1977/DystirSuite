@@ -18,16 +18,14 @@
     <div class="row flex-fill d-flex justify-content-start">
         <div class="col">
             <div class="matches_container">
-                @if (ResultMatchesList == null || ResultMatchesList?.Count == 0)
+                @if (ResultMatchesList?.Count == 0)
                 {
                     <div class="no-matches">Eingin dystur</div>
                 }
-                else
+                else if (ResultMatchesList?.Count > 0)
                 {
-                    @if (ResultMatchesList.Count > 0)
-                    {
-                        <div class="match-group-competition-name">@SelectedResultsCompetition</div>
-                    }
+                    <div class="match-group-competition-name">@SelectedResultsCompetition</div>
+
                     @foreach (var match in ResultMatchesList)
                     {
                         @if (match.StatusID <= 12)
@@ -52,7 +50,7 @@
 @if (isLoading)
 {
     <div class="loading-spinner-parent">
-        <img class="loading-spinner" src="images/icons/loadingicon.gif" />
+        <i class="fas fa-spin fa-spinner fa-2x" style="color: darkgrey"></i>
     </div>
 }
 
@@ -65,18 +63,25 @@
 
     protected override async Task OnInitializedAsync()
     {
+        DystirWebClientService.OnFullDataLoaded += DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed += TimerElapsed;
-        isLoading = true;
-        await LoadResultMatches();
+        _ = LoadResultMatches();
+        await Task.CompletedTask;
     }
 
     void IDisposable.Dispose()
     {
+        DystirWebClientService.OnFullDataLoaded -= DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected -= HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails -= DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed -= TimerElapsed;
+    }
+
+    private async void DystirWebClientService_FullDataLoaded()
+    {
+        await LoadResultMatches();
     }
 
     private async void HubConnection_OnConnected()
@@ -118,7 +123,9 @@
             && x.MatchTypeID != 3 && x.MatchTypeID != 4 && x.MatchTypeID != 100 && x.MatchTypeID != 103)
             .OrderBy(x => GetOrder(x.MatchTypeID))
             .ThenByDescending(x => x.Time).ThenByDescending(x => x.RoundID).ThenBy(x => x.MatchID)
-            .GroupBy(x => x.MatchTypeName)?.ToList() ?? new List<IGrouping<string, Matches>>();
+            .GroupBy(x => x.MatchTypeName)?.ToList();
+
+            if(allResultMatchByCompetition == null) return;
 
             CompetitionsList = new List<string>();
             foreach (var matchGroup in allResultMatchByCompetition)

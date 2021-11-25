@@ -27,9 +27,11 @@ namespace DystirWeb.Services
         public ObservableCollection<Standing> Standings;
         public ObservableCollection<CompetitionStatistic> CompetitionStatistics;
 
+        public event Action OnFullDataLoaded;
         public event Action OnConnected;
         public event Action OnDisconnected;
         public event Action<MatchDetails> OnRefreshMatchDetails;
+        public void FullDataLoaded() => OnFullDataLoaded?.Invoke();
         public void HubConnectionConnected() => OnConnected?.Invoke();
         public void HubConnectionDisconnected() => OnDisconnected?.Invoke();
         public void RefreshMatchDetails(MatchDetails matchDetails) => OnRefreshMatchDetails?.Invoke(matchDetails);
@@ -48,14 +50,13 @@ namespace DystirWeb.Services
                 _ = StartUpAsync();
             });
             _hubConnection.Closed += DystirHubConnection_Closed;
-            _ = StartUpAsync();
         }
 
         public async Task StartUpAsync()
         {
             try
             {
-                await LoadDataAsync();
+                _ = LoadDataAsync();
             }
             catch (Exception)
             {
@@ -70,7 +71,7 @@ namespace DystirWeb.Services
             var loadAllTeamsTask = LoadAllTeamsAsync();
             var loadSponsorsTask = LoadSponsorsAsync();
             await Task.WhenAll(loadAllMatchesTask, loadAllTeamsTask, loadSponsorsTask);
-            HubConnectionConnected();
+            FullDataLoaded();
             _ = StartDystirHubAsync();
         }
 

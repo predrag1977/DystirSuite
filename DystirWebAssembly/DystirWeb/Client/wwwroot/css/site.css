@@ -53,8 +53,7 @@ app {
 }
 
 .container-layout {
-    opacity: 0.9;
-    background-color: #222222;
+    background-color: rgba(34, 34, 34, 0.9);
     position: absolute;
     top: 70px;
     left: 180px;
@@ -264,9 +263,8 @@ app {
 
 .tab {
     padding: 0;
-    background-color: dimgray;
+    background-color: rgba(105,105,105,0.9);
     color: white;
-    opacity: 0.9;
     font-size: 0.7rem;
     height: 2rem
 }
@@ -414,7 +412,6 @@ app {
 .sponsors, .news {
     padding: 0 10px;
     text-align: center;
-    opacity: 0.9;
 }
 
 .sponsors-main-img {

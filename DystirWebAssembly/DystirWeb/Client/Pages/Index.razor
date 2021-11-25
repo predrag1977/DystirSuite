@@ -18,6 +18,7 @@
     <div class="row">
         <ChooseDays DaysOnClick="@DaysOnClick" TimeZoneOffset="@timeZoneOffset" />
     </div>
+
     <div class="row flex-fill d-flex justify-content-start">
         <div class="col">
             <div class="matches_container">
@@ -41,7 +42,7 @@
                         }
                     }
                 }
-                else
+                else if (SelectedMatchListGroup?.Count == 0)
                 {
                     <div class="no-matches">Eingin dystur</div>
                 }
@@ -55,9 +56,10 @@
 @if (isLoading)
 {
     <div class="loading-spinner-parent">
-        <img class="loading-spinner" src="images/icons/loadingicon.gif" />
+        <i class="fas fa-spin fa-spinner fa-2x" style="color: darkgrey"></i>
     </div>
 }
+
 
 @code {
     private int _daysFrom = 0;
@@ -68,18 +70,25 @@
 
     protected override async Task OnInitializedAsync()
     {
+        DystirWebClientService.OnFullDataLoaded += DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed += TimerElapsed;
-        isLoading = true;
-        await GetSelectedMatchListGroup();
+        _ = GetSelectedMatchListGroup();
+        await Task.CompletedTask;
     }
 
     void IDisposable.Dispose()
     {
+        DystirWebClientService.OnFullDataLoaded -= DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected -= HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails -= DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed -= TimerElapsed;
+    }
+
+    private async void DystirWebClientService_FullDataLoaded()
+    {
+        await GetSelectedMatchListGroup();
     }
 
     private async void HubConnection_OnConnected()
@@ -117,8 +126,11 @@
             var toDate = fromDate.AddDays(_dayAfter);
             SelectedMatchListGroup = DystirWebClientService.AllMatches?.OrderBy(x => GetOrder(x.MatchTypeID)).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
             .Where(x => x.Time.Value.ToLocalTime().Date >= fromDate
-            && x.Time.Value.ToLocalTime().Date <= toDate).GroupBy(x => x.MatchTypeName).ToList() ?? new List<IGrouping<string, Matches>>();
+            && x.Time.Value.ToLocalTime().Date <= toDate).GroupBy(x => x.MatchTypeName)?.ToList();
         });
+
+        if (SelectedMatchListGroup == null) return;
+
         isLoading = false;
         Refresh();
     }

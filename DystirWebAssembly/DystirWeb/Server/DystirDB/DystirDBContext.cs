@@ -59,6 +59,8 @@ namespace DystirWeb.Server.DystirDB
                 entity.Property(e => e.AdministratorId).HasColumnName("AdministratorID");
 
                 entity.Property(e => e.AdministratorTeamId).HasColumnName("AdministratorTeamID");
+
+                entity.Property(e => e.AdministratorToken).IsUnicode(false);
             });
 
             modelBuilder.Entity<Categories>(entity =>

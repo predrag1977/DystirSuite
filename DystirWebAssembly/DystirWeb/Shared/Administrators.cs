@@ -12,5 +12,6 @@ namespace DystirWeb.Shared
         public string AdministratorPassword { get; set; }
         public int? AdministratorTeamId { get; set; }
         public int? AdministratorId { get; set; }
+        public string AdministratorToken { get; set; }
     }
 }

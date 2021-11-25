@@ -4,6 +4,8 @@ using DystirWeb.Server.DystirDB;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using DystirWeb.Services;
+using System;
 
 namespace DystirWeb.Controllers
 {
@@ -11,24 +13,34 @@ namespace DystirWeb.Controllers
     [Route("api/[controller]")]
     public class AdministratorsController : ControllerBase
     {
+        private readonly AuthService _authService;
         private DystirDBContext _dystirDBContext;
 
-        public AdministratorsController(DystirDBContext dystirDBContext)
+        public AdministratorsController(DystirDBContext dystirDBContext, AuthService authService)
         {
+            _authService = authService;
             _dystirDBContext = dystirDBContext;
         }
 
-        // GET: api/Administrators
-        [HttpGet]
-        public IQueryable<Administrators> GetAdministrators()
+        // GET: api/Administrators/token
+        [HttpGet("{token}")]
+        public IActionResult GetAdministrators(string token)
         {
-            return _dystirDBContext.Administrators;
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+            return Ok(_dystirDBContext.Administrators);
         }
 
-        // GET: api/Administrators/5
-        [HttpGet("{id}", Name = "GetAdministrator")]
-        public IActionResult GetAdministrators(int id)
+        // GET: api/Administrators/5/token
+        [HttpGet("{id}/{token}", Name = "GetAdministrator")]
+        public IActionResult GetAdministrators(int id, string token)
         {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
             Administrators administrators = _dystirDBContext.Administrators.Find(id);
             if (administrators == null)
             {
@@ -39,9 +51,14 @@ namespace DystirWeb.Controllers
         }
 
         // PUT: api/Administrators/5
-        [HttpPut("{id}")]
-        public IActionResult PutAdministrators(int id, [FromBody] Administrators administrators)
+        [HttpPut("{id}/{token}")]
+        public IActionResult PutAdministrators(int id, string token, [FromBody] Administrators administrators)
         {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -74,9 +91,14 @@ namespace DystirWeb.Controllers
         }
 
         // POST: api/Administrators
-        [HttpPost]
-        public IActionResult PostAdministrators(Administrators administrators)
+        [HttpPost("{token}")]
+        public IActionResult PostAdministrators(string token, [FromBody] Administrators administrators)
         {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -89,9 +111,14 @@ namespace DystirWeb.Controllers
         }
 
         // DELETE: api/Administrators/5
-        [HttpDelete("{id}")]
-        public IActionResult DeleteAdministrators(int id)
+        [HttpDelete("{id}/{token}")]
+        public IActionResult DeleteAdministrators(int id, string token)
         {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
             Administrators administrators = _dystirDBContext.Administrators.Find(id);
             if (administrators == null)
             {
