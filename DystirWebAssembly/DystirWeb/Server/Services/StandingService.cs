@@ -16,11 +16,14 @@ namespace DystirWeb.Services
 
         internal IEnumerable<Standing> GetStandings()
         {
-            var matchesList = _dystirService.AllMatches;
+            var fromDate = new DateTime(DateTime.UtcNow.Year, 1, 1);
+            var matchesList = _dystirService.AllMatches.Where(y => y.Time > fromDate
+                && y.MatchActivation != 1
+                && y.MatchActivation != 2);
             var teamsList = _dystirService.AllTeams;
 
             List<Standing> standingsList = new List<Standing>();
-            var competititionNamesArray = new string[] { "Betri deildin", "1. deild", "Betri deildin kvinnur", "2. deild" };
+            var competititionNamesArray = new string[] { "VFF Cup", "Betri deildin", "1. deild", "Betri deildin kvinnur", "2. deild" };
             foreach (string competititionName in competititionNamesArray)
             {
                 Standing standing = new Standing()
@@ -133,6 +136,22 @@ namespace DystirWeb.Services
         }
 
         private void ReducePenaltiesPoint(List<TeamStanding> teamStandingsList)
+        {
+            List<Tuple<string, string, int>> teamPenatiesPointList = new List<Tuple<string, string, int>>
+            {
+                new Tuple<string, string, int>("2. deild", "B68", 3)
+            };
+            foreach (TeamStanding teamStanding in teamStandingsList)
+            {
+                var teamFound = teamPenatiesPointList.Find(x => x.Item1 == teamStanding.CompetitionName && x.Item2 == teamStanding.Team);
+                if (teamFound != null)
+                {
+                    teamStanding.Points -= teamFound.Item3;
+                }
+            }
+        }
+
+        private void ReducePenaltiesPointTest(List<TeamStanding> teamStandingsList)
         {
             List<Tuple<string, string, int>> teamPenatiesPointList = new List<Tuple<string, string, int>>
             {
