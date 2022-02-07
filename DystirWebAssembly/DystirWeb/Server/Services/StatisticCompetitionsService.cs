@@ -16,9 +16,13 @@ namespace DystirWeb.Services
         {
             _dystirService = dystirService;
         }
+
         public IEnumerable<CompetitionStatistic> GetCompetitionsStatistic()
         {
-            var matchesList = _dystirService.AllMatches;
+            var fromDate = new DateTime(DateTime.UtcNow.Year, 1, 1);
+            var matchesList = _dystirService.AllMatches.Where(y => y.Time > fromDate
+                && y.MatchActivation != 1
+                && y.MatchActivation != 2);
             var playersList = _dystirService.AllPlayersOfMatches;
             List<CompetitionStatistic> competitionStatisticsList = new List<CompetitionStatistic>();
             var competititionNamesArray = new string[] { "Betri deildin", "1. deild", "Betri deildin kvinnur" };
@@ -29,7 +33,7 @@ namespace DystirWeb.Services
             return competitionStatisticsList;
         }
 
-        internal CompetitionStatistic GetStatistics(ObservableCollection<Matches> allMatches, string competititionName, ObservableCollection<PlayersOfMatches> playersList)
+        internal CompetitionStatistic GetStatistics(IEnumerable<Matches> allMatches, string competititionName, ObservableCollection<PlayersOfMatches> playersList)
         {
             CompetitionStatistic competitionStatistic = new CompetitionStatistic();
             try

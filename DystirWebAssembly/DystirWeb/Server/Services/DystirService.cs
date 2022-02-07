@@ -108,6 +108,20 @@ namespace DystirWeb.Services
 
         public async Task UpdateAllMatchesDetailsAsync(MatchDetails matchDetails)
         {
+            lock (lockUpdateAllPlayersOfMatches)
+            {
+                var findMatchDetails = AllMatchesDetails.FirstOrDefault(x => x.MatchDetailsID == matchDetails?.MatchDetailsID);
+                if (findMatchDetails != null)
+                {
+                    AllMatchesDetails.Remove(findMatchDetails);
+                }
+                AllMatchesDetails.Add(matchDetails);
+            }
+            await Task.CompletedTask;
+        }
+
+        public async Task UpdateAllPlayersOfMatchesAsync(MatchDetails matchDetails)
+        {
             lock (lockUpdateAllMatchesDetails)
             {
                 var findMatchDetails = AllMatchesDetails.FirstOrDefault(x => x.MatchDetailsID == matchDetails?.MatchDetailsID);
@@ -125,20 +139,6 @@ namespace DystirWeb.Services
                     AllPlayersOfMatches = new ObservableCollection<PlayersOfMatches>(AllPlayersOfMatches?
                         .Where(x => x.Goal > 0 || x.Assist > 0).ToList().Where(p => AllMatches.Any(m => m.MatchID == p.MatchId)));
                 }
-            }
-            await Task.CompletedTask;
-        }
-
-        public async Task UpdateAllPlayersOfMatchesAsync(MatchDetails matchDetails)
-        {
-            lock (lockUpdateAllPlayersOfMatches)
-            {
-                var findMatchDetails = AllMatchesDetails.FirstOrDefault(x => x.MatchDetailsID == matchDetails?.MatchDetailsID);
-                if (findMatchDetails != null)
-                {
-                    AllMatchesDetails.Remove(findMatchDetails);
-                }
-                AllMatchesDetails.Add(matchDetails);
             }
             await Task.CompletedTask;
         }
