@@ -12,7 +12,7 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
-    <link href="css/site.css?v=57" rel="stylesheet" />
+    <link href="css/site.css?v=59" rel="stylesheet" />
     <link href="css/fontawesome/css/all.min.css" rel="stylesheet" />
     <link href="css/fontawesome/css/fontawesome.min.css" rel="stylesheet" />
     <link href="css/fontawesome/css/brands.min.css" rel="stylesheet" />
@@ -25,23 +25,31 @@
     <div id="app">
         <div style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: rgba(34, 34, 34, 0.9); "></div>
         <div class="loading-spinner-parent">
-            <i class="fas fa-spin fa-spinner fa-2x" style="color:darkgrey" ></i>
+            <i class="fas fa-spin fa-spinner fa-2x" style="color:darkgrey"></i>
         </div>
     </div>
 
     <!--<div id="blazor-error-ui" style="background-color: darkkhaki; width: 100%; text-align: center; position: absolute; bottom: 0; z-index: 3000 ">-->
-        <!--An unhandled error has occurred.-->
-        <!--<a href="" class="reload" style="font-size:1.1rem; color:black; font-weight:600; margin: 5px auto; display: inline-block;  ">Reload</a>-->
-        <!--<a class="dismiss">🗙</a>-->
+    <!--An unhandled error has occurred.-->
+    <!--<a href="" class="reload" style="font-size:1.1rem; color:black; font-weight:600; margin: 5px auto; display: inline-block;  ">Reload</a>-->
+    <!--<a class="dismiss">🗙</a>-->
     <!--</div>-->
-    <!--<script>
+    <script>
         if (window.top !== window.self) {
             var url = document.location.ancestorOrigins[0];
-            if (url === "https://www.w3schools.com") {
-                document.body.innerHTML = "<a style='color:black;margin:auto' href='mailto: dystir@dystir.fo'>Please send email to dystir@dystir.fo</a>";
+            if (url === "https://nsi.fo/") {
+                document.body.innerHTML = "";
+            }
+            else {
+                document.body.innerHTML =
+                `<div style='font-size:18px; width:100%;height:100vh;text-align:center;padding-top:30vh'>
+                    <a style='color:black;' href='mailto:dystir@dystir.fo'>
+                        Please send email to dystir@dystir.fo
+                    </a>
+                </div>`
             }
         }
-    </script>-->
+    </script>
 
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="scripts/google_analytics.js"></script>
