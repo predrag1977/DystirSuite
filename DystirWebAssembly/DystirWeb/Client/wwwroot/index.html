@@ -37,7 +37,8 @@
     <script>
         if (window.top !== window.self) {
             var url = document.location.ancestorOrigins[0];
-            if (url === "https://nsi.fo/") {
+            document.body.innerHTML = "";
+            if (url === "https://nsi.fo") {
                 document.body.innerHTML = "";
             }
             else {
