@@ -60,7 +60,7 @@ namespace DystirWeb.Services
             }
             catch (Exception)
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
                 await StartUpAsync();
             }
         }
@@ -111,7 +111,7 @@ namespace DystirWeb.Services
             catch (Exception)
             {
                 HubConnectionDisconnected();
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
                 _ = StartDystirHubAsync();
             }
         }
