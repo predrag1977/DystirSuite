@@ -51,10 +51,6 @@
             <div class="match_info">
                 <span>@MatchItem.Time?.ToLocalTime().ToString("ddd dd.MM.", new CultureInfo("fo-FO"))</span>
                 <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "" : MatchItem.Time?.ToLocalTime().ToString(" HH:mm"))</span>
-                @*@if (ShowMatchType)
-                    {
-                        <span>@(" - " + MatchItem.MatchTypeName)</span>
-                    }*@
                 <span>@(string.IsNullOrWhiteSpace(MatchItem.RoundName) ? "" : " - ")</span>
                 <span>@MatchItem.RoundName</span>
                 <span>@(string.IsNullOrWhiteSpace(MatchItem.Location) ? "" : " - ")</span>

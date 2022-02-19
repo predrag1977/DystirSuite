@@ -23,7 +23,7 @@ namespace DystirWeb.Services
             var teamsList = _dystirService.AllTeams;
 
             List<Standing> standingsList = new List<Standing>();
-            var competititionNamesArray = new string[] { "VFF Cup", "Betri deildin", "1. deild", "Betri deildin kvinnur", "2. deild" };
+            var competititionNamesArray = new string[] { "Betri deildin", "1. deild", "Betri deildin kvinnur", "2. deild" };
             foreach (string competititionName in competititionNamesArray)
             {
                 Standing standing = new Standing()
