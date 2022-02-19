@@ -1,4 +1,7 @@
-﻿using DystirXamarin.Views;
+﻿using System;
+using DystirXamarin.Models;
+using DystirXamarin.Services;
+using DystirXamarin.Views;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
@@ -13,8 +16,15 @@ namespace DystirXamarin
         public App()
         {
             InitializeComponent();
+            SetupServices();
             AppAnalytics();
             MainPage = new NavigationPage(new LogInPage());
+        }
+
+        private void SetupServices()
+        {
+            DependencyService.Register<DataLoaderService>();
+            DependencyService.Register<EncryptorService>();
         }
 
         private void AppAnalytics()

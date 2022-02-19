@@ -3,24 +3,29 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using DystirXamarin.Models;
 using System.Linq;
+using Xamarin.Forms;
+using DystirXamarin.Services;
 
 namespace DystirXamarin.ViewModels
 {
     public class MatchesViewModel : BaseViewModel
     {
-        //public Command RefreshPlayersOfMatchCommand { get; private set; }
         public Administrator AdministratorLoggedIn { get; set; }
-        public static string Token = null;
+        public static string Token;
+        public MatchListType SelectedMatchListType = MatchListType.Today;
+        private readonly DataLoaderService _dataLoaderService;
 
         public MatchesViewModel()
         {
-            //RefreshPlayersOfMatchCommand = new Command(async () =>
-            //{
-                
-            //});
+            _dataLoaderService = DependencyService.Get<DataLoaderService>();
         }
 
-        public async void GetFullData()
+        public Task<Administrator> LoginAsync(string token)
+        {
+            return _dataLoaderService.LoginAsync(token);
+        }
+
+        public async Task GetFullData()
         {
             IsLoading = true;
             MainException = null;
@@ -38,15 +43,6 @@ namespace DystirXamarin.ViewModels
             catch (Exception ex)
             {
                 MainException = ex;
-                //Match matchCache = new Match();
-                //var tempMatches = new ObservableCollection<Match>();
-                //var cacheProp = Application.Current.Properties;
-                //if (cacheProp.Count > 0)
-                //{
-                //    matchCache = (Match)Application.Current.Properties.FirstOrDefault(x => x.Key == "match").Value;
-                //    tempMatches.Add(matchCache);
-                //}
-                //Matches = tempMatches;
 
             }
             IsLoading = false;
@@ -54,12 +50,12 @@ namespace DystirXamarin.ViewModels
 
         internal async Task GetAdministrators()
         {
-            Administrators = await GetDataStore().GetAdministratorsAsync();
+            Administrators = await _dataLoaderService.GetAdministratorsAsync();
         }
 
         public async Task GetMatches()
         {
-            AllMatches = await GetDataStore().GetMatchesAsync("active", this);
+            AllMatches = await _dataLoaderService.GetMatchesAsync("active", this);
             if (AdministratorLoggedIn.AdministratorTeamID == 0)
             {
                 Matches = new ObservableCollection<Match>(AllMatches.Where(x => x.Time.Value.ToLocalTime().Date == DateTime.Now.ToLocalTime().Date));
@@ -72,32 +68,32 @@ namespace DystirXamarin.ViewModels
 
         public async Task GetTeams()
         {
-            Teams = await GetDataStore().GetTeamsAsync();
+            Teams = await _dataLoaderService.GetTeamsAsync();
         }
 
         public async Task GetCategories()
         {
-            Categories = await GetDataStore().GetCategoriesAsync();
+            Categories = await _dataLoaderService.GetCategoriesAsync();
         }
 
         public async Task GetMatchTypes()
         {
-            MatchTypes = await GetDataStore().GetMatchTypesAsync();
+            MatchTypes = await _dataLoaderService.GetMatchTypesAsync();
         }
 
         public async Task GetSquads()
         {
-            Squads = await GetDataStore().GetSquadsAsync();
+            Squads = await _dataLoaderService.GetSquadsAsync();
         }
 
         public async Task GetStatuses()
         {
-            Statuses = await GetDataStore().GetStatusesAsync();
+            Statuses = await _dataLoaderService.GetStatusesAsync();
         }
 
         public async Task GetRounds()
         {
-            Rounds= await GetDataStore().GetRoundsAsync();
+            Rounds= await _dataLoaderService.GetRoundsAsync();
         }
 
         internal async Task<bool> GetSelectedLiveMatch(Match selectedMatch, bool loadFullListPlayers)
@@ -132,12 +128,12 @@ namespace DystirXamarin.ViewModels
 
         public async Task GetPlayersOfMatchAsync(Match selectedMatch)
         {
-            SelectedLiveMatch.PlayersOfMatch = await GetDataStore().GetPlayersOfMatchAsync(selectedMatch);
+            SelectedLiveMatch.PlayersOfMatch = await _dataLoaderService.GetPlayersOfMatchAsync(selectedMatch);
         }
 
         internal async Task GetEventsOfMatchAsync(Match selectedLiveMatch)
         {
-            SelectedLiveMatch.EventsOfMatch = await GetDataStore().GetEventsOfMatchAsync(selectedLiveMatch);
+            SelectedLiveMatch.EventsOfMatch = await _dataLoaderService.GetEventsOfMatchAsync(selectedLiveMatch);
         }
 
         internal async Task UpdateMatchAsync(Match match, bool changeMatchTime)
@@ -151,18 +147,20 @@ namespace DystirXamarin.ViewModels
                     match.ExtraMinutes = 0;
                     match.ExtraSeconds = 0;
                 }
-                match = await GetDataStore().UpdateMatchAsync(match);
+                match = await _dataLoaderService.UpdateMatchAsync(match);
             }
             catch (Exception ex)
             {
                 MainException = ex;
             }
-            var mat = Matches.FirstOrDefault(m => m.MatchID == match.MatchID);
+            var matches = new ObservableCollection<Match>(Matches);
+            var mat = matches.FirstOrDefault(m => m.MatchID == match.MatchID);
             if (mat != null)
             {
-                Matches.Remove(mat);
+                matches.Remove(mat);
             }
-            Matches.Add(match);
+            matches.Add(match);
+            Matches = new ObservableCollection<Match>(matches);
             IsLoading = false;
         }
 
@@ -172,7 +170,7 @@ namespace DystirXamarin.ViewModels
             MainException = null;
             try
             {
-                await GetDataStore().AddMatchAsync(match);
+                await _dataLoaderService.AddMatchAsync(match);
             }
             catch (Exception ex)
             {
@@ -188,7 +186,7 @@ namespace DystirXamarin.ViewModels
             MainException = null;
             try
             {
-                await GetDataStore().DeleteMatchAsync(match);
+                await _dataLoaderService.DeleteMatchAsync(match);
             }
             catch (Exception ex)
             {
@@ -204,7 +202,7 @@ namespace DystirXamarin.ViewModels
             MainException = null;
             try
             {
-                await GetDataStore().AddPlayerOfMatchAsync(playerOfMatch);
+                await _dataLoaderService.AddPlayerOfMatchAsync(playerOfMatch);
             }
             catch (Exception ex)
             {
@@ -222,7 +220,7 @@ namespace DystirXamarin.ViewModels
             MainException = null;
             try
             {
-                await GetDataStore().UpdatePlayerOfMatchAsync(player);
+                await _dataLoaderService.UpdatePlayerOfMatchAsync(player);
             }
             catch (Exception ex)
             {
@@ -240,7 +238,7 @@ namespace DystirXamarin.ViewModels
             MainException = null;
             try
             {
-                await GetDataStore().AddEventOfMatchAsync(eventOfMatch);
+                await _dataLoaderService.AddEventOfMatchAsync(eventOfMatch);
                 await GetSelectedLiveMatch(selectedMatch, false);
             }
             catch (Exception ex)
@@ -259,7 +257,7 @@ namespace DystirXamarin.ViewModels
             MainException = null;
             try
             {
-                await GetDataStore().UpdateEventOfMatchAsync(eventOfMatch);
+                await _dataLoaderService.UpdateEventOfMatchAsync(eventOfMatch);
                 await GetSelectedLiveMatch(selectedMatch, false);
             }
             catch (Exception ex)
@@ -277,7 +275,7 @@ namespace DystirXamarin.ViewModels
             MainException = null;
             try
             {
-                await GetDataStore().DeleteEventOfMatchAsync(eventOfMatch);
+                await _dataLoaderService.DeleteEventOfMatchAsync(eventOfMatch);
                 await GetSelectedLiveMatch(selectedMatch, false);
             }
             catch (Exception ex)
@@ -289,7 +287,7 @@ namespace DystirXamarin.ViewModels
 
         private async Task<Match> GetMatchDetailsAsync(Match selectedMatch)
         {
-            MatchDetails matchDetails = await GetDataStore().GetMatchDetailsAsync(selectedMatch?.MatchID.ToString());
+            MatchDetails matchDetails = await _dataLoaderService.GetMatchDetailsAsync(selectedMatch?.MatchID.ToString());
             Match match = matchDetails.Match;
             match.EventsOfMatch = new ObservableCollection<EventOfMatch>(matchDetails.EventsOfMatch);
             return match;

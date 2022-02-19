@@ -55,8 +55,8 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <StackLayout Grid.Column="0" >
-                    <ContentView Padding="1" Margin="5,0" BackgroundColor="DarkKhaki" HorizontalOptions="Fill">
+                <StackLayout  Grid.Column="0" >
+                    <ContentView x:Name="BeforeLayout" Padding="1" Margin="5,0" BackgroundColor="DarkKhaki" HorizontalOptions="Fill">
                         <StackLayout BackgroundColor="Black" Padding="10">
                             <Label Text="Before" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontAttributes="Bold" TextColor="DarkKhaki" />
                         </StackLayout>
@@ -66,7 +66,7 @@
                     </ContentView>
                 </StackLayout>
                 <StackLayout Grid.Column="1" >
-                    <ContentView Padding="1" Margin="5,0" BackgroundColor="DarkKhaki" HorizontalOptions="Fill">
+                    <ContentView x:Name="TodayLayout" Padding="1" Margin="5,0" BackgroundColor="DarkKhaki" HorizontalOptions="Fill">
                         <StackLayout BackgroundColor="Black" Padding="10">
                             <Label Text="Today" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontAttributes="Bold" TextColor="DarkKhaki" />
                         </StackLayout>
@@ -75,8 +75,8 @@
                         </ContentView.GestureRecognizers>
                     </ContentView>
                 </StackLayout>
-                <StackLayout Grid.Column="2" >
-                    <ContentView Padding="1" Margin="5,0" BackgroundColor="DarkKhaki" HorizontalOptions="Fill">
+                <StackLayout Grid.Column="2">
+                    <ContentView x:Name="NextLayout" Padding="1" Margin="5,0" BackgroundColor="DarkKhaki" HorizontalOptions="Fill">
                         <StackLayout BackgroundColor="Black" Padding="10">
                             <Label Text="Next" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontAttributes="Bold" TextColor="DarkKhaki" />
                         </StackLayout>
@@ -200,8 +200,11 @@
                     <Label x:Name="VersionLabel" Text="1.0.0" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontAttributes="Bold" />
                 </StackLayout>
             </StackLayout>
-            <ContentView x:Name="ErrorLayout" Grid.Row="2" IsVisible="False" VerticalOptions="Center" HorizontalOptions="Fill" Margin="20,0" Padding="15" BackgroundColor="LightGray">
+            <ContentView x:Name="ErrorLayout2" Grid.Row="2" IsVisible="False" VerticalOptions="Center" HorizontalOptions="Fill" Margin="20,0" Padding="15" BackgroundColor="LightGray">
                 <Label Text="{Binding MainException.Message}" LineBreakMode="WordWrap" TextColor="Black" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+            </ContentView>
+            <ContentView x:Name="ErrorLayout" Grid.Row="2" IsVisible="False" VerticalOptions="Center" HorizontalOptions="Fill" Margin="20,0" Padding="15" BackgroundColor="LightGray">
+                <Label x:Name="TestLabel" Text="{Binding MainException.Message}" LineBreakMode="WordWrap" TextColor="Black" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
             </ContentView>
         </Grid>
     </ContentView>

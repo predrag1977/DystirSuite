@@ -13,11 +13,6 @@ namespace DystirXamarin.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Match> GetDataStore()
-        {
-            return DependencyService.Get<IDataStore<Match>>() ?? new MockDataStore();
-        }
-
         string title = string.Empty;
         public string Title
         {
