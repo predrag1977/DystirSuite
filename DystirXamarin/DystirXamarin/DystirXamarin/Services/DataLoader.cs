@@ -10,10 +10,10 @@ using DystirXamarin.ViewModels;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 
-[assembly: Dependency(typeof(DystirXamarin.Services.MockDataStore))]
+[assembly: Dependency(typeof(DystirXamarin.Services.DataLoaderService))]
 namespace DystirXamarin.Services
 {
-    public class MockDataStore : IDataStore<Match>
+    public class DataLoaderService : IDataLoaderService<Match>
     {
         private const string Url = "https://www.dystir.fo/api/";
         //private const string Url = "http://localhost:51346/api/";

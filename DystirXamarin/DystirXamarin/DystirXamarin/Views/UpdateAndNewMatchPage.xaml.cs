@@ -69,7 +69,7 @@ namespace DystirXamarin.Views
             SetMatchPropertiesValue();
             await Navigation.PopAsync(false);
             await _viewModel.UpdateMatchAsync(Match, false);
-            await _viewModel.GetMatches();
+            //await _viewModel.GetMatches();
         }
 
         private async void NewMatch()

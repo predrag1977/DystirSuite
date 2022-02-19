@@ -24,18 +24,18 @@ namespace DystirXamarin.Views
             Populate();
         }
 
-        protected async override void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
-            await _viewModel.GetMatches();
+            PopulateMatchList();
         }
 
-        private void Populate()
+        private async void Populate()
         {
             Administrator administratorLoggedIn = _viewModel.AdministratorLoggedIn;
             Title = administratorLoggedIn.AdministratorFirstName + " " + administratorLoggedIn.AdministratorLastName;
-            //AdministartorNameLabel.Text = administratorLoggedIn.AdministratorFirstName + " " + administratorLoggedIn.AdministratorLastName;
-            _viewModel.GetFullData();
+            await _viewModel.GetFullData();
+            PopulateMatchList();
             if (_viewModel.AdministratorLoggedIn?.AdministratorTeamID == 0)
             {
                 NewMatchButton.IsVisible = true;
@@ -45,7 +45,30 @@ namespace DystirXamarin.Views
                 NewMatchButton.IsVisible = false;
             }
             //TODO Change this
-            VersionLabel.Text = "4.0.0.45";
+            VersionLabel.Text = "4.0.0.46";
+        }
+
+        private void PopulateMatchList()
+        {
+            BeforeLayout.BackgroundColor = Color.DarkKhaki;
+            TodayLayout.BackgroundColor = Color.DarkKhaki;
+            NextLayout.BackgroundColor = Color.DarkKhaki;
+
+            switch (_viewModel.SelectedMatchListType)
+            {
+                case MatchListType.Before:
+                    _viewModel.Matches = new ObservableCollection<Match>(_viewModel.AllMatches.Where(x => x.Time.Value.ToLocalTime().Date < DateTime.Now.ToLocalTime().Date));
+                    BeforeLayout.BackgroundColor = Color.White;
+                    break;
+                case MatchListType.Today:
+                    _viewModel.Matches = new ObservableCollection<Match>(_viewModel.AllMatches.Where(x => x.Time.Value.ToLocalTime().Date == DateTime.Now.ToLocalTime().Date));
+                    TodayLayout.BackgroundColor = Color.White;
+                    break;
+                case MatchListType.Next:
+                    _viewModel.Matches = new ObservableCollection<Match>(_viewModel.AllMatches.Where(x => x.Time.Value.ToLocalTime().Date > DateTime.Now.ToLocalTime().Date));
+                    NextLayout.BackgroundColor = Color.White;
+                    break;
+            }
         }
 
         private void MatchesListView_Refreshing(object sender, EventArgs e)
@@ -135,17 +158,20 @@ namespace DystirXamarin.Views
 
         private void Before_Tapped(object sender, EventArgs e)
         {
-            _viewModel.Matches = new ObservableCollection<Match>(_viewModel.AllMatches.Where(x => x.Time.Value.ToLocalTime().Date < DateTime.Now.ToLocalTime().Date));
+            _viewModel.SelectedMatchListType = MatchListType.Before;
+            PopulateMatchList();
         }
 
         private void Today_Tapped(object sender, EventArgs e)
         {
-            _viewModel.Matches = new ObservableCollection<Match>(_viewModel.AllMatches.Where(x => x.Time.Value.ToLocalTime().Date == DateTime.Now.ToLocalTime().Date));
+            _viewModel.SelectedMatchListType = MatchListType.Today;
+            PopulateMatchList();
         }
 
         private void Next_Tapped(object sender, EventArgs e)
         {
-            _viewModel.Matches = new ObservableCollection<Match>(_viewModel.AllMatches.Where(x => x.Time.Value.ToLocalTime().Date > DateTime.Now.ToLocalTime().Date));
+            _viewModel.SelectedMatchListType = MatchListType.Next;
+            PopulateMatchList();
         }
     }
 }

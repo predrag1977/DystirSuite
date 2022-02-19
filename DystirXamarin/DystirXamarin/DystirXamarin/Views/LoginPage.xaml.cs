@@ -19,7 +19,7 @@ namespace DystirXamarin.Views
         {
             InitializeComponent();
             _viewModel = new MatchesViewModel();
-            _encryptorService = DependencyService.Get<EncryptorService>() ?? new EncryptorService();
+            _encryptorService = DependencyService.Get<EncryptorService>();
             GetAdministrators();
         }
 
@@ -29,7 +29,7 @@ namespace DystirXamarin.Views
             _viewModel = viewModel;
             LoadingView.IsVisible = false;
             LogInView.IsVisible = true;
-            _encryptorService = DependencyService.Get<EncryptorService>() ?? new EncryptorService();
+            _encryptorService = DependencyService.Get<EncryptorService>();
         }
 
         private void GetAdministrators()
@@ -49,7 +49,7 @@ namespace DystirXamarin.Views
                 if (!string.IsNullOrWhiteSpace(userName))
                 {
                     string token = _encryptorService.Encrypt(string.Format("{0}{1}", userName, password));
-                    _viewModel.AdministratorLoggedIn = await _viewModel.GetDataStore().LoginAsync(token);
+                    _viewModel.AdministratorLoggedIn = await _viewModel.LoginAsync(token);
                     if (_viewModel.AdministratorLoggedIn != null)
                     {
                         Application.Current.Properties.Remove("username");

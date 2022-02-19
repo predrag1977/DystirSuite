@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DystirXamarin.Services
 {
-    public interface IDataStore<T>
+    public interface IDataLoaderService<T>
     {
         Task<bool> AddMatchAsync(T item);
         Task<Match> UpdateMatchAsync(T item);
