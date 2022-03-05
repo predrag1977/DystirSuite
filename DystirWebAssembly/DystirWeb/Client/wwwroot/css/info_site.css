@@ -239,8 +239,8 @@ footer {
 }
 
 .header, .sidebar, .sponsor-bar, .match-group-competition-name, .selected_tab, .statistic-home {
-    background-color: rgb(223, 240, 216);
-    color: black !important;
+    background-color: rgb(59 130 246);
+    color: white !important;
 }
 
 .event-list-item {
@@ -283,7 +283,7 @@ footer {
 }
 
 .statistic-home, .statistic-away {
-    background-color: darkgreen;
+    background-color: rgb(59 130 246/1);
     height: 18px;
     color: white;
 }

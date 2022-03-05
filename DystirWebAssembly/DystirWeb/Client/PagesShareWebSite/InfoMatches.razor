@@ -1,4 +1,4 @@
-﻿@page "/infomatches"
+﻿@page "/dimmamatches"
 
 @using DystirWeb.Shared
 @using DystirWeb.Services
@@ -36,7 +36,7 @@
                                     @foreach (Matches match in matches)
                                     {
                                         <td>
-                                            <NavLink class="nav-link" style="cursor: pointer;" target="_new" href="@("infomatchdetails/" + match.MatchID)">
+                                            <NavLink class="nav-link" style="cursor: pointer;" target="_new" href="@("dimmamatchdetails/" + match.MatchID)">
                                                 <MatchShare MatchItem="@match" ShowMore="@(false)" TimeZoneOffset="@timeZoneOffset" />
                                             </NavLink>
                                         </td>

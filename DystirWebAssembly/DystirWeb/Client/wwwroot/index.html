@@ -2,11 +2,10 @@
 <html>
 
 <head>
+    <script>setTitle = (title) => { document.title = title; }</script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name=”description” content="Live scores, results, fixtures and standings of football matches in the Faroe Islands" />
-
-    <script>setTitle = (title) => { document.title = title; }</script>
 
     <base href="/" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
@@ -41,6 +40,23 @@
             document.body.innerHTML = "";
             if (url === "https://nsi.fo") {
                 document.body.innerHTML = "";
+            }
+            else if (url === "https://www.dimma.fo") {
+                `<div id="app">
+                    <div style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: rgba(34, 34, 34, 0.9); "></div>
+                    <div class="loading-spinner-parent">
+                        <i class="fas fa-spin fa-spinner fa-2x" style="color:darkgrey"></i>
+                    </div>
+                </div>`
+            }
+            else if (url === "https://www.w3schools.com") {
+                document.body.innerHTML =
+                `<div id="app">
+                    <div style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: rgba(34, 34, 34, 0.9); "></div>
+                    <div class="loading-spinner-parent">
+                        <i class="fas fa-spin fa-spinner fa-2x" style="color:darkgrey"></i>
+                    </div>
+                </div>`
             }
             else {
                 document.body.innerHTML =
