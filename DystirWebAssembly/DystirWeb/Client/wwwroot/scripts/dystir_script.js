@@ -116,6 +116,5 @@ websocket.onclose = function (event) {
 };
 
 function stopConnection() {
-    alert("test");
     connection.stop();
 }

@@ -4,7 +4,7 @@
 @inherits LayoutComponentBase
 @implements IDisposable
 
-<link href="css/football.css?v=59" rel="stylesheet" />
+<link href="css/football.css?v=60" rel="stylesheet" />
 
 <div class="header">
     <Header />
@@ -38,6 +38,7 @@
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnDisconnected += HubConnection_OnDisconnected;
         _ = JSRuntime.InvokeVoidAsync("setTitle", "Dystir");
+        _ = JSRuntime.InvokeVoidAsync("setFavicon", "favicon.ico");
         _ = JSRuntime.InvokeVoidAsync("loadGoogleAnalytics", "170595956-1");
         _ = DystirWebClientService.StartUpAsync();
         await Task.CompletedTask;

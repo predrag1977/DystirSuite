@@ -65,7 +65,6 @@ app {
 
 .container-layout-share {
     position: absolute;
-    background-color: #f5f5f5;
     top: 0;
     left: 0;
     right: 0;
@@ -151,7 +150,7 @@ app {
     position: absolute;
     overflow-x: hidden;
     overflow-y: auto;
-    width: 180px;
+    width: 220px;
     top: 70px;
     right: 0;
     opacity: 0.97;
@@ -566,7 +565,7 @@ app {
 @media (min-width: 768px) {
 
     .sidebar {
-        width: 180px;
+        width: 220px;
         height: 100vh;
     }
 
