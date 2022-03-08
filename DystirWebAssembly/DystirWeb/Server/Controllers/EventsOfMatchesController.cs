@@ -397,6 +397,9 @@ namespace DystirWeb.Controllers
                 case "COMMENTARY":
                     eventsOfMatches.EventText = "HENDINGAR: " + eventsOfMatches.EventText;
                     break;
+                case "PLAYEROFTHEMATCH":
+                    eventsOfMatches.EventText = eventsOfMatches.EventTeam + (string.IsNullOrWhiteSpace(mainPlayerFullName) ? "." : " leikari " + mainPlayerFullName + ".");
+                    break;
             }
         }
 

@@ -216,7 +216,7 @@ namespace DystirWeb.Services
                  || x.EventName == "YELLOW"
                  || x.EventName == "RED"
                  || x.EventName == "BIGCHANCE"
-                 //|| x.EventName == "SUBSTITUTION"
+                 || x.EventName == "PLAYEROFTHEMATCH"
                  || x.EventName == "ASSIST").ToList();
             int homeScore = 0;
             int awayScore = 0;
