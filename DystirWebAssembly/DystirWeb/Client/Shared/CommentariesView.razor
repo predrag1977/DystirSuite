@@ -94,15 +94,29 @@
                                                             {
                                                                 <div class="secondary-event" style="color:#a6a6a6;padding:0 7px">Blokera skot</div>
                                                             }
+                                                            else if ((eventOfMatch.EventName == "PLAYEROFTHEMATCH"))
+                                                            {
+                                                                <div class="fas fa-star" style="float:right;color:gold; padding:0 1px;margin:0 5px"></div>
+                                                            }
                                                         </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         }
                                     </td>
-                                    <td class="event_time">
-                                        @eventOfMatch.EventOfMatch.EventMinute
-                                    </td>
+                                    @if (eventOfMatch.EventName == "PLAYEROFTHEMATCH")
+                                    {
+                                        <td class="player_of_the_match">
+                                            Dagsins leikari
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="event_time">
+                                            @eventOfMatch.EventOfMatch.EventMinute
+                                        </td>
+                                    }
+
                                     <td style="width:50%">
                                         @if (!string.IsNullOrWhiteSpace(eventOfMatch.AwayTeam))
                                         {
@@ -186,6 +200,10 @@
                                                             else if (eventOfMatch.EventName == "BLOCKEDSHOT")
                                                             {
                                                                 <div class="secondary-event" style="color:#a6a6a6;padding:0 7px">Blokera skot</div>
+                                                            }
+                                                            else if ((eventOfMatch.EventName == "PLAYEROFTHEMATCH"))
+                                                            {
+                                                                <div class="fas fa-star" style="float:left;color:gold; padding:0 1px;margin:0 5px"></div>
                                                             }
                                                         </td>
                                                     </tr>

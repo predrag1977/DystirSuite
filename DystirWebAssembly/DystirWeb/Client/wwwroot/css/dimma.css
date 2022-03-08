@@ -252,6 +252,12 @@ footer {
     padding: 2px 0;
 }
 
+.player_of_the_match {
+    color: #d88802;
+    padding: 2px 0;
+}
+
+
 .player-list-item {
     border-bottom: 1px lightgray solid;
 }
