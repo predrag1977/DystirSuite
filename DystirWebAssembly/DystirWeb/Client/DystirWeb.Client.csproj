@@ -7,7 +7,10 @@
   
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'DystirWeb' " />
   <ItemGroup>
-    <None Include="Pages\Index.razor" />
+    <None Remove="InfoShareWebSite\" />
+    <None Remove="Quick.AspNetCore.Components.Web.Extensions" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Shared\MainLayout.razor" />
     <None Include="Shared\NavMenu.razor" />
     <None Include="wwwroot\css\bootstrap\bootstrap.min.css.map" />
@@ -29,4 +32,7 @@
     <ProjectReference Include="..\Shared\DystirWeb.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="PagesShareWebSite\" />
+  </ItemGroup>
 </Project>
