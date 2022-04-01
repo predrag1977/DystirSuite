@@ -33,12 +33,12 @@
                         @if (match.StatusID <= 12)
                         {
                             <NavLink class="nav-link" style="cursor: pointer;" href="@("football/matchdetails/" + match.MatchID)">
-                                <Match MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
+                                <MatchView MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
                             </NavLink>
                         }
                         else
                         {
-                            <Match MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
+                            <MatchView MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
                         }
                     }
                 }

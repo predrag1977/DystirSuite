@@ -1,0 +1,31 @@
+﻿@import "football.css";
+
+.container-layout_mobile_client {
+    background-color: rgba(34, 34, 34, 0.9);
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.header_mobile_client {
+    z-index: 3000;
+    opacity: 0.97;
+    height: 50px;
+    border-bottom: 2px solid dimgray;
+    background-color: #2F4F2F;
+}
+
+.sponsors_below_matches {
+    display: block;
+}
+
+.sidebar {
+    display: none;
+}
+
+.sponsor-bar {
+    display: none;
+}
+
