@@ -1,19 +1,24 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 @import url('https://fonts.googleapis.com/css2?family=Play&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
 
 html, body {
-    font-family: 'Play', sans-serif;
+    font-family: 'Nunito', sans-serif;
 }
 
 html {
     position: relative;
     min-height: 100%;
     font-size: 0.9rem;
-    min-width: 360px;
 }
 
 body {
     overflow: hidden;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
 }
 
@@ -56,11 +61,9 @@ app {
     background-color: rgba(34, 34, 34, 0.9);
     position: absolute;
     top: 70px;
-    left: 220px;
-    right: 220px;
+    left: 210px;
+    right: 210px;
     bottom: 0;
-    border-right: 2px solid dimgray;
-    border-left: 2px solid dimgray;
 }
 
 .container-layout-share {
@@ -75,10 +78,7 @@ app {
 .header {
     z-index: 3000;
     opacity: 0.97;
-    position: fixed;
-    top: 0;
-    left: 220px;
-    right: 0;
+    width:100%;
     height: 70px;
     border-bottom: 2px solid dimgray;
 }
@@ -108,10 +108,11 @@ app {
 }
 
 .sidebar {
-    z-index: 2000;
+    z-index: 4000;
     opacity: 0.97;
     position: fixed;
     width: 100%;
+    top: 70px;
 }
 
     .sidebar .nav-item {
@@ -150,11 +151,12 @@ app {
     position: absolute;
     overflow-x: hidden;
     overflow-y: auto;
-    width: 220px;
+    width: 210px;
     top: 70px;
     right: 0;
     opacity: 0.97;
     bottom: 0;
+    border-left: 2px solid dimgray;
 }
 
     .sponsor-bar .nav-item {
@@ -227,7 +229,7 @@ app {
     text-align: center;
 }
 
-.match_item {
+.match_item, .match_item_mobile, .match_details_item {
     width: 100%;
     color: white;
     padding: 0 0.5rem;
@@ -246,7 +248,6 @@ app {
 }
 
 .match_item_teams_name {
-    text-align: center;
     font-weight: bold;
     color: white;
 }
@@ -310,6 +311,14 @@ app {
     color: white;
     font-weight: bold;
     padding: 0 7px;
+}
+
+.score_match_view {
+    width: 30px;
+    background-color: rgba(105,105,105,0.9);
+    border-radius: 5px;
+    color: white;
+    text-align: center;
 }
 
 .main_player {
@@ -485,8 +494,9 @@ app {
 }
 
 .store-buttons {
-    width: 220px;
+    width: 210px;
     text-align: center;
+    
 }
 
 .no-connection {
@@ -540,6 +550,13 @@ app {
     width: 2.6rem;
 }
 
+.toggle-button {
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    font-size: 1.5rem;
+}
+
 /*-----------------------*/
 /* MOBILE FRIENDLY STYLE */
 /*-----------------------*/
@@ -549,11 +566,11 @@ app {
         width: 100%;
     }
 
-    .sponsor-bar {
+    .sponsor-bar, .match_item {
         display: none;
     }
 
-    .sponsors_below_matches {
+    .sponsors_below_matches, .match_item_mobile {
         display: block;
     }
 
@@ -570,15 +587,16 @@ app {
 @media (min-width: 768px) {
 
     .sidebar {
-        width: 220px;
+        width: 210px;
         height: 100vh;
+        border-right: 2px solid dimgray;
     }
 
     .navbar-toggler {
         display: none;
     }
 
-    .sidebar .collapse {
+    .sidebar .collapse, .match_item {
         display: block;
     }
 
@@ -586,7 +604,7 @@ app {
         display: block;
     }
 
-    .sponsors_below_matches {
+    .sponsors_below_matches, .match_item_mobile {
         display: none;
     }
 }

@@ -1,7 +1,7 @@
 ﻿@using DystirWeb.Services
 @using System.Globalization
 @using DystirWeb.Shared
-@using ViewBases 
+@using ViewBases
 @inject DystirWebClientService DystirWebClientService
 @inherits MatchBase
 
@@ -47,7 +47,7 @@
     }
     else
     {
-        <div class="match_item @(BorderStyle())">
+        <div class="match_details_item @(BorderStyle())">
             <div class="match_info">
                 <span>@MatchItem.Time?.ToLocalTime().ToString("ddd dd.MM.", new CultureInfo("fo-FO"))</span>
                 <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "" : MatchItem.Time?.ToLocalTime().ToString(" HH:mm"))</span>
@@ -61,47 +61,70 @@
                 <span>@(string.IsNullOrWhiteSpace(MatchItem.Location) ? "" : " - ")</span>
                 <span>@MatchItem.Location</span>
             </div>
-            <table class="table">
+            <table class="table" style="margin:0 0 7px 0">
                 <tr class="match_item_teams_name">
                     <td style="text-align:right;padding:0">
-                        <img src="team_logos/@(GetTeamLogo(MatchItem.HomeTeam, DystirWebClientService.AllTeams))" onerror="this.src='team_logos/empty.png'" height="30" />
-                        <span>@((MatchItem.HomeTeam + " " + MatchItem.HomeSquadName + " " + MatchItem.HomeCategoriesName).Trim())</span>
+                        <table>
+                            <tr>
+                                <td style="width:100%;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;max-width:1px;padding-right:2px">
+                                    <span>@((MatchItem.HomeTeam + " " + MatchItem.HomeSquadName + " " + MatchItem.HomeCategoriesName).Trim())</span>
+                                </td>
+
+                                <td class="match_time" style="white-space:nowrap;width:0">
+                                    <img src="team_logos/@(GetTeamLogo(MatchItem.HomeTeam, DystirWebClientService.AllTeams))"
+                                         onerror="this.src='team_logos/empty.png'" width="25" height="25" />
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                     <td style="text-align:center;width:20px;padding:0 3px;">-</td>
                     <td style="text-align:left;padding:0">
-                        <span>@((MatchItem.AwayTeam + " " + MatchItem.AwaySquadName + " " + MatchItem.AwayCategoriesName).Trim())</span>
-                        <img src="team_logos/@(GetTeamLogo(MatchItem.AwayTeam, DystirWebClientService.AllTeams))" onerror="this.src='team_logos/empty.png'" height="30" />
+                        <table>
+                            <tr>
+                                <td class="match_time" style="white-space:nowrap;width:0">
+                                    <img src="team_logos/@(GetTeamLogo(MatchItem.AwayTeam, DystirWebClientService.AllTeams))"
+                                         onerror="this.src='team_logos/empty.png'" width="25" height="25" />
+                                </td>
+                                <td style="width: 100%; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; max-width: 1px; padding-left: 2px">
+                                    <span>@((MatchItem.AwayTeam + " " + MatchItem.AwaySquadName + " " + MatchItem.AwayCategoriesName).Trim())</span>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                 </tr>
             </table>
             <table class="table">
                 <tr class="match_item_text_color">
-                    @if (MatchItem.StatusID < 14)
-                    {
-                        <td style="text-align:left;">
+                    <td style="text-align:left;">
+                        @if (MatchItem.StatusID < 14)
+                        {
                             <span class="match_time" style="color:@GetStatusColor(MatchItem.StatusID)">@GetMatchTime(MatchItem.StatusTime, MatchItem.Time, MatchItem.StatusID)</span>
+                        }
+                    </td>
+
+                    @if (MatchItem.StatusID < 14 && MatchItem.StatusID > 1)
+                    {
+                        <td class="score_match_view" style="margin:0 3px">
+                            @(MatchItem.HomeTeamScore)
                         </td>
-                        @if (MatchItem.StatusID > 1)
-                        {
-                            <td style="text-align:right;padding:0 5px">
-                                @(MatchItem.HomeTeamScore)
-                            </td>
-                            <td style="text-align:center;width:20px;padding:0 5px">:</td>
-                            <td style="text-align:left;padding:0 5px">
-                                @(MatchItem.AwayTeamScore)
-                            </td>
-                        }
-                        else
-                        {
-                            <td style="text-align:center;padding:0 5px"> - : - </td>
-                        }
-                        <td style="text-align:right;">
-                            @if (MatchItem.StatusID < 13 && ShowMore)
-                            {
-                                <span>Vís meira &#10095;</span>
-                            }
+                        <td style="text-align:center;width:20px;padding:0 5px">:</td>
+                        <td class="score_match_view" style="margin:0 3px">
+                            @(MatchItem.AwayTeamScore)
                         </td>
                     }
+                    else
+                    {
+                        <td class="score_match_view" style="margin:0 3px">-</td>
+                        <td style="text-align:center;width:20px;padding:0 5px">:</td>
+                        <td class="score_match_view" style="margin:0 3px">-</td>
+                    }
+
+                    <td style="text-align:right;">
+                        @if (MatchItem.StatusID < 13 && ShowMore)
+                        {
+                            <span>Vís meira &#10095;</span>
+                        }
+                    </td>
                 </tr>
             </table>
         </div>

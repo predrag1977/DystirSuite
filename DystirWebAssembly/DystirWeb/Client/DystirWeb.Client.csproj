@@ -9,6 +9,7 @@
   <ItemGroup>
     <None Remove="InfoShareWebSite\" />
     <None Remove="Quick.AspNetCore.Components.Web.Extensions" />
+    <None Remove="PagesMobileClient\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shared\MainLayout.razor" />
@@ -34,5 +35,6 @@
 
   <ItemGroup>
     <Folder Include="PagesShareWebSite\" />
+    <Folder Include="PagesMobileClient\" />
   </ItemGroup>
 </Project>
