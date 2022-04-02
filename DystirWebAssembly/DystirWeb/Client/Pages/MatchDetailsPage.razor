@@ -71,7 +71,7 @@
     private FullMatchDetailsModelView fullMatchDetails;
     private List<Matches> MatchesListSameDay = new List<Matches>();
     private Standing standing = new Standing();
-    private int timeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
+    private int timeZoneOffset = 0;
     private bool isLoading = true;
     private string selectedTab = "0";
 
@@ -81,17 +81,17 @@
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed += TimerElapsed;
+        timeZoneOffset = int.Parse(await JSRuntime.InvokeAsync<String>("getTimeZoneOffset"));
         if (matchid != null)
         {
             _ = LoadMatchDetails();
         }
-        await Task.CompletedTask;
     }
 
     protected override async Task OnParametersSetAsync()
     {
+        timeZoneOffset = int.Parse(await JSRuntime.InvokeAsync<String>("getTimeZoneOffset"));
         _ = LoadMatchDetails();
-        await Task.CompletedTask;
     }
 
     void IDisposable.Dispose()

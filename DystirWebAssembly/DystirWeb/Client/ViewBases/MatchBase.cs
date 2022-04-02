@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DystirWeb.ViewBases
 {
@@ -149,6 +150,16 @@ namespace DystirWeb.ViewBases
         public string GetTeamLogo(string teamName, ObservableCollection<Teams> allTeams)
         {
             return allTeams?.FirstOrDefault(x => x.TeamName == teamName)?.TeamLogo;
+        }
+
+        public string GetMatchInfoTime(DateTime? matchDateTime)
+        {
+            if(matchDateTime == null)
+            {
+                return "";
+            }
+            var ticks = (DateTime.UtcNow.Ticks - matchDateTime.Value.Ticks);
+            return TimeSpan.FromTicks(ticks).TotalMinutes.ToString();
         }
     }
 }

@@ -6,6 +6,7 @@ using DystirWeb.Services;
 using DystirWeb.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.JSInterop;
 
 namespace DystirWeb.Client.PagesMobileClient
 {
@@ -19,6 +20,8 @@ namespace DystirWeb.Client.PagesMobileClient
         private HubConnection _hubConnection { get; set; }
         [Inject]
         private LiveStandingService _liveStandingService { get; set; }
+        [Inject]
+        private IJSRuntime _jsRuntime { get; set; }
 
         private SelectedPage _previousPage = SelectedPage.Matches;
         private int _daysFrom = 0;
@@ -34,7 +37,7 @@ namespace DystirWeb.Client.PagesMobileClient
         public Standing standing = new Standing();
         public string selectedTab = "0";
         public List<IGrouping<string, Matches>> SelectedMatchListGroup;
-        public int timeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).Hours;
+        public int TimeZoneOffset = 0;
         public bool isLoading = true;
 
         protected override async Task OnInitializedAsync()
@@ -44,6 +47,7 @@ namespace DystirWeb.Client.PagesMobileClient
             _dystirWebClientService.OnDisconnected += HubConnection_OnDisconnected;
             _dystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
             _timeService.OnTimerElapsed += TimerElapsed;
+            TimeZoneOffset = int.Parse(await _jsRuntime.InvokeAsync<String>("getTimeZoneOffset"));
             await _dystirWebClientService.StartUpAsync();
             //await LoadData(selectedPage);
         }
@@ -163,8 +167,8 @@ namespace DystirWeb.Client.PagesMobileClient
                 var fromDate = DateTime.Now.Date.AddDays(_daysFrom);
                 var toDate = fromDate.AddDays(_dayAfter);
                 SelectedMatchListGroup = _dystirWebClientService.AllMatches?.OrderBy(x => GetOrder(x.MatchTypeID)).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
-                .Where(x => x.Time.Value.ToLocalTime().Date >= fromDate
-                && x.Time.Value.ToLocalTime().Date <= toDate).GroupBy(x => x.MatchTypeName)?.ToList();
+                .Where(x => x.Time.Value.AddMinutes(-TimeZoneOffset).Date >= fromDate
+                && x.Time.Value.AddMinutes(-TimeZoneOffset).Date <= toDate).GroupBy(x => x.MatchTypeName)?.ToList();
             });
             isLoading = false;
             Refresh();

@@ -49,8 +49,8 @@
     {
         <div class="match_details_item @(BorderStyle())">
             <div class="match_info">
-                <span>@MatchItem.Time?.ToLocalTime().ToString("ddd dd.MM.", new CultureInfo("fo-FO"))</span>
-                <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "" : MatchItem.Time?.ToLocalTime().ToString(" HH:mm"))</span>
+                <span>@MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString("ddd dd.MM.", new CultureInfo("fo-FO"))</span>
+                <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "" : MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString(" HH:mm"))</span>
                 @if (ShowMatchType)
                 {
                     <span>@(string.IsNullOrWhiteSpace(MatchItem.MatchTypeName) ? "" : " - ")</span>

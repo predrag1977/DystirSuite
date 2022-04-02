@@ -46,7 +46,7 @@
         int daysFrom = 0;
         int daysAfter = 0;
         _selectedDaysIndex = tabIndex;
-        DateTime dateToday = DateTime.Now;
+        DateTime dateToday = DateTime.UtcNow.AddMinutes(-TimeZoneOffset);
         int offset = _cultureInfo.DateTimeFormat.FirstDayOfWeek - dateToday.DayOfWeek;
         DateTime firstDayOfWeekDate = DateTime.Now.AddDays(offset);
 

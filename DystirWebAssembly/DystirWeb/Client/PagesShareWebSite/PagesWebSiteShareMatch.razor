@@ -13,7 +13,7 @@
                 {
                     <td style="text-align:center;">
                         <div class="match_info" style="font-size: 0.9rem;text-align: center;">
-                            <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "-- : --" : MatchItem.Time?.ToLocalTime().ToString(" HH:mm"))</span>
+                            <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "-- : --" : MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString(" HH:mm"))</span>
                             <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" || string.IsNullOrWhiteSpace(MatchItem.Location) ? " " : " - ")</span>
                             <span>@MatchItem.Location</span>
                         </div>
@@ -62,7 +62,7 @@
                         else
                         {
                             <div class="match_info" style="text-align:left;">
-                                <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "-- : --" : MatchItem.Time?.ToLocalTime().ToString(" HH:mm"))</span>
+                                <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "-- : --" : MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString(" HH:mm"))</span>
                                 <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" || string.IsNullOrWhiteSpace(MatchItem.Location) ? " " : " - ")</span>
                                 <span>@MatchItem.Location</span>
                             </div>

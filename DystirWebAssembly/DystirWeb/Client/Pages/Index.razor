@@ -65,7 +65,7 @@
     private int _daysFrom = 0;
     private int _dayAfter = 0;
     private List<IGrouping<string, Matches>> SelectedMatchListGroup;
-    private int timeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).Hours;
+    private int timeZoneOffset = 0;
     private bool isLoading = true;
 
     protected override async Task OnInitializedAsync()
@@ -74,8 +74,8 @@
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed += TimerElapsed;
+        timeZoneOffset = int.Parse(await JSRuntime.InvokeAsync<String>("getTimeZoneOffset"));
         _ = GetSelectedMatchListGroup();
-        await Task.CompletedTask;
     }
 
     void IDisposable.Dispose()
@@ -125,8 +125,8 @@
             var fromDate = DateTime.Now.Date.AddDays(_daysFrom);
             var toDate = fromDate.AddDays(_dayAfter);
             SelectedMatchListGroup = DystirWebClientService.AllMatches?.OrderBy(x => GetOrder(x.MatchTypeID)).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
-            .Where(x => x.Time.Value.ToLocalTime().Date >= fromDate
-            && x.Time.Value.ToLocalTime().Date <= toDate).GroupBy(x => x.MatchTypeName)?.ToList();
+            .Where(x => x.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate
+            && x.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate).GroupBy(x => x.MatchTypeName)?.ToList();
         });
 
         if (SelectedMatchListGroup == null) return;

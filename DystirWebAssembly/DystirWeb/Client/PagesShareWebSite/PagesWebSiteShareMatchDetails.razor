@@ -12,7 +12,7 @@
 @implements IDisposable
 @inherits MatchBase
 
-<link href="css/@(page).css?v=2" rel="stylesheet" />
+<link href="css/@(page).css?v=70" rel="stylesheet" />
 
 @if (page.Equals("dimma") || page.Equals("info"))
 {
@@ -133,7 +133,7 @@
     private Matches SelectedMatch = new Matches();
     private FullMatchDetailsModelView fullMatchDetails;
     private Standing standing = new Standing();
-    private int timeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
+    private int timeZoneOffset = 0;
     private bool isLoading = true;
     private string selectedTab = "0";
     private string selectedCompetitionName = "";
@@ -144,17 +144,17 @@
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed += TimerElapsed;
+        timeZoneOffset = int.Parse(await JSRuntime.InvokeAsync<String>("getTimeZoneOffset"));
         if (matchid != null)
         {
             _ = LoadMatchDetails();
         }
-        await Task.CompletedTask;
     }
 
     protected override async Task OnParametersSetAsync()
     {
+        timeZoneOffset = int.Parse(await JSRuntime.InvokeAsync<String>("getTimeZoneOffset"));
         _ = LoadMatchDetails();
-        await Task.CompletedTask;
     }
 
     void IDisposable.Dispose()
@@ -229,11 +229,11 @@
 
     public async Task GetSelectedMatchListGroup()
     {
-        var fromDate = DateTime.UtcNow.AddHours(timeZoneOffset).Date.AddDays(0);
+        var fromDate = DateTime.UtcNow.AddMinutes(-timeZoneOffset).Date.AddDays(0);
         var toDate = fromDate.AddDays(0);
         SelectedMatchListGroup = DystirWebClientService.AllMatches?
         .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
-        .Where(x => x.Time.Value.ToLocalTime().Date >= fromDate && x.Time.Value.ToLocalTime().Date <= toDate)
+        .Where(x => x.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate && x.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate)
         .GroupBy(x => x.MatchTypeName)?.ToList() ?? new List<IGrouping<string, Matches>>();
         if (string.IsNullOrWhiteSpace(selectedCompetitionName))
         {
