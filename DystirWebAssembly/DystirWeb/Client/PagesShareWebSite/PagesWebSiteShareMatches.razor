@@ -9,7 +9,7 @@
 @layout PagesWebSiteShareLayout
 @implements IDisposable
 
-<link href="css/@(page).css?v=2" rel="stylesheet" />
+<link href="css/@(page).css?v=70" rel="stylesheet" />
 
 @if (page.Equals("dimma") || page.Equals("info"))
 {
@@ -72,7 +72,7 @@
     public string page { get; set; }
 
     private List<IGrouping<string, Matches>> SelectedMatchListGroup = new List<IGrouping<string, Matches>>();
-    private int timeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
+    private int timeZoneOffset = 0;
     private bool isLoading = true;
     private string selectedCompetitionName = "";
 
@@ -82,8 +82,8 @@
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed += TimerElapsed;
+        timeZoneOffset = int.Parse(await JSRuntime.InvokeAsync<String>("getTimeZoneOffset"));
         _ = GetSelectedMatchListGroup();
-        await Task.CompletedTask;
     }
 
     void IDisposable.Dispose()
@@ -130,10 +130,10 @@
 
     public async Task GetSelectedMatchListGroup()
     {
-        var fromDate = DateTime.UtcNow.AddHours(timeZoneOffset).Date.AddDays(0);
+        var fromDate = DateTime.UtcNow.AddMinutes(-timeZoneOffset).Date.AddDays(0);
         var toDate = fromDate.AddDays(0);
         SelectedMatchListGroup = DystirWebClientService.AllMatches?
-        .Where(x => x.Time.Value.ToLocalTime().Date >= fromDate && x.Time.Value.ToLocalTime().Date <= toDate)
+        .Where(x => x.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate && x.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate)
         .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
         .GroupBy(x => x.MatchTypeName)?.ToList();
 

@@ -60,7 +60,7 @@
     private string SelectedFixturesCompetition { get; set; }
     private List<string> CompetitionsList { get; set; }
     private List<Matches> FixturesMatchesList { get; set; }
-    private int timeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
+    private int timeZoneOffset = 0;
     private bool isLoading = true;
 
     protected override async Task OnInitializedAsync()
@@ -69,8 +69,8 @@
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed += TimerElapsed;
+        timeZoneOffset = int.Parse(await JSRuntime.InvokeAsync<String>("getTimeZoneOffset"));
         _ = LoadFixturesMatches();
-        await Task.CompletedTask;
     }
 
     void IDisposable.Dispose()

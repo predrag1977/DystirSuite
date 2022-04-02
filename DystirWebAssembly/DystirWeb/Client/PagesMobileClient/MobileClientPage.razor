@@ -10,7 +10,7 @@
         @if (selectedPage == SelectedPage.Matches)
         {
             <div class="row">
-                <ChooseDays DaysOnClick="@DaysOnClick" TimeZoneOffset="@timeZoneOffset" />
+                <ChooseDays DaysOnClick="@DaysOnClick" TimeZoneOffset="@TimeZoneOffset" />
             </div>
         }
         else if (selectedPage == SelectedPage.Results || selectedPage == SelectedPage.Fixtures)
@@ -41,7 +41,7 @@
                                     @foreach (var match in matchgroup)
                                     {
                                         <div @onclick="() => { MatchID = match?.MatchID.ToString(); ChangePage(SelectedPage.MatchDetails); } ">
-                                            <MatchView MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
+                                            <MatchView MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@TimeZoneOffset" />
                                         </div>
                                     }
                                 }
@@ -88,14 +88,14 @@
                             @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
                             {
                                 <div @onclick="() => { MatchID = match?.MatchID.ToString(); ChangePage(SelectedPage.MatchDetails); } ">
-                                    <Match MatchItem="@match" ShowMore="@(false)" TimeZoneOffset="@timeZoneOffset" IsMatchForSameDayList="@true" />
+                                    <Match MatchItem="@match" ShowMore="@(false)" TimeZoneOffset="@TimeZoneOffset" IsMatchForSameDayList="@true" />
                                 </div>
                             }
                         </div>
                     </div>
 
                     <div class="box" style="padding:0.3rem 0">
-                        <Match MatchItem="@SelectedMatch" ShowMore="@(false)" TimeZoneOffset="@timeZoneOffset" ShowMatchType="@true" />
+                        <Match MatchItem="@SelectedMatch" ShowMore="@(false)" TimeZoneOffset="@TimeZoneOffset" ShowMatchType="@true" />
                     </div>
 
                     @if (SelectedMatch != null)
@@ -131,7 +131,7 @@
 </div>
 
 <div class="header_mobile_client">
-    <MobileClientHeader BackOnClick="@BackOnClickAsync" SelectedPage="@selectedPage" SelectedMatch="@SelectedMatch" />
+    <MobileClientHeader BackOnClick="@BackOnClickAsync" SelectedPage="@selectedPage" SelectedMatch="@SelectedMatch" TimeZoneOffset="@TimeZoneOffset" />
 </div>
 
 @if (isLoading)

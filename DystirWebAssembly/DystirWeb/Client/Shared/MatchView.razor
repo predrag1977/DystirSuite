@@ -7,11 +7,11 @@
 
 @if (MatchItem != null)
 {
-    
+
     <div class="match_item @(BorderStyle())">
         <div class="match_info">
-            <span>@MatchItem.Time?.ToLocalTime().ToString("ddd dd.MM.", new CultureInfo("fo-FO"))</span>
-            <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "" : MatchItem.Time?.ToLocalTime().ToString(" HH:mm"))</span>
+            <span>@MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString("ddd dd.MM.", new CultureInfo("fo-FO"))</span>
+            <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "" : MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString(" HH:mm"))</span>
             <span>@(string.IsNullOrWhiteSpace(MatchItem.RoundName) ? "" : " - ")</span>
             <span>@MatchItem.RoundName</span>
             <span>@(string.IsNullOrWhiteSpace(MatchItem.Location) ? "" : " - ")</span>
@@ -22,12 +22,12 @@
                 <td style="text-align:right;padding:0">
                     <span>@((MatchItem.HomeTeam + " " + MatchItem.HomeSquadName + " " + MatchItem.HomeCategoriesName).Trim())</span>
                     <img src="team_logos/@(GetTeamLogo(MatchItem.HomeTeam, DystirWebClientService.AllTeams))"
-                            onerror="this.src='team_logos/empty.png'" width="25" height="25" />
+                         onerror="this.src='team_logos/empty.png'" width="25" height="25" />
                 </td>
                 <td style="text-align:center;width:20px;padding:0 3px;">-</td>
                 <td style="text-align:left;padding:0">
                     <img src="team_logos/@(GetTeamLogo(MatchItem.AwayTeam, DystirWebClientService.AllTeams))"
-                            onerror="this.src='team_logos/empty.png'" width="25" height="25" />
+                         onerror="this.src='team_logos/empty.png'" width="25" height="25" />
                     <span>@((MatchItem.AwayTeam + " " + MatchItem.AwaySquadName + " " + MatchItem.AwayCategoriesName).Trim())</span>
                 </td>
             </tr>
@@ -72,8 +72,8 @@
         <table>
             <tr>
                 <td class="match_info" style="width:100%;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;max-width:1px;">
-                    <span>@MatchItem.Time?.ToLocalTime().ToString("ddd dd.MM.", new CultureInfo("fo-FO"))</span>
-                    <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "" : MatchItem.Time?.ToLocalTime().ToString(" HH:mm"))</span>
+                    <span>@MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString("ddd dd.MM.", new CultureInfo("fo-FO"))</span>
+                    <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "" : MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString(" HH:mm"))</span>
                     <span>@(string.IsNullOrWhiteSpace(MatchItem.RoundName) ? "" : " - ")</span>
                     <span>@MatchItem.RoundName</span>
                     <span>@(string.IsNullOrWhiteSpace(MatchItem.Location) ? "" : " - ")</span>
@@ -93,8 +93,8 @@
             <tr>
                 <td class="match_item_teams_name" style="width:100%;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;max-width:1px;">
                     <img style="padding: 3px;"
-                            src="team_logos/@(GetTeamLogo(MatchItem.HomeTeam, DystirWebClientService.AllTeams))"
-                            onerror="this.src='team_logos/empty.png'" width="25" height="25" />
+                         src="team_logos/@(GetTeamLogo(MatchItem.HomeTeam, DystirWebClientService.AllTeams))"
+                         onerror="this.src='team_logos/empty.png'" width="25" height="25" />
                     <span>@((MatchItem.HomeTeam + " " + MatchItem.HomeSquadName + " " + MatchItem.HomeCategoriesName).Trim())</span>
                 </td>
                 <td style="white-space:nowrap;width:0;">
@@ -116,8 +116,8 @@
             <tr>
                 <td class="match_item_teams_name" style="width:100%;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;max-width:1px;">
                     <img style="padding: 3px;"
-                            src="team_logos/@(GetTeamLogo(MatchItem.AwayTeam, DystirWebClientService.AllTeams))"
-                            onerror="this.src='team_logos/empty.png'" width="25" height="25" />
+                         src="team_logos/@(GetTeamLogo(MatchItem.AwayTeam, DystirWebClientService.AllTeams))"
+                         onerror="this.src='team_logos/empty.png'" width="25" height="25" />
                     <span>@((MatchItem.AwayTeam + " " + MatchItem.AwaySquadName + " " + MatchItem.AwayCategoriesName).Trim())</span>
                 </td>
                 <td style="white-space:nowrap;width:0">

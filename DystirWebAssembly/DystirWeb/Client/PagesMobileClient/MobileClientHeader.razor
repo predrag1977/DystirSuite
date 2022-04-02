@@ -34,7 +34,7 @@
                         <span>HAGTØL</span>
                         break;
                     case SelectedPage.MatchDetails:
-                        <span>@SelectedMatch.Time?.ToLocalTime().ToString("ddd. dd.MM.", new CultureInfo("fo-FO")).ToUpper()</span>
+                        <span>@SelectedMatch.Time?.AddMinutes(-TimeZoneOffset).ToString("ddd. dd.MM.", new CultureInfo("fo-FO")).ToUpper()</span>
                         break;
                 }
             </td>
@@ -61,5 +61,8 @@
 
     [Parameter]
     public Matches SelectedMatch { get; set; }
+
+    [Parameter]
+    public int TimeZoneOffset { get; set; }
 }
 
