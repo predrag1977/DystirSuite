@@ -8,10 +8,10 @@
 @if (ShowOnSideBar)
 {
     <div class="sponsors" style="margin:10px 0 10px 0">
-        <div style="cursor:pointer;font:bold;padding:5px 0;font-size:0.8em">
+        <div style="cursor:pointer;font:bold;padding:10px 0 15px 0;">
             <a style="color:white;text-decoration: none" href="mailto: dystir@dystir.fo">
-                <span class="fa fa-envelope p-1" style="color:white" aria-hidden="true" />
-                <span style="text-decoration: underline">dystir@dystir.fo</span>
+                <span class="fa fa-envelope p-1" style="color:white;font-size:1.2em" aria-hidden="true" />
+                <span style="font-size: 1em;text-decoration: underline">dystir@dystir.fo</span>
             </a>
         </div>
         @foreach (var sponsor in AllSponsors?.Where(x => x.SponsorId < 100) ?? new ObservableCollection<Sponsors>())
@@ -26,7 +26,7 @@
                 <img class="sponsors-img" src="@(sponsor.SponsorsName)">
             </a>
         }
-        <div style="color: white;padding: 10px 0; font-size: 0.8em; white-space: nowrap ">
+        <div style="color: white;padding: 15px 0; font-size: 0.8em; white-space: nowrap ">
             &copy;@(String.Format("{0} - Dystir.fo", DateTime.Now.Year))
         </div>
     </div>
@@ -53,6 +53,12 @@ else
                     </a>
                 }
             </div>
+        </div>
+        <div style="cursor:pointer;font:bold;padding:15px 0;text-align:center">
+            <a style="color:white;text-decoration: none" href="mailto: dystir@dystir.fo">
+                <span class="fa fa-envelope p-1" style="color:white;font-size:1.2em" aria-hidden="true" />
+                <span style="font-size: 1em;text-decoration: underline">dystir@dystir.fo</span>
+            </a>
         </div>
     </div>
 }
