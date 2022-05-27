@@ -2,59 +2,87 @@
 <html>
 
 <head>
+    <title>Dystir.fo - Live scores, results, fixtures and standings of football matches in the Faroe Islands</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name=”description” content="Live scores, results, fixtures and standings of football matches in the Faroe Islands" />
-
-    <script>setTitle = (title) => { document.title = title; }</script>
+    <meta http-equiv="X-Frame-Options" content="deny">
 
     <base href="/" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
-    <link href="css/app.css" rel="stylesheet" />
-    <link href="css/site.css?v=59" rel="stylesheet" />
-    <link href="css/fontawesome/css/all.min.css" rel="stylesheet" />
-    <link href="css/fontawesome/css/fontawesome.min.css" rel="stylesheet" />
-    <link href="css/fontawesome/css/brands.min.css" rel="stylesheet" />
-    <link href="css/fontawesome/css/regular.min.css" rel="stylesheet" />
-    <link href="css/fontawesome/css/solid.min.css" rel="stylesheet" />
-    <link href="css/fontawesome/css/v4-shims.min.css" rel="stylesheet" />
+
+    <!--<link href="css/app.css?v=70" rel="stylesheet" />-->
+    <link href="css/main_style.css?v=70" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/00bec08281.js" crossorigin="anonymous"></script>
+
 </head>
 
-<body>
-    <div id="app">
-        <div style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: rgba(34, 34, 34, 0.9); "></div>
-        <div class="loading-spinner-parent">
-            <i class="fas fa-spin fa-spinner fa-2x" style="color:darkgrey"></i>
-        </div>
-    </div>
-
-    <!--<div id="blazor-error-ui" style="background-color: darkkhaki; width: 100%; text-align: center; position: absolute; bottom: 0; z-index: 3000 ">-->
-    <!--An unhandled error has occurred.-->
-    <!--<a href="" class="reload" style="font-size:1.1rem; color:black; font-weight:600; margin: 5px auto; display: inline-block;  ">Reload</a>-->
-    <!--<a class="dismiss">🗙</a>-->
-    <!--</div>-->
+<body onresize="onPageResize()">
 
     <script>
-        if (window.top !== window.self) {
-            var url = document.location.ancestorOrigins[0];
-            document.body.innerHTML = "";
-            if (url === "https://nsi.fo") {
-                document.body.innerHTML = "";
+        var scrollInterval;
+        var matchesSameDay = 0;
+
+        function scrollOnMouseOver(direction) {
+            var horizontalMenu = document.getElementById('horizontal_menu');
+            scrollInterval = setInterval(function () {
+                if (direction == 'left') {
+                    horizontalMenu.scrollLeft -= 15;
+                } else {
+                    horizontalMenu.scrollLeft += 15;
+                }
+            }, 70);
+        }
+
+        function scrollOnMouseOut() {
+            window.clearInterval(scrollInterval);
+        }
+
+        function onPageResize() {
+            setMatchDetailsHeight();
+            var horizontalMenu = document.getElementById('horizontal_menu');
+            if (horizontalMenu == null) {
+                return;
+            }
+            var horizontalMenuScroll = horizontalMenu.children[0];
+            var scrollButtonLeft = document.getElementById('scroll_button_left');
+            var scrollButtonRight = document.getElementById('scroll_button_right');
+
+            if (horizontalMenu.offsetWidth >= horizontalMenuScroll.offsetWidth) {
+                scrollButtonLeft.style.visibility = "hidden";
+                scrollButtonRight.style.visibility = "hidden";
             }
             else {
-                document.body.innerHTML =
-                `<div style='font-size:18px; width:100%;height:100vh;text-align:center;padding-top:30vh'>
-                    <a style='color:black;' href='mailto:dystir@dystir.fo'>
-                        Please send email to dystir@dystir.fo
-                    </a>
-                </div>`
+                scrollButtonLeft.style.visibility = "visible";
+                scrollButtonRight.style.visibility = "visible";
             }
+        }
+
+        function setMatchDetailsHeight() {
+            var matchDetailsContainer = document.getElementById('match_details_container');
+            if (matchDetailsContainer == null) {
+                
+                return;
+            }
+            var matchesSameDay = document.getElementById('matches_same_day');
+            var selectedMatchDetails = document.getElementById('selected_match_details');
+
+            matchDetailsContainer.style.height = "calc(100vh - " + (100 + matchesSameDay.offsetHeight + selectedMatchDetails.offsetHeight) + "px)";
+        }
+
+        function goBack() {
+            history.back();
         }
     </script>
 
-    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="scripts/background_script.js"></script>
+    <script src="scripts/change_url_script.js"></script>
+    <script src="scripts/timezone_script.js"></script>
+    <script src="scripts/dynamic_title_and_icon.js"></script>
     <script src="scripts/google_analytics.js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
+
 </body>
 
 </html>

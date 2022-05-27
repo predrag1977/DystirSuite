@@ -1,58 +1,43 @@
 ﻿@page "/football/matchdetails/{matchid}"
 
-@using DystirWeb.Shared
-@using DystirWeb.Services
-@using ViewBases
-@using Microsoft.AspNetCore.SignalR.Client
-@inject DystirWebClientService DystirWebClientService
-@inject TimeService TimeService
-@inject LiveStandingService LiveStandingService
-@inject HubConnection HubConnection
 @layout MainFootballLayout
 @implements IDisposable
-@inherits MatchBase
 
-<div class="container-match-details">
-    <div class="box">
-        <div class="matches_list_same_day">
-            @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
-            {
-                <NavLink style="cursor:pointer;" @onclick="@(()=>isLoading = true)" href="@("football/matchdetails/" + match.MatchID)">
-                    <Match MatchItem="@match" ShowMore="@(false)" TimeZoneOffset="@timeZoneOffset" IsMatchForSameDayList="@true" />
-                </NavLink>
-            }
-        </div>
-    </div>
-
-    <div class="box" style="padding:0.3rem 0">
-        <Match MatchItem="@SelectedMatch" ShowMore="@(false)" TimeZoneOffset="@timeZoneOffset" ShowMatchType="@true" />
-    </div>
-
-    @if (SelectedMatch != null)
+<div id="matches_same_day">
+    @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
     {
-        <div class="box">
-            <MatchDetailsTabs TabOnClick="OnTabClick" Match="@(SelectedMatch)" />
-        </div>
+        <NavLink style="cursor:pointer;" @onclick="@(()=>isLoading = true)" href="@("football/matchdetails/" + match.MatchID)">
+            <Match MatchItem="@match" TimeZoneOffset="@timeZoneOffset" IsMatchForSameDayList="@true" />
+        </NavLink>
     }
+</div>
 
-    <div class="box box-scroll">
-        <div style="position:absolute;top:0;bottom:0;width:100%;overflow:auto; margin: 0; padding: 0 5px;">
-            <div class="@(selectedTab == "0" ? "active_tab" : "no_active_tab")">
-                <SummaryView SummaryEventsOfMatch="@(fullMatchDetails?.Summary)" />
-            </div>
-            <div class="@(selectedTab == "1" ? "active_tab" : "no_active_tab")">
-                <LineupsView PlayersOfMatch="@(fullMatchDetails?.MatchDetails?.PlayersOfMatch)" Match="@(fullMatchDetails?.MatchDetails?.Match)" />
-            </div>
-            <div class="@(selectedTab == "2" ? "active_tab" : "no_active_tab")">
-                <CommentariesView Commentaries="@(fullMatchDetails?.Commentary)" />
-            </div>
-            <div class="@(selectedTab == "3" ? "active_tab" : "no_active_tab")">
-                <StatisticView StatisticOfMatch="@(fullMatchDetails?.Statistics)" />
-            </div>
-            <div class="@(selectedTab == "4" ? "active_tab" : "no_active_tab")">
-                <LiveStandingView Standing="@(standing)" Match="@(SelectedMatch)" />
-            </div>
-        </div>
+<div id="selected_match_details">
+    <Match MatchItem="@SelectedMatch" TimeZoneOffset="@timeZoneOffset" ShowMatchType="@true" />
+</div>
+
+<div id="match_details_container">
+    <div id="horizontal_menu_days">
+        @if (SelectedMatch != null)
+        {
+            <MatchDetailsTabs TabOnClick="OnTabClick" Match="@(SelectedMatch)" />
+        }
+    </div>
+
+    <div class="@(selectedTab == "0" ? "active_tab" : "no_active_tab")">
+        <SummaryView SummaryEventsOfMatch="@(fullMatchDetails?.Summary)" />
+    </div>
+    <div class="@(selectedTab == "1" ? "active_tab" : "no_active_tab")">
+        <LineupsView PlayersOfMatch="@(fullMatchDetails?.MatchDetails?.PlayersOfMatch)" Match="@(fullMatchDetails?.MatchDetails?.Match)" />
+    </div>
+    <div class="@(selectedTab == "2" ? "active_tab" : "no_active_tab")">
+        <CommentariesView Commentaries="@(fullMatchDetails?.Commentary)" />
+    </div>
+    <div class="@(selectedTab == "3" ? "active_tab" : "no_active_tab")">
+        <StatisticView StatisticOfMatch="@(fullMatchDetails?.Statistics)" />
+    </div>
+    <div class="@(selectedTab == "4" ? "active_tab" : "no_active_tab")">
+        <LiveStandingView Standing="@(standing)" Match="@(SelectedMatch)" />
     </div>
 </div>
 
@@ -71,7 +56,7 @@
     private FullMatchDetailsModelView fullMatchDetails;
     private List<Matches> MatchesListSameDay = new List<Matches>();
     private Standing standing = new Standing();
-    private int timeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
+    private int timeZoneOffset = 0;
     private bool isLoading = true;
     private string selectedTab = "0";
 
@@ -81,17 +66,17 @@
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed += TimerElapsed;
+        timeZoneOffset = int.Parse(await JSRuntime.InvokeAsync<String>("getTimeZoneOffset"));
         if (matchid != null)
         {
             _ = LoadMatchDetails();
         }
-        await Task.CompletedTask;
     }
 
     protected override async Task OnParametersSetAsync()
     {
+        timeZoneOffset = int.Parse(await JSRuntime.InvokeAsync<String>("getTimeZoneOffset"));
         _ = LoadMatchDetails();
-        await Task.CompletedTask;
     }
 
     void IDisposable.Dispose()
@@ -149,13 +134,16 @@
 
     public async Task LoadMatchDetails()
     {
+        _ = JSRuntime.InvokeVoidAsync("onPageResize", "");
         int parseMatchID = int.TryParse(matchid, out int m) ? int.Parse(matchid) : 0;
         SelectedMatch = DystirWebClientService.AllMatches?.FirstOrDefault(x => x.MatchID == parseMatchID);
-        fullMatchDetails = await DystirWebClientService.LoadMatchDetailsAsync(parseMatchID);
         MatchesListSameDay = DystirWebClientService.GetMatchesListSameDay(SelectedMatch);
+        Refresh();
+        fullMatchDetails = await DystirWebClientService.LoadMatchDetailsAsync(parseMatchID);
         await LoadLiveStandingAsync(SelectedMatch);
         isLoading = false;
         Refresh();
+        _ = JSRuntime.InvokeVoidAsync("onPageResize", "");
     }
 
     private async Task LoadLiveStandingAsync(Matches selectedMatch)

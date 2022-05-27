@@ -1,4 +1,4 @@
-﻿@import "site.css";
+﻿@import "main_style.css";
 
 html {
     font-size: 0.95rem;
@@ -17,7 +17,7 @@ html {
 }
 
 body {
-    background-color: #f5f5f5;
+    background-color: #f9fafb;
     font-family: 'Source Sans Pro', sans-serif;
     user-select: none;
 }
@@ -29,7 +29,7 @@ body {
     bottom: 0px;
     left: 0;
     right: 0;
-    background-color: #f5f5f5;
+    background-color: #f9fafb;
     margin: auto;
     max-width: 100%;
     /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
@@ -53,7 +53,7 @@ header {
 }
 
 .header-info {
-    background-color: #f5f5f5;
+    background-color: #f9fafb;
     display: block;
 }
 
@@ -169,7 +169,7 @@ footer {
     text-align: center;
     border: 0px;
     border-left: 0px solid lightgray;
-    border-right: 0px solid #f5f5f5;
+    border-right: 0px solid #f9fafb;
     padding: 0 5px;
     height: auto;
 }
@@ -239,8 +239,8 @@ footer {
 }
 
 .header, .sidebar, .sponsor-bar, .match-group-competition-name, .selected_tab, .statistic-home {
-    background-color: rgb(223, 240, 216);
-    color: black !important;
+    background-color: rgb(59 130 246);
+    color: white !important;
 }
 
 .event-list-item {
@@ -251,6 +251,12 @@ footer {
     color: #d88802;
     padding: 2px 0;
 }
+
+.player_of_the_match {
+    color: #d88802;
+    padding: 2px 0;
+}
+
 
 .player-list-item {
     border-bottom: 1px lightgray solid;
@@ -283,7 +289,7 @@ footer {
 }
 
 .statistic-home, .statistic-away {
-    background-color: darkgreen;
+    background-color: rgb(59 130 246);
     height: 18px;
     color: white;
 }
@@ -436,4 +442,8 @@ footer {
 
 .live-standing-text {
     color: black;
+}
+
+.container-layout-share {
+    background-color: #f9fafb;
 }

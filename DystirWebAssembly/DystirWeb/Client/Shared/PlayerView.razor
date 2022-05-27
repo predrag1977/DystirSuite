@@ -1,7 +1,7 @@
 ﻿@using DystirWeb.Shared
 
 <div class="player-list-item">
-    <table class="table" style="text-align:left;">
+    <table class="content_table" style="text-align:left;">
         <tr>
             <td style="width:35px;text-align:center;vertical-align:central">
                 <div class="player_number">@(Player.Number)</div>
@@ -35,34 +35,34 @@
                     </span>
                     @if (Player.Goal > 0)
                     {
-                        <span style="background-color:darkgreen">&#9917;</span>
+                        <span class="goal_icon">&#9917;</span>
                         <span>@(Player.Goal)</span>
                     }
                     @if (Player.OwnGoal > 0)
                     {
-                        <span style="background-color:darkred">&#9917;</span>
+                        <span class="owngoal_icon">&#9917;</span>
                         <span>@(Player.OwnGoal)</span>
                     }
                     @if (Player.YellowCard > 0)
                     {
-                        <span style="padding:0 1px;margin-right:2px;font-weight:bold;background-color:gold;color:gold;">0</span>
+                        <span class="yellow_card" style="margin-right:2px;"></span>
                     }
                     @if (Player.YellowCard > 1)
                     {
-                        <span style="padding:0 1px;margin-right:2px;font-weight:bold;background-color:gold;color:gold;">0</span>
+                        <span class="yellow_card" style="margin-right:2px;"></span>
                     }
                     @if (Player.RedCard > 0)
                     {
-                        <span style="padding:0 1px;margin-right:2px;font-weight:bold;background-color:red;color:red;">0</span>
+                        <span class="red_card" style="margin-right:2px;"></span>
                     }
                     @if (Player.SubIn > -1)
                     {
-                        <span style="color:green;">&#9650;</span>
+                        <span class="sub_in">&#9650;</span>
                         <span>@(Player.SubIn)'</span>
                     }
                     @if (Player.SubOut > -1)
                     {
-                        <span style="color:red;">&#9660;</span>
+                        <span class="sub_out">&#9660;</span>
                         <span>@(Player.SubOut)'</span>
                     }
                 </div>

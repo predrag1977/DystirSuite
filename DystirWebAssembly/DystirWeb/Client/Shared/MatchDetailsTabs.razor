@@ -1,39 +1,34 @@
-﻿@using DystirWeb.Shared
-
-<div class="tab-match-details">
-    <table class="table" style="font-size:0.9em;font-weight:bold;margin:0.2rem 0;">
-        <tr>
-            <td class="tab @(selectedTab == 0 ? "selected_tab" : "")">
-                <div class="selected_tab-layout" @onclick="(() => SelectTab(0))">
-                    Úrtak
-                </div>
-            </td>
-            <td class="tab @(selectedTab == 1 ? "selected_tab" : "")">
-                <div class="selected_tab-layout" @onclick="(() => SelectTab(1))">
-                    Leikarar
-                </div>
-            </td>
-            <td class="tab @(selectedTab == 2 ? "selected_tab" : "")">
-                <div class="selected_tab-layout" @onclick="(() => SelectTab(2))">
-                    Hendingar
-                </div>
-            </td>
-            <td class="tab @(selectedTab == 3 ? "selected_tab" : "")">
-                <div class="selected_tab-layout" @onclick="(() => SelectTab(3))">
-                    Hagtøl
-                </div>
-            </td>
-            @if(ShowLiveStandings(Match))
-            {
-                <td class="tab @(selectedTab == 4 ? "selected_tab" : "")">
-                    <div class="selected_tab-layout" @onclick="(() => SelectTab(4))">
-                        Støðan
-                    </div>
-                </td>
-            }
-        </tr>
-    </table>
+﻿<div class="tab @(selectedTab == 0 ? "selected_tab" : "")">
+    <span @onclick="(() => SelectTab(0))">
+        Úrtak
+    </span>
 </div>
+<div class="tab @(selectedTab == 1 ? "selected_tab" : "")">
+    <span @onclick="(() => SelectTab(1))">
+        Leikarar
+    </span>
+</div>
+<div class="tab @(selectedTab == 2 ? "selected_tab" : "")">
+    <span @onclick="(() => SelectTab(2))">
+        Hendingar
+    </span>
+</div>
+@if (Match?.StatusID <= 12)
+{
+    <div class="tab @(selectedTab == 3 ? "selected_tab" : "")">
+        <span @onclick="(() => SelectTab(3))">
+            Hagtøl
+        </span>
+    </div>
+}
+@if (ShowLiveStandings(Match))
+{
+    <div class="tab @(selectedTab == 4 ? "selected_tab" : "")">
+        <span @onclick="(() => SelectTab(4))">
+            Støðan
+        </span>
+    </div>
+}
 
 @code {
     [Parameter]
@@ -55,4 +50,4 @@
         var competititionNamesArray = new string[] { "Betri deildin", "1. deild", "Betri deildin kvinnur", "2. deild" };
         return competititionNamesArray.Any(x => x == match?.MatchTypeName);
     }
-}
+    }

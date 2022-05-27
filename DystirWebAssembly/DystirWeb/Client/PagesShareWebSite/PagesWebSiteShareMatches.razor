@@ -1,4 +1,4 @@
-﻿@page "/infomatches"
+﻿@page "/{page}/matches"
 
 @using DystirWeb.Shared
 @using DystirWeb.Services
@@ -6,54 +6,59 @@
 @inject DystirWebClientService DystirWebClientService
 @inject TimeService TimeService
 @inject HubConnection HubConnection
-@layout MainShareWebSiteLayout
+@layout PagesWebSiteShareLayout
 @implements IDisposable
 
-<table class="table" style="width: 100%; height: 100%;">
-    <tr>
-        <td style="position:relative;width:100%;height:auto;padding:0;vertical-align:middle;">
-            <div id="header-match-list box" style="overflow:hidden; margin:3px 0">
-                @if (SelectedMatchListGroup?.Count > 0)
-                {
-                    <table class="table">
-                        <tr>
-                            @foreach (var matchesGroup in SelectedMatchListGroup)
-                            {
-                                var matches = matchesGroup.Select(x => x);
-                                <td style="padding-left:0px;">
-                                    <div class="competition-item tab @(selectedCompetitionName == matchesGroup.Key ? "selected_tab" : "")" @onclick="(() => OnCompetitionClick(matchesGroup.Key))">@(matchesGroup.Key?.ToUpper())</div>
-                                </td>
-                            }
-                        </tr>
-                    </table>
-                    <table class="table" style="border-collapse: separate; border-spacing: 4px 0;">
-                        <tr>
-                            @foreach (var matchesGroup in SelectedMatchListGroup)
-                            {
-                                if (selectedCompetitionName == matchesGroup.Key)
+<link href="css/@(page).css?v=70" rel="stylesheet" />
+
+@if (page.Equals("dimma") || page.Equals("info"))
+{
+    <table class="content_table">
+        <tr>
+            <td style="position:relative;width:100%;height:auto;padding:0;vertical-align:middle;">
+                <div id="header-match-list box" style="overflow:hidden; margin:3px 0">
+                    @if (SelectedMatchListGroup?.Count > 0)
+                    {
+                        <table class="content_table">
+                            <tr>
+                                @foreach (var matchesGroup in SelectedMatchListGroup)
                                 {
                                     var matches = matchesGroup.Select(x => x);
-                                    @foreach (Matches match in matches)
+                                    <td style="padding-left:0px;">
+                                        <div class="competition-item tab @(selectedCompetitionName == matchesGroup.Key ? "selected_tab" : "")" @onclick="(() => OnCompetitionClick(matchesGroup.Key))">@(matchesGroup.Key?.ToUpper())</div>
+                                    </td>
+                                }
+                            </tr>
+                        </table>
+                        <table class="content_table" style="border-collapse: separate; border-spacing: 4px 0;">
+                            <tr>
+                                @foreach (var matchesGroup in SelectedMatchListGroup)
+                                {
+                                    if (selectedCompetitionName == matchesGroup.Key)
                                     {
-                                        <td>
-                                            <NavLink class="nav-link" style="cursor: pointer;" target="_new" href="@("infomatchdetails/" + match.MatchID)">
-                                                <MatchShare MatchItem="@match" ShowMore="@(false)" TimeZoneOffset="@timeZoneOffset" />
-                                            </NavLink>
-                                        </td>
+                                        var matches = matchesGroup.Select(x => x);
+                                        @foreach (Matches match in matches)
+                                        {
+                                            <td>
+                                                <NavLink class="nav-link" style="cursor: pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
+                                                    <PagesWebSiteShareMatch MatchItem="@match" ShowMore="@(false)" TimeZoneOffset="@timeZoneOffset" />
+                                                </NavLink>
+                                            </td>
+                                        }
                                     }
                                 }
-                            }
-                        </tr>
-                    </table>
-                }
-                else if (SelectedMatchListGroup?.Count == 0)
-                {
-                    <div style="width:100%;text-align:center;padding:35px;background-color:white">Eingin dystur í dag</div>
-                }
-            </div>
-        </td>
-    </tr>
-</table>
+                            </tr>
+                        </table>
+                    }
+                    else if (SelectedMatchListGroup?.Count == 0)
+                    {
+                        <div style="width:100%;text-align:center;padding:35px;background-color:white">Eingin dystur í dag</div>
+                    }
+                </div>
+            </td>
+        </tr>
+    </table>
+}
 
 @if (isLoading)
 {
@@ -63,8 +68,11 @@
 }
 
 @code {
+    [Parameter]
+    public string page { get; set; }
+
     private List<IGrouping<string, Matches>> SelectedMatchListGroup = new List<IGrouping<string, Matches>>();
-    private int timeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
+    private int timeZoneOffset = 0;
     private bool isLoading = true;
     private string selectedCompetitionName = "";
 
@@ -74,8 +82,8 @@
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed += TimerElapsed;
+        timeZoneOffset = int.Parse(await JSRuntime.InvokeAsync<String>("getTimeZoneOffset"));
         _ = GetSelectedMatchListGroup();
-        await Task.CompletedTask;
     }
 
     void IDisposable.Dispose()
@@ -122,10 +130,10 @@
 
     public async Task GetSelectedMatchListGroup()
     {
-        var fromDate = DateTime.UtcNow.AddHours(timeZoneOffset).Date.AddDays(0);
+        var fromDate = DateTime.UtcNow.AddMinutes(-timeZoneOffset).Date.AddDays(0);
         var toDate = fromDate.AddDays(0);
         SelectedMatchListGroup = DystirWebClientService.AllMatches?
-        .Where(x => x.Time.Value.ToLocalTime().Date >= fromDate && x.Time.Value.ToLocalTime().Date <= toDate)
+        .Where(x => x.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate && x.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate)
         .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
         .GroupBy(x => x.MatchTypeName)?.ToList();
 

@@ -1,4 +1,4 @@
-@import 'site.css';
+@import 'main_style.css';
 
 .header, .sidebar, .sponsor-bar, .match-group-competition-name, .selected_tab, .statistic-home {
     background-color: #560000;
