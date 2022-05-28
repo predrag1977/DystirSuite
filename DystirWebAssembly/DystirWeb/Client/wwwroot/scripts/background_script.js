@@ -16,7 +16,7 @@ if (top !== self) {
 else {
     document.body.innerHTML =
         `<div id="app">
-            <div style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: rgba(34, 34, 34, 0.9); "></div>
+            <div style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; background-color: #181818; "></div>
             <div class="loading-spinner-parent">
                 <i class="fas fa-spin fa-spinner fa-2x" style="color:darkgrey"></i>
             </div>

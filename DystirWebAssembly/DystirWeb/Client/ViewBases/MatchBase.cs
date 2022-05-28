@@ -143,7 +143,7 @@ namespace DystirWeb.ViewBases
                 case 13:
                     return "salmon";
                 default:
-                    return "darkyellow";
+                    return "khaki";
             }
         }
 

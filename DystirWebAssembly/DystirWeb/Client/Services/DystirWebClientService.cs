@@ -60,9 +60,10 @@ namespace DystirWeb.Services
             }
             catch (Exception)
             {
-                Thread.Sleep(2000);
-                await StartUpAsync();
+                Thread.Sleep(1000);
+                _ = StartUpAsync();
             }
+            await Task.CompletedTask;
         }
 
         public async Task LoadDataAsync()
@@ -111,7 +112,7 @@ namespace DystirWeb.Services
             catch (Exception)
             {
                 HubConnectionDisconnected();
-                Thread.Sleep(2000);
+                Thread.Sleep(1000);
                 _ = StartDystirHubAsync();
             }
         }
@@ -183,13 +184,14 @@ namespace DystirWeb.Services
             if(match != null)
             {
                 DateTime date = match.Time.Value.Date;
-                return AllMatches?.Where(x => x.Time.Value.Date == date && x.MatchID != match.MatchID && x.StatusID < 13)
+                DateTime dateNowUtc = DateTime.UtcNow.Date;
+                if(date == dateNowUtc)
+                {
+                    return AllMatches?.Where(x => x.Time.Value.Date == date && x.MatchID != match.MatchID && x.StatusID < 13)
                         .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID).ToList();
-            } 
-            else
-            {
-                return new List<Matches>();
+                }
             }
+            return new List<Matches>();
         }
 
         private List<SummaryEventOfMatch> GetSummary(MatchDetails matchDetails)

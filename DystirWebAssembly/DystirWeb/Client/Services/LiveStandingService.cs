@@ -47,7 +47,8 @@ namespace DystirWeb.Services
                         {
                             Team = match.HomeTeam,
                             TeamID = teamsList?.FirstOrDefault(x => x.TeamName.Trim() == match.HomeTeam.Trim())?.TeamId ?? 0,
-                            CompetitionName = competitionName
+                            CompetitionName = competitionName,
+                            IsLive = match.StatusID > 1 && match.StatusID < 6
                         };
                         teamStandings.Add(teamStanding);
                         CalculatePoints(teamStanding, match, match.HomeTeamScore, match.AwayTeamScore);
@@ -55,6 +56,7 @@ namespace DystirWeb.Services
                     else
                     {
                         TeamStanding teamStanding = teamStandings.FirstOrDefault(x => x.Team.Trim() == match.HomeTeam.Trim());
+                        teamStanding.IsLive = match.StatusID > 1 && match.StatusID < 6;
                         CalculatePoints(teamStanding, match, match.HomeTeamScore, match.AwayTeamScore);
                     }
 
@@ -64,7 +66,8 @@ namespace DystirWeb.Services
                         {
                             Team = match.AwayTeam,
                             TeamID = teamsList?.FirstOrDefault(x => x.TeamName.Trim() == match.AwayTeam.Trim())?.TeamId ?? 0,
-                            CompetitionName = competitionName
+                            CompetitionName = competitionName,
+                            IsLive = match.StatusID > 1 && match.StatusID < 6
                         };
                         teamStandings.Add(teamStanding);
                         CalculatePoints(teamStanding, match, match.AwayTeamScore, match.HomeTeamScore);
@@ -72,6 +75,7 @@ namespace DystirWeb.Services
                     else
                     {
                         TeamStanding teamStanding = teamStandings.FirstOrDefault(x => x.Team.Trim() == match.AwayTeam.Trim());
+                        teamStanding.IsLive = match.StatusID > 1 && match.StatusID < 6;
                         CalculatePoints(teamStanding, match, match.AwayTeamScore, match.HomeTeamScore);
                     }
                 }
@@ -93,11 +97,6 @@ namespace DystirWeb.Services
 
         private void CalculatePoints(TeamStanding teamStanding, Matches match, int? mainTeamScore, int? opponentTeamScore)
         {
-            //teamStanding.IsLive = match.StatusId > 1 && match.StatusId < 6;
-            //if (match.StatusId < 2 || match.StatusId > 13)
-            //{
-            //    return;
-            //}
             if (match.StatusID < 2 || match.StatusID > 13)
             {
                 return;

@@ -1,0 +1,163 @@
+﻿
+<td class="summary_event @(!string.IsNullOrWhiteSpace(summaryEventOfMatch.HomeTeam) ? "visible" : "invisible" )">
+    @if (summaryEventOfMatch.EventName == "GOAL")
+    {
+        <span class="goal_icon">&#9917;</span>
+        <span>Mál</span>
+    }
+    else if (summaryEventOfMatch.EventName == "OWNGOAL")
+    {
+        <span class="owngoal_icon">&#9917;</span>
+        <span>Sjálvmál</span>
+    }
+    else if (summaryEventOfMatch.EventName == "PENALTYSCORED")
+    {
+        <span class="goal_icon">&#9917;</span>
+        <span>Brotsspark skora</span>
+    }
+    else if (summaryEventOfMatch.EventName == "PENALTYMISSED")
+    {
+        <span class="penalty_missed">Brotsspark brent</span>
+    }
+    else if (summaryEventOfMatch.EventName == "BIGCHANCE")
+    {
+        <span class="big_chance">Stórur møguleiki</span>
+    }
+    else if (summaryEventOfMatch.EventName == "YELLOW")
+    {
+        <span class="yellow_card"></span>
+    }
+    else if (summaryEventOfMatch.EventName == "RED")
+    {
+        <span class="red_card"></span>
+    }
+    else if (summaryEventOfMatch.EventName == "SUBSTITUTION")
+    {
+        <div>
+            <span class="sub_out">&#9660;</span>
+            <span class="sub_in">&#9650;</span>
+        </div>
+    }
+    else if (summaryEventOfMatch.EventName == "ASSIST")
+    {
+        <div class="big_chance">Upplegg</div>
+    }
+    else if (summaryEventOfMatch.EventName == "CORNER")
+    {
+        <div class="secondary-event">Hornaspark</div>
+    }
+    else if (summaryEventOfMatch.EventName == "ONTARGET")
+    {
+        <div class="secondary-event">Roynd á mál</div>
+    }
+    else if (summaryEventOfMatch.EventName == "OFFTARGET")
+    {
+        <div class="secondary-event">Roynd framvið mál</div>
+    }
+    else if (summaryEventOfMatch.EventName == "BLOCKEDSHOT")
+    {
+        <div class="secondary-event">Blokera skot</div>
+    }
+    else if (summaryEventOfMatch.EventName == "PLAYEROFTHEMATCH")
+    {
+        <span class="fas fa-star" style="color:gold"></span>
+    }
+    @if (summaryEventOfMatch.EventName == "GOAL" || summaryEventOfMatch.EventName == "OWNGOAL" || summaryEventOfMatch.EventName == "PENALTYSCORED")
+    {
+        <div class="d-inline-block">
+            <div class="score d-inline-block">@summaryEventOfMatch.HomeTeamScore</div>
+            <div class="d-inline-block">:</div>
+            <div class="score d-inline-block">@summaryEventOfMatch.AwayTeamScore</div>
+        </div>
+    }
+</td>
+
+<td class="minutes_summary">
+    @if (summaryEventOfMatch.EventName == "PLAYEROFTHEMATCH")
+    {
+        <div class="player_of_the_match">Dagsins leikari</div>
+    }
+    else
+    {
+        <div>@summaryEventOfMatch.EventOfMatch.EventMinute</div>
+    }
+</td>
+
+<td class="summary_event @(!string.IsNullOrWhiteSpace(summaryEventOfMatch.AwayTeam) ? "visible" : "invisible" )">
+    @if (summaryEventOfMatch.EventName == "GOAL" || summaryEventOfMatch.EventName == "OWNGOAL" || summaryEventOfMatch.EventName == "PENALTYSCORED")
+    {
+        <div class="d-inline-block">
+            <div class="score d-inline-block">@summaryEventOfMatch.HomeTeamScore</div>
+            <div class="d-inline-block">:</div>
+            <div class="score d-inline-block">@summaryEventOfMatch.AwayTeamScore</div>
+        </div>
+    }
+    @if (summaryEventOfMatch.EventName == "GOAL")
+    {
+        <span>Mál</span>
+        <span class="goal_icon">&#9917;</span>
+    }
+    else if (summaryEventOfMatch.EventName == "OWNGOAL")
+    {
+        <span>Sjálvmál</span>
+        <span class="owngoal_icon">&#9917;</span>
+    }
+    else if (summaryEventOfMatch.EventName == "PENALTYSCORED")
+    {
+        <span>Brotsspark skora</span>
+        <span class="goal_icon">&#9917;</span>
+    }
+    else if (summaryEventOfMatch.EventName == "PENALTYMISSED")
+    {
+        <span class="penalty_missed">Brotsspark brent</span>
+    }
+    else if (summaryEventOfMatch.EventName == "BIGCHANCE")
+    {
+        <span class="big_chance">Stórur møguleiki</span>
+    }
+    else if (summaryEventOfMatch.EventName == "YELLOW")
+    {
+        <span class="yellow_card"></span>
+    }
+    else if (summaryEventOfMatch.EventName == "RED")
+    {
+        <span class="red_card"></span>
+    }
+    else if (summaryEventOfMatch.EventName == "SUBSTITUTION")
+    {
+        <div>
+            <span class="sub_out">&#9660;</span>
+            <span class="sub_in">&#9650;</span>
+        </div>
+    }
+    else if (summaryEventOfMatch.EventName == "ASSIST")
+    {
+        <div class="big_chance">Upplegg</div>
+    }
+    else if (summaryEventOfMatch.EventName == "CORNER")
+    {
+        <div class="secondary-event">Hornaspark</div>
+    }
+    else if (summaryEventOfMatch.EventName == "ONTARGET")
+    {
+        <div class="secondary-event">Roynd á mál</div>
+    }
+    else if (summaryEventOfMatch.EventName == "OFFTARGET")
+    {
+        <div class="secondary-event">Roynd framvið mál</div>
+    }
+    else if (summaryEventOfMatch.EventName == "BLOCKEDSHOT")
+    {
+        <div class="secondary-event">Blokera skot</div>
+    }
+    else if (summaryEventOfMatch.EventName == "PLAYEROFTHEMATCH")
+    {
+        <span class="fas fa-star" style="color:gold"></span>
+    }
+</td>
+
+
+@code {
+    [Parameter]
+    public SummaryEventOfMatch summaryEventOfMatch { get; set; }
+}

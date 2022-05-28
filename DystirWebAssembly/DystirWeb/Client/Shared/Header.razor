@@ -1,36 +1,93 @@
-﻿<div class="navbar navbar-dark p-0">
-    <div class="store-buttons">
-        <span style="padding-left:10px">
-            <a href='https://play.google.com/store/apps/details?id=fo.Dystir&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
-                <img alt='Get it on Google Play' height="48" src="images/icons/google-play-square.png" />
-            </a>
-        </span>
-        <span style="padding:0 5px 0 10px">
-            <a href='https://apps.apple.com/us/app/dystir/id1460781430?ls=1'>
-                <img alt='Download on Apple Store' height="48" src="images/icons/apple-store-square.png" />
-            </a>
-        </span>
-    </div>
+﻿<div id="header" class="navbar">
+    <table>
+        <tr>
+            <td>
+                <div id="dystir_icon_button" class="navbar-dark">
+                    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+                        <div class="@NavMenuReverseCssClass navbar-toggler-icon toggle-button"></div>
+                        <div class="@NavMenuCssClass toggle-button">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </div>
+                    </button>
+                </div>
+            </td>
+            @if (ShowBackButton())
+            {
+                <td>
+                    <span id="back_button" onclick="goBack()">
+                        <span class="fas fa-arrow-left"></span>
+                    </span>
+                </td>
+            }
 
-    <div class="top-row pr-4 navbar navbar-dark">
-        <a class="navbar-brand" href="">
-            <img src="images/icons/dystir-header-icon.png" height="45" />
-        </a>
-        <button class="navbar-toggler" @onclick="ToggleNavMenu">
-            <div class="@NavMenuReverseCssClass navbar-toggler-icon toggle-button"></div>
-            <div class="@NavMenuCssClass toggle-button">
-                <i class="fa fa-times" aria-hidden="true"></i>
-            </div>
-        </button>
-    </div>
+            <td id="header_title">
+                <span>@GetHeaderTitle()</span>
+            </td>
+        </tr>
+    </table>
+    <table id="horizontal_navigation_bar">
+        <tr>
+            <td class="nav-item">
+                <NavLink class="nav-link" href="" Match="@GetNavLinkMatch()">
+                    <span>DYSTIR</span>
+                </NavLink>
+            </td>
+            <td class="nav-item">
+                <NavLink class="nav-link" href="football/results">
+                    <span>ÚRSLIT</span>
+                </NavLink>
+            </td>
+            <td class="nav-item">
+                <NavLink class="nav-link" href="football/fixtures">
+                    <span>KOMANDI</span>
+                </NavLink>
+            </td>
+            <td class="nav-item">
+                <NavLink class="nav-link" href="football/standings">
+                    <span>STØÐAN</span>
+                </NavLink>
+            </td>
+            <td class="nav-item">
+                <NavLink class="nav-link" href="football/statistics">
+                    <span>HAGTØL</span>
+                </NavLink>
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <td>
+                <div id="store_buttons">
+                    <span>
+                        <a href='https://play.google.com/store/apps/details?id=fo.Dystir&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+                            <img alt='Get it on Google Play' src="images/icons/google-play-square.png" />
+                        </a>
+                    </span>
+                    <span>
+                        <a href='https://apps.apple.com/us/app/dystir/id1460781430?ls=1'>
+                            <img alt='Download on Apple Store' src="images/icons/apple-store-square.png" />
+                        </a>
+                    </span>
+                </div>
+            </td>
+            <td>
+                <div id="dystir_icon_button" class="navbar-dark">
+                    <a href="">
+                        <img src="images/icons/dystir_icon_dark.png" />
+                    </a>
+                </div>
+            </td>
+        </tr>
+    </table>
+
 </div>
 
-<div class="sidebar" @onclick="ToggleNavMenu">
-    <NavMenuFootball CollapseMenuClass="@NavMenuCssClass" />
+<div @onclick="ToggleNavMenu">
+    <NavMenuFootball CollapseMenuClass="@NavMenuCssClass" NavLinkMatch="@GetNavLinkMatch()" />
 </div>
 
 @code {
-
     private bool collapseNavMenu = true;
 
     public string NavMenuCssClass => collapseNavMenu ? "collapse" : "";
@@ -40,6 +97,61 @@
     public void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
+    }
+
+    protected override void OnInitialized() => DystirNavigationManager.LocationChanged += (s, e) => StateHasChanged();
+
+    private NavLinkMatch GetNavLinkMatch() {
+        var urls = new List<string>();
+        urls.Add("");
+        urls.Add("football/matches");
+
+        var relativePath = DystirNavigationManager.ToBaseRelativePath(DystirNavigationManager.Uri).ToLower();
+
+        foreach (string url in urls)
+        {
+            if (string.IsNullOrWhiteSpace(url) ? string.IsNullOrWhiteSpace(relativePath) : relativePath.StartsWith(url.ToLower()))
+            {
+                return NavLinkMatch.Prefix;
+            }
+        }
+        return NavLinkMatch.All;
+    }
+
+    private string GetHeaderTitle()
+    {
+        var relativePath = DystirNavigationManager.ToBaseRelativePath(DystirNavigationManager.Uri).ToLower();
+
+        if (string.IsNullOrWhiteSpace(relativePath) || relativePath.StartsWith("football/matches"))
+        {
+            return "DYSTIR";
+        }
+        else if (relativePath.StartsWith("football/results"))
+        {
+            return "ÚRSLIT";
+        }
+        else if (relativePath.StartsWith("football/fixtures"))
+        {
+            return "KOMANDI";
+        }
+        else if (relativePath.StartsWith("football/standings"))
+        {
+            return "STØÐAN";
+        }
+        else if (relativePath.StartsWith("football/statistics"))
+        {
+            return "HAGTØL";
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    private bool ShowBackButton()
+    {
+        var relativePath = DystirNavigationManager.ToBaseRelativePath(DystirNavigationManager.Uri).ToLower();
+        return relativePath.StartsWith("football/matchdetails");
     }
 }
 

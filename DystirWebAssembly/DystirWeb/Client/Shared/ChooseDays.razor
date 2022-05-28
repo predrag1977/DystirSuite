@@ -1,79 +1,73 @@
 ﻿@using System.Globalization
 
-<table class="table">
-    <tr>
-        <td class="tab @(_selectedDaysIndex == 0 ? "selected_tab" : "")">
-            <div class="selected_tab-layout" @onclick="(() => SelectDays(0))">
-                Í FARNU VIKU
-            </div>
-        </td>
-        <td class="tab @(_selectedDaysIndex == 1 ? "selected_tab" : "")">
-            <div class="selected_tab-layout" @onclick="(() => SelectDays(1))">
-                Í GJÁR
-            </div>
-        </td>
-        <td class="tab @(_selectedDaysIndex == 2 ? "selected_tab" : "")">
-            <div class="selected_tab-layout" @onclick="(() => SelectDays(2))">
-                Í DAG
-            </div>
-        </td>
-        <td class="tab @(_selectedDaysIndex == 3 ? "selected_tab" : "")">
-            <div class="selected_tab-layout" @onclick="(() => SelectDays(3))">
-                Í MORGIN
-            </div>
-        </td>
-        <td class="tab @(_selectedDaysIndex == 4 ? "selected_tab" : "")">
-            <div class="selected_tab-layout" @onclick="(() => SelectDays(4))">
-                Í VIKUNI
-            </div>
-        </td>
-    </tr>
-</table>
+<div id="horizontal_menu_days">
+    <div class="tab @(GetSelectedDaysIndex(DaysRange) == 0 ? "selected_tab" : "")">
+        <span @onclick='(() => SelectDays("lastweek"))'>
+            Í FARNU VIKU
+        </span>
+    </div>
+    <div class="tab @(GetSelectedDaysIndex(DaysRange) == 1 ? "selected_tab" : "")">
+        <span @onclick='(() => SelectDays("yesterday"))'>
+            Í GJÁR
+        </span>
+    </div>
+    <div class="tab @(GetSelectedDaysIndex(DaysRange) == 2 ? "selected_tab" : "")">
+        <span @onclick='(() => SelectDays("today"))'>
+            Í DAG
+        </span>
+    </div>
+    <div class="tab @(GetSelectedDaysIndex(DaysRange) == 3 ? "selected_tab" : "")">
+        <span @onclick='(() => SelectDays("tomorrow"))'>
+            Í MORGIN
+        </span>
+    </div>
+    <div class="tab @(GetSelectedDaysIndex(DaysRange) == 4 ? "selected_tab" : "")">
+        <span @onclick='(() => SelectDays("nextweek"))'>
+            Í VIKUNI
+        </span>
+    </div>
+</div>
 
 @code {
     [Parameter]
-    public EventCallback<int[]> DaysOnClick { get; set; } 
+    public EventCallback<string> DaysOnClick { get; set; }
 
     [Parameter]
     public int TimeZoneOffset { get; set; }
 
-    private CultureInfo _cultureInfo = new CultureInfo("fo-FO");
+    [Parameter]
+    public string DaysRange { get; set; }
 
-    public int _selectedDaysIndex = 2;
-
-    private void SelectDays(int tabIndex)
+    private void Refresh()
     {
-        int daysFrom = 0;
-        int daysAfter = 0;
-        _selectedDaysIndex = tabIndex;
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    private void SelectDays(string daysRange)
+    {
+        Refresh();
         DateTime dateToday = DateTime.UtcNow.AddMinutes(-TimeZoneOffset);
+        CultureInfo _cultureInfo = new CultureInfo("fo-FO");
         int offset = _cultureInfo.DateTimeFormat.FirstDayOfWeek - dateToday.DayOfWeek;
         DateTime firstDayOfWeekDate = DateTime.Now.AddDays(offset);
+        DaysOnClick.InvokeAsync(daysRange);
+    }
 
-        switch (tabIndex)
+    private int GetSelectedDaysIndex(string daysRange)
+    {
+        switch (daysRange?.ToLower())
         {
-            case 0:
-                daysFrom = offset - 7;
-                daysAfter = 6;
-                break;
-            case 1:
-                daysFrom = -1;
-                daysAfter = 0;
-                break;
-            case 2:
-                daysFrom = 0;
-                daysAfter = 0;
-                break;
-            case 3:
-                daysFrom = 1;
-                daysAfter = 0;
-                break;
-            case 4:
-                daysFrom = offset;
-                daysAfter = 6;
-                break;
+            case "lastweek":
+                return 0;
+            case "yesterday":
+                return 1;
+            case "today":
+            default:
+                return 2;
+            case "tomorrow":
+                return 3;
+            case "nextweek":
+                return 4;
         }
-        int[] parameters = new int[] { daysFrom, daysAfter };
-        DaysOnClick.InvokeAsync(parameters);
     }
 }

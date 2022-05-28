@@ -47,7 +47,7 @@
             @if (SelectedMatchListGroup?.Count() > 0)
             {
                 <div id="header-match-list box" style="overflow:hidden; margin:3px 0">
-                    <table class="table">
+                    <table class="content_table">
                         <tr>
                             @foreach (var matchesGroup in SelectedMatchListGroup)
                             {
@@ -58,7 +58,7 @@
                             }
                         </tr>
                     </table>
-                    <table class="table" style="border-collapse: separate; border-spacing: 4px 0;">
+                    <table class="content_table" style="border-collapse: separate; border-spacing: 4px 0;">
                         <tr>
                             @foreach (var matchesGroup in SelectedMatchListGroup)
                             {

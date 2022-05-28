@@ -2,7 +2,7 @@
 
 @if (PlayersOfMatch != null)
 {
-    <table class="lineups table">
+    <table class="lineups content_table">
         <tr>
             <td style="text-align:center;vertical-align:top;padding:5px 0">
                 @foreach (PlayersOfMatches player in PlayersOfMatch?.Where(x => x.TeamName.Trim() == Match?.HomeTeam.Trim() && x.PlayingStatus == 1))
@@ -21,10 +21,10 @@
         {
             <tr>
                 <td>
-                    <div style="height:3px;background-color:darkkhaki;margin:0.5rem 0 0.5rem 0" />
+                    <div class="lineups_subs_line" />
                 </td>
                 <td>
-                    <div style="height:3px;background-color:darkkhaki;margin:0.5rem 0 0.5rem 0" />
+                    <div class="lineups_subs_line" />
                 </td>
             </tr>
         }
