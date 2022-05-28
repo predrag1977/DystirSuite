@@ -1,56 +1,32 @@
 ﻿@page "/"
+@page "/football/matches/{daysRange}"
 
-@using DystirWeb.Shared
-@using DystirWeb.Services
-@using Microsoft.AspNetCore.SignalR.Client
-@inject DystirWebClientService DystirWebClientService
-@inject TimeService TimeService
-@inject HubConnection HubConnection
 @layout MainFootballLayout
 @implements IDisposable
 
-<div class="container-fluid d-flex h-100 flex-column p-0">
-    @*<div class="row">
-            <button @onclick="@StopHub">
-                <div id="result">StopHub</div>
-            </button>
-        </div>*@
-    <div class="row">
-        <ChooseDays DaysOnClick="@DaysOnClick" TimeZoneOffset="@timeZoneOffset" />
-    </div>
-
-    <div class="row flex-fill d-flex justify-content-start">
-        <div class="col">
-            <div class="matches_container">
-                @if (SelectedMatchListGroup?.Count > 0)
-                {
-                    foreach (var matchgroup in SelectedMatchListGroup)
-                    {
-                        <div class="match-group-competition-name">@(matchgroup.Key)</div>
-                        @foreach (var match in matchgroup)
-                        {
-                            @if (match.StatusID <= 12)
-                            {
-                                <NavLink class="nav-link" style="cursor: pointer;" href="@("/football/matchdetails/" + match.MatchID)">
-                                    <MatchView MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
-                                </NavLink>
-                            }
-                            else
-                            {
-                                <MatchView MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
-                            }
-                        }
-                    }
-                }
-                else if (SelectedMatchListGroup?.Count == 0)
-                {
-                    <div class="no-matches">Eingin dystur</div>
-                }
-                <NewsView />
-                <SponsorsView ShowOnSideBar="false" />
-            </div>
-        </div>
-    </div>
+<div id="days_selection">
+    <ChooseDays DaysOnClick="@DaysOnClick" TimeZoneOffset="@timeZoneOffset" DaysRange="@daysRange" />
+</div>
+<div id="main_container">
+    @if (SelectedMatchListGroup?.Count > 0)
+    {
+        foreach (var matchgroup in SelectedMatchListGroup)
+        {
+            <div class="match-group-competition-name">@(matchgroup.Key)</div>
+            @foreach (var match in matchgroup)
+            {
+                <NavLink class="nav-link" href="@("/football/matchdetails/" + match.MatchID)">
+                    <MatchView MatchItem="@match" TimeZoneOffset="@timeZoneOffset" />
+                </NavLink>
+            }
+        }
+    }
+    else if (SelectedMatchListGroup?.Count == 0)
+    {
+        <div class="no-matches">Eingin dystur</div>
+    }
+    <NewsView />
+    <SponsorsView ShowOnSideBar="false" />
 </div>
 
 @if (isLoading)
@@ -60,13 +36,15 @@
     </div>
 }
 
-
 @code {
     private int _daysFrom = 0;
-    private int _dayAfter = 0;
+    private int _daysAfter = 0;
     private List<IGrouping<string, Matches>> SelectedMatchListGroup;
     private int timeZoneOffset = 0;
     private bool isLoading = true;
+
+    [Parameter]
+    public string daysRange { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -75,7 +53,20 @@
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed += TimerElapsed;
         timeZoneOffset = int.Parse(await JSRuntime.InvokeAsync<String>("getTimeZoneOffset"));
+        if (daysRange != null)
+        {
+            SetSelectedDaysRange(daysRange);
+            _ = GetSelectedMatchListGroup();
+            await ChangeUrl(daysRange);
+        }
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        timeZoneOffset = int.Parse(await JSRuntime.InvokeAsync<String>("getTimeZoneOffset"));
+        SetSelectedDaysRange(daysRange);
         _ = GetSelectedMatchListGroup();
+        await ChangeUrl(daysRange);
     }
 
     void IDisposable.Dispose()
@@ -109,13 +100,44 @@
         }
     }
 
-    private async void DaysOnClick(int[] parameters)
+    private async void DaysOnClick(string daysRange)
     {
         isLoading = true;
-        _daysFrom = parameters[0];
-        _dayAfter = parameters[1];
+        SetSelectedDaysRange(daysRange);
         _ = GetSelectedMatchListGroup();
-        await Task.CompletedTask;
+        await ChangeUrl(daysRange);
+    }
+
+    private void SetSelectedDaysRange(string daysRange)
+    {
+        DateTime dateToday = DateTime.UtcNow.AddMinutes(-timeZoneOffset);
+        CultureInfo cultureInfo = new CultureInfo("fo-FO");
+        int offset = cultureInfo.DateTimeFormat.FirstDayOfWeek - dateToday.DayOfWeek;
+        switch (daysRange?.ToLower())
+        {
+            case "lastweek":
+                _daysFrom = offset - 7;
+                _daysAfter = 6;
+                break;
+            case "yesterday":
+                _daysFrom = -1;
+                _daysAfter = 0;
+                break;
+            case "today":
+            default:
+                _daysFrom = 0;
+                _daysAfter = 0;
+                break;
+            case "tomorrow":
+                _daysFrom = 1;
+                _daysAfter = 0;
+                break;
+            case "nextweek":
+                _daysFrom = offset;
+                _daysAfter = 6;
+                break;
+        }
+        this.daysRange = daysRange;
     }
 
     public async Task GetSelectedMatchListGroup()
@@ -123,7 +145,7 @@
         await Task.Run(() =>
         {
             var fromDate = DateTime.Now.Date.AddDays(_daysFrom);
-            var toDate = fromDate.AddDays(_dayAfter);
+            var toDate = fromDate.AddDays(_daysAfter);
             SelectedMatchListGroup = DystirWebClientService.AllMatches?.OrderBy(x => GetOrder(x.MatchTypeID)).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
             .Where(x => x.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate
             && x.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate).GroupBy(x => x.MatchTypeName)?.ToList();
@@ -153,8 +175,9 @@
         InvokeAsync(() => StateHasChanged());
     }
 
-    private async Task StopHub()
+    private async Task ChangeUrl(string daysRange)
     {
-        await HubConnection.StopAsync();
+        string url = string.IsNullOrWhiteSpace(daysRange) ? "" : "/football/matches/" + daysRange;
+        await JSRuntime.InvokeVoidAsync("changeUrl", url);
     }
 }

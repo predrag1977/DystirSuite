@@ -1,10 +1,20 @@
-﻿<div class="row flex-row flex-nowrap overflow-auto">
-    @foreach (var competition in CompetitionsList ?? new List<string>())
-    {
-        <div class="col-3 selected_tab-layout tab @(SelectedCompetition == competition ? "selected_tab" : "")" @onclick="(() => SelectCompetition(competition))">
-            @competition
-        </div>
-    }
+﻿
+
+<div id="scroll_button_left" onmouseover="scrollOnMouseOver('left')" onmouseout="scrollOnMouseOut()">
+    &#10094;
+</div>
+<div id="horizontal_menu">
+    <div id="horizontal_menu_wrapper">
+        @foreach (var competition in CompetitionsList ?? new List<string>())
+        {
+            <div class="tab @(SelectedCompetition == competition ? "selected_tab" : "")" @onclick="(() => SelectCompetition(competition))">
+                <span>@competition?.ToUpper()</span>
+            </div>
+        }
+    </div>
+</div>
+<div id="scroll_button_right" onmouseover="scrollOnMouseOver('right')" onmouseout="scrollOnMouseOut()">
+    &#10095;
 </div>
 
 @code {

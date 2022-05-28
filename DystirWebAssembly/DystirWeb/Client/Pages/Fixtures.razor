@@ -1,52 +1,34 @@
 ﻿@page "/football/fixtures"
 
-@using DystirWeb.Shared
-@using DystirWeb.Services
-@using Microsoft.AspNetCore.SignalR.Client;
-@inject DystirWebClientService DystirWebClientService
-@inject TimeService TimeService
-@inject HubConnection HubConnection
 @layout MainFootballLayout
 @implements IDisposable
 
-<div class="container-fluid d-flex h-100 flex-column p-0">
-    <div class="row">
-        <div class="col p-0" style="background-color:dimgray">
-            <ChooseCompetitions CompetitionsList="@(CompetitionsList)" SelectedCompetition="@(SelectedFixturesCompetition)" CompetitionsOnClick="@(CompetitionsOnClick)" />
-        </div>
-    </div>
-    <div class="row flex-fill d-flex justify-content-start">
-        <div class="col">
-            <div class="matches_container">
-                @if (FixturesMatchesList == null || FixturesMatchesList?.Count == 0)
-                {
-                    <div class="no-matches">Eingin dystur</div>
-                }
-                else
-                {
-                    @if (FixturesMatchesList.Count > 0)
-                    {
-                        <div class="match-group-competition-name">@SelectedFixturesCompetition</div>
-                    }
-                    @foreach (var match in FixturesMatchesList)
-                    {
-                        @if (match.StatusID <= 12)
-                        {
-                            <NavLink class="nav-link" style="cursor: pointer;" href="@("football/matchdetails/" + match.MatchID)">
-                                <MatchView MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
-                            </NavLink>
-                        }
-                        else
-                        {
-                            <MatchView MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@timeZoneOffset" />
-                        }
-                    }
-                }
-                <NewsView />
-                <SponsorsView ShowOnSideBar="false" />
-            </div>
-        </div>
-    </div>
+
+<div id="competitions_selection">
+    <ChooseCompetitions CompetitionsList="@(CompetitionsList)"
+                        SelectedCompetition="@(SelectedFixturesCompetition)"
+                        CompetitionsOnClick="@(CompetitionsOnClick)" />
+</div>
+<div id="main_container">
+    @if (FixturesMatchesListGroup?.Count > 0)
+    {
+        foreach (var matchgroup in FixturesMatchesListGroup)
+        {
+            <div class="match-group-competition-name">@(matchgroup.Key)</div>
+            @foreach (var match in matchgroup)
+            {
+                <NavLink class="nav-link" href="@("/football/matchdetails/" + match.MatchID)">
+                    <MatchView MatchItem="@match" TimeZoneOffset="@timeZoneOffset" />
+                </NavLink>
+            }
+        }
+    }
+    else if (FixturesMatchesListGroup?.Count == 0)
+    {
+        <div class="no-matches">Eingin dystur</div>
+    }
+    <NewsView />
+    <SponsorsView ShowOnSideBar="false" />
 </div>
 
 @if (isLoading)
@@ -59,7 +41,7 @@
 @code {
     private string SelectedFixturesCompetition { get; set; }
     private List<string> CompetitionsList { get; set; }
-    private List<Matches> FixturesMatchesList { get; set; }
+    private List<IGrouping<string, Matches>> FixturesMatchesListGroup;
     private int timeZoneOffset = 0;
     private bool isLoading = true;
 
@@ -100,7 +82,7 @@
     {
         if (HubConnection.State == HubConnectionState.Connected)
         {
-            InvokeAsync(() => StateHasChanged());
+            Refresh();
         }
     }
 
@@ -113,8 +95,7 @@
     {
         isLoading = true;
         SelectedFixturesCompetition = competition;
-        _ = LoadFixturesMatches();
-        await Task.CompletedTask;
+        await LoadFixturesMatches();
     }
 
     public async Task LoadFixturesMatches()
@@ -139,10 +120,12 @@
                 SelectedFixturesCompetition = CompetitionsList?.FirstOrDefault() ?? "";
             }
 
-            FixturesMatchesList = allFixturesMatchByCompetition.FirstOrDefault(x => x.Key == SelectedFixturesCompetition)?.ToList() ?? new List<Matches>();
+            var fixturesMatchesList = allFixturesMatchByCompetition.FirstOrDefault(x => x.Key == SelectedFixturesCompetition)?.ToList() ?? new List<Matches>();
+            FixturesMatchesListGroup = fixturesMatchesList.GroupBy(x => x.RoundName)?.ToList();
         });
         isLoading = false;
         Refresh();
+        _ = JSRuntime.InvokeVoidAsync("onPageResize", "");
     }
 
     private object GetOrder(int? matchTypeId)

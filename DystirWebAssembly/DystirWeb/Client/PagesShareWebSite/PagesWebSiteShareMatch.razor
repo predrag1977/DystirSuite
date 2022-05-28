@@ -7,7 +7,7 @@
 @if (MatchItem != null)
 {
     <div class="@(IsSelectedMatch == true ? "match_selected" : "selection_matches")">
-        <table class="table">
+        <table class="content_table">
             <tr class="match_item_text_color">
                 @if (ShowMore)
                 {
@@ -17,7 +17,7 @@
                             <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" || string.IsNullOrWhiteSpace(MatchItem.Location) ? " " : " - ")</span>
                             <span>@MatchItem.Location</span>
                         </div>
-                        <table class="table" style="font-weight:bold">
+                        <table class="content_table" style="font-weight:bold">
                             <tr>
                                 <td style="text-align:right;padding:0 8px;">
                                     <img src="team_logos/@(GetTeamLogo(MatchItem.HomeTeam, DystirWebClientService.AllTeams))" onerror="this.src='team_logos/empty.png'" height="30" />
@@ -77,7 +77,7 @@
         }
         else
         {
-            <table class="table">
+            <table class="content_table">
                 <tr>
                     <td style="padding:0 1px;text-align:left;">
                         @((MatchItem.HomeTeam + " " + MatchItem.HomeCategoriesName + " " + MatchItem.HomeSquadName).Trim().ToUpper())
@@ -94,7 +94,7 @@
                     </td>
                 </tr>
             </table>
-            <table class="table">
+            <table class="content_table">
                 <tr>
                     <td style="padding:0 1px;text-align:left;">
                         @((MatchItem.AwayTeam + " " + MatchItem.AwayCategoriesName + " " + MatchItem.AwaySquadName).Trim().ToUpper())
@@ -128,9 +128,4 @@
 
     [Parameter]
     public bool IsSelectedMatch { get; set; }
-
-    string BorderStyle()
-    {
-        return ShowMore ? "match_item_border" : "";
-    }
 }

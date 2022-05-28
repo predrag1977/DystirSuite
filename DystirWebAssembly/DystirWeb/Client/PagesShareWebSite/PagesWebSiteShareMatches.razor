@@ -13,13 +13,13 @@
 
 @if (page.Equals("dimma") || page.Equals("info"))
 {
-    <table class="table" style="width: 100%; height: 100%;">
+    <table class="content_table">
         <tr>
             <td style="position:relative;width:100%;height:auto;padding:0;vertical-align:middle;">
                 <div id="header-match-list box" style="overflow:hidden; margin:3px 0">
                     @if (SelectedMatchListGroup?.Count > 0)
                     {
-                        <table class="table">
+                        <table class="content_table">
                             <tr>
                                 @foreach (var matchesGroup in SelectedMatchListGroup)
                                 {
@@ -30,7 +30,7 @@
                                 }
                             </tr>
                         </table>
-                        <table class="table" style="border-collapse: separate; border-spacing: 4px 0;">
+                        <table class="content_table" style="border-collapse: separate; border-spacing: 4px 0;">
                             <tr>
                                 @foreach (var matchesGroup in SelectedMatchListGroup)
                                 {

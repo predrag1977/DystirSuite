@@ -1,12 +1,15 @@
-@import 'main_style.css';
-
 body {
-    background-image: url('../images/background/grass-background.jpg');
+    /*background-image: url('../images/background/grass-background.jpg');
     background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background-size: 100% 100%;*/
+    background-color: #181818;
 }
 
-.header, .sidebar, .sponsor-bar, .match-group-competition-name, .selected_tab, .statistic-home {
+.header, .sidebar, .sponsor-bar {
+    background-color: #181818;
+}
+
+.selected_tab, .statistic-home {
     background-color: #2F4F2F;
 }
 

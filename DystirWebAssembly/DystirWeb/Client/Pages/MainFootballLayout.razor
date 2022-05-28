@@ -3,23 +3,23 @@
 @inherits LayoutComponentBase
 @implements IDisposable
 
-<link href="css/football_style.css?v=70" rel="stylesheet"  />
+@*<link href="css/football_style.css?v=70" rel="stylesheet"  />*@
 
-<div class="container-layout">
-    @Body
+
+<div id="main">
+    <div id="background">
+
+        <div id="header_container">
+            <Header />
+        </div>
+
+        <div id="container">
+            @Body
+        </div>
+
+    </div>
 </div>
 
-<div class="header">
-    <Header />
-</div>
-
-<div class="sidebar collapse">
-    <NavMenuFootball />
-</div>
-
-<div class="sponsor-bar">
-    <SponsorsView ShowOnSideBar="true" />
-</div>
 
 @if (!IsDystirHubConnected)
 {

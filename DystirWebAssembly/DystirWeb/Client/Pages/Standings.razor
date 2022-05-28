@@ -9,62 +9,59 @@
 @layout MainFootballLayout
 @implements IDisposable
 
+<div id="competitions_selection">
+    <ChooseCompetitions CompetitionsList="@(StandingsView?.CompetitionsList?.ToList())"
+                        SelectedCompetition="@(StandingsView?.SelectedCompetition)"
+                        CompetitionsOnClick="@(CompetitionsOnClick)" />
+</div>
+<div id="main_container">
+    <div class="standings_table pt-2">
+        <table class="content_table">
+            @if (StandingsView?.Standing?.TeamStandings?.Count() > 0 == true)
+            {
+                <tr id="standings_header">
+                    <td class="standings_cell standings_cell_number">Nr</td>
+                    <td class="standings_cell standings_cell_team_name">LIÐ</td>
+                    <td class="standings_cell font-weight-bold">ST</td>
+                    <td class="standings_cell">DS</td>
+                    <td class="standings_cell">VD</td>
+                    <td class="standings_cell">JD</td>
+                    <td class="standings_cell">TD</td>
+                    <td class="standings_cell">MF</td>
+                    <td class="standings_cell">MÍ</td>
+                    <td class="standings_cell">MM</td>
+                </tr>
+            }
+            @foreach (var teamStanding in StandingsView?.Standing?.TeamStandings ?? new List<TeamStanding>())
+            {
+                <tr style="border-bottom:1px solid @teamStanding.PositionColor">
+                    <td class="standings_cell standings_cell_number">
+                        <div>
+                            <i class="@(teamStanding.IsLive == true ? "fas fa-circle live_standings_indicator" : "")"></i>
+                            <span>@(teamStanding.Position).</span>
+                        </div>
+                    </td>
+                    <td class="standings_cell standings_cell_team_name">@teamStanding.Team</td>
+                    <td class="standings_cell text-white font-weight-bold">@teamStanding.Points</td>
+                    <td class="standings_cell">@teamStanding.MatchesNo</td>
+                    <td class="standings_cell">@teamStanding.Victories</td>
+                    <td class="standings_cell">@teamStanding.Draws</td>
+                    <td class="standings_cell">@teamStanding.Losses</td>
+                    <td class="standings_cell">@teamStanding.GoalScored</td>
+                    <td class="standings_cell">@teamStanding.GoalAgainst</td>
+                    <td class="standings_cell">@teamStanding.GoalDifference</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
 @if (isLoading)
 {
     <div class="loading-spinner-parent">
         <i class="fas fa-spin fa-spinner fa-2x" style="color: darkgrey"></i>
     </div>
 }
-
-<table class="table" style="width:100%;height:100%;">
-    <tr>
-        <td style="position:relative;width:100%;padding:0;background-color:dimgray">
-            <ChooseCompetitions CompetitionsList="@(StandingsView?.CompetitionsList?.ToList())" SelectedCompetition="@(StandingsView?.SelectedCompetition)" CompetitionsOnClick="@(CompetitionsOnClick)" />
-        </td>
-    </tr>
-    <tr>
-        <td style="position:relative;width:100%;height:100%;">
-            <div class="matches_container text-center" style="max-width:1200px;margin:0 auto;padding:10px 10px 0 5px">
-                <table class="table text-white">
-                    @if (StandingsView?.Standing?.TeamStandings?.Count() > 0 == true)
-                    {
-                        <tr class="standings-header">
-                            <td class="standings-cell" style="width:40%;padding:5px 0;text-align:left;font-weight:bold;">
-                                <div class="standings-number d-inline-block" style="color:transparent">Nr</div><span>LIÐ</span>
-                            </td>
-                            <td class="standings-cell">DS</td>
-                            <td class="standings-cell">VD</td>
-                            <td class="standings-cell">JD</td>
-                            <td class="standings-cell">TD</td>
-                            <td class="standings-cell">MF</td>
-                            <td class="standings-cell">MÍ</td>
-                            <td class="standings-cell">MM</td>
-                            @*<td class="standings-cell">(%)</td>*@
-                            <td class="standings-cell">St.</td>
-                        </tr>
-                    }
-                    @foreach (var teamStanding in StandingsView?.Standing?.TeamStandings ?? new List<TeamStanding>())
-                    {
-                        <tr style="border-bottom:1px solid @teamStanding.PositionColor">
-                            <td class="standings-cell" style="width:40%;padding:7px 0;text-align:left;font-weight:bold;">
-                                <div class="standings-number d-inline-block">@(teamStanding.Position).</div>@teamStanding.Team
-                            </td>
-                            <td class="standings-cell">@teamStanding.MatchesNo</td>
-                            <td class="standings-cell">@teamStanding.Victories</td>
-                            <td class="standings-cell">@teamStanding.Draws</td>
-                            <td class="standings-cell">@teamStanding.Losses</td>
-                            <td class="standings-cell">@teamStanding.GoalScored</td>
-                            <td class="standings-cell">@teamStanding.GoalAgainst</td>
-                            <td class="standings-cell">@teamStanding.GoalDifference</td>
-                            @*<td class="standings-cell">@teamStanding.PointsProcent</td>*@
-                            <td class="standings-cell" style="font-weight: bold;padding-right:3px">@teamStanding.Points</td>
-                        </tr>
-                    }
-                </table>
-            </div>
-        </td>
-    </tr>
-</table>
 
 @code {
     private StandingsModelView StandingsView;
