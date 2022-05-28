@@ -100,11 +100,9 @@ namespace DystirWeb.Client.PagesMobileClient
             }
         }
 
-        public async void DaysOnClick(int[] parameters)
+        public async void DaysOnClick()
         {
             isLoading = true;
-            _daysFrom = parameters[0];
-            _dayAfter = parameters[1];
             await LoadData(selectedPage);
         }
 

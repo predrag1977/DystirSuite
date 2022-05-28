@@ -1,5 +1,5 @@
 ﻿<div id="header" class="navbar">
-    <table>
+    <table id="horizontal_navigation_bar">
         <tr>
             <td>
                 <div id="dystir_icon_button" class="navbar-dark">
@@ -19,35 +19,31 @@
                     </span>
                 </td>
             }
-
             <td id="header_title">
                 <span>@GetHeaderTitle()</span>
             </td>
-        </tr>
-    </table>
-    <table id="horizontal_navigation_bar">
-        <tr>
-            <td class="nav-item">
+
+            <td class="nav-item header_item">
                 <NavLink class="nav-link" href="" Match="@GetNavLinkMatch()">
                     <span>DYSTIR</span>
                 </NavLink>
             </td>
-            <td class="nav-item">
+            <td class="nav-item header_item">
                 <NavLink class="nav-link" href="football/results">
                     <span>ÚRSLIT</span>
                 </NavLink>
             </td>
-            <td class="nav-item">
+            <td class="nav-item header_item">
                 <NavLink class="nav-link" href="football/fixtures">
                     <span>KOMANDI</span>
                 </NavLink>
             </td>
-            <td class="nav-item">
+            <td class="nav-item header_item">
                 <NavLink class="nav-link" href="football/standings">
                     <span>STØÐAN</span>
                 </NavLink>
             </td>
-            <td class="nav-item">
+            <td class="nav-item header_item">
                 <NavLink class="nav-link" href="football/statistics">
                     <span>HAGTØL</span>
                 </NavLink>
