@@ -1,11 +1,7 @@
-﻿@using DystirWeb.Services
-@inject DystirWebClientService DystirWebClientService
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 @implements IDisposable
 
-<div class="container-layout-share">
-    @Body
-</div>
+@Body
 
 @if (!IsDystirHubConnected)
 {

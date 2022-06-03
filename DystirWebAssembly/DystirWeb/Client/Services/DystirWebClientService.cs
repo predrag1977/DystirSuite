@@ -181,11 +181,11 @@ namespace DystirWeb.Services
 
         public List<Matches> GetMatchesListSameDay(Matches match)
         {
-            if(match != null)
+            if (match != null)
             {
                 DateTime date = match.Time.Value.Date;
                 DateTime dateNowUtc = DateTime.UtcNow.Date;
-                if(date == dateNowUtc)
+                if (date == dateNowUtc)
                 {
                     return AllMatches?.Where(x => x.Time.Value.Date == date && x.MatchID != match.MatchID && x.StatusID < 13)
                         .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID).ToList();

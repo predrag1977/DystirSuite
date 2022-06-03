@@ -1,80 +1,57 @@
 ﻿@page "/{page}/matches"
 
-@using DystirWeb.Shared
-@using DystirWeb.Services
-@using Microsoft.AspNetCore.SignalR.Client
-@inject DystirWebClientService DystirWebClientService
-@inject TimeService TimeService
-@inject HubConnection HubConnection
 @layout PagesWebSiteShareLayout
 @implements IDisposable
 
-<link href="css/@(page).css?v=70" rel="stylesheet" />
+<link href="css/@(page).css?v=104" rel="stylesheet" />
 
 @if (page.Equals("dimma") || page.Equals("info"))
 {
-    <table class="content_table">
-        <tr>
-            <td style="position:relative;width:100%;height:auto;padding:0;vertical-align:middle;">
-                <div id="header-match-list box" style="overflow:hidden; margin:3px 0">
-                    @if (SelectedMatchListGroup?.Count > 0)
+    @if (SelectedMatchListGroup?.Count() > 0)
+    {
+        <div id="competitions_selection">
+            <ChooseCompetitions CompetitionsList="@(CompetitionsList)"
+                                SelectedCompetition="@(SelectedCompetition)"
+                                CompetitionsOnClick="@(CompetitionsOnClick)" />
+        </div>
+        <div id="matches_same_day_share">
+            @foreach (var matchesGroup in SelectedMatchListGroup)
+            {
+                if (SelectedCompetition == matchesGroup.Key)
+                {
+                    var matches = matchesGroup.Select(x => x);
+                    @foreach (Matches match in matches)
                     {
-                        <table class="content_table">
-                            <tr>
-                                @foreach (var matchesGroup in SelectedMatchListGroup)
-                                {
-                                    var matches = matchesGroup.Select(x => x);
-                                    <td style="padding-left:0px;">
-                                        <div class="competition-item tab @(selectedCompetitionName == matchesGroup.Key ? "selected_tab" : "")" @onclick="(() => OnCompetitionClick(matchesGroup.Key))">@(matchesGroup.Key?.ToUpper())</div>
-                                    </td>
-                                }
-                            </tr>
-                        </table>
-                        <table class="content_table" style="border-collapse: separate; border-spacing: 4px 0;">
-                            <tr>
-                                @foreach (var matchesGroup in SelectedMatchListGroup)
-                                {
-                                    if (selectedCompetitionName == matchesGroup.Key)
-                                    {
-                                        var matches = matchesGroup.Select(x => x);
-                                        @foreach (Matches match in matches)
-                                        {
-                                            <td>
-                                                <NavLink class="nav-link" style="cursor: pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
-                                                    <PagesWebSiteShareMatch MatchItem="@match" ShowMore="@(false)" TimeZoneOffset="@timeZoneOffset" />
-                                                </NavLink>
-                                            </td>
-                                        }
-                                    }
-                                }
-                            </tr>
-                        </table>
+                        <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
+                            <PagesWebSiteShareMatch MatchItem="@match"
+                                                    TimeZoneOffset="@timeZoneOffset"
+                                                    IsMatchForSameDayList="@true"
+                                                    NumberOfMatches="@numberOfMatches"/>
+                        </NavLink>
                     }
-                    else if (SelectedMatchListGroup?.Count == 0)
-                    {
-                        <div style="width:100%;text-align:center;padding:35px;background-color:white">Eingin dystur í dag</div>
-                    }
-                </div>
-            </td>
-        </tr>
-    </table>
-}
+                }
+            }
+        </div>
+    }
 
-@if (isLoading)
-{
-    <div class="loading-spinner-parent">
-        <i class="fas fa-spin fa-spinner fa-2x" style="color: darkgrey"></i>
-    </div>
+    @if (isLoading)
+    {
+        <div class="loading-spinner-parent">
+            <i class="fas fa-spin fa-spinner fa-2x" style="color: darkgrey"></i>
+        </div>
+    }
 }
 
 @code {
     [Parameter]
     public string page { get; set; }
 
+    private string SelectedCompetition { get; set; }
+    private List<string> CompetitionsList { get; set; }
     private List<IGrouping<string, Matches>> SelectedMatchListGroup = new List<IGrouping<string, Matches>>();
     private int timeZoneOffset = 0;
     private bool isLoading = true;
-    private string selectedCompetitionName = "";
+    private int numberOfMatches = 0;
 
     protected override async Task OnInitializedAsync()
     {
@@ -122,29 +99,32 @@
         InvokeAsync(() => StateHasChanged());
     }
 
-    private void OnCompetitionClick(string competitionName)
+    private void CompetitionsOnClick(string competition)
     {
-        selectedCompetitionName = competitionName;
+        SelectedCompetition = competition;
+        numberOfMatches = SelectedMatchListGroup.FirstOrDefault(x => x.Key == SelectedCompetition).Select(x => x)?.Count() ?? 0;
         Refresh();
     }
 
     public async Task GetSelectedMatchListGroup()
     {
-        var fromDate = DateTime.UtcNow.AddMinutes(-timeZoneOffset).Date.AddDays(0);
-        var toDate = fromDate.AddDays(0);
+        var fromDate = DateTime.UtcNow.AddMinutes(-timeZoneOffset).Date.AddDays(-5);
+        var toDate = fromDate.AddDays(10);
         SelectedMatchListGroup = DystirWebClientService.AllMatches?
-        .Where(x => x.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate && x.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate)
-        .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
-        .GroupBy(x => x.MatchTypeName)?.ToList();
+            .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
+            .Where(x => x.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate && x.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate)
+            .GroupBy(x => x.MatchTypeName)?.ToList() ?? new List<IGrouping<string, Matches>>();
 
-        if (SelectedMatchListGroup == null) return;
-
-        if (string.IsNullOrWhiteSpace(selectedCompetitionName))
+        CompetitionsList = new List<string>();
+        foreach (var matchGroup in SelectedMatchListGroup)
         {
-            selectedCompetitionName = SelectedMatchListGroup?.FirstOrDefault()?.Key ?? "";
+            CompetitionsList.Add(matchGroup.Key);
         }
+        SelectedCompetition = string.IsNullOrWhiteSpace(SelectedCompetition) ? CompetitionsList?.FirstOrDefault() ?? "" : SelectedCompetition;
+
+        numberOfMatches = SelectedMatchListGroup.FirstOrDefault(x => x.Key == SelectedCompetition).Select(x => x)?.Count() ?? 0;
         isLoading = false;
         Refresh();
-        await Task.CompletedTask;
+        await JSRuntime.InvokeVoidAsync("onPageResize", "");
     }
 }

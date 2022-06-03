@@ -3,26 +3,29 @@
 @layout MainFootballLayout
 @implements IDisposable
 
-<div id="matches_same_day">
-    @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
+<div id="match-details_static_part">
+    <div id="matches_same_day">
+        @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
+        {
+            <NavLink style="cursor:pointer;" @onclick="@(()=>isLoading = true)" href="@("football/matchdetails/" + match.MatchID)">
+                <Match MatchItem="@match" TimeZoneOffset="@timeZoneOffset" IsMatchForSameDayList="@true" />
+            </NavLink>
+        }
+    </div>
+
+    <div id="selected_match_details">
+        <Match MatchItem="@SelectedMatch" TimeZoneOffset="@timeZoneOffset" ShowMatchType="@true" />
+    </div>
+
+    @if (SelectedMatch != null)
     {
-        <NavLink style="cursor:pointer;" @onclick="@(()=>isLoading = true)" href="@("football/matchdetails/" + match.MatchID)">
-            <Match MatchItem="@match" TimeZoneOffset="@timeZoneOffset" IsMatchForSameDayList="@true" />
-        </NavLink>
+        <div id="horizontal_menu_days">
+            <MatchDetailsTabs TabOnClick="OnTabClick" Match="@(SelectedMatch)" />
+        </div>
     }
 </div>
 
-<div id="selected_match_details">
-    <Match MatchItem="@SelectedMatch" TimeZoneOffset="@timeZoneOffset" ShowMatchType="@true" />
-</div>
-
 <div id="match_details_container">
-    <div id="horizontal_menu_days">
-        @if (SelectedMatch != null)
-        {
-            <MatchDetailsTabs TabOnClick="OnTabClick" Match="@(SelectedMatch)" />
-        }
-    </div>
 
     <div class="@(selectedTab == "0" ? "active_tab" : "no_active_tab")">
         <SummaryView SummaryEventsOfMatch="@(fullMatchDetails?.Summary)" />
@@ -33,12 +36,18 @@
     <div class="@(selectedTab == "2" ? "active_tab" : "no_active_tab")">
         <CommentariesView Commentaries="@(fullMatchDetails?.Commentary)" />
     </div>
-    <div class="@(selectedTab == "3" ? "active_tab" : "no_active_tab")">
-        <StatisticView StatisticOfMatch="@(fullMatchDetails?.Statistics)" />
-    </div>
-    <div class="@(selectedTab == "4" ? "active_tab" : "no_active_tab")">
-        <LiveStandingView Standing="@(standing)" Match="@(SelectedMatch)" />
-    </div>
+    @if (SelectedMatch?.StatusID <= 12)
+    {
+        <div class="@(selectedTab == "3" ? "active_tab" : "no_active_tab")">
+            <StatisticView StatisticOfMatch="@(fullMatchDetails?.Statistics)" />
+        </div>
+    }
+    @if (ShowLiveStandings(SelectedMatch))
+    {
+        <div class="@(selectedTab == "4" ? "active_tab" : "no_active_tab")">
+            <LiveStandingView Standing="@(standing)" Match="@(SelectedMatch)" />
+        </div>
+    }
 </div>
 
 @if (isLoading)
@@ -109,8 +118,11 @@
         {
             await LoadMatchDetails();
         }
-        MatchesListSameDay = DystirWebClientService.GetMatchesListSameDay(SelectedMatch);
-        await LoadLiveStandingAsync(SelectedMatch);
+        else
+        {
+            MatchesListSameDay = DystirWebClientService.GetMatchesListSameDay(SelectedMatch);
+            await LoadLiveStandingAsync(SelectedMatch);
+        }
         Refresh();
     }
 
@@ -139,8 +151,10 @@
         SelectedMatch = DystirWebClientService.AllMatches?.FirstOrDefault(x => x.MatchID == parseMatchID);
         MatchesListSameDay = DystirWebClientService.GetMatchesListSameDay(SelectedMatch);
         Refresh();
-        fullMatchDetails = await DystirWebClientService.LoadMatchDetailsAsync(parseMatchID);
-        await LoadLiveStandingAsync(SelectedMatch);
+        var loadMatchDetailsAsyncTask = DystirWebClientService.LoadMatchDetailsAsync(parseMatchID);
+        var loadLiveStandingAsyncTask = LoadLiveStandingAsync(SelectedMatch);
+        await Task.WhenAll(loadMatchDetailsAsyncTask, loadLiveStandingAsyncTask);
+        fullMatchDetails = loadMatchDetailsAsyncTask.Result;
         isLoading = false;
         Refresh();
         _ = JSRuntime.InvokeVoidAsync("onPageResize", "");
@@ -150,5 +164,11 @@
     {
         standing = LiveStandingService.GetStanding(selectedMatch);
         await Task.CompletedTask;
+    }
+
+    private bool ShowLiveStandings(Matches match)
+    {
+        var competititionNamesArray = new string[] { "Betri deildin", "1. deild", "Betri deildin kvinnur", "2. deild" };
+        return competititionNamesArray.Any(x => x == match?.MatchTypeName);
     }
 }

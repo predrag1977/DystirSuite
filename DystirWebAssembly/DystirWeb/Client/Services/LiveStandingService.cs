@@ -83,7 +83,6 @@ namespace DystirWeb.Services
             catch (Exception ex)
             {
                 var exception = ex.Message;
-
             }
 
             //ReducePenaltiesPoint(teamStandings);
@@ -102,6 +101,7 @@ namespace DystirWeb.Services
                 return;
             }
             teamStanding.MatchesNo += 1;
+            teamStanding.MatchesNo = teamStanding.IsLive ? teamStanding.MatchesNo - 1 : teamStanding.MatchesNo;
             if (mainTeamScore != null && opponentTeamScore != null)
             {
                 if (mainTeamScore > opponentTeamScore)

@@ -52,6 +52,6 @@ namespace DystirWeb.Shared
         [DataMember]
         public string PositionColor { get; set; }
         [DataMember]
-        public bool IsLive { get; set; } = false;
+        public bool IsLive { get; set; }
     }
 }

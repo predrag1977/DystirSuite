@@ -11,75 +11,22 @@
     <base href="/" />
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
-
-    <!--<link href="css/app.css?v=70" rel="stylesheet" />-->
-    <link href="css/main_style.css?v=70" rel="stylesheet" />
-    <script src="https://kit.fontawesome.com/00bec08281.js" crossorigin="anonymous"></script>
+    <link href="css/fontawesome/css/fontawesome.min.css" rel="stylesheet" />
+    <link href="css/fontawesome/css/brands.min.css" rel="stylesheet" />
+    <link href="css/fontawesome/css/regular.min.css" rel="stylesheet" />
+    <link href="css/fontawesome/css/solid.min.css" rel="stylesheet" />
+    <link href="css/fontawesome/css/v4-shims.min.css" rel="stylesheet" />
+    <link href="css/main_style.css?v=100" rel="stylesheet" />
 
 </head>
 
 <body onresize="onPageResize()">
 
-    <script>
-        var scrollInterval;
-        var matchesSameDay = 0;
-
-        function scrollOnMouseOver(direction) {
-            var horizontalMenu = document.getElementById('horizontal_menu');
-            scrollInterval = setInterval(function () {
-                if (direction == 'left') {
-                    horizontalMenu.scrollLeft -= 15;
-                } else {
-                    horizontalMenu.scrollLeft += 15;
-                }
-            }, 70);
-        }
-
-        function scrollOnMouseOut() {
-            window.clearInterval(scrollInterval);
-        }
-
-        function onPageResize() {
-            setMatchDetailsHeight();
-            var horizontalMenu = document.getElementById('horizontal_menu');
-            if (horizontalMenu == null) {
-                return;
-            }
-            var horizontalMenuScroll = horizontalMenu.children[0];
-            var scrollButtonLeft = document.getElementById('scroll_button_left');
-            var scrollButtonRight = document.getElementById('scroll_button_right');
-
-            if (horizontalMenu.offsetWidth >= horizontalMenuScroll.offsetWidth) {
-                scrollButtonLeft.style.visibility = "hidden";
-                scrollButtonRight.style.visibility = "hidden";
-            }
-            else {
-                scrollButtonLeft.style.visibility = "visible";
-                scrollButtonRight.style.visibility = "visible";
-            }
-        }
-
-        function setMatchDetailsHeight() {
-            var matchDetailsContainer = document.getElementById('match_details_container');
-            if (matchDetailsContainer == null) {
-                
-                return;
-            }
-            var matchesSameDay = document.getElementById('matches_same_day');
-            var selectedMatchDetails = document.getElementById('selected_match_details');
-
-            matchDetailsContainer.style.height = "calc(100vh - " + (100 + matchesSameDay.offsetHeight + selectedMatchDetails.offsetHeight) + "px)";
-        }
-
-        function goBack() {
-            history.back();
-        }
-    </script>
-
-    <script src="scripts/background_script.js"></script>
-    <script src="scripts/change_url_script.js"></script>
-    <script src="scripts/timezone_script.js"></script>
-    <script src="scripts/dynamic_title_and_icon.js"></script>
+    <script src="scripts/element_calculation_script.js?v=100"></script>
+    <script src="scripts/background_script.js?v=100"></script>
+    <script src="scripts/change_url_script.js?v=100"></script>
+    <script src="scripts/timezone_script.js?v=100"></script>
+    <script src="scripts/dynamic_title_and_icon.js?v=100"></script>
     <script src="scripts/google_analytics.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>
 
