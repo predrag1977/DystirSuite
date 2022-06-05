@@ -25,30 +25,29 @@ namespace Dystir
     {
         private DystirViewModel _dystirViewModel;
         private MatchesViewModel _viewModel = new MatchesViewModel();
-        private HubConnection _hubConnection;
         private bool _isBusy;
 
         public App()
         {
             InitializeComponent();
-            _dystirViewModel = new DystirViewModel();
-            ServiceRegistrations();
-            StartDystirHub();
+            //_dystirViewModel = new DystirViewModel();
+            //ServiceRegistrations();
+            //StartDystirHub();
 
 
             AppAnalytics();
-            SetLanguage();
-            MainPage = new NavigationPage(new DystirPage(_viewModel));
-            StartLoading();
-            TimeOfMatches();
-            StartSponsors();
+            //SetLanguage();
+            MainPage = new NavigationPage(new DystirWebViewPage());
+            //StartLoading();
+            //TimeOfMatches();
+            //StartSponsors();
             CheckLatestVersion();
         }
 
         private void ServiceRegistrations()
         {
             DependencyService.Register<DataLoader>();
-            DependencyService.Register<DystirHub>();
+            //DependencyService.Register<DystirHub>();
         }
 
         private async void CheckLatestVersion()
