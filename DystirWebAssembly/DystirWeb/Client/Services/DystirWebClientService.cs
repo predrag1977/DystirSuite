@@ -184,7 +184,7 @@ namespace DystirWeb.Services
             if (match != null)
             {
                 DateTime date = match.Time.Value.Date;
-                DateTime dateNowUtc = DateTime.UtcNow.Date;
+                DateTime dateNowUtc = DateTime.Now.Date;
                 if (date == dateNowUtc)
                 {
                     return AllMatches?.Where(x => x.Time.Value.Date == date && x.MatchID != match.MatchID && x.StatusID < 13)
