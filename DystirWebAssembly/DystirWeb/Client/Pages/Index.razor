@@ -155,6 +155,7 @@
 
         isLoading = false;
         Refresh();
+        _ = JSRuntime.InvokeVoidAsync("onPageResize", "");
     }
 
     private object GetOrder(int? matchTypeId)

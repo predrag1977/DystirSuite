@@ -3,44 +3,51 @@
 @layout PagesWebSiteShareLayout
 @implements IDisposable
 
-<link href="css/@(page).css?v=104" rel="stylesheet" />
+<link href="css/@(page)_style.css?v=100" rel="stylesheet" />
 
 @if (page.Equals("dimma") || page.Equals("info"))
 {
-    @if (SelectedMatchListGroup?.Count() > 0)
-    {
-        <div id="competitions_selection">
-            <ChooseCompetitions CompetitionsList="@(CompetitionsList)"
-                                SelectedCompetition="@(SelectedCompetition)"
-                                CompetitionsOnClick="@(CompetitionsOnClick)" />
-        </div>
-        <div id="matches_same_day_share">
-            @foreach (var matchesGroup in SelectedMatchListGroup)
-            {
-                if (SelectedCompetition == matchesGroup.Key)
+    <div class="matches_and_competition_selection">
+        @if (SelectedMatchListGroup?.Count > 0)
+        {
+            <div id="competitions_selection">
+                <ChooseCompetitions CompetitionsList="@(CompetitionsList)"
+                                    SelectedCompetition="@(SelectedCompetition)"
+                                    CompetitionsOnClick="@(CompetitionsOnClick)" />
+            </div>
+            <div id="matches_same_day_share">
+                @foreach (var matchesGroup in SelectedMatchListGroup ?? new List<IGrouping<string, Matches>>())
                 {
-                    var matches = matchesGroup.Select(x => x);
-                    @foreach (Matches match in matches)
+                    if (SelectedCompetition == matchesGroup.Key)
                     {
-                        <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
-                            <PagesWebSiteShareMatch MatchItem="@match"
-                                                    TimeZoneOffset="@timeZoneOffset"
-                                                    IsMatchForSameDayList="@true"
-                                                    NumberOfMatches="@numberOfMatches"/>
-                        </NavLink>
+                        var matches = matchesGroup.Select(x => x);
+                        @foreach (Matches match in matches)
+                        {
+                            <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
+                                <PagesWebSiteShareMatch MatchItem="@match"
+                                                        TimeZoneOffset="@timeZoneOffset"
+                                                        IsMatchForSameDayList="@true"
+                                                        NumberOfMatches="@numberOfMatches" />
+                            </NavLink>
+                        }
                     }
                 }
-            }
-        </div>
-    }
+            </div>
+        }
+        else if (SelectedMatchListGroup?.Count == 0)
+        {
+            <div class="no-matches">Eingin dystur í dag</div>
+        }
 
-    @if (isLoading)
-    {
-        <div class="loading-spinner-parent">
-            <i class="fas fa-spin fa-spinner fa-2x" style="color: darkgrey"></i>
-        </div>
-    }
+        @if (isLoading)
+        {
+            <div class="loading-spinner-parent">
+                <i class="fas fa-spin fa-spinner fa-2x" style="color: darkgrey"></i>
+            </div>
+        }
+    </div>
 }
+    
 
 @code {
     [Parameter]
@@ -48,7 +55,7 @@
 
     private string SelectedCompetition { get; set; }
     private List<string> CompetitionsList { get; set; }
-    private List<IGrouping<string, Matches>> SelectedMatchListGroup = new List<IGrouping<string, Matches>>();
+    private List<IGrouping<string, Matches>> SelectedMatchListGroup;
     private int timeZoneOffset = 0;
     private bool isLoading = true;
     private int numberOfMatches = 0;
@@ -60,7 +67,7 @@
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed += TimerElapsed;
         timeZoneOffset = int.Parse(await JSRuntime.InvokeAsync<String>("getTimeZoneOffset"));
-        _ = GetSelectedMatchListGroup();
+        await GetSelectedMatchListGroup();
     }
 
     void IDisposable.Dispose()
@@ -108,21 +115,23 @@
 
     public async Task GetSelectedMatchListGroup()
     {
-        var fromDate = DateTime.UtcNow.AddMinutes(-timeZoneOffset).Date.AddDays(-5);
-        var toDate = fromDate.AddDays(10);
+        var fromDate = DateTime.UtcNow.AddMinutes(-timeZoneOffset).Date.AddDays(0);
+        var toDate = fromDate.AddDays(0);
         SelectedMatchListGroup = DystirWebClientService.AllMatches?
             .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
             .Where(x => x.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate && x.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate)
-            .GroupBy(x => x.MatchTypeName)?.ToList() ?? new List<IGrouping<string, Matches>>();
+            .GroupBy(x => x.MatchTypeName)?.ToList();
+
+        if(SelectedMatchListGroup == null) return;
 
         CompetitionsList = new List<string>();
-        foreach (var matchGroup in SelectedMatchListGroup)
+        foreach (var matchGroup in SelectedMatchListGroup ?? new List<IGrouping<string, Matches>>())
         {
             CompetitionsList.Add(matchGroup.Key);
         }
         SelectedCompetition = string.IsNullOrWhiteSpace(SelectedCompetition) ? CompetitionsList?.FirstOrDefault() ?? "" : SelectedCompetition;
 
-        numberOfMatches = SelectedMatchListGroup.FirstOrDefault(x => x.Key == SelectedCompetition).Select(x => x)?.Count() ?? 0;
+        numberOfMatches = SelectedMatchListGroup?.FirstOrDefault(x => x.Key == SelectedCompetition)?.Select(x => x)?.Count() ?? 0;
         isLoading = false;
         Refresh();
         await JSRuntime.InvokeVoidAsync("onPageResize", "");

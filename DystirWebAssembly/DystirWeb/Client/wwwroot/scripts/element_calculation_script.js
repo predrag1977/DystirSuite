@@ -3,20 +3,15 @@ var matchesSameDay = 0;
 
 function scrollOnMouseOver(direction) {
     var horizontalMenu = document.getElementById('horizontal_menu');
-    scrollInterval = setInterval(function () {
-        if (direction == 'left') {
-            horizontalMenu.scrollLeft -= 15;
-        } else {
-            horizontalMenu.scrollLeft += 15;
-        }
-    }, 70);
-}
-
-function scrollOnMouseOut() {
-    window.clearInterval(scrollInterval);
+    if (direction == 'left') {
+        horizontalMenu.scrollLeft -= horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
+    } else {
+        horizontalMenu.scrollLeft += horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
+    }
 }
 
 function onPageResize() {
+    setMainContainerHeight();
     setMatchDetailsHeight();
     var horizontalMenu = document.getElementById('horizontal_menu');
     if (horizontalMenu == null) {
@@ -36,14 +31,21 @@ function onPageResize() {
     }
 }
 
+function setMainContainerHeight() {
+    var mainContainer = document.getElementById('main_container');
+    if (mainContainer == null) {
+        return;
+    }
+    mainContainer.style.height = (window.innerHeight - 150) + "px";
+}
+
 function setMatchDetailsHeight() {
     var matchDetailsContainer = document.getElementById('match_details_container');
     if (matchDetailsContainer == null) {
         return;
     }
     var matchDetailsStaticPart = document.getElementById('match-details_static_part');
-
-    matchDetailsContainer.style.height = "calc(100vh - " + (90 + matchDetailsStaticPart.offsetHeight) + "px)";
+    matchDetailsContainer.style.height = (window.innerHeight - 90 - matchDetailsStaticPart.offsetHeight) + "px";
 }
 
 function goBack() {
