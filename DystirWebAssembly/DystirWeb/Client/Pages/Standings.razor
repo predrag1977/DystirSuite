@@ -120,6 +120,7 @@
         };
         isLoading = false;
         Refresh();
+        _ = JSRuntime.InvokeVoidAsync("onPageResize", "");
     }
 
     private IEnumerable<string> GetCompetitionsList(ObservableCollection<Standing> standings)

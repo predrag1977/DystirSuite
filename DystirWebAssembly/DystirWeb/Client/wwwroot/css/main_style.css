@@ -182,10 +182,7 @@ body {
 
 #scroll_button_left, #scroll_button_right, #back_button {
     height: 40px;
-    margin-top: 10px;
-    font-size: 1.2rem;
     cursor: pointer;
-    padding-top: 7px;
     background-color: rgba(255,255,255,0.25);
     white-space: nowrap;
     float: left;
@@ -193,11 +190,9 @@ body {
     width: 40px;
     visibility: hidden;
     border-radius: 20px;
-}
-
-    #scroll_button_left:hover, #scroll_button_right:hover, #back_button:hover {
-        background-color: rgba(255,255,255,0.1);
-    }
+    line-height:40px;
+    margin-top:10px;
+} 
 
 #scroll_button_right {
     float: right;
@@ -205,25 +200,26 @@ body {
 
 #back_button {
     margin: 0;
+    font-size:1.1rem;
     visibility: visible;
     height: 54px;
     width: 54px;
-    padding: 10px;
+    line-height:54px;
     background-color: transparent;
     border: 1px solid rgba(255,255,255,0.25);
     border-radius: 10px;
 }
 
-    #back_button span {
-        padding: 5px 0;
+    #scroll_button_left:hover, #scroll_button_right:hover, #back_button:hover {
+        background-color: rgba(255,255,255,0.1);
     }
 
 .tab {
     color: #a6a6a6;
     font-size: 0.8rem;
-    font-weight: 900;
+    font-weight: 800;
     height: 30px;
-    margin: 20px 8px 0 8px;
+    margin: 20px 0 0 0;
     text-align: center;
 }
 
@@ -382,6 +378,10 @@ body {
     height: 12px;
 }
 
+.statistic-home {
+    background-color: #006400;
+}
+
 .statistic-away {
     background-color: #a6a6a6;
 }
@@ -518,105 +518,33 @@ a, .btn-link, .nav-link {
 }
 
 .no-matches {
-    padding-top:30px;
+    line-height: 80px;
     text-align: center;
     color: dimgray;
     height: 80px;
 }
 
-
-
-
-
-
-
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-}
-
-.btn-dark {
-    background-color: dimgray;
-}
-
-.container-layout-share {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border: 0;
-}
-
-.football-icon, .handball-icon, .volleyball-icon {
-    height: 4.5vw;
-    max-height: 25px;
-    min-height: 17px;
-}
-
-.football-text, .handball-text, .volleyball-text {
-    font-weight: normal;
-}
-
-.row {
-    margin: 0;
-}
-
-.sponsor-bar {
-    position: absolute;
-    overflow-x: hidden;
-    overflow-y: auto;
-    width: 210px;
-    top: 70px;
-    right: 0;
-    bottom: 0;
-    border: 1px solid dimgray;
-}
-
-    .sponsor-bar .nav-item {
-        font-size: 0.9rem;
-        padding: 0 0.5rem 0.5rem 0.5rem;
-    }
-
-.sponsors_below_matches {
-    display: block;
-}
-
-.content {
-    padding-top: 1.1rem;
-}
-
-.valid.modified:not([type=checkbox]) {
-    outline: 1px solid #26b050;
-}
-
-.invalid {
-    outline: 1px solid red;
-}
-
-.validation-message {
-    color: red;
-}
-
-#blazor-error-ui {
-    background: lightyellow;
-    bottom: 0;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
-    display: none;
-    left: 0;
-    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+.loading-spinner-parent {
     position: fixed;
-    width: 100%;
-    z-index: 1000;
+    top: calc(50% - 1.3rem);
+    left: calc(50% - 1.3rem);
 }
 
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
+.loading-spinner {
+    width: 2.6rem;
+}
+
+.matches_and_competition_selection {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 135px;
+    width:100%;
+    background-color:white;
+}
 
 .big_chance {
     color: lightblue;
@@ -703,12 +631,6 @@ a, .btn-link, .nav-link {
     margin: 7px 0;
 }
 
-.no-connection {
-    position: absolute;
-    z-index: 2000;
-    display: none;
-}
-
 .matches_list_same_day {
     background-color: #333;
     padding: 0 3px;
@@ -720,6 +642,78 @@ a, .btn-link, .nav-link {
         text-align: center;
         padding-bottom: 4px;
         text-decoration: none;
+    }
+
+.toggle-button {
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    font-size: 1.5rem;
+}
+
+.nav-item {
+    font-size: 0.9rem;
+    padding: 0 0.5rem;
+}
+
+
+
+
+
+
+
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.btn-dark {
+    background-color: dimgray;
+}
+
+.row {
+    margin: 0;
+}
+
+.sponsors_below_matches {
+    display: block;
+}
+
+.content {
+    padding-top: 1.1rem;
+}
+
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid red;
+}
+
+.validation-message {
+    color: red;
+}
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
     }
 
 .container-match-details {
@@ -742,22 +736,7 @@ a, .btn-link, .nav-link {
     text-align: center;
 }
 
-.loading-spinner-parent {
-    position: fixed;
-    top: calc(50% - 1.3rem);
-    left: calc(50% - 1.3rem);
-}
 
-.loading-spinner {
-    width: 2.6rem;
-}
-
-.toggle-button {
-    height: 30px;
-    width: 30px;
-    line-height: 30px;
-    font-size: 1.5rem;
-}
 
 /*-----------------------*/
 /* MOBILE FRIENDLY STYLE */
@@ -774,7 +753,7 @@ a, .btn-link, .nav-link {
         width: 100%;
     }
 
-    .sponsor-bar, .header_item, #dystir_icon_button img {
+    .header_item, #dystir_icon_button img {
         display: none;
     }
 
@@ -802,10 +781,6 @@ a, .btn-link, .nav-link {
     .header_item {
         display:normal;
     }
-
-    .sponsor-bar .collapse {
-        display: block;
-    }
 }
 
 @media (max-width: 799.98px) {
@@ -823,28 +798,12 @@ a, .btn-link, .nav-link {
 }
 
 @media (min-width: 800px) {
-    html {
-        font-size: 1.1rem;
-    }
-
     .match_item_mobile {
         display: none;
     }
 
     .match_item {
         display: block;
-    }
-}
-
-@media (min-width: 700px) {
-    html {
-        font-size: 1.05rem;
-    }
-}
-
-@media (min-width: 600px) {
-    html {
-        font-size: 1.0rem;
     }
 }
 
@@ -866,34 +825,23 @@ a, .btn-link, .nav-link {
     }
 }
 
-
-/*-----------------------*/
-/*  FOOTBALL SITE STYLE  */
-/*-----------------------*/
-.statistic-home {
-    background-color: #006400;
+@media (min-width: 700px) {
+    html {
+        font-size: 1.00rem;
+    }
 }
 
-.football-icon {
-    height: 6vw;
-    max-height: 35px;
-    min-height: 25px;
+@media (max-width: 699.98px) {
+    html {
+        font-size: 0.95rem;
+    }
 }
 
-.handball-icon, .volleyball-icon {
-    height: 4.5vw;
-    max-height: 25px;
-    min-height: 17px;
+@media (max-width: 599.98px) {
+    html {
+        font-size: 0.90rem;
+    }
 }
-
-.football-text {
-    font-weight: bold;
-}
-
-.handball-text, .volleyball-text {
-    font-weight: normal;
-}
-
 
 /*-----------------------*/
 /*  ERROR MESSAGES  */
