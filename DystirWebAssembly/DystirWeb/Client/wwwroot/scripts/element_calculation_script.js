@@ -36,7 +36,7 @@ function setMainContainerHeight() {
     if (mainContainer == null) {
         return;
     }
-    mainContainer.style.height = (window.innerHeight - 150) + "px";
+    mainContainer.style.height = (window.innerHeight - 140) + "px";
 }
 
 function setMatchDetailsHeight() {
@@ -45,7 +45,7 @@ function setMatchDetailsHeight() {
         return;
     }
     var matchDetailsStaticPart = document.getElementById('match-details_static_part');
-    matchDetailsContainer.style.height = (window.innerHeight - 90 - matchDetailsStaticPart.offsetHeight) + "px";
+    matchDetailsContainer.style.height = (window.innerHeight - 80 - matchDetailsStaticPart.offsetHeight) + "px";
 }
 
 function goBack() {
