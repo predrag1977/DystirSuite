@@ -5,134 +5,130 @@
 @inherits MobileClientBase
 @layout MobileClientLayout
 
-<div class="container-layout_mobile_client">
-    <div class="container-fluid d-flex h-100 flex-column p-0">
-        @if (selectedPage == SelectedPage.Matches)
-        {
-            <div class="row">
-                <ChooseDays DaysOnClick="@DaysOnClick" TimeZoneOffset="@TimeZoneOffset" />
-            </div>
-        }
-        else if (selectedPage == SelectedPage.Results || selectedPage == SelectedPage.Fixtures)
-        {
-            <div class="row">
-                <div class="col p-0" style="background-color:dimgray">
-                    <ChooseCompetitions CompetitionsList="@(CompetitionsList)"
-                                        SelectedCompetition="@(SelectedCompetition)"
-                                        CompetitionsOnClick="@(CompetitionsOnClick)" />
-                </div>
-            </div>
-        }
-
-        @switch (selectedPage)
-        {
-            case SelectedPage.Matches:
-            case SelectedPage.Results:
-            case SelectedPage.Fixtures:
-            default:
-                <div class="row flex-fill d-flex justify-content-start">
-                    <div class="col">
-                        <div class="matches_container">
-                            @if (SelectedMatchListGroup?.Count > 0)
-                            {
-                                foreach (var matchgroup in SelectedMatchListGroup)
-                                {
-                                    <div class="match-group-competition-name">@(matchgroup.Key)</div>
-                                    @foreach (var match in matchgroup)
-                                    {
-                                        <div @onclick="() => { MatchID = match?.MatchID.ToString(); ChangePage(SelectedPage.MatchDetails); } ">
-                                            <MatchView MatchItem="@match" ShowMore="@(true)" TimeZoneOffset="@TimeZoneOffset" />
-                                        </div>
-                                    }
-                                }
-                            }
-                            else if (SelectedMatchListGroup?.Count == 0)
-                            {
-                                <div class="no-matches">Eingin dystur</div>
-                            }
-                            <SponsorsView ShowOnSideBar="false" />
-                        </div>
-                    </div>
-                </div>
-
-                <table class="table" style="font-size:0.5em;font-weight:bold;margin:0.2rem 0;">
-                    <tr>
-                        <td class="tab @(selectedPage == SelectedPage.Matches ? "selected_tab" : "")">
-                            <div class="selected_tab-layout" @onclick="() => ChangePage(SelectedPage.Matches)">Dystir</div>
-                        </td>
-                        <td class="tab @(selectedPage == SelectedPage.Results ? "selected_tab" : "")">
-                            <div class="selected_tab-layout" @onclick="() => ChangePage(SelectedPage.Results)">Úrslit</div>
-                        </td>
-                        <td class="tab @(selectedPage == SelectedPage.Fixtures ? "selected_tab" : "")">
-                            <div class="selected_tab-layout" @onclick="() => ChangePage(SelectedPage.Fixtures)">Komandi</div>
-                        </td>
-                        <td class="tab @(selectedPage == SelectedPage.Standings ? "selected_tab" : "")">
-                            <div class="selected_tab-layout" @onclick="() => ChangePage(SelectedPage.Standings)">Støðan</div>
-                        </td>
-                        <td class="tab @(selectedPage == SelectedPage.Statistics ? "selected_tab" : "")">
-                            <div class="selected_tab-layout" @onclick="() => ChangePage(SelectedPage.Statistics)">Hagtøl</div>
-                        </td>
-                    </tr>
-                </table>
-                break;
-            case SelectedPage.Standings:
-
-                break;
-            case SelectedPage.Statistics:
-
-                break;
-            case SelectedPage.MatchDetails:
-                <div class="container-match-details">
-                    <div class="box">
-                        <div class="matches_list_same_day">
-                            @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
-                            {
-                                <div @onclick="() => { MatchID = match?.MatchID.ToString(); ChangePage(SelectedPage.MatchDetails); } ">
-                                    <Match MatchItem="@match" ShowMore="@(false)" TimeZoneOffset="@TimeZoneOffset" IsMatchForSameDayList="@true" />
-                                </div>
-                            }
-                        </div>
-                    </div>
-
-                    <div class="box" style="padding:0.3rem 0">
-                        <Match MatchItem="@SelectedMatch" ShowMore="@(false)" TimeZoneOffset="@TimeZoneOffset" ShowMatchType="@true" />
-                    </div>
-
-                    @if (SelectedMatch != null)
-                    {
-                        <div class="box">
-                            <MatchDetailsTabs TabOnClick="OnTabClick" Match="@(SelectedMatch)" />
-                        </div>
-                    }
-
-                    <div class="box box-scroll">
-                        <div style="position:absolute;top:0;bottom:0;width:100%;overflow:auto; margin: 0; padding: 0 5px;">
-                            <div class="@(selectedTab == "0" ? "active_tab" : "no_active_tab")">
-                                <SummaryView SummaryEventsOfMatch="@(fullMatchDetails?.Summary)" />
-                            </div>
-                            <div class="@(selectedTab == "1" ? "active_tab" : "no_active_tab")">
-                                <LineupsView PlayersOfMatch="@(fullMatchDetails?.MatchDetails?.PlayersOfMatch)" Match="@(fullMatchDetails?.MatchDetails?.Match)" />
-                            </div>
-                            <div class="@(selectedTab == "2" ? "active_tab" : "no_active_tab")">
-                                <CommentariesView Commentaries="@(fullMatchDetails?.Commentary)" />
-                            </div>
-                            <div class="@(selectedTab == "3" ? "active_tab" : "no_active_tab")">
-                                <StatisticView StatisticOfMatch="@(fullMatchDetails?.Statistics)" />
-                            </div>
-                            <div class="@(selectedTab == "4" ? "active_tab" : "no_active_tab")">
-                                <LiveStandingView Standing="@(standing)" Match="@(SelectedMatch)" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                break;
-        }
-    </div>
-</div>
-
-<div class="header_mobile_client">
+<div class="header_container">
     <MobileClientHeader BackOnClick="@BackOnClickAsync" SelectedPage="@selectedPage" SelectedMatch="@SelectedMatch" TimeZoneOffset="@TimeZoneOffset" />
 </div>
+
+@if (selectedPage == SelectedPage.Matches)
+{
+    <div id="days_selection">
+        <ChooseDays DaysOnClick="@DaysOnClick" TimeZoneOffset="@TimeZoneOffset" />
+    </div>
+}
+else if (selectedPage == SelectedPage.Results || selectedPage == SelectedPage.Fixtures)
+{
+    <div id="competitions_selection">
+        <ChooseCompetitions CompetitionsList="@(CompetitionsList)"
+                            SelectedCompetition="@(SelectedCompetition)"
+                            CompetitionsOnClick="@(CompetitionsOnClick)" />
+    </div>
+}
+
+@switch (selectedPage)
+{
+    case SelectedPage.Matches:
+    case SelectedPage.Results:
+    case SelectedPage.Fixtures:
+    default:
+        <div id="main_container">
+            @if (SelectedMatchListGroup?.Count > 0)
+            {
+                foreach (var matchgroup in SelectedMatchListGroup)
+                {
+                    <div class="match-group-competition-name">@(matchgroup.Key)</div>
+                    @foreach (var match in matchgroup)
+                    {
+                        <div @onclick="() => { MatchID = match?.MatchID.ToString(); ChangePage(SelectedPage.MatchDetails); } ">
+                            <MatchView MatchItem="@match" TimeZoneOffset="@TimeZoneOffset" />
+                        </div>
+                    }
+                }
+            }
+            else if (SelectedMatchListGroup?.Count == 0)
+            {
+                <div class="no-matches">Eingin dystur</div>
+            }
+            <SponsorsView ShowOnSideBar="false" />
+        </div>
+        
+        break;
+    case SelectedPage.Standings:
+
+        break;
+    case SelectedPage.Statistics:
+
+        break;
+    case SelectedPage.MatchDetails:
+        <div id="match-details_static_part">
+            <div id="matches_same_day">
+                @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
+                {
+                    <div @onclick="() => { MatchID = match?.MatchID.ToString(); ChangePage(SelectedPage.MatchDetails); } ">
+                        <Match MatchItem="@match" TimeZoneOffset="@TimeZoneOffset" IsMatchForSameDayList="@true" />
+                    </div>
+                }
+            </div>
+
+            <div id="selected_match_details">
+                <Match MatchItem="@SelectedMatch" TimeZoneOffset="@TimeZoneOffset" ShowMatchType="@true" />
+            </div>
+
+            @if (SelectedMatch != null)
+            {
+                <div id="horizontal_menu_days">
+                    <MatchDetailsTabs TabOnClick="OnTabClick" Match="@(SelectedMatch)" />
+                </div>
+            }
+        </div>
+
+        <div id="match_details_container">
+
+            <div class="@(selectedTab == "0" ? "active_tab" : "no_active_tab")">
+                <SummaryView SummaryEventsOfMatch="@(fullMatchDetails?.Summary)" />
+            </div>
+            <div class="@(selectedTab == "1" ? "active_tab" : "no_active_tab")">
+                <LineupsView PlayersOfMatch="@(fullMatchDetails?.MatchDetails?.PlayersOfMatch)" Match="@(fullMatchDetails?.MatchDetails?.Match)" />
+            </div>
+            <div class="@(selectedTab == "2" ? "active_tab" : "no_active_tab")">
+                <CommentariesView Commentaries="@(fullMatchDetails?.Commentary)" />
+            </div>
+            @if (SelectedMatch?.StatusID <= 12)
+            {
+                <div class="@(selectedTab == "3" ? "active_tab" : "no_active_tab")">
+                    <StatisticView StatisticOfMatch="@(fullMatchDetails?.Statistics)" />
+                </div>
+            }
+            @if (ShowLiveStandings(SelectedMatch))
+            {
+                <div class="@(selectedTab == "4" ? "active_tab" : "no_active_tab")">
+                    <LiveStandingView Standing="@(standing)" Match="@(SelectedMatch)" />
+                </div>
+            }
+        </div>
+
+        break;
+}
+
+<table class="table" style="font-size:0.5em;font-weight:bold;margin:0.2rem 0;">
+    <tr>
+        <td class="tab @(selectedPage == SelectedPage.Matches ? "selected_tab" : "")">
+            <div class="selected_tab-layout" @onclick="() => ChangePage(SelectedPage.Matches)">Dystir</div>
+        </td>
+        <td class="tab @(selectedPage == SelectedPage.Results ? "selected_tab" : "")">
+            <div class="selected_tab-layout" @onclick="() => ChangePage(SelectedPage.Results)">Úrslit</div>
+        </td>
+        <td class="tab @(selectedPage == SelectedPage.Fixtures ? "selected_tab" : "")">
+            <div class="selected_tab-layout" @onclick="() => ChangePage(SelectedPage.Fixtures)">Komandi</div>
+        </td>
+        <td class="tab @(selectedPage == SelectedPage.Standings ? "selected_tab" : "")">
+            <div class="selected_tab-layout" @onclick="() => ChangePage(SelectedPage.Standings)">Støðan</div>
+        </td>
+        <td class="tab @(selectedPage == SelectedPage.Statistics ? "selected_tab" : "")">
+            <div class="selected_tab-layout" @onclick="() => ChangePage(SelectedPage.Statistics)">Hagtøl</div>
+        </td>
+    </tr>
+</table>
+
 
 @if (isLoading)
 {
