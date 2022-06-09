@@ -22,7 +22,6 @@ namespace DystirWeb.Services
 
         public List<Matches> AllMatches;
         public List<MatchDetails> AllMatchesDetails;
-        public ObservableCollection<Teams> AllTeams;
         public ObservableCollection<Sponsors> AllSponsors;
         public ObservableCollection<Standing> Standings;
         public ObservableCollection<CompetitionStatistic> CompetitionStatistics;
@@ -68,10 +67,10 @@ namespace DystirWeb.Services
 
         public async Task LoadDataAsync()
         {
+            
             var loadAllMatchesTask = LoadAllMatchesAsync();
-            var loadAllTeamsTask = LoadAllTeamsAsync();
             var loadSponsorsTask = LoadSponsorsAsync();
-            await Task.WhenAll(loadAllMatchesTask, loadAllTeamsTask, loadSponsorsTask);
+            await Task.WhenAll(loadAllMatchesTask, loadSponsorsTask);
             FullDataLoaded();
             _ = StartDystirHubAsync();
         }
@@ -84,12 +83,6 @@ namespace DystirWeb.Services
                     && y.MatchActivation != 1
                     && y.MatchActivation != 2).ToList();
             AllMatchesDetails = new List<MatchDetails>();
-        }
-
-        private async Task LoadAllTeamsAsync()
-        {
-            var teams =  await _httpClient.GetFromJsonAsync<Teams[]>("api/teams");
-            AllTeams = new ObservableCollection<Teams>(teams);
         }
 
         private async Task LoadSponsorsAsync()

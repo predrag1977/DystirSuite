@@ -29,6 +29,7 @@ namespace Dystir.Services.DystirHubService
         {
 
         }
+
         private async Task<bool> TryHubConnectAsync()
         {
             bool success = true;

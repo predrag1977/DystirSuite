@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using DystirWeb.Services;
@@ -10,7 +11,7 @@ using Microsoft.JSInterop;
 
 namespace DystirWeb.Client.PagesMobileClient
 {
-    public class MobileClientBase : ComponentBase , IDisposable
+    public class MobileClientBase : ComponentBase, IDisposable
     {
         [Inject]
         private DystirWebClientService _dystirWebClientService { get; set; }
@@ -25,12 +26,13 @@ namespace DystirWeb.Client.PagesMobileClient
 
         private SelectedPage _previousPage = SelectedPage.Matches;
         private int _daysFrom = 0;
-        private int _dayAfter = 0;
+        private int _daysAfter = 0;
 
         public string SelectedCompetition { get; set; }
         public List<string> CompetitionsList { get; set; }
         public Matches SelectedMatch = new Matches();
         public string MatchID { get; set; }
+        public static string daysRange;
         public SelectedPage selectedPage = SelectedPage.Matches;
         public FullMatchDetailsModelView fullMatchDetails;
         public List<Matches> MatchesListSameDay = new List<Matches>();
@@ -103,6 +105,7 @@ namespace DystirWeb.Client.PagesMobileClient
         public async void DaysOnClick()
         {
             isLoading = true;
+            SetSelectedDaysRange(daysRange);
             await LoadData(selectedPage);
         }
 
@@ -163,7 +166,7 @@ namespace DystirWeb.Client.PagesMobileClient
             await Task.Run(() =>
             {
                 var fromDate = DateTime.Now.Date.AddDays(_daysFrom);
-                var toDate = fromDate.AddDays(_dayAfter);
+                var toDate = fromDate.AddDays(_daysAfter);
                 SelectedMatchListGroup = _dystirWebClientService.AllMatches?.OrderBy(x => GetOrder(x.MatchTypeID)).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
                 .Where(x => x.Time.Value.AddMinutes(-TimeZoneOffset).Date >= fromDate
                 && x.Time.Value.AddMinutes(-TimeZoneOffset).Date <= toDate).GroupBy(x => x.MatchTypeName)?.ToList();
@@ -264,13 +267,18 @@ namespace DystirWeb.Client.PagesMobileClient
 
         public async Task LoadMatchDetails()
         {
+            _ = _jsRuntime.InvokeVoidAsync("onPageResize", "");
             int parseMatchID = int.TryParse(MatchID, out int m) ? int.Parse(MatchID) : 0;
             SelectedMatch = _dystirWebClientService.AllMatches?.FirstOrDefault(x => x.MatchID == parseMatchID);
-            fullMatchDetails = await _dystirWebClientService.LoadMatchDetailsAsync(parseMatchID);
             MatchesListSameDay = _dystirWebClientService.GetMatchesListSameDay(SelectedMatch);
-            await LoadLiveStandingAsync(SelectedMatch);
+            Refresh();
+            var loadMatchDetailsAsyncTask = _dystirWebClientService.LoadMatchDetailsAsync(parseMatchID);
+            var loadLiveStandingAsyncTask = LoadLiveStandingAsync(SelectedMatch);
+            await Task.WhenAll(loadMatchDetailsAsyncTask, loadLiveStandingAsyncTask);
+            fullMatchDetails = loadMatchDetailsAsyncTask.Result;
             isLoading = false;
             Refresh();
+            _ = _jsRuntime.InvokeVoidAsync("onPageResize", "");
         }
 
         private async Task LoadLiveStandingAsync(Matches selectedMatch)
@@ -283,6 +291,37 @@ namespace DystirWeb.Client.PagesMobileClient
         {
             var competititionNamesArray = new string[] { "Betri deildin", "1. deild", "Betri deildin kvinnur", "2. deild" };
             return competititionNamesArray.Any(x => x == match?.MatchTypeName);
+        }
+
+        private void SetSelectedDaysRange(string daysRange)
+        {
+            DateTime dateToday = DateTime.UtcNow.AddMinutes(-TimeZoneOffset);
+            CultureInfo cultureInfo = new CultureInfo("fo-FO");
+            int offset = cultureInfo.DateTimeFormat.FirstDayOfWeek - dateToday.DayOfWeek;
+            switch (daysRange?.ToLower())
+            {
+                case "lastweek":
+                    _daysFrom = offset - 7;
+                    _daysAfter = 6;
+                    break;
+                case "yesterday":
+                    _daysFrom = -1;
+                    _daysAfter = 0;
+                    break;
+                case "today":
+                default:
+                    _daysFrom = 0;
+                    _daysAfter = 0;
+                    break;
+                case "tomorrow":
+                    _daysFrom = 1;
+                    _daysAfter = 0;
+                    break;
+                case "nextweek":
+                    _daysFrom = offset;
+                    _daysAfter = 6;
+                    break;
+            }
         }
     }
 

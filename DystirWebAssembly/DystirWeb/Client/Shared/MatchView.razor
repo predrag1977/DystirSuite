@@ -31,12 +31,12 @@
                     <span>@((MatchItem.HomeTeam + " " + MatchItem.HomeSquadName + " " + MatchItem.HomeCategoriesName).Trim())</span>
                 </td>
                 <td class="text-center" style="width:30px">
-                    <img src="team_logos/@(GetTeamLogo(MatchItem.HomeTeam, DystirWebClientService.AllTeams))"
+                    <img src="team_logos/@(MatchItem.HomeTeamLogo)"
                          onerror="this.src='team_logos/empty.png'" width="25" height="25" />
                 </td>
                 <td class="text-center" style="width:20px">-</td>
                 <td class="text-center" style="width:30px">
-                    <img src="team_logos/@(GetTeamLogo(MatchItem.AwayTeam, DystirWebClientService.AllTeams))"
+                    <img src="team_logos/@(MatchItem.AwayTeamLogo)"
                          onerror="this.src='team_logos/empty.png'" width="25" height="25" />
                 </td>
                 <td class="match_item_team_name pl-1 text-left">
@@ -105,7 +105,7 @@
         <table>
             <tr>
                 <td class="match_item_same_day_team_name">
-                    <img src="team_logos/@(GetTeamLogo(MatchItem.HomeTeam, DystirWebClientService.AllTeams))"
+                    <img src="team_logos/@(MatchItem.HomeTeamLogo)"
                             onerror="this.src='team_logos/empty.png'" width="25" height="25" />
                     <span>@((MatchItem.HomeTeam + " " + MatchItem.HomeSquadName + " " + MatchItem.HomeCategoriesName).Trim())</span>
                 </td>
@@ -127,7 +127,7 @@
         <table>
             <tr>
                 <td class="match_item_same_day_team_name">
-                    <img src="team_logos/@(GetTeamLogo(MatchItem.AwayTeam, DystirWebClientService.AllTeams))"
+                    <img src="team_logos/@(MatchItem.AwayTeamLogo)"
                             onerror="this.src='team_logos/empty.png'" width="25" height="25" />
                     <span>@((MatchItem.AwayTeam + " " + MatchItem.AwaySquadName + " " + MatchItem.AwayCategoriesName).Trim())</span>
                 </td>

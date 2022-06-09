@@ -1,9 +1,6 @@
-﻿using DystirWeb.Server.DystirDB;
-using DystirWeb.Services;
+﻿using DystirWeb.Services;
 using DystirWeb.Shared;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DystirWeb.Controllers
 {
@@ -22,7 +19,7 @@ namespace DystirWeb.Controllers
         [HttpGet("{id}", Name = "GetMatchDetails")]
         public MatchDetails Get(int id)
         {
-            return _matchDetailsService.GetMatchDetails(id, false);
+            return _matchDetailsService.GetMatchDetails(id);
         }
 
         // POST api/<controller>

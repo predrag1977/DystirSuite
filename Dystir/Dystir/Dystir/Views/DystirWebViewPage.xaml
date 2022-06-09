@@ -9,11 +9,12 @@
     x:Class="Dystir.Views.DystirWebViewPage">
 
     <ContentPage.Content>
-        <StackLayout>
+        <StackLayout BackgroundColor="#181818">
             <WebView x:Name="DystirWebView"
-                VerticalOptions="FillAndExpand"
-                HorizontalOptions="FillAndExpand"
-                Navigated="OnNavigated"/>
+                     VerticalOptions="FillAndExpand"
+                     HorizontalOptions="FillAndExpand"
+                     Navigated="OnNavigated"
+                     BackgroundColor="#181818"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -17,13 +17,12 @@ namespace DystirWeb.Services
         internal Standing GetStanding(Matches match)
         {
             var matchesList = _dystirWebClientService.AllMatches;
-            var teamsList = _dystirWebClientService.AllTeams;
 
             string competititionName = match?.MatchTypeName;
             Standing standing = new Standing()
             {
                 StandingCompetitionName = competititionName,
-                TeamStandings = GetStandings(competititionName, teamsList, matchesList)
+                TeamStandings = GetStandings(competititionName, matchesList)
             };
             foreach (TeamStanding teamStanding in standing.TeamStandings)
             {
@@ -33,7 +32,7 @@ namespace DystirWeb.Services
             return standing;
         }
 
-        internal List<TeamStanding> GetStandings(string competitionName, IEnumerable<Teams> teamsList, IEnumerable<Matches> matchesList)
+        internal List<TeamStanding> GetStandings(string competitionName, IEnumerable<Matches> matchesList)
         {
             List<TeamStanding> teamStandings = new List<TeamStanding>();
             try
@@ -46,7 +45,7 @@ namespace DystirWeb.Services
                         TeamStanding teamStanding = new TeamStanding
                         {
                             Team = match.HomeTeam,
-                            TeamID = teamsList?.FirstOrDefault(x => x.TeamName.Trim() == match.HomeTeam.Trim())?.TeamId ?? 0,
+                            TeamID = match.HomeTeamID ?? 0,
                             CompetitionName = competitionName,
                             IsLive = match.StatusID > 1 && match.StatusID < 6
                         };
@@ -65,7 +64,7 @@ namespace DystirWeb.Services
                         TeamStanding teamStanding = new TeamStanding
                         {
                             Team = match.AwayTeam,
-                            TeamID = teamsList?.FirstOrDefault(x => x.TeamName.Trim() == match.AwayTeam.Trim())?.TeamId ?? 0,
+                            TeamID = match.AwayTeamID ?? 0,
                             CompetitionName = competitionName,
                             IsLive = match.StatusID > 1 && match.StatusID < 6
                         };

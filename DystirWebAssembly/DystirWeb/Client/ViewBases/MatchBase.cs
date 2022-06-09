@@ -147,11 +147,6 @@ namespace DystirWeb.ViewBases
             }
         }
 
-        public string GetTeamLogo(string teamName, ObservableCollection<Teams> allTeams)
-        {
-            return allTeams?.FirstOrDefault(x => x.TeamName == teamName)?.TeamLogo;
-        }
-
         public string GetMatchInfoTime(DateTime? matchDateTime)
         {
             if(matchDateTime == null)
