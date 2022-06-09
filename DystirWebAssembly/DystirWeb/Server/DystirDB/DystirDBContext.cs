@@ -180,6 +180,10 @@ namespace DystirWeb.Server.DystirDB
                 entity.Ignore("ExtraMinutes");
 
                 entity.Ignore("ExtraSeconds");
+
+                entity.Ignore("HomeTeamLogo");
+
+                entity.Ignore("AwayTeamLogo");
             });
 
             modelBuilder.Entity<HandballMatches>(entity =>

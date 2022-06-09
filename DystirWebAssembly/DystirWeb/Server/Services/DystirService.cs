@@ -47,9 +47,8 @@ namespace DystirWeb.Services
             DystirDBContext = new DystirDBContext(_dbContextOptions);
             AllMatchesDetails = new ObservableCollection<MatchDetails>();
             var allMatchesTask = GetAllMatchesAsync();
-            var allTeamsTask = GetAllTeamsAsync();
             var allSponsorsTask = GetAllSponsorsAsync();
-            await Task.WhenAll(allMatchesTask, allTeamsTask, allSponsorsTask);
+            await Task.WhenAll(allMatchesTask, allSponsorsTask);
         }
 
         public async Task GetAllMatchesAsync()
@@ -59,7 +58,13 @@ namespace DystirWeb.Services
                 .Where(y => y.Time > fromDate
                 && y.MatchActivation != 1
                 && y.MatchActivation != 2));
-            await GetPlayersOfMatchesAsync();
+            var allTeamsTask = GetAllTeamsAsync();
+            var allPlayersOfMatchesTask = GetPlayersOfMatchesAsync();
+            await Task.WhenAll(allTeamsTask, allPlayersOfMatchesTask);
+            foreach (Matches match in AllMatches)
+            {
+                SetTeamLogoInMatch(match);
+            }
         }
 
         private async Task GetAllTeamsAsync()
@@ -101,6 +106,7 @@ namespace DystirWeb.Services
                 {
                     AllMatches.Remove(findMatch);
                 }
+                SetTeamLogoInMatch(match);
                 AllMatches.Add(match);
             }
             await Task.CompletedTask;
@@ -108,7 +114,7 @@ namespace DystirWeb.Services
 
         public async Task UpdateAllMatchesDetailsAsync(MatchDetails matchDetails)
         {
-            lock (lockUpdateAllPlayersOfMatches)
+            lock (lockUpdateAllMatchesDetails)
             {
                 var findMatchDetails = AllMatchesDetails.FirstOrDefault(x => x.MatchDetailsID == matchDetails?.MatchDetailsID);
                 if (findMatchDetails != null)
@@ -122,7 +128,7 @@ namespace DystirWeb.Services
 
         public async Task UpdateAllPlayersOfMatchesAsync(MatchDetails matchDetails)
         {
-            lock (lockUpdateAllMatchesDetails)
+            lock (lockUpdateAllPlayersOfMatches)
             {
                 var findMatchDetails = AllMatchesDetails.FirstOrDefault(x => x.MatchDetailsID == matchDetails?.MatchDetailsID);
                 if (findMatchDetails != null)
@@ -141,6 +147,14 @@ namespace DystirWeb.Services
                 }
             }
             await Task.CompletedTask;
+        }
+
+        public void SetTeamLogoInMatch(Matches match)
+        {
+            var homeTeamLogo = AllTeams?.FirstOrDefault(x => x.TeamId == match?.HomeTeamID)?.TeamLogo ?? "";
+            match.HomeTeamLogo = homeTeamLogo;
+            var awayTeamLogo = AllTeams?.FirstOrDefault(x => x.TeamId == match?.AwayTeamID)?.TeamLogo ?? "";
+            match.AwayTeamLogo = awayTeamLogo;
         }
 
         public async Task Refresh()

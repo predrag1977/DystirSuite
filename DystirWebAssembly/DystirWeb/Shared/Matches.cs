@@ -88,5 +88,11 @@ namespace DystirWeb.Shared
 
         [JsonProperty("AwayTeamCorner")]
         public int? AwayTeamCorner { get; set; }
+
+        [JsonProperty("HomeTeamLogo")]
+        public string HomeTeamLogo { get; set; }
+
+        [JsonProperty("AwayTeamLogo")]
+        public string AwayTeamLogo { get; set; }
     }
 }

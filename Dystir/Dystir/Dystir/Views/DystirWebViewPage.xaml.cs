@@ -15,7 +15,7 @@ namespace Dystir.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            DystirWebView.Source = "https://www.dystir.fo/";
+            DystirWebView.Source = "http://localhost:51346/client/mobileclient";
         }
 
         [Obsolete]

@@ -5,14 +5,15 @@
 @inherits MobileClientBase
 @layout MobileClientLayout
 
-<div class="header_container">
+
+<div id="header_container_mobile_client">
     <MobileClientHeader BackOnClick="@BackOnClickAsync" SelectedPage="@selectedPage" SelectedMatch="@SelectedMatch" TimeZoneOffset="@TimeZoneOffset" />
 </div>
 
 @if (selectedPage == SelectedPage.Matches)
 {
     <div id="days_selection">
-        <ChooseDays DaysOnClick="@DaysOnClick" TimeZoneOffset="@TimeZoneOffset" />
+        <ChooseDays DaysOnClick="@DaysOnClick" TimeZoneOffset="@TimeZoneOffset" DaysRange="@daysRange" />
     </div>
 }
 else if (selectedPage == SelectedPage.Results || selectedPage == SelectedPage.Fixtures)
@@ -63,9 +64,9 @@ else if (selectedPage == SelectedPage.Results || selectedPage == SelectedPage.Fi
             <div id="matches_same_day">
                 @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
                 {
-                    <div @onclick="() => { MatchID = match?.MatchID.ToString(); ChangePage(SelectedPage.MatchDetails); } ">
+                    <NavLink style="cursor:pointer;" @onclick="() => { MatchID = match?.MatchID.ToString(); ChangePage(SelectedPage.MatchDetails); } ">
                         <Match MatchItem="@match" TimeZoneOffset="@TimeZoneOffset" IsMatchForSameDayList="@true" />
-                    </div>
+                    </NavLink>
                 }
             </div>
 
