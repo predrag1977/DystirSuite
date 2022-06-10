@@ -19,7 +19,7 @@ namespace DystirWeb.Controllers
         [HttpGet("{id}", Name = "GetMatchDetails")]
         public MatchDetails Get(int id)
         {
-            return _matchDetailsService.GetMatchDetails(id);
+            return _matchDetailsService.GetMatchDetails(id, false);
         }
 
         // POST api/<controller>

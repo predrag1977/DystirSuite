@@ -13,6 +13,9 @@ function scrollOnMouseOver(direction) {
 function onPageResize() {
     setMainContainerHeight();
     setMatchDetailsHeight();
+    setMainContainerMobileClientHeight();
+    setMatchDetailsMobileClientHeight();
+
     var horizontalMenu = document.getElementById('horizontal_menu');
     if (horizontalMenu == null) {
         return;
@@ -46,6 +49,23 @@ function setMatchDetailsHeight() {
     }
     var matchDetailsStaticPart = document.getElementById('match-details_static_part');
     matchDetailsContainer.style.height = (window.innerHeight - 80 - matchDetailsStaticPart.offsetHeight) + "px";
+}
+
+function setMainContainerMobileClientHeight() {
+    var mainContainerMobileClient = document.getElementById('main_container_mobile_client');
+    if (mainContainerMobileClient == null) {
+        return;
+    }
+    mainContainerMobileClient.style.height = (window.innerHeight - 240) + "px";
+}
+
+function setMatchDetailsMobileClientHeight() {
+    var matchDetailsContainerMobileClient = document.getElementById('match_details_container_mobile_client');
+    if (matchDetailsContainerMobileClient == null) {
+        return;
+    }
+    var matchDetailsStaticPart = document.getElementById('match-details_static_part');
+    matchDetailsContainerMobileClient.style.height = (window.innerHeight - 180 - matchDetailsStaticPart.offsetHeight) + "px";
 }
 
 function goBack() {

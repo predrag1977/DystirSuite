@@ -6,7 +6,7 @@
         @foreach (var competition in CompetitionsList ?? new List<string>())
         {
             <div class="tab @(SelectedCompetition == competition ? "selected_tab" : "")" @onclick="(() => SelectCompetition(competition))">
-                <span>@competition?.ToUpper()</span>
+                <span>@competition</span>
             </div>
         }
     </div>

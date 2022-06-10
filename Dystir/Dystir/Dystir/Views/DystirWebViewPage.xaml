@@ -11,10 +11,12 @@
     <ContentPage.Content>
         <StackLayout BackgroundColor="#181818">
             <WebView x:Name="DystirWebView"
+                     Source="http://localhost:51346/client/mobileclient"
                      VerticalOptions="FillAndExpand"
                      HorizontalOptions="FillAndExpand"
                      Navigated="OnNavigated"
                      BackgroundColor="#181818"/>
+            <Button Text="REFRESH" Clicked="Button_Clicked" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -184,6 +184,8 @@ namespace DystirWeb.Server.DystirDB
                 entity.Ignore("HomeTeamLogo");
 
                 entity.Ignore("AwayTeamLogo");
+
+                entity.Ignore("FullMatchDetails");
             });
 
             modelBuilder.Entity<HandballMatches>(entity =>

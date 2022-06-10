@@ -11,35 +11,34 @@ namespace DystirWeb.Services
         private readonly DystirDBContext _dystirDBContext;
         static readonly object lockGetMatchDetails = new object();
 
-        public MatchDetailsService (DystirService dystirService, DystirDBContext dystirDBContext)
+        public MatchDetailsService(DystirService dystirService, DystirDBContext dystirDBContext)
         {
             _dystirService = dystirService;
             _dystirDBContext = dystirDBContext;
         }
 
-        public MatchDetails GetMatchDetails(int matchID)
+        public MatchDetails GetMatchDetails(int matchID, bool isDatabaseUpdated)
         {
             lock (lockGetMatchDetails)
             {
-                var matchDetails = _dystirService.AllMatchesDetails.FirstOrDefault(x => x.MatchDetailsID == matchID);
-                if (matchDetails != null)
+                var matchDetails = isDatabaseUpdated ? null : _dystirService.AllMatchesDetails.FirstOrDefault(x => x.MatchDetailsID == matchID);
+                if (matchDetails == null)
                 {
-                    return matchDetails;
+                    var eventsOfMatch = GetEventsOfMatches(matchID);
+                    var playersOfMatch = GetPlayersOfMatches(matchID);
+                    matchDetails = new MatchDetails()
+                    {
+                        MatchDetailsID = matchID,
+                        Match = GetMatchFromDB(matchID),
+                        EventsOfMatch = eventsOfMatch?
+                        .OrderBy(x => x.EventPeriodId ?? 0)
+                        .ThenBy(x => x.EventTotalTime)
+                        .ThenBy(x => x.EventMinute)
+                        .ThenBy(x => x.EventOfMatchId).ToList(),
+                        PlayersOfMatch = playersOfMatch?.Where(x => x.PlayingStatus != 3).ToList()
+                    };
+                    _dystirService.UpdateDataAsync(matchDetails);
                 }
-                var eventsOfMatch = GetEventsOfMatches(matchID);
-                var playersOfMatch = GetPlayersOfMatches(matchID);
-                matchDetails = new MatchDetails()
-                {
-                    MatchDetailsID = matchID,
-                    Match = GetMatchFromDB(matchID),
-                    EventsOfMatch = eventsOfMatch?
-                    .OrderBy(x => x.EventPeriodId ?? 0)
-                    .ThenBy(x => x.EventTotalTime)
-                    .ThenBy(x => x.EventMinute)
-                    .ThenBy(x => x.EventOfMatchId).ToList(),
-                    PlayersOfMatch = playersOfMatch?.Where(x => x.PlayingStatus != 3).ToList()
-                };
-                _dystirService.UpdateDataAsync(matchDetails);
                 return matchDetails;
             }
         }
@@ -79,7 +78,7 @@ namespace DystirWeb.Services
         {
             var match = _dystirDBContext.Matches.Find(matchID);
             _dystirService.SetTeamLogoInMatch(match);
-            return match;        
+            return match;
         }
     }
 }
