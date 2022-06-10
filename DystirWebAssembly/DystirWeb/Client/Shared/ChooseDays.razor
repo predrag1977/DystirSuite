@@ -3,27 +3,27 @@
 <div id="horizontal_menu_days">
     <div class="tab @(GetSelectedDaysIndex(DaysRange) == 0 ? "selected_tab" : "")">
         <span @onclick='(() => SelectDays("lastweek"))'>
-            Í FARNU VIKU
+            Í farnu viku
         </span>
     </div>
     <div class="tab @(GetSelectedDaysIndex(DaysRange) == 1 ? "selected_tab" : "")">
         <span @onclick='(() => SelectDays("yesterday"))'>
-            Í GJÁR
+            Í gjár
         </span>
     </div>
     <div class="tab @(GetSelectedDaysIndex(DaysRange) == 2 ? "selected_tab" : "")">
         <span @onclick='(() => SelectDays("today"))'>
-            Í DAG
+            Í dag
         </span>
     </div>
     <div class="tab @(GetSelectedDaysIndex(DaysRange) == 3 ? "selected_tab" : "")">
         <span @onclick='(() => SelectDays("tomorrow"))'>
-            Í MORGIN
+            Í morgin
         </span>
     </div>
     <div class="tab @(GetSelectedDaysIndex(DaysRange) == 4 ? "selected_tab" : "")">
         <span @onclick='(() => SelectDays("nextweek"))'>
-            Í VIKUNI
+            Í vikuni
         </span>
     </div>
 </div>

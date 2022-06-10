@@ -15,7 +15,6 @@ namespace Dystir.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            DystirWebView.Source = "http://localhost:51346/client/mobileclient";
         }
 
         [Obsolete]
@@ -27,14 +26,17 @@ namespace Dystir.Views
         [Obsolete]
         private void DystirWebView_Navigating(object sender, WebNavigatingEventArgs e)
         {
-            if (e.Url.StartsWith("file://"))
-            {
-                return;
-            }
+            //if (e.Url.StartsWith("file://"))
+            //{
+            //    return;
+            //}
+            //Device.OpenUri(new Uri(e.Url));
+            return;
+        }
 
-            Device.OpenUri(new Uri(e.Url));
-
-            e.Cancel = true;
+        void Button_Clicked(System.Object sender, System.EventArgs e)
+        {
+            DystirWebView.Reload();
         }
     }
 }

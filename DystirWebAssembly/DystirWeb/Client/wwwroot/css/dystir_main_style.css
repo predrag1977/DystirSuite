@@ -137,7 +137,7 @@ body {
 
 #days_selection, #competitions_selection {
     height: 60px;
-    margin: 0 10px;
+    margin: 0 5px;
 }
 
 #competitions_selection {
@@ -660,7 +660,6 @@ a, .btn-link, .nav-link {
 }
 
 .nav-item {
-    font-size: 0.9rem;
     padding: 0 0.5rem;
 }
 

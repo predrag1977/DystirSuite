@@ -94,5 +94,9 @@ namespace DystirWeb.Shared
 
         [JsonProperty("AwayTeamLogo")]
         public string AwayTeamLogo { get; set; }
+
+        [JsonProperty("FullMatchDetails")]
+        public FullMatchDetailsModelView FullMatchDetails { get; set; }
+        
     }
 }

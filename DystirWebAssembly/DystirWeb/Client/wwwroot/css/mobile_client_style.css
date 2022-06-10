@@ -1,4 +1,13 @@
-﻿#main_mobile_client {
+﻿#main_container_mobile_client, #match_details_container_mobile_client {
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: auto 0;
+    font-size: 1rem;
+    padding: 0 5px;
+    width: 100%;
+}
+
+#main_mobile_client {
     position: absolute;
     background-color: #181818;
     height: 100%;

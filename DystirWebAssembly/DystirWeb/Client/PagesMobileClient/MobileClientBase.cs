@@ -32,9 +32,8 @@ namespace DystirWeb.Client.PagesMobileClient
         public List<string> CompetitionsList { get; set; }
         public Matches SelectedMatch = new Matches();
         public string MatchID { get; set; }
-        public static string daysRange;
+        public string daysRange { get; set; }
         public SelectedPage selectedPage = SelectedPage.Matches;
-        public FullMatchDetailsModelView fullMatchDetails;
         public List<Matches> MatchesListSameDay = new List<Matches>();
         public Standing standing = new Standing();
         public string selectedTab = "0";
@@ -51,7 +50,6 @@ namespace DystirWeb.Client.PagesMobileClient
             _timeService.OnTimerElapsed += TimerElapsed;
             TimeZoneOffset = int.Parse(await _jsRuntime.InvokeAsync<String>("getTimeZoneOffset"));
             await _dystirWebClientService.StartUpAsync();
-            //await LoadData(selectedPage);
         }
 
         void IDisposable.Dispose()
@@ -102,7 +100,7 @@ namespace DystirWeb.Client.PagesMobileClient
             }
         }
 
-        public async void DaysOnClick()
+        public async void DaysOnClick(string daysRange)
         {
             isLoading = true;
             SetSelectedDaysRange(daysRange);
@@ -156,9 +154,10 @@ namespace DystirWeb.Client.PagesMobileClient
                 case SelectedPage.Statistics:
                     break;
                 case SelectedPage.MatchDetails:
-                    await LoadMatchDetails();
+                    await LoadMatchDetails(SelectedMatch);
                     break;
             }
+            _ = _jsRuntime.InvokeVoidAsync("onPageResize", "");
         }
 
         private async Task LoadMatches()
@@ -206,7 +205,7 @@ namespace DystirWeb.Client.PagesMobileClient
             Refresh();
         }
 
-        public async Task LoadFixturesMatches()
+        private async Task LoadFixturesMatches()
         {
             await Task.Run(() =>
             {
@@ -235,39 +234,8 @@ namespace DystirWeb.Client.PagesMobileClient
             Refresh();
         }
 
-        private object GetOrder(int? matchTypeId)
+        public async Task LoadMatchDetails(Matches match)
         {
-            switch (matchTypeId)
-            {
-                case 101:
-                    return 6;
-                case 6:
-                    return 101;
-                default:
-                    return matchTypeId;
-            }
-        }
-
-        private async void MatchUpdate(MatchDetails matchDetails)
-        {
-            string matchIDForUpdate = matchDetails?.MatchDetailsID.ToString();
-            if (MatchID == matchIDForUpdate)
-            {
-                await LoadMatchDetails();
-            }
-            MatchesListSameDay = _dystirWebClientService.GetMatchesListSameDay(SelectedMatch);
-            await LoadLiveStandingAsync(SelectedMatch);
-            Refresh();
-        }
-
-        public void OnTabClick(string tabIndex)
-        {
-            selectedTab = tabIndex;
-        }
-
-        public async Task LoadMatchDetails()
-        {
-            _ = _jsRuntime.InvokeVoidAsync("onPageResize", "");
             int parseMatchID = int.TryParse(MatchID, out int m) ? int.Parse(MatchID) : 0;
             SelectedMatch = _dystirWebClientService.AllMatches?.FirstOrDefault(x => x.MatchID == parseMatchID);
             MatchesListSameDay = _dystirWebClientService.GetMatchesListSameDay(SelectedMatch);
@@ -275,22 +243,27 @@ namespace DystirWeb.Client.PagesMobileClient
             var loadMatchDetailsAsyncTask = _dystirWebClientService.LoadMatchDetailsAsync(parseMatchID);
             var loadLiveStandingAsyncTask = LoadLiveStandingAsync(SelectedMatch);
             await Task.WhenAll(loadMatchDetailsAsyncTask, loadLiveStandingAsyncTask);
-            fullMatchDetails = loadMatchDetailsAsyncTask.Result;
+            match.FullMatchDetails = loadMatchDetailsAsyncTask.Result;
             isLoading = false;
             Refresh();
-            _ = _jsRuntime.InvokeVoidAsync("onPageResize", "");
+        }
+
+        private async void MatchUpdate(MatchDetails matchDetails)
+        {
+            string matchIDForUpdate = matchDetails?.MatchDetailsID.ToString();
+            if (MatchID == matchIDForUpdate)
+            {
+                await LoadMatchDetails(matchDetails.Match);
+            }
+            MatchesListSameDay = _dystirWebClientService.GetMatchesListSameDay(SelectedMatch);
+            await LoadLiveStandingAsync(SelectedMatch);
+            Refresh();
         }
 
         private async Task LoadLiveStandingAsync(Matches selectedMatch)
         {
             standing = _liveStandingService.GetStanding(selectedMatch);
             await Task.CompletedTask;
-        }
-
-        public bool ShowLiveStandings(Matches match)
-        {
-            var competititionNamesArray = new string[] { "Betri deildin", "1. deild", "Betri deildin kvinnur", "2. deild" };
-            return competititionNamesArray.Any(x => x == match?.MatchTypeName);
         }
 
         private void SetSelectedDaysRange(string daysRange)
@@ -322,6 +295,36 @@ namespace DystirWeb.Client.PagesMobileClient
                     _daysAfter = 6;
                     break;
             }
+            this.daysRange = daysRange;
+        }
+
+        private object GetOrder(int? matchTypeId)
+        {
+            switch (matchTypeId)
+            {
+                case 101:
+                    return 6;
+                case 6:
+                    return 101;
+                default:
+                    return matchTypeId;
+            }
+        }
+
+        public bool ShowLiveStandings(Matches match)
+        {
+            var competititionNamesArray = new string[] { "Betri deildin", "1. deild", "Betri deildin kvinnur", "2. deild" };
+            return competititionNamesArray.Any(x => x == match?.MatchTypeName);
+        }
+
+        public void OnTabClick(string tabIndex)
+        {
+            selectedTab = tabIndex;
+        }
+
+        public void FooterMenuTabOnClick (SelectedPage selectedPage)
+        {
+            ChangePage(selectedPage);
         }
     }
 
