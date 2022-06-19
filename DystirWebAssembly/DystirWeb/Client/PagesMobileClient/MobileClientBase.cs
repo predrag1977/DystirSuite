@@ -117,11 +117,12 @@ namespace DystirWeb.Client.PagesMobileClient
         public async void BackOnClickAsync()
         {
             selectedPage = _previousPage;
+            _ = _jsRuntime.InvokeVoidAsync("onPageResize", "");
             Refresh();
             await Task.CompletedTask;
         }
 
-        private void Refresh()
+        public void Refresh()
         {
             InvokeAsync(() => StateHasChanged());
         }
@@ -154,10 +155,12 @@ namespace DystirWeb.Client.PagesMobileClient
                 case SelectedPage.Statistics:
                     break;
                 case SelectedPage.MatchDetails:
-                    await LoadMatchDetails(SelectedMatch);
+                    await LoadMatchDetails();
                     break;
             }
-            _ = _jsRuntime.InvokeVoidAsync("onPageResize", "");
+            isLoading = false;
+            Refresh();
+            await _jsRuntime.InvokeVoidAsync("onPageResize", "");
         }
 
         private async Task LoadMatches()
@@ -170,8 +173,6 @@ namespace DystirWeb.Client.PagesMobileClient
                 .Where(x => x.Time.Value.AddMinutes(-TimeZoneOffset).Date >= fromDate
                 && x.Time.Value.AddMinutes(-TimeZoneOffset).Date <= toDate).GroupBy(x => x.MatchTypeName)?.ToList();
             });
-            isLoading = false;
-            Refresh();
         }
 
         private async Task LoadResultsMatches()
@@ -201,8 +202,6 @@ namespace DystirWeb.Client.PagesMobileClient
                 SelectedMatchListGroup = allResultMatchByCompetition.FirstOrDefault(x => x.Key == SelectedCompetition)?
                 .GroupBy(x => x.MatchTypeName)?.ToList();
             });
-            isLoading = false;
-            Refresh();
         }
 
         private async Task LoadFixturesMatches()
@@ -230,22 +229,17 @@ namespace DystirWeb.Client.PagesMobileClient
                 SelectedMatchListGroup = allFixturesMatchByCompetition.FirstOrDefault(x => x.Key == SelectedCompetition)?
                 .GroupBy(x => x.MatchTypeName)?.ToList();
             });
-            isLoading = false;
-            Refresh();
         }
 
-        public async Task LoadMatchDetails(Matches match)
+        public async Task LoadMatchDetails()
         {
             int parseMatchID = int.TryParse(MatchID, out int m) ? int.Parse(MatchID) : 0;
             SelectedMatch = _dystirWebClientService.AllMatches?.FirstOrDefault(x => x.MatchID == parseMatchID);
             MatchesListSameDay = _dystirWebClientService.GetMatchesListSameDay(SelectedMatch);
-            Refresh();
             var loadMatchDetailsAsyncTask = _dystirWebClientService.LoadMatchDetailsAsync(parseMatchID);
             var loadLiveStandingAsyncTask = LoadLiveStandingAsync(SelectedMatch);
             await Task.WhenAll(loadMatchDetailsAsyncTask, loadLiveStandingAsyncTask);
-            match.FullMatchDetails = loadMatchDetailsAsyncTask.Result;
-            isLoading = false;
-            Refresh();
+            SelectedMatch.FullMatchDetails = loadMatchDetailsAsyncTask.Result;
         }
 
         private async void MatchUpdate(MatchDetails matchDetails)
@@ -253,7 +247,7 @@ namespace DystirWeb.Client.PagesMobileClient
             string matchIDForUpdate = matchDetails?.MatchDetailsID.ToString();
             if (MatchID == matchIDForUpdate)
             {
-                await LoadMatchDetails(matchDetails.Match);
+                await LoadMatchDetails();
             }
             MatchesListSameDay = _dystirWebClientService.GetMatchesListSameDay(SelectedMatch);
             await LoadLiveStandingAsync(SelectedMatch);

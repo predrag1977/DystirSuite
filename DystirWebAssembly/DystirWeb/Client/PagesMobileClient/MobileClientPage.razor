@@ -26,28 +26,23 @@ else if (selectedPage == SelectedPage.Results || selectedPage == SelectedPage.Fi
 }
 else if (selectedPage == SelectedPage.MatchDetails)
 {
-    <div id="match-details_static_part">
-        <div id="matches_same_day">
-            @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
-            {
-                <div style="cursor:pointer;" @onclick="() => { MatchID = match?.MatchID.ToString(); ChangePage(SelectedPage.MatchDetails); } ">
-                    <Match MatchItem="@match" TimeZoneOffset="@TimeZoneOffset" IsMatchForSameDayList="@true" />
-                </div>
-
-
-            }
+    <div id="competitions_selection">
+        <div id="scroll_button_left" onclick="scrollOnMouseOver('left')">
+            &#10094;
         </div>
-
-        <div id="selected_match_details">
-            <Match MatchItem="@SelectedMatch" TimeZoneOffset="@TimeZoneOffset" ShowMatchType="@true" />
-        </div>
-
-        @if (SelectedMatch != null)
-        {
-            <div id="horizontal_menu_days">
-                <MatchDetailsTabs TabOnClick="OnTabClick" Match="@(SelectedMatch)" />
+        <div id="horizontal_menu">
+            <div id="horizontal_menu_wrapper">
+                @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
+                {
+                    <a style="cursor:pointer;" @onclick="() => { MatchID = match?.MatchID.ToString(); ChangePage(SelectedPage.MatchDetails); }">
+                        <Match MatchItem="@match" TimeZoneOffset="@TimeZoneOffset" IsMatchForSameDayList="@true" />
+                    </a>
+                }
             </div>
-        }
+        </div>
+        <div id="scroll_button_right" onclick="scrollOnMouseOver('right')">
+            &#10095;
+        </div>
     </div>
 }
 
@@ -57,7 +52,7 @@ else if (selectedPage == SelectedPage.MatchDetails)
     case SelectedPage.Results:
     case SelectedPage.Fixtures:
     default:
-        <div id="main_container_mobile_client">
+       <div id="main_container_mobile_client">
             @if (SelectedMatchListGroup?.Count > 0)
             {
                 foreach (var matchgroup in SelectedMatchListGroup)
@@ -65,46 +60,15 @@ else if (selectedPage == SelectedPage.MatchDetails)
                     <div class="match-group-competition-name">@(matchgroup.Key)</div>
                     @foreach (var match in matchgroup)
                     {
-                        <div @onclick="() => { MatchID = match?.MatchID.ToString(); _ = LoadMatchDetails(match); } ">
+                        <div style="cursor:pointer;" @onclick="() => { MatchID = match?.MatchID.ToString(); ChangePage(SelectedPage.MatchDetails); }">
                             <MatchView MatchItem="@match" TimeZoneOffset="@TimeZoneOffset" />
                         </div>
-
-                        @if (SelectedMatch.MatchID == match.MatchID)
-                        {
-                            <div id="horizontal_menu_days">
-                                <MatchDetailsTabs TabOnClick="OnTabClick" Match="@(match)" />
-                            </div>
-
-                            <div id="match_details_container_mobile_client">
-                                <div class="@(selectedTab == "0" ? "active_tab" : "no_active_tab")">
-                                    <SummaryView SummaryEventsOfMatch="@(match.FullMatchDetails?.Summary)" />
-                                </div>
-                                <div class="@(selectedTab == "1" ? "active_tab" : "no_active_tab")">
-                                    <LineupsView PlayersOfMatch="@(match.FullMatchDetails?.MatchDetails?.PlayersOfMatch)" Match="@(match)" />
-                                </div>
-                                <div class="@(selectedTab == "2" ? "active_tab" : "no_active_tab")">
-                                    <CommentariesView Commentaries="@(match.FullMatchDetails?.Commentary)" />
-                                </div>
-                                @if (SelectedMatch?.StatusID <= 12)
-                                {
-                                    <div class="@(selectedTab == "3" ? "active_tab" : "no_active_tab")">
-                                        <StatisticView StatisticOfMatch="@(match.FullMatchDetails?.Statistics)" />
-                                    </div>
-                                }
-                                @if (ShowLiveStandings(SelectedMatch))
-                                {
-                                    <div class="@(selectedTab == "4" ? "active_tab" : "no_active_tab")">
-                                        <LiveStandingView Standing="@(standing)" Match="@(SelectedMatch)" />
-                                    </div>
-                                }
-                            </div>
-                        }
                     }
                 }
             }
             else if (SelectedMatchListGroup?.Count == 0)
             {
-            <div class="no-matches">Eingin dystur</div>
+                <div class="no-matches">Eingin dystur</div>
             }
             <SponsorsView ShowOnSideBar="false" />
         </div>
@@ -118,7 +82,18 @@ else if (selectedPage == SelectedPage.MatchDetails)
         break;
     case SelectedPage.MatchDetails:
 
-        <div id="match_details_container_mobile_client">
+        <div id="selected_match_details">
+            <Match MatchItem="@SelectedMatch" TimeZoneOffset="@TimeZoneOffset" ShowMatchType="@true" />
+        </div>
+
+        @if (SelectedMatch != null)
+        {
+            <div id="horizontal_menu_days">
+                <MatchDetailsTabs TabOnClick="OnTabClick" Match="@(SelectedMatch)" />
+            </div>
+        }
+
+        <div id="match_details_container">
 
             <div class="@(selectedTab == "0" ? "active_tab" : "no_active_tab")">
                 <SummaryView SummaryEventsOfMatch="@(SelectedMatch.FullMatchDetails?.Summary)" />

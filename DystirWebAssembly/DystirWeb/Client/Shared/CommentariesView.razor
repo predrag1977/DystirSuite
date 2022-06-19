@@ -9,7 +9,7 @@
                         <SummaryEventView SummaryEventOfMatch="@summaryEventOfMatch" />
                     </tr>
                 </table>
-                <div class="summary_event text-center w-100">@summaryEventOfMatch.EventOfMatch.EventText</div>
+                <div class="summary_event text-center w-100">@summaryEventOfMatch.EventOfMatch.EventText?.Replace("..", ".")</div>
             </td>
         </tr>
     </table>

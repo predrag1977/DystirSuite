@@ -19,13 +19,13 @@ namespace DystirWeb.Services
 
         private readonly HubConnection _hubConnection;
         private readonly HttpClient _httpClient;
+        private readonly TimeService _timeService;
 
         public List<Matches> AllMatches;
         public List<MatchDetails> AllMatchesDetails;
         public ObservableCollection<Sponsors> AllSponsors;
         public ObservableCollection<Standing> Standings;
         public ObservableCollection<CompetitionStatistic> CompetitionStatistics;
-
         public event Action OnFullDataLoaded;
         public event Action OnConnected;
         public event Action OnDisconnected;
@@ -35,10 +35,11 @@ namespace DystirWeb.Services
         public void HubConnectionDisconnected() => OnDisconnected?.Invoke();
         public void RefreshMatchDetails(MatchDetails matchDetails) => OnRefreshMatchDetails?.Invoke(matchDetails);
 
-        public DystirWebClientService (HubConnection hubConnection, HttpClient httpClient)
+        public DystirWebClientService (HubConnection hubConnection, HttpClient httpClient, TimeService timeService)
         {
             _hubConnection = hubConnection;
             _httpClient = httpClient;
+            _timeService = timeService;
             _hubConnection.On<string, string>("ReceiveMatchDetails", (matchID, matchDetailsJson) =>
             {
                 MatchDetails matchDetails = JsonConvert.DeserializeObject<MatchDetails>(matchDetailsJson);
@@ -77,11 +78,8 @@ namespace DystirWeb.Services
 
         public async Task LoadAllMatchesAsync()
         {
-            var fromDate = new DateTime(DateTime.UtcNow.Year, 1, 1);
             var matches = await _httpClient.GetFromJsonAsync<Matches[]>("api/matches");
-            AllMatches = matches.Where(y => y.Time > fromDate
-                    && y.MatchActivation != 1
-                    && y.MatchActivation != 2).ToList();
+            AllMatches = matches?.ToList() ?? new List<Matches>();
             AllMatchesDetails = new List<MatchDetails>();
         }
 
@@ -89,6 +87,7 @@ namespace DystirWeb.Services
         {
             var sponsors = await _httpClient.GetFromJsonAsync<Sponsors[]>("api/sponsors");
             AllSponsors = new ObservableCollection<Sponsors>(sponsors);
+            _timeService.StartSponsorsTime();
         }
 
         public async Task StartDystirHubAsync()
