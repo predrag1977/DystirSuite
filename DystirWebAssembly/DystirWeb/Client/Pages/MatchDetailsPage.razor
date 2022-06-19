@@ -7,9 +7,9 @@
     <div id="matches_same_day">
         @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
         {
-            <NavLink style="cursor:pointer;" @onclick="@(()=>isLoading = true)" href="@("football/matchdetails/" + match.MatchID)">
+            <a style="cursor:pointer;" @onclick="@(()=>isLoading = true)" href="@("football/matchdetails/" + match.MatchID)">
                 <Match MatchItem="@match" TimeZoneOffset="@timeZoneOffset" IsMatchForSameDayList="@true" />
-            </NavLink>
+            </a>
         }
     </div>
 

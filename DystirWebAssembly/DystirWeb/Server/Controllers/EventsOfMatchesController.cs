@@ -363,7 +363,7 @@ namespace DystirWeb.Controllers
                     eventsOfMatches.EventText = "REYTTKORT " + eventsOfMatches.EventTeam + (string.IsNullOrWhiteSpace(mainPlayerFullName) ? "." : " leikari " + mainPlayerFullName + ".");
                     break;
                 case "CORNER":
-                    eventsOfMatches.EventText = "HORNASPARK til " + eventsOfMatches.EventTeam + ".";
+                    (eventsOfMatches.EventText = "HORNASPARK til " + eventsOfMatches.EventTeam + ".").Replace("..", ".");
                     break;
                 case "ONTARGET":
                     eventsOfMatches.EventText = "ROYND Á MÁL. " + eventsOfMatches.EventTeam + " leikari" + (string.IsNullOrWhiteSpace(mainPlayerFullName) ? "" : " " + mainPlayerFullName) + " roynd á mál.";
@@ -386,7 +386,7 @@ namespace DystirWeb.Controllers
                     eventsOfMatches.EventText = "UPPLEGG " + eventsOfMatches.EventTeam + (string.IsNullOrWhiteSpace(mainPlayerFullName) ? "." : " leikari " + mainPlayerFullName + ".");
                     break;
                 case "PENALTY":
-                    eventsOfMatches.EventText = "BROTSSPARK til " + eventsOfMatches.EventTeam + ".";
+                    (eventsOfMatches.EventText = "BROTSSPARK til " + eventsOfMatches.EventTeam + ".").Replace("..", ".");
                     break;
                 case "PENALTYSCORED":
                     eventsOfMatches.EventText = "BROTSSPARK SKORA " + eventsOfMatches.EventTeam + (string.IsNullOrWhiteSpace(mainPlayerFullName) ? "." : " leikari " + mainPlayerFullName + ".");

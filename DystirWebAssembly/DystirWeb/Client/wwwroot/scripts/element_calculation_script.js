@@ -11,16 +11,20 @@ function scrollOnMouseOver(direction) {
 }
 
 function onPageResize() {
+    scrollButtonVisibility();
+
     setMainContainerHeight();
     setMatchDetailsHeight();
     setMainContainerMobileClientHeight();
     setMatchDetailsMobileClientHeight();
+}
 
+function scrollButtonVisibility() {
     var horizontalMenu = document.getElementById('horizontal_menu');
+    var horizontalMenuScroll = document.getElementById('horizontal_menu_wrapper');
     if (horizontalMenu == null) {
         return;
     }
-    var horizontalMenuScroll = horizontalMenu.children[0];
     var scrollButtonLeft = document.getElementById('scroll_button_left');
     var scrollButtonRight = document.getElementById('scroll_button_right');
 
@@ -36,36 +40,32 @@ function onPageResize() {
 
 function setMainContainerHeight() {
     var mainContainer = document.getElementById('main_container');
-    if (mainContainer == null) {
-        return;
+    if (mainContainer != null) {
+        mainContainer.style.height = (window.innerHeight - 140) + "px";
     }
-    mainContainer.style.height = (window.innerHeight - 140) + "px";
 }
 
 function setMatchDetailsHeight() {
     var matchDetailsContainer = document.getElementById('match_details_container');
-    if (matchDetailsContainer == null) {
-        return;
+    if (matchDetailsContainer != null) {
+        var matchDetailsStaticPart = document.getElementById('match-details_static_part');
+        matchDetailsContainer.style.height = (window.innerHeight - 80 - matchDetailsStaticPart.offsetHeight) + "px";
     }
-    var matchDetailsStaticPart = document.getElementById('match-details_static_part');
-    matchDetailsContainer.style.height = (window.innerHeight - 80 - matchDetailsStaticPart.offsetHeight) + "px";
 }
 
 function setMainContainerMobileClientHeight() {
     var mainContainerMobileClient = document.getElementById('main_container_mobile_client');
-    if (mainContainerMobileClient == null) {
-        return;
+    if (mainContainerMobileClient != null) {
+        mainContainerMobileClient.style.height = (window.innerHeight - 240) + "px";
     }
-    mainContainerMobileClient.style.height = (window.innerHeight - 240) + "px";
 }
 
 function setMatchDetailsMobileClientHeight() {
     var matchDetailsContainerMobileClient = document.getElementById('match_details_container_mobile_client');
-    if (matchDetailsContainerMobileClient == null) {
-        return;
+    if (matchDetailsContainerMobileClient != null) {
+        var matchDetailsStaticPart = document.getElementById('match-details_static_part');
+        matchDetailsContainerMobileClient.style.height = (window.innerHeight - 180 - matchDetailsStaticPart.offsetHeight) + "px";
     }
-    var matchDetailsStaticPart = document.getElementById('match-details_static_part');
-    matchDetailsContainerMobileClient.style.height = (window.innerHeight - 180 - matchDetailsStaticPart.offsetHeight) + "px";
 }
 
 function goBack() {

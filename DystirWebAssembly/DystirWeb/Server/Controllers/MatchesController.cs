@@ -62,7 +62,9 @@ namespace DystirWeb.Controllers
                 default:
                     int year = DateTime.UtcNow.Year;
                     fromDate = new DateTime(year, 1, 1);
-                    matches = _dystirService.AllMatches?.Where(y => y.MatchActivation != 1 && y.MatchActivation != 2 && y.Time > fromDate);
+                    matches = _dystirService.AllMatches?.Where(y => y.Time > fromDate
+                            && y.MatchActivation != 1
+                            && y.MatchActivation != 2);
                     break;
             }
             Debug.WriteLine("Finished:" + DateTime.Now.ToString("hh:mm:ss:ff"));
