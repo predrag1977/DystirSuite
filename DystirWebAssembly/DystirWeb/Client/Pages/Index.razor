@@ -1,7 +1,7 @@
 ﻿@page "/"
 @page "/football/matches/{daysRange}"
 
-@layout MainFootballLayout
+@layout DystirLayout
 @implements IDisposable
 
 <div id="days_selection">
@@ -51,7 +51,6 @@
         DystirWebClientService.OnFullDataLoaded += DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
-        TimeService.OnTimerElapsed += TimerElapsed;
         timeZoneOffset = int.Parse(await JSRuntime.InvokeAsync<String>("getTimeZoneOffset"));
         if (daysRange != null)
         {
@@ -74,7 +73,6 @@
         DystirWebClientService.OnFullDataLoaded -= DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected -= HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails -= DystirWebClientService_OnRefreshMatchDetails;
-        TimeService.OnTimerElapsed -= TimerElapsed;
     }
 
     private async void DystirWebClientService_FullDataLoaded()
@@ -90,14 +88,6 @@
     private async void DystirWebClientService_OnRefreshMatchDetails(MatchDetails matchDetails)
     {
         await GetSelectedMatchListGroup();
-    }
-
-    private void TimerElapsed(object sender, EventArgs e)
-    {
-        if (HubConnection.State == HubConnectionState.Connected)
-        {
-            InvokeAsync(() => StateHasChanged());
-        }
     }
 
     private async void DaysOnClick(string daysRange)

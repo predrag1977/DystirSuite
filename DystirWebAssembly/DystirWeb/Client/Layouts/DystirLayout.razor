@@ -1,0 +1,27 @@
+﻿@layout MainLayout
+@inherits LayoutComponentBase
+
+<div id="main">
+    <div id="background">
+
+        <div id="header_container">
+            <Header />
+        </div>
+
+        <div id="container">
+            @Body
+        </div>
+
+    </div>
+</div>
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        _ = JSRuntime.InvokeVoidAsync("setTitle", "Dystir");
+        _ = JSRuntime.InvokeVoidAsync("setFavicon", "favicon.ico");
+        _ = JSRuntime.InvokeVoidAsync("loadGoogleAnalytics", "170595956-1");
+        await Task.CompletedTask;
+    }
+}

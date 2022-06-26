@@ -1,12 +1,6 @@
 ﻿@page "/football/standings"
 
-@using DystirWeb.Shared
-@using DystirWeb.Services
-@using System.Collections.ObjectModel
-@using Microsoft.AspNetCore.SignalR.Client
-@inject DystirWebClientService DystirWebClientService
-@inject HubConnection HubConnection
-@layout MainFootballLayout
+@layout DystirLayout
 @implements IDisposable
 
 <div id="competitions_selection">

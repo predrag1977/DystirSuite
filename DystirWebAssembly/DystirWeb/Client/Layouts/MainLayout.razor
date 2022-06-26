@@ -1,22 +1,7 @@
-﻿@using DystirWeb.Services
-@inject DystirWebClientService DystirWebClientService
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 @implements IDisposable
 
-<div id="main">
-    <div id="background">
-
-        <div id="header_container">
-            <Header />
-        </div>
-
-        <div id="container">
-            @Body
-        </div>
-
-    </div>
-</div>
-
+@Body
 
 @if (!IsDystirHubConnected)
 {
@@ -33,9 +18,6 @@
     {
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnDisconnected += HubConnection_OnDisconnected;
-        _ = JSRuntime.InvokeVoidAsync("setTitle", "Dystir");
-        _ = JSRuntime.InvokeVoidAsync("setFavicon", "favicon.ico");
-        _ = JSRuntime.InvokeVoidAsync("loadGoogleAnalytics", "170595956-1");
         _ = DystirWebClientService.StartUpAsync();
         await Task.CompletedTask;
     }
@@ -65,9 +47,4 @@
         InvokeAsync(() => StateHasChanged());
     }
 }
-
-
-
-
-
 

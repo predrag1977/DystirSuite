@@ -1,6 +1,6 @@
 ﻿@page "/football/matchdetails/{matchid}"
 
-@layout MainFootballLayout
+@layout DystirLayout
 @implements IDisposable
 
 <div id="match-details_static_part">
@@ -8,13 +8,13 @@
         @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
         {
             <a style="cursor:pointer;" @onclick="@(()=>isLoading = true)" href="@("football/matchdetails/" + match.MatchID)">
-                <Match MatchItem="@match" TimeZoneOffset="@timeZoneOffset" IsMatchForSameDayList="@true" />
+                <MatchView MatchItem="@match" TimeZoneOffset="@timeZoneOffset" IsMatchForSameDayList="@true" />
             </a>
         }
     </div>
 
     <div id="selected_match_details">
-        <Match MatchItem="@SelectedMatch" TimeZoneOffset="@timeZoneOffset" ShowMatchType="@true" />
+        <MatchView MatchItem="@SelectedMatch" TimeZoneOffset="@timeZoneOffset" ShowMatchType="@true" IsMatchInDetails="@true" />
     </div>
 
     @if (SelectedMatch != null)

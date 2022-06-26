@@ -1,18 +1,10 @@
 ﻿@inherits LayoutComponentBase
-@implements IDisposable
+@layout MainLayout
 
 @Body
 
-@if (!IsDystirHubConnected)
-{
-    <div class="loading-spinner-parent">
-        <i class="fas fa-spin fa-spinner fa-2x" style="color: darkgrey"></i>
-    </div>
-}
-
 @code {
 
-    public bool IsDystirHubConnected = true;
     public string Page { get; set; }
 
     protected override void OnParametersSet()
@@ -37,39 +29,6 @@
         }
 
         _ = JSRuntime.InvokeVoidAsync("setFavicon", favicon);
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        DystirWebClientService.OnConnected += HubConnection_OnConnected;
-        DystirWebClientService.OnDisconnected += HubConnection_OnDisconnected;
-        _ = DystirWebClientService.StartUpAsync();
-        await Task.CompletedTask;
-    }
-
-    void IDisposable.Dispose()
-    {
-        DystirWebClientService.OnConnected -= HubConnection_OnConnected;
-        DystirWebClientService.OnDisconnected -= HubConnection_OnDisconnected;
-    }
-
-    private async void HubConnection_OnConnected()
-    {
-        IsDystirHubConnected = true;
-        Refresh();
-        await Task.CompletedTask;
-    }
-
-    private async void HubConnection_OnDisconnected()
-    {
-        IsDystirHubConnected = false;
-        Refresh();
-        await Task.CompletedTask;
-    }
-
-    private void Refresh()
-    {
-        InvokeAsync(() => StateHasChanged());
     }
 }
 
