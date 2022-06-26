@@ -16,8 +16,6 @@ namespace DystirWeb.Client.PagesMobileClient
         [Inject]
         private DystirWebClientService _dystirWebClientService { get; set; }
         [Inject]
-        private TimeService _timeService { get; set; }
-        [Inject]
         private HubConnection _hubConnection { get; set; }
         [Inject]
         private LiveStandingService _liveStandingService { get; set; }
@@ -25,15 +23,15 @@ namespace DystirWeb.Client.PagesMobileClient
         private IJSRuntime _jsRuntime { get; set; }
 
         private SelectedPage _previousPage = SelectedPage.Matches;
+        private int _matchid = 0;
         private int _daysFrom = 0;
         private int _daysAfter = 0;
 
         public string SelectedCompetition { get; set; }
         public List<string> CompetitionsList { get; set; }
         public Matches SelectedMatch = new Matches();
-        public string MatchID { get; set; }
-        public string daysRange { get; set; }
-        public SelectedPage selectedPage = SelectedPage.Matches;
+        public string DaysRange { get; set; }
+        public SelectedPage SelectedPage = SelectedPage.Matches;
         public List<Matches> MatchesListSameDay = new List<Matches>();
         public Standing standing = new Standing();
         public string selectedTab = "0";
@@ -47,9 +45,20 @@ namespace DystirWeb.Client.PagesMobileClient
             _dystirWebClientService.OnConnected += HubConnection_OnConnected;
             _dystirWebClientService.OnDisconnected += HubConnection_OnDisconnected;
             _dystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
-            _timeService.OnTimerElapsed += TimerElapsed;
             TimeZoneOffset = int.Parse(await _jsRuntime.InvokeAsync<String>("getTimeZoneOffset"));
             await _dystirWebClientService.StartUpAsync();
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (SelectedPage == SelectedPage.MatchDetails)
+            {
+                await _jsRuntime.InvokeVoidAsync("setMatchDetailsMobileClientHeight", "");
+            }
+            else
+            {
+                await _jsRuntime.InvokeVoidAsync("setMainContainerMobileClientHeight", "");
+            }
         }
 
         void IDisposable.Dispose()
@@ -58,23 +67,22 @@ namespace DystirWeb.Client.PagesMobileClient
             _dystirWebClientService.OnConnected -= HubConnection_OnConnected;
             _dystirWebClientService.OnDisconnected -= HubConnection_OnDisconnected;
             _dystirWebClientService.OnRefreshMatchDetails -= DystirWebClientService_OnRefreshMatchDetails;
-            _timeService.OnTimerElapsed -= TimerElapsed;
         }
 
         private async void DystirWebClientService_FullDataLoaded()
         {
-            await LoadData(selectedPage);
+            await LoadData();
         }
 
         private async void DystirWebClientService_OnRefreshMatchDetails(MatchDetails matchDetails)
         {
-            if (selectedPage == SelectedPage.MatchDetails)
+            if (SelectedPage == SelectedPage.MatchDetails)
             {
                 MatchUpdate(matchDetails);
             }
             else
             {
-                await LoadData(selectedPage);
+                await LoadData();
             }
         }
 
@@ -82,29 +90,21 @@ namespace DystirWeb.Client.PagesMobileClient
         {
             isLoading = false;
             Refresh();
-            await LoadData(selectedPage);
+            await LoadData();
         }
 
         private async void HubConnection_OnDisconnected()
         {
             isLoading = true;
             Refresh();
-            await LoadData(selectedPage);
-        }
-
-        private void TimerElapsed(object sender, EventArgs e)
-        {
-            if (_hubConnection.State == HubConnectionState.Connected)
-            {
-                InvokeAsync(() => StateHasChanged());
-            }
+            await LoadData();
         }
 
         public async void DaysOnClick(string daysRange)
         {
             isLoading = true;
             SetSelectedDaysRange(daysRange);
-            await LoadData(selectedPage);
+            await LoadData();
         }
 
         public async void CompetitionsOnClick(string competition)
@@ -116,10 +116,9 @@ namespace DystirWeb.Client.PagesMobileClient
 
         public async void BackOnClickAsync()
         {
-            selectedPage = _previousPage;
-            _ = _jsRuntime.InvokeVoidAsync("onPageResize", "");
+            SelectedPage = _previousPage;
             Refresh();
-            await Task.CompletedTask;
+            await _jsRuntime.InvokeVoidAsync("setMainContainerMobileClientHeight", "");
         }
 
         public void Refresh()
@@ -129,16 +128,16 @@ namespace DystirWeb.Client.PagesMobileClient
 
         public async void ChangePage(SelectedPage selectedPage)
         {
+            SelectedPage = selectedPage;
             isLoading = true;
             Refresh();
-            await LoadData(selectedPage);
+            await LoadData();
         }
 
-        private async Task LoadData(SelectedPage selectedPage)
+        private async Task LoadData()
         {
-            _previousPage = selectedPage != SelectedPage.MatchDetails ? selectedPage : _previousPage;
-            this.selectedPage = selectedPage;
-            switch (selectedPage)
+            _previousPage = SelectedPage != SelectedPage.MatchDetails ? SelectedPage : _previousPage;
+            switch (SelectedPage)
             {
                 case SelectedPage.Matches:
                 default:
@@ -160,7 +159,14 @@ namespace DystirWeb.Client.PagesMobileClient
             }
             isLoading = false;
             Refresh();
-            await _jsRuntime.InvokeVoidAsync("onPageResize", "");
+            if(SelectedPage == SelectedPage.MatchDetails)
+            {
+                await _jsRuntime.InvokeVoidAsync("setMatchDetailsMobileClientHeight", "");
+            }
+            else
+            {
+                await _jsRuntime.InvokeVoidAsync("setMainContainerMobileClientHeight", "");
+            }
         }
 
         private async Task LoadMatches()
@@ -233,10 +239,9 @@ namespace DystirWeb.Client.PagesMobileClient
 
         public async Task LoadMatchDetails()
         {
-            int parseMatchID = int.TryParse(MatchID, out int m) ? int.Parse(MatchID) : 0;
-            SelectedMatch = _dystirWebClientService.AllMatches?.FirstOrDefault(x => x.MatchID == parseMatchID);
+            _matchid = SelectedMatch.MatchID;
             MatchesListSameDay = _dystirWebClientService.GetMatchesListSameDay(SelectedMatch);
-            var loadMatchDetailsAsyncTask = _dystirWebClientService.LoadMatchDetailsAsync(parseMatchID);
+            var loadMatchDetailsAsyncTask = _dystirWebClientService.LoadMatchDetailsAsync(_matchid);
             var loadLiveStandingAsyncTask = LoadLiveStandingAsync(SelectedMatch);
             await Task.WhenAll(loadMatchDetailsAsyncTask, loadLiveStandingAsyncTask);
             SelectedMatch.FullMatchDetails = loadMatchDetailsAsyncTask.Result;
@@ -244,8 +249,7 @@ namespace DystirWeb.Client.PagesMobileClient
 
         private async void MatchUpdate(MatchDetails matchDetails)
         {
-            string matchIDForUpdate = matchDetails?.MatchDetailsID.ToString();
-            if (MatchID == matchIDForUpdate)
+            if (_matchid == matchDetails?.MatchDetailsID)
             {
                 await LoadMatchDetails();
             }
@@ -289,7 +293,7 @@ namespace DystirWeb.Client.PagesMobileClient
                     _daysAfter = 6;
                     break;
             }
-            this.daysRange = daysRange;
+            this.DaysRange = daysRange;
         }
 
         private object GetOrder(int? matchTypeId)
@@ -316,7 +320,7 @@ namespace DystirWeb.Client.PagesMobileClient
             selectedTab = tabIndex;
         }
 
-        public void FooterMenuTabOnClick (SelectedPage selectedPage)
+        public void FooterMenuTabOnClick(SelectedPage selectedPage)
         {
             ChangePage(selectedPage);
         }

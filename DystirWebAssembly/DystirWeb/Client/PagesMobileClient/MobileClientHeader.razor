@@ -8,7 +8,7 @@
                 @if (selectedPage == SelectedPage.MatchDetails)
                 {
                     <div class="top-row navbar navbar-dark" style="height:49px">
-                        <div @onclick="@BackOnClick.InvokeAsync">
+                        <div @onclick="@(() => { BackOnClick.InvokeAsync(); })">
                             <i class="fa fa-arrow-circle-left" aria-hidden="true" style="color:darkgray; font-size: 1.5rem"></i>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                 @if (selectedPage == SelectedPage.MatchDetails)
                 {
                     <div class="top-row navbar navbar-dark" style="height:49px">
-                        <div @onclick="@BackOnClick.InvokeAsync">
+                        <div @onclick="@(() => { BackOnClick.InvokeAsync(); })">
                             <i class="fa fa-arrow-circle-left" aria-hidden="true" style="visibility:collapse; color:darkgray; font-size: 1.5rem"></i>
                         </div>
                     </div>
@@ -64,5 +64,7 @@
 
     [Parameter]
     public int TimeZoneOffset { get; set; }
+
+    private async Task Test() => await BackOnClick.InvokeAsync();
 }
 

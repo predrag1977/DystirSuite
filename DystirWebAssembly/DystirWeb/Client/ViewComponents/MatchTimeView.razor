@@ -1,0 +1,30 @@
+﻿@inherits MatchBase
+@inject TimeService _timeService
+@inject HubConnection _hubConnection
+@implements IDisposable
+
+<span class="match_time" style="color:@GetStatusColor(Match.StatusID)">@GetMatchTime(Match.StatusTime, Match.Time, Match.StatusID)</span>
+
+@code {
+    [Parameter]
+    public Matches Match { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _timeService.OnTimerElapsed += TimerElapsed;
+        await Task.CompletedTask;
+    }
+
+    void IDisposable.Dispose()
+    {
+        _timeService.OnTimerElapsed -= TimerElapsed;
+    }
+
+    private void TimerElapsed(object sender, EventArgs e)
+    {
+        if (_hubConnection.State == HubConnectionState.Connected)
+        {
+            InvokeAsync(() => StateHasChanged());
+        }
+    }
+}

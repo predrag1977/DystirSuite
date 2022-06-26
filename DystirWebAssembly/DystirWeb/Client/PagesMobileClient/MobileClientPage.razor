@@ -1,22 +1,21 @@
 ﻿@page "/client/mobileclient"
 
 @using DystirWeb.Shared
-@using DystirWeb.Client.Pages
 @inherits MobileClientBase
 @layout MobileClientLayout
 
 
 <div id="header_container_mobile_client">
-    <MobileClientHeader BackOnClick="@BackOnClickAsync" SelectedPage="@selectedPage" SelectedMatch="@SelectedMatch" TimeZoneOffset="@TimeZoneOffset" />
+    <MobileClientHeader BackOnClick="@BackOnClickAsync" SelectedPage="@SelectedPage" SelectedMatch="@SelectedMatch" TimeZoneOffset="@TimeZoneOffset" />
 </div>
 
-@if (selectedPage == SelectedPage.Matches)
+@if (SelectedPage == SelectedPage.Matches)
 {
     <div id="days_selection">
-        <ChooseDays DaysOnClick="@DaysOnClick" TimeZoneOffset="@TimeZoneOffset" DaysRange="@daysRange" />
+        <ChooseDays DaysOnClick="@DaysOnClick" TimeZoneOffset="@TimeZoneOffset" DaysRange="@DaysRange" />
     </div>
 }
-else if (selectedPage == SelectedPage.Results || selectedPage == SelectedPage.Fixtures)
+else if (SelectedPage == SelectedPage.Results || SelectedPage == SelectedPage.Fixtures)
 {
     <div id="competitions_selection">
         <ChooseCompetitions CompetitionsList="@(CompetitionsList)"
@@ -24,35 +23,14 @@ else if (selectedPage == SelectedPage.Results || selectedPage == SelectedPage.Fi
                             CompetitionsOnClick="@(CompetitionsOnClick)" />
     </div>
 }
-else if (selectedPage == SelectedPage.MatchDetails)
-{
-    <div id="competitions_selection">
-        <div id="scroll_button_left" onclick="scrollOnMouseOver('left')">
-            &#10094;
-        </div>
-        <div id="horizontal_menu">
-            <div id="horizontal_menu_wrapper">
-                @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
-                {
-                    <a style="cursor:pointer;" @onclick="() => { MatchID = match?.MatchID.ToString(); ChangePage(SelectedPage.MatchDetails); }">
-                        <Match MatchItem="@match" TimeZoneOffset="@TimeZoneOffset" IsMatchForSameDayList="@true" />
-                    </a>
-                }
-            </div>
-        </div>
-        <div id="scroll_button_right" onclick="scrollOnMouseOver('right')">
-            &#10095;
-        </div>
-    </div>
-}
 
-@switch (selectedPage)
+@switch (SelectedPage)
 {
     case SelectedPage.Matches:
     case SelectedPage.Results:
     case SelectedPage.Fixtures:
     default:
-       <div id="main_container_mobile_client">
+        <div id="main_container_mobile_client">
             @if (SelectedMatchListGroup?.Count > 0)
             {
                 foreach (var matchgroup in SelectedMatchListGroup)
@@ -60,7 +38,7 @@ else if (selectedPage == SelectedPage.MatchDetails)
                     <div class="match-group-competition-name">@(matchgroup.Key)</div>
                     @foreach (var match in matchgroup)
                     {
-                        <div style="cursor:pointer;" @onclick="() => { MatchID = match?.MatchID.ToString(); ChangePage(SelectedPage.MatchDetails); }">
+                        <div style="cursor:pointer;" @onclick="() => { SelectedMatch = match; ChangePage(SelectedPage.MatchDetails); }">
                             <MatchView MatchItem="@match" TimeZoneOffset="@TimeZoneOffset" />
                         </div>
                     }
@@ -81,17 +59,36 @@ else if (selectedPage == SelectedPage.MatchDetails)
 
         break;
     case SelectedPage.MatchDetails:
-
-        <div id="selected_match_details">
-            <Match MatchItem="@SelectedMatch" TimeZoneOffset="@TimeZoneOffset" ShowMatchType="@true" />
-        </div>
-
-        @if (SelectedMatch != null)
-        {
-            <div id="horizontal_menu_days">
-                <MatchDetailsTabs TabOnClick="OnTabClick" Match="@(SelectedMatch)" />
+        <div id="match-details_static_part">
+            <div id="competitions_selection">
+                <div id="scroll_button_left" onclick="scrollOnMouseOver('left')">
+                    &#10094;
+                </div>
+                <div id="horizontal_menu">
+                    <div id="horizontal_menu_wrapper">
+                        @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
+                        {
+                            <a style="cursor:pointer;" @onclick="() => { ChangePage(SelectedPage.MatchDetails); }">
+                                <MatchView MatchItem="@match" TimeZoneOffset="@TimeZoneOffset" IsMatchForSameDayList="@true" />
+                            </a>
+                        }
+                    </div>
+                </div>
+                <div id="scroll_button_right" onclick="scrollOnMouseOver('right')">
+                    &#10095;
+                </div>
             </div>
-        }
+            <div id="selected_match_details">
+                <MatchView MatchItem="@SelectedMatch" TimeZoneOffset="@TimeZoneOffset" ShowMatchType="@true" IsMatchInDetails="@true" />
+            </div>
+
+            @if (SelectedMatch != null)
+            {
+                <div id="horizontal_menu_days">
+                    <MatchDetailsTabs TabOnClick="OnTabClick" Match="@(SelectedMatch)" />
+                </div>
+            }
+        </div>
 
         <div id="match_details_container">
 
@@ -117,12 +114,11 @@ else if (selectedPage == SelectedPage.MatchDetails)
                 </div>
             }
         </div>
-
         break;
 }
 
 <div id="days_selection">
-    <MobileClientFooterMenu FooterMenuTabOnClick="@FooterMenuTabOnClick" SelectedPage="@selectedPage" />
+    <MobileClientFooterMenu FooterMenuTabOnClick="@FooterMenuTabOnClick" SelectedPage="@SelectedPage" />
 </div>
 
 

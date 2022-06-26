@@ -1,0 +1,296 @@
+﻿@inject DystirWebClientService DystirWebClientService
+@inherits MatchBase
+
+@if (MatchItem != null)
+{
+    if (IsMatchForSameDayList)
+    {
+        <div class="match_item_same_day">
+            <table>
+                <tr>
+                    <td class="match_info pl-1">
+                        <span>@MatchItem.MatchTypeName</span>
+                    </td>
+
+                    <td class="match_time" style="white-space:nowrap;width:0">
+                        <span style="color:@GetStatusColor(MatchItem.StatusID)">@GetMatchTime(MatchItem.StatusTime, MatchItem.Time, MatchItem.StatusID)</span>
+                    </td>
+                </tr>
+            </table>
+
+            <table>
+                <tr>
+                    <td class="match_item_same_day_team_name">
+                        <span style="padding: 3px;">@((MatchItem.HomeTeam + " " + MatchItem.HomeSquadName + " " + MatchItem.HomeCategoriesName).Trim())</span>
+                    </td>
+                    <td style="white-space:nowrap;width:0;">
+                        <div class="score_match_view">
+                            @if (MatchItem.StatusID < 14 && MatchItem.StatusID > 1)
+                            {
+                                @(MatchItem.HomeTeamScore)
+                            }
+                            else
+                            {
+                                @("-")
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <table>
+                <tr>
+                    <td class="match_item_same_day_team_name">
+                        <span style="padding: 3px;">@((MatchItem.AwayTeam + " " + MatchItem.AwaySquadName + " " + MatchItem.AwayCategoriesName).Trim())</span>
+                    </td>
+                    <td style="white-space:nowrap;width:0">
+                        <div class="score_match_view">
+                            @if (MatchItem.StatusID < 14 && MatchItem.StatusID > 1)
+                            {
+                                @(MatchItem.AwayTeamScore)
+                            }
+                            else
+                            {
+                                @("-")
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    }
+    else
+    {
+        if (IsMatchInDetails)
+        {
+            <div class="match_details_item">
+                <table class="w-100">
+                    <tr>
+                        <td class="match_info text-center">
+                            <span>@MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString("ddd dd.MM.", new CultureInfo("fo-FO"))</span>
+                            <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "" : MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString(" HH:mm"))</span>
+                            <span>@(string.IsNullOrWhiteSpace(MatchItem.MatchTypeName) ? "" : " - ")</span>
+                            <span>@MatchItem.MatchTypeName</span>
+                            <span>@(string.IsNullOrWhiteSpace(MatchItem.RoundName) ? "" : " - ")</span>
+                            <span>@MatchItem.RoundName</span>
+                            <span>@(string.IsNullOrWhiteSpace(MatchItem.Location) ? "" : " - ")</span>
+                            <span>@MatchItem.Location</span>
+                        </td>
+
+                        <td class="match_time" style="white-space:nowrap;width:0"></td>
+                    </tr>
+                </table>
+
+                <table class="w-100 mb-1 mt-1">
+                    <tr>
+                        <td class="match_item_team_name pr-1 text-right">
+                            <span>@((MatchItem.HomeTeam + " " + MatchItem.HomeSquadName + " " + MatchItem.HomeCategoriesName).Trim())</span>
+                        </td>
+                        <td class="text-center" style="width:30px">
+                            <img src="team_logos/@(MatchItem.HomeTeamLogo)"
+                                 onerror="this.src='team_logos/empty.png'" width="25" height="25" />
+                        </td>
+                        <td class="text-center" style="width:20px">-</td>
+                        <td class="text-center" style="width:30px">
+                            <img src="team_logos/@(MatchItem.AwayTeamLogo)"
+                                 onerror="this.src='team_logos/empty.png'" width="25" height="25" />
+                        </td>
+                        <td class="match_item_team_name pl-1 text-left">
+                            <span>@((MatchItem.AwayTeam + " " + MatchItem.AwaySquadName + " " + MatchItem.AwayCategoriesName).Trim())</span>
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="content_table">
+                    <tr class="match_item_text_color">
+                        <td class="text-left">
+                            @if (MatchItem.StatusID < 14)
+                            {
+                                <span class="match_time" style="color:@GetStatusColor(MatchItem.StatusID)">@GetMatchTime(MatchItem.StatusTime, MatchItem.Time, MatchItem.StatusID)</span>
+                            }
+                        </td>
+
+                        @if (MatchItem.StatusID < 14 && MatchItem.StatusID > 1)
+                        {
+                            <td class="score_match_view">
+                                @(MatchItem.HomeTeamScore)
+                            </td>
+                            <td class="text-center" style="width:20px;">:</td>
+                            <td class="score_match_view">
+                                @(MatchItem.AwayTeamScore)
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="score_match_view">-</td>
+                            <td class="text-center" style="width:20px;">:</td>
+                            <td class="score_match_view">-</td>
+                        }
+
+                        <td class="text-right">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="match_item">
+                <table class="w-100">
+                    <tr>
+                        <td class="match_info text-left">
+                            <span>@MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString("ddd dd.MM.", new CultureInfo("fo-FO"))</span>
+                            <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "" : MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString(" HH:mm"))</span>
+                            <span>@(string.IsNullOrWhiteSpace(MatchItem.MatchTypeName) ? "" : " - ")</span>
+                            <span>@MatchItem.MatchTypeName</span>
+                            <span>@(string.IsNullOrWhiteSpace(MatchItem.RoundName) ? "" : " - ")</span>
+                            <span>@MatchItem.RoundName</span>
+                            <span>@(string.IsNullOrWhiteSpace(MatchItem.Location) ? "" : " - ")</span>
+                            <span>@MatchItem.Location</span>
+                        </td>
+
+                        <td class="match_time" style="white-space:nowrap;width:0"></td>
+                    </tr>
+                </table>
+
+                <table class="w-100 mb-1 mt-1">
+                    <tr>
+                        <td class="match_item_team_name pr-1 text-right">
+                            <span>@((MatchItem.HomeTeam + " " + MatchItem.HomeSquadName + " " + MatchItem.HomeCategoriesName).Trim())</span>
+                        </td>
+                        <td class="text-center" style="width:30px">
+                            <img src="team_logos/@(MatchItem.HomeTeamLogo)"
+                                 onerror="this.src='team_logos/empty.png'" width="25" height="25" />
+                        </td>
+                        <td class="text-center" style="width:20px">-</td>
+                        <td class="text-center" style="width:30px">
+                            <img src="team_logos/@(MatchItem.AwayTeamLogo)"
+                                 onerror="this.src='team_logos/empty.png'" width="25" height="25" />
+                        </td>
+                        <td class="match_item_team_name pl-1 text-left">
+                            <span>@((MatchItem.AwayTeam + " " + MatchItem.AwaySquadName + " " + MatchItem.AwayCategoriesName).Trim())</span>
+                        </td>
+                    </tr>
+                </table>
+
+                <table class="content_table">
+                    <tr class="match_item_text_color">
+                        <td class="text-left">
+                            @if (MatchItem.StatusID < 14)
+                            {
+                                <MatchTimeView Match="@MatchItem" />
+                            }
+                        </td>
+
+                        @if (MatchItem.StatusID < 14 && MatchItem.StatusID > 1)
+                        {
+                            <td class="score_match_view">
+                                @(MatchItem.HomeTeamScore)
+                            </td>
+                            <td class="text-center" style="width:20px;">:</td>
+                            <td class="score_match_view">
+                                @(MatchItem.AwayTeamScore)
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="score_match_view">-</td>
+                            <td class="text-center" style="width:20px;">:</td>
+                            <td class="score_match_view">-</td>
+                        }
+
+                        <td class="text-right" style="color:#a6a6a6">
+                            @*@if (MatchItem.StatusID < 13)
+                                {
+                                    <i class="fas fa-arrow-circle-right"></i>
+                                }*@
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="match_item_mobile">
+                <table>
+                    <tr>
+                        <td class="match_info pr-1">
+                            <span>@MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString("ddd dd.MM.", new CultureInfo("fo-FO"))</span>
+                            <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "" : MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString(" HH:mm"))</span>
+                            <span>@(string.IsNullOrWhiteSpace(MatchItem.RoundName) ? "" : " - ")</span>
+                            <span>@MatchItem.RoundName</span>
+                            <span>@(string.IsNullOrWhiteSpace(MatchItem.Location) ? "" : " - ")</span>
+                            <span>@MatchItem.Location</span>
+                        </td>
+
+                        <td class="match_time" style="white-space:nowrap;width:0;">
+                            @if (MatchItem.StatusID < 14)
+                            {
+                                <MatchTimeView Match="@MatchItem" />}
+                        </td>
+                    </tr>
+                </table>
+
+                <table>
+                    <tr>
+                        <td class="match_item_same_day_team_name">
+                            <img src="team_logos/@(MatchItem.HomeTeamLogo)"
+                                 onerror="this.src='team_logos/empty.png'" width="25" height="25" />
+                            <span>@((MatchItem.HomeTeam + " " + MatchItem.HomeSquadName + " " + MatchItem.HomeCategoriesName).Trim())</span>
+                        </td>
+                        <td style="white-space:nowrap;width:0;">
+                            <div class="score_match_view">
+                                @if (MatchItem.StatusID < 14 && MatchItem.StatusID > 1)
+                                {
+                                    @(MatchItem.HomeTeamScore)
+                                }
+                                else
+                                {
+                                    @("-")
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <table>
+                    <tr>
+                        <td class="match_item_same_day_team_name">
+                            <img src="team_logos/@(MatchItem.AwayTeamLogo)"
+                                 onerror="this.src='team_logos/empty.png'" width="25" height="25" />
+                            <span>@((MatchItem.AwayTeam + " " + MatchItem.AwaySquadName + " " + MatchItem.AwayCategoriesName).Trim())</span>
+                        </td>
+                        <td style="white-space:nowrap;width:0">
+                            <div class="score_match_view">
+                                @if (MatchItem.StatusID < 14 && MatchItem.StatusID > 1)
+                                {
+                                    @(MatchItem.AwayTeamScore)
+                                }
+                                else
+                                {
+                                    @("-")
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        }
+    }
+}
+
+@code {
+
+    [Parameter]
+    public Matches MatchItem { get; set; }
+
+    [Parameter]
+    public bool IsMatchForSameDayList { get; set; }
+
+    [Parameter]
+    public bool IsMatchInDetails { get; set; }
+
+    [Parameter]
+    public int TimeZoneOffset { get; set; }
+
+    [Parameter]
+    public bool ShowMatchType { get; set; }
+}

@@ -18,7 +18,7 @@ namespace DystirWeb.ViewBases
                 double totalMiliseconds = (timeNow - matchTime).TotalMilliseconds;
                 double seconds = Math.Floor(totalMiliseconds / 1000);
                 double minutes = Math.Floor(seconds / 60);
-                seconds = seconds - minutes * 60;
+                seconds -= minutes * 60;
                 double milsecToStart = (matchStart - timeNow).TotalMilliseconds;
                 return MatchPeriod(minutes, seconds, statusId, milsecToStart);
             } 
