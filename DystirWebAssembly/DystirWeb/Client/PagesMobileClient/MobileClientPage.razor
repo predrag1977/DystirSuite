@@ -24,48 +24,48 @@ else if (SelectedPage == SelectedPage.Results || SelectedPage == SelectedPage.Fi
     </div>
 }
 
+
 @switch (SelectedPage)
 {
     case SelectedPage.Matches:
     case SelectedPage.Results:
     case SelectedPage.Fixtures:
     default:
-        <div id="main_container_mobile_client">
-            @if (SelectedMatchListGroup?.Count > 0)
+    <div id="main_container_mobile_client">
+        @if (SelectedMatchListGroup?.Count > 0)
+        {
+            foreach (var matchgroup in SelectedMatchListGroup)
             {
-                foreach (var matchgroup in SelectedMatchListGroup)
+                <div class="match-group-competition-name">@(matchgroup.Key)</div>
+                @foreach (var match in matchgroup)
                 {
-                    <div class="match-group-competition-name">@(matchgroup.Key)</div>
-                    @foreach (var match in matchgroup)
-                    {
-                        <div style="cursor:pointer;" @onclick="() => { SelectedMatch = match; ChangePage(SelectedPage.MatchDetails); }">
-                            <MatchView MatchItem="@match" TimeZoneOffset="@TimeZoneOffset" />
-                        </div>
+                    <div style="cursor:pointer;" @onclick="() => { SelectedMatch = match; ChangePage(SelectedPage.MatchDetails); }">
+                        <MatchView MatchItem="@match" TimeZoneOffset="@TimeZoneOffset" />
+                    </div>
                     }
                 }
             }
             else if (SelectedMatchListGroup?.Count == 0)
             {
-                <div class="no-matches">Eingin dystur</div>
+            <div class="no-matches">Eingin dystur</div>
             }
-            <SponsorsView ShowOnSideBar="false" />
-        </div>
-
+        <SponsorsView ShowOnSideBar="false" />
+    </div>
         break;
     case SelectedPage.Standings:
-
         break;
     case SelectedPage.Statistics:
-
         break;
     case SelectedPage.MatchDetails:
-        <div id="match-details_static_part">
+    <div id="match-details_static_part">
+        @if(MatchesListSameDay?.Count > 0)
+        {
             <div id="competitions_selection">
                 <div id="scroll_button_left" onclick="scrollOnMouseOver('left')">
                     &#10094;
                 </div>
-                <div id="horizontal_menu">
-                    <div id="horizontal_menu_wrapper">
+                <div id="horizontal_menu_mobile_client">
+                    <div id="horizontal_menu_wrapper_mobile_client">
                         @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
                         {
                             <a style="cursor:pointer;" @onclick="() => { ChangePage(SelectedPage.MatchDetails); }">
@@ -78,48 +78,48 @@ else if (SelectedPage == SelectedPage.Results || SelectedPage == SelectedPage.Fi
                     &#10095;
                 </div>
             </div>
-            <div id="selected_match_details">
-                <MatchView MatchItem="@SelectedMatch" TimeZoneOffset="@TimeZoneOffset" ShowMatchType="@true" IsMatchInDetails="@true" />
-            </div>
-
-            @if (SelectedMatch != null)
-            {
-                <div id="horizontal_menu_days">
-                    <MatchDetailsTabs TabOnClick="OnTabClick" Match="@(SelectedMatch)" />
-                </div>
-            }
+        }
+        
+        <div id="selected_match_details">
+            <MatchView MatchItem="@SelectedMatch" TimeZoneOffset="@TimeZoneOffset" ShowMatchType="@true" IsMatchInDetails="@true" />
         </div>
 
-        <div id="match_details_container">
+        @if (SelectedMatch != null)
+        {
+            <div id="horizontal_menu_days">
+                <MatchDetailsTabs TabOnClick="OnTabClick" Match="@(SelectedMatch)" />
+            </div>
+            }
+    </div>
 
-            <div class="@(selectedTab == "0" ? "active_tab" : "no_active_tab")">
-                <SummaryView SummaryEventsOfMatch="@(SelectedMatch.FullMatchDetails?.Summary)" />
-            </div>
-            <div class="@(selectedTab == "1" ? "active_tab" : "no_active_tab")">
-                <LineupsView PlayersOfMatch="@(SelectedMatch.FullMatchDetails?.MatchDetails?.PlayersOfMatch)" Match="@(SelectedMatch.FullMatchDetails?.MatchDetails?.Match)" />
-            </div>
-            <div class="@(selectedTab == "2" ? "active_tab" : "no_active_tab")">
-                <CommentariesView Commentaries="@(SelectedMatch.FullMatchDetails?.Commentary)" />
-            </div>
-            @if (SelectedMatch?.StatusID <= 12)
-            {
-                <div class="@(selectedTab == "3" ? "active_tab" : "no_active_tab")">
-                    <StatisticView StatisticOfMatch="@(SelectedMatch.FullMatchDetails?.Statistics)" />
-                </div>
-            }
-            @if (ShowLiveStandings(SelectedMatch))
-            {
-                <div class="@(selectedTab == "4" ? "active_tab" : "no_active_tab")">
-                    <LiveStandingView Standing="@(standing)" Match="@(SelectedMatch)" />
-                </div>
-            }
+    <div id="match_details_container_mobile_client">
+
+        <div class="@(selectedTab == "0" ? "active_tab" : "no_active_tab")">
+            <SummaryView SummaryEventsOfMatch="@(SelectedMatch.FullMatchDetails?.Summary)" />
         </div>
+        <div class="@(selectedTab == "1" ? "active_tab" : "no_active_tab")">
+            <LineupsView PlayersOfMatch="@(SelectedMatch.FullMatchDetails?.MatchDetails?.PlayersOfMatch)" Match="@(SelectedMatch.FullMatchDetails?.MatchDetails?.Match)" />
+        </div>
+        <div class="@(selectedTab == "2" ? "active_tab" : "no_active_tab")">
+            <CommentariesView Commentaries="@(SelectedMatch.FullMatchDetails?.Commentary)" />
+        </div>
+        @if (SelectedMatch?.StatusID <= 12)
+        {
+            <div class="@(selectedTab == "3" ? "active_tab" : "no_active_tab")">
+                <StatisticView StatisticOfMatch="@(SelectedMatch.FullMatchDetails?.Statistics)" />
+            </div>
+            }
+        @if (ShowLiveStandings(SelectedMatch))
+        {
+            <div class="@(selectedTab == "4" ? "active_tab" : "no_active_tab")">
+                <LiveStandingView Standing="@(standing)" Match="@(SelectedMatch)" />
+            </div>
+            }
+    </div>
         break;
 }
 
-<div id="days_selection">
-    <MobileClientFooterMenu FooterMenuTabOnClick="@FooterMenuTabOnClick" SelectedPage="@SelectedPage" />
-</div>
+<MobileClientFooterMenu FooterMenuTabOnClick="@FooterMenuTabOnClick" SelectedPage="@SelectedPage" />
 
 
 @if (isLoading)
