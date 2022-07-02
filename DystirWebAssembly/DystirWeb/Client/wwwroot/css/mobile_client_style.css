@@ -30,3 +30,36 @@
     border-bottom: 1px solid dimgray;
 }
 
+#foother_menu_mobile_client {
+    height: 60px;
+    position: fixed;
+    left: 5px;
+    right: 5px;
+    bottom: 0;
+}
+
+#horizontal_foother_menu {
+    display: flex;
+    height: 60px;
+    text-align: center;
+    justify-content: center;
+    border-bottom: 1px solid dimgray;
+    border-top: 1px solid dimgray;
+}
+
+    #horizontal_foother_menu .tab {
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 20%;
+        margin: 20px 0 0 0;
+    }
+
+#horizontal_menu_mobile_client {
+    white-space: nowrap;
+    overflow: auto;
+    float: left;
+    width: calc(100% - 80px);
+    text-align: center;
+}

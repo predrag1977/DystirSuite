@@ -1,9 +1,5 @@
-﻿using DystirWeb.Shared;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DystirWeb.ViewBases
 {

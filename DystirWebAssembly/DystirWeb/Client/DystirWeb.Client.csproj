@@ -2,6 +2,7 @@
   
   <PropertyGroup>
     <TargetFramework>netcoreapp6.0</TargetFramework>
+    <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
   </PropertyGroup>
   
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'DystirWeb' ">
@@ -13,7 +14,6 @@
     <None Remove="PagesMobileClient\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shared\MainLayout.razor" />
     <None Include="Shared\NavMenu.razor" />
     <None Include="wwwroot\css\bootstrap\bootstrap.min.css.map" />
   </ItemGroup>

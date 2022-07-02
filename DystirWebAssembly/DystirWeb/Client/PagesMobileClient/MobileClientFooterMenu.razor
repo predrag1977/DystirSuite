@@ -1,30 +1,30 @@
-﻿@using System.Globalization
-
-<div id="horizontal_menu_days">
-    <div class="tab @(SelectedPage == SelectedPage.Matches ? "selected_tab" : "")">
-        <span @onclick='(() => SelectedPageClick(SelectedPage.Matches))'>
-            Dystir
-        </span>
-    </div>
-    <div class="tab @(SelectedPage == SelectedPage.Results ? "selected_tab" : "")">
-        <span @onclick='(() => SelectedPageClick(SelectedPage.Results))'>
-            Úrslit
-        </span>
-    </div>
-    <div class="tab @(SelectedPage == SelectedPage.Fixtures ? "selected_tab" : "")">
-        <span @onclick='(() => SelectedPageClick(SelectedPage.Fixtures))'>
-            Komandi
-        </span>
-    </div>
-    <div class="tab @(SelectedPage == SelectedPage.Standings ? "selected_tab" : "")">
-        <span @onclick='(() => SelectedPageClick(SelectedPage.Standings))'>
-            Støðan
-        </span>
-    </div>
-    <div class="tab @(SelectedPage == SelectedPage.Statistics ? "selected_tab" : "")">
-        <span @onclick='(() => SelectedPageClick(SelectedPage.Statistics))'>
-            Hagtøl
-        </span>
+﻿<div id="foother_menu_mobile_client">
+    <div id="horizontal_foother_menu">
+        <div class="tab @(SelectedPage == SelectedPage.Matches ? "selected_tab" : "")">
+            <span @onclick='(() => SelectedPageClick(SelectedPage.Matches))'>
+                Dystir
+            </span>
+        </div>
+        <div class="tab @(SelectedPage == SelectedPage.Results ? "selected_tab" : "")">
+            <span @onclick='(() => SelectedPageClick(SelectedPage.Results))'>
+                Úrslit
+            </span>
+        </div>
+        <div class="tab @(SelectedPage == SelectedPage.Fixtures ? "selected_tab" : "")">
+            <span @onclick='(() => SelectedPageClick(SelectedPage.Fixtures))'>
+                Komandi
+            </span>
+        </div>
+        <div class="tab @(SelectedPage == SelectedPage.Standings ? "selected_tab" : "")">
+            <span @onclick='(() => SelectedPageClick(SelectedPage.Standings))'>
+                Støðan
+            </span>
+        </div>
+        <div class="tab @(SelectedPage == SelectedPage.Statistics ? "selected_tab" : "")">
+            <span @onclick='(() => SelectedPageClick(SelectedPage.Statistics))'>
+                Hagtøl
+            </span>
+        </div>
     </div>
 </div>
 
