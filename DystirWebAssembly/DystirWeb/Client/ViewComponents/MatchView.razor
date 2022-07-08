@@ -12,7 +12,7 @@
                     </td>
 
                     <td class="match_time" style="white-space:nowrap;width:0">
-                        <span style="color:@GetStatusColor(MatchItem.StatusID)">@GetMatchTime(MatchItem.StatusTime, MatchItem.Time, MatchItem.StatusID)</span>
+                        <MatchTimeView Match="@MatchItem" />
                     </td>
                 </tr>
             </table>
@@ -105,7 +105,7 @@
                         <td class="text-left">
                             @if (MatchItem.StatusID < 14)
                             {
-                                <span class="match_time" style="color:@GetStatusColor(MatchItem.StatusID)">@GetMatchTime(MatchItem.StatusTime, MatchItem.Time, MatchItem.StatusID)</span>
+                                <MatchTimeView Match="@MatchItem" />
                             }
                         </td>
 

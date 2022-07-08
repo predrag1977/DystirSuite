@@ -74,7 +74,6 @@
         DystirWebClientService.OnFullDataLoaded += DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
-        TimeService.OnTimerElapsed += TimerElapsed;
         timeZoneOffset = int.Parse(await JSRuntime.InvokeAsync<String>("getTimeZoneOffset"));
         if (matchid != null)
         {
@@ -93,7 +92,6 @@
         DystirWebClientService.OnFullDataLoaded -= DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected -= HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails -= DystirWebClientService_OnRefreshMatchDetails;
-        TimeService.OnTimerElapsed -= TimerElapsed;
     }
 
     private async void DystirWebClientService_FullDataLoaded()
@@ -124,14 +122,6 @@
             await LoadLiveStandingAsync(SelectedMatch);
         }
         Refresh();
-    }
-
-    private void TimerElapsed(object sender, EventArgs e)
-    {
-        if (HubConnection.State == HubConnectionState.Connected)
-        {
-            Refresh();
-        }
     }
 
     private void Refresh()
