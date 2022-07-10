@@ -10,6 +10,7 @@ namespace Dystir.Views
         public DystirWebViewPage()
         {
             InitializeComponent();
+            DystirWebView.Source = App.URL;
         }
 
         protected override void OnAppearing()
@@ -26,12 +27,12 @@ namespace Dystir.Views
         [Obsolete]
         private void DystirWebView_Navigating(object sender, WebNavigatingEventArgs e)
         {
-            //if (e.Url.StartsWith("file://"))
-            //{
-            //    return;
-            //}
-            //Device.OpenUri(new Uri(e.Url));
-            return;
+            if (e.Url.Equals(App.URL))
+            {
+                return;
+            }
+            Device.OpenUri(new Uri(e.Url));
+            e.Cancel = true;
         }
 
         void Button_Clicked(System.Object sender, System.EventArgs e)

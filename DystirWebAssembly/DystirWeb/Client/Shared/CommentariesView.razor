@@ -9,6 +9,14 @@
                         <SummaryEventView SummaryEventOfMatch="@summaryEventOfMatch" />
                     </tr>
                 </table>
+                @if (summaryEventOfMatch.EventName == "GOAL" || summaryEventOfMatch.EventName == "OWNGOAL" || summaryEventOfMatch.EventName == "PENALTYSCORED")
+                {
+                    <div>
+                        <div class="score d-inline-block">@summaryEventOfMatch.HomeTeamScore</div>
+                        <div class="d-inline-block">:</div>
+                        <div class="score d-inline-block">@summaryEventOfMatch.AwayTeamScore</div>
+                    </div>
+                }
                 <div class="summary_event text-center w-100">@summaryEventOfMatch.EventOfMatch.EventText?.Replace("..", ".")</div>
             </td>
         </tr>
