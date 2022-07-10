@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,11 +27,17 @@ namespace DystirWeb.Client.PagesMobileClient
         private int _matchid = 0;
         private int _daysFrom = 0;
         private int _daysAfter = 0;
+        private string _selectedCompetition;
+        private bool _loadStandingsFromServer = true;
 
-        public string SelectedCompetition { get; set; }
+        public string SelectedResultsCompetition { get; set; }
+        public string SelectedFixturesCompetition { get; set; }
+        
         public List<string> CompetitionsList { get; set; }
         public Matches SelectedMatch = new Matches();
         public string DaysRange { get; set; }
+        public StandingsModelView StandingsView { get; set; }
+
         public SelectedPage SelectedPage = SelectedPage.Matches;
         public List<Matches> MatchesListSameDay = new List<Matches>();
         public Standing standing = new Standing();
@@ -38,6 +45,7 @@ namespace DystirWeb.Client.PagesMobileClient
         public List<IGrouping<string, Matches>> SelectedMatchListGroup;
         public int TimeZoneOffset = 0;
         public bool isLoading = true;
+        
 
         protected override async Task OnInitializedAsync()
         {
@@ -71,11 +79,13 @@ namespace DystirWeb.Client.PagesMobileClient
 
         private async void DystirWebClientService_FullDataLoaded()
         {
+            _loadStandingsFromServer = true;
             await LoadData();
         }
 
         private async void DystirWebClientService_OnRefreshMatchDetails(MatchDetails matchDetails)
         {
+            _loadStandingsFromServer = true;
             if (SelectedPage == SelectedPage.MatchDetails)
             {
                 MatchUpdate(matchDetails);
@@ -90,6 +100,7 @@ namespace DystirWeb.Client.PagesMobileClient
         {
             isLoading = false;
             Refresh();
+            _loadStandingsFromServer = true;
             await LoadData();
         }
 
@@ -110,8 +121,8 @@ namespace DystirWeb.Client.PagesMobileClient
         public async void CompetitionsOnClick(string competition)
         {
             isLoading = true;
-            SelectedCompetition = competition;
-            await LoadResultsMatches();
+            _selectedCompetition = competition;
+            await LoadData();
         }
 
         public async void BackOnClickAsync()
@@ -150,6 +161,7 @@ namespace DystirWeb.Client.PagesMobileClient
                     await LoadFixturesMatches();
                     break;
                 case SelectedPage.Standings:
+                    await LoadStandings();
                     break;
                 case SelectedPage.Statistics:
                     break;
@@ -200,12 +212,13 @@ namespace DystirWeb.Client.PagesMobileClient
                     CompetitionsList.Add(matchGroup.Key);
                 }
 
-                if (string.IsNullOrWhiteSpace(SelectedCompetition))
+                SelectedResultsCompetition = _selectedCompetition;
+                if (string.IsNullOrWhiteSpace(SelectedResultsCompetition))
                 {
-                    SelectedCompetition = CompetitionsList?.FirstOrDefault() ?? "";
+                    SelectedResultsCompetition = CompetitionsList?.FirstOrDefault() ?? "";
                 }
 
-                SelectedMatchListGroup = allResultMatchByCompetition.FirstOrDefault(x => x.Key == SelectedCompetition)?
+                SelectedMatchListGroup = allResultMatchByCompetition.FirstOrDefault(x => x.Key == SelectedResultsCompetition)?
                 .GroupBy(x => x.MatchTypeName)?.ToList();
             });
         }
@@ -227,14 +240,45 @@ namespace DystirWeb.Client.PagesMobileClient
                     CompetitionsList.Add(matchGroup.Key);
                 }
 
-                if (string.IsNullOrWhiteSpace(SelectedCompetition))
+                SelectedFixturesCompetition = _selectedCompetition;
+                if (string.IsNullOrWhiteSpace(SelectedFixturesCompetition))
                 {
-                    SelectedCompetition = CompetitionsList?.FirstOrDefault() ?? "";
+                    SelectedFixturesCompetition = CompetitionsList?.FirstOrDefault() ?? "";
                 }
 
-                SelectedMatchListGroup = allFixturesMatchByCompetition.FirstOrDefault(x => x.Key == SelectedCompetition)?
+                SelectedMatchListGroup = allFixturesMatchByCompetition.FirstOrDefault(x => x.Key == SelectedFixturesCompetition)?
                 .GroupBy(x => x.MatchTypeName)?.ToList();
             });
+        }
+
+        private async Task LoadStandings()
+        {
+            var standings = _loadStandingsFromServer ? await _dystirWebClientService.GetStandings() : _dystirWebClientService.Standings;
+            _loadStandingsFromServer = false;
+
+            var selectedStandingsCompetition = _selectedCompetition;
+            if (string.IsNullOrWhiteSpace(selectedStandingsCompetition))
+            {
+                selectedStandingsCompetition = GetCompetitionsList(standings).FirstOrDefault() ?? "";
+            }
+
+            Standing standing = standings?.FirstOrDefault(x => x.StandingCompetitionName == selectedStandingsCompetition);
+            StandingsView = new StandingsModelView()
+            {
+                SelectedCompetition = selectedStandingsCompetition,
+                CompetitionsList = GetCompetitionsList(standings),
+                Standing = standing
+            };
+        }
+
+        private List<string> GetCompetitionsList(ObservableCollection<Standing> standings)
+        {
+            List<string> competitionsList = new List<string>();
+            foreach (var standing in standings ?? new ObservableCollection<Standing>())
+            {
+                competitionsList.Add(standing.StandingCompetitionName);
+            }
+            return competitionsList;
         }
 
         public async Task LoadMatchDetails()

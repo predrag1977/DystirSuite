@@ -62,14 +62,6 @@
     {
         <span class="fas fa-star" style="color:gold"></span>
     }
-    @if (summaryEventOfMatch.EventName == "GOAL" || summaryEventOfMatch.EventName == "OWNGOAL" || summaryEventOfMatch.EventName == "PENALTYSCORED")
-    {
-        <div class="d-inline-block">
-            <div class="score d-inline-block">@summaryEventOfMatch.HomeTeamScore</div>
-            <div class="d-inline-block">:</div>
-            <div class="score d-inline-block">@summaryEventOfMatch.AwayTeamScore</div>
-        </div>
-    }
 </td>
 
 <td class="minutes_summary">
@@ -84,14 +76,7 @@
 </td>
 
 <td class="summary_event @(!string.IsNullOrWhiteSpace(summaryEventOfMatch.AwayTeam) ? "visible" : "invisible" )">
-    @if (summaryEventOfMatch.EventName == "GOAL" || summaryEventOfMatch.EventName == "OWNGOAL" || summaryEventOfMatch.EventName == "PENALTYSCORED")
-    {
-        <div class="d-inline-block">
-            <div class="score d-inline-block">@summaryEventOfMatch.HomeTeamScore</div>
-            <div class="d-inline-block">:</div>
-            <div class="score d-inline-block">@summaryEventOfMatch.AwayTeamScore</div>
-        </div>
-    }
+    
     @if (summaryEventOfMatch.EventName == "GOAL")
     {
         <span>Mál</span>
