@@ -68,6 +68,7 @@
                 <RowDefinition Height="55" />
                 <RowDefinition Height="55" />
                 <RowDefinition Height="55" />
+                <RowDefinition Height="55" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -184,6 +185,15 @@
                     <TapGestureRecognizer Tapped="LineUp_Tapped" CommandParameter="{Binding AwayTeam}" NumberOfTapsRequired="1" />
                 </ContentView.GestureRecognizers>
             </ContentView>
+
+            <ContentView x:Name="PlayerOfTheMatchContentView" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" Padding="1" Margin="1,0,1,2" BackgroundColor="DarkOrange" HorizontalOptions="Fill">
+                <StackLayout Padding="2,7">
+                    <Label Text="Player of match" TextColor="White" MaxLines="1" />
+                </StackLayout>
+                <ContentView.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Event_Tapped" CommandParameter="PLAYEROFTHEMATCH" NumberOfTapsRequired="1" />
+                </ContentView.GestureRecognizers>
+            </ContentView>
             
         </Grid>
 
@@ -194,6 +204,7 @@
                 ItemsSource="{Binding EventsOfMatch}"
                 VerticalOptions="FillAndExpand"
                 HasUnevenRows="true"
+                RefreshControlColor="Gray"
                 IsPullToRefreshEnabled="True"   
                 CachingStrategy ="RecycleElement"
                 IsRefreshing="{Binding IsLoading}"

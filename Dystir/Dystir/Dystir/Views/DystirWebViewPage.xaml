@@ -15,7 +15,7 @@
                      HorizontalOptions="FillAndExpand"
                      Navigated="OnNavigated"
                      BackgroundColor="#181818"/>
-            <Button x:Name="RefreshButton" IsVisible="False" Text="REFRESH" Clicked="Button_Clicked" />
+            <Button x:Name="RefreshButton" IsVisible="false" Text="REFRESH" Clicked="Button_Clicked" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

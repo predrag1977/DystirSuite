@@ -39,6 +39,14 @@ else if (SelectedPage == SelectedPage.Standings)
                             CompetitionsOnClick="@(CompetitionsOnClick)" />
     </div>
 }
+else if (SelectedPage == SelectedPage.Statistics)
+{
+    <div id="competitions_selection">
+        <ChooseCompetitions CompetitionsList="@(FullStatistics?.CompetitionsList?.ToList())"
+                            SelectedCompetition="@(FullStatistics?.SelectedCompetition)"
+                            CompetitionsOnClick="@(CompetitionsOnClick)" />
+    </div>
+}
 
 
 @switch (SelectedPage)
@@ -112,6 +120,73 @@ else if (SelectedPage == SelectedPage.Standings)
         </div>
         break;
     case SelectedPage.Statistics:
+        <div id="main_container">
+            @if (FullStatistics?.CompetitionStatistic != null)
+            {
+                <table class="lineups content_table">
+                    <tr>
+                        <td class="statistics_title">
+                            <span>Málskjúttar</span>
+                            <div class="statistics_border" />
+                        </td>
+                        <td class="statistics_title">
+                            <span>Upplegg</span>
+                            <div class="statistics_border" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="align-top">
+                            @for (int i = 0; i < FullStatistics.CompetitionStatistic.GoalPlayers.Count; i++)
+                            {
+                                PlayersOfMatches Player = FullStatistics.CompetitionStatistic.GoalPlayers[i];
+                                <div class="player-list-item">
+                                    <table class="content_table text-left">
+                                        <tr>
+                                            <td class="statistics_number">
+                                                @(string.Format("{0}.", i + 1))
+                                            </td>
+                                            <td>
+                                                <div class="player_name">
+                                                    @((Player.FirstName + " " + Player.Lastname).Trim())
+                                                </div>
+                                                <div class="statistics_team">
+                                                    @(Player.TeamName)
+                                                </div>
+                                            </td>
+                                            <td class="statistics_goal">@Player.Goal</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            }
+                        </td>
+                        <td class="align-top">
+                            @for (int i = 0; i < FullStatistics.CompetitionStatistic.AssistPlayers.Count; i++)
+                            {
+                                PlayersOfMatches Player = FullStatistics.CompetitionStatistic.AssistPlayers[i];
+                                <div class="player-list-item">
+                                    <table class="content_table text-left">
+                                        <tr>
+                                            <td class="statistics_number">
+                                                @(string.Format("{0}.", i + 1))
+                                            </td>
+                                            <td>
+                                                <div class="player_name">
+                                                    @((Player.FirstName + " " + Player.Lastname).Trim())
+                                                </div>
+                                                <div class="statistics_team">
+                                                    @(Player.TeamName)
+                                                </div>
+                                            </td>
+                                            <td class="statistics_asist">@Player.Assist</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                </table>
+            }
+        </div>
         break;
     case SelectedPage.MatchDetails:
         <div id="match-details_static_part">

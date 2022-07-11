@@ -21,13 +21,13 @@ namespace DystirXamarin.Views
             _viewModel = viewModel;
             _viewModel.PropertyChanged += _viewModel_PropertyChanged;
             BindingContext = _viewModel;
-            Populate();
+            _viewModel.IsLoading = true;
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            PopulateMatchList();
+            Populate();
         }
 
         private async void Populate()
@@ -45,7 +45,7 @@ namespace DystirXamarin.Views
                 NewMatchButton.IsVisible = false;
             }
             //TODO Change this
-            VersionLabel.Text = "4.0.0.46";
+            VersionLabel.Text = "4.0.0.49";
         }
 
         private void PopulateMatchList()
@@ -73,6 +73,7 @@ namespace DystirXamarin.Views
 
         private void MatchesListView_Refreshing(object sender, EventArgs e)
         {
+            _viewModel.IsLoading = true;
             Populate();
         }
 

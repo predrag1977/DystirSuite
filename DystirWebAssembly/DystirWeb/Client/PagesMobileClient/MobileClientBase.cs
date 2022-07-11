@@ -29,6 +29,7 @@ namespace DystirWeb.Client.PagesMobileClient
         private int _daysAfter = 0;
         private string _selectedCompetition;
         private bool _loadStandingsFromServer = true;
+        private bool _loadStatisticsFromServer = true;
 
         public string SelectedResultsCompetition { get; set; }
         public string SelectedFixturesCompetition { get; set; }
@@ -37,6 +38,7 @@ namespace DystirWeb.Client.PagesMobileClient
         public Matches SelectedMatch = new Matches();
         public string DaysRange { get; set; }
         public StandingsModelView StandingsView { get; set; }
+        public FullStatisticModelView FullStatistics { get; private set; }
 
         public SelectedPage SelectedPage = SelectedPage.Matches;
         public List<Matches> MatchesListSameDay = new List<Matches>();
@@ -45,7 +47,6 @@ namespace DystirWeb.Client.PagesMobileClient
         public List<IGrouping<string, Matches>> SelectedMatchListGroup;
         public int TimeZoneOffset = 0;
         public bool isLoading = true;
-        
 
         protected override async Task OnInitializedAsync()
         {
@@ -80,12 +81,14 @@ namespace DystirWeb.Client.PagesMobileClient
         private async void DystirWebClientService_FullDataLoaded()
         {
             _loadStandingsFromServer = true;
+            _loadStatisticsFromServer = true;
             await LoadData();
         }
 
         private async void DystirWebClientService_OnRefreshMatchDetails(MatchDetails matchDetails)
         {
             _loadStandingsFromServer = true;
+            _loadStatisticsFromServer = true;
             if (SelectedPage == SelectedPage.MatchDetails)
             {
                 MatchUpdate(matchDetails);
@@ -101,6 +104,7 @@ namespace DystirWeb.Client.PagesMobileClient
             isLoading = false;
             Refresh();
             _loadStandingsFromServer = true;
+            _loadStatisticsFromServer = true;
             await LoadData();
         }
 
@@ -164,6 +168,7 @@ namespace DystirWeb.Client.PagesMobileClient
                     await LoadStandings();
                     break;
                 case SelectedPage.Statistics:
+                    await LoadStatistics();
                     break;
                 case SelectedPage.MatchDetails:
                     await LoadMatchDetails();
@@ -256,27 +261,52 @@ namespace DystirWeb.Client.PagesMobileClient
             var standings = _loadStandingsFromServer ? await _dystirWebClientService.GetStandings() : _dystirWebClientService.Standings;
             _loadStandingsFromServer = false;
 
-            var selectedStandingsCompetition = _selectedCompetition;
-            if (string.IsNullOrWhiteSpace(selectedStandingsCompetition))
-            {
-                selectedStandingsCompetition = GetCompetitionsList(standings).FirstOrDefault() ?? "";
-            }
+            List<string> competitionsList = GetStandingsCompetitionsList(standings);
+            var selectedStandingsCompetition = competitionsList.Contains(_selectedCompetition) ? _selectedCompetition : competitionsList.FirstOrDefault() ?? "";
 
             Standing standing = standings?.FirstOrDefault(x => x.StandingCompetitionName == selectedStandingsCompetition);
             StandingsView = new StandingsModelView()
             {
                 SelectedCompetition = selectedStandingsCompetition,
-                CompetitionsList = GetCompetitionsList(standings),
+                CompetitionsList = GetStandingsCompetitionsList(standings),
                 Standing = standing
             };
         }
 
-        private List<string> GetCompetitionsList(ObservableCollection<Standing> standings)
+        public async Task LoadStatistics()
+        {
+            var statisticCompetitions = _loadStatisticsFromServer ? await _dystirWebClientService.GetCompetitionStatistics() : _dystirWebClientService.CompetitionStatistics;
+            _loadStatisticsFromServer = false;
+
+            List<string> competitionsList = GetStatisticsCompetitionsList(statisticCompetitions);
+            var selectedStatisticsCompetition = competitionsList.Contains(_selectedCompetition) ? _selectedCompetition : competitionsList.FirstOrDefault() ?? "";
+
+            var competitionStatistic = statisticCompetitions?.FirstOrDefault(x => x.CompetitionName == selectedStatisticsCompetition);
+
+            FullStatistics = new FullStatisticModelView()
+            {
+                SelectedCompetition = selectedStatisticsCompetition,
+                CompetitionsList = GetStatisticsCompetitionsList(statisticCompetitions),
+                CompetitionStatistic = competitionStatistic
+            };
+        }
+
+        private List<string> GetStandingsCompetitionsList(ObservableCollection<Standing> standings)
         {
             List<string> competitionsList = new List<string>();
             foreach (var standing in standings ?? new ObservableCollection<Standing>())
             {
                 competitionsList.Add(standing.StandingCompetitionName);
+            }
+            return competitionsList;
+        }
+
+        private List<string> GetStatisticsCompetitionsList(ObservableCollection<CompetitionStatistic> statisticCompetitions)
+        {
+            List<string> competitionsList = new List<string>();
+            foreach (var statistic in statisticCompetitions ?? new ObservableCollection<CompetitionStatistic>())
+            {
+                competitionsList.Add(statistic.CompetitionName);
             }
             return competitionsList;
         }
