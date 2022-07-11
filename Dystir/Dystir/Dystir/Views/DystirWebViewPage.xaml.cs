@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Net;
 using Xamarin.Forms;
 
 namespace Dystir.Views
@@ -11,6 +11,7 @@ namespace Dystir.Views
         {
             InitializeComponent();
             DystirWebView.Source = App.URL;
+            DystirWebView.Reload();
         }
 
         protected override void OnAppearing()
@@ -35,7 +36,7 @@ namespace Dystir.Views
             e.Cancel = true;
         }
 
-        void Button_Clicked(System.Object sender, System.EventArgs e)
+        void Button_Clicked(object sender, EventArgs e)
         {
             DystirWebView.Reload();
         }

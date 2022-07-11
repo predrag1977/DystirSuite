@@ -27,7 +27,6 @@ namespace DystirXamarin.ViewModels
 
         public async Task GetFullData()
         {
-            IsLoading = true;
             MainException = null;
             try
             {
@@ -138,7 +137,6 @@ namespace DystirXamarin.ViewModels
 
         internal async Task UpdateMatchAsync(Match match, bool changeMatchTime)
         {
-            IsLoading = true;
             MainException = null;
             try
             {

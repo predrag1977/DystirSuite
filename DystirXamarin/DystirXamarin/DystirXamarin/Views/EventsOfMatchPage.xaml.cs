@@ -74,6 +74,23 @@ namespace DystirXamarin.Views
             string totalEventMinutesAndSeconds = new TotalTimeFromSelectedMatchTimeConverter()?.Convert(selectedMatch, null, null, CultureInfo.CurrentCulture)?.ToString();
             string fullMatchTime = new LiveMatchTimeConverter()?.Convert(totalEventMinutesAndSeconds, null, selectedMatch?.StatusID, CultureInfo.CurrentCulture)?.ToString();
             MatchTimeLabel.Text = fullMatchTime;
+            if(_viewModel.SelectedLiveMatch.StatusID >= 12)
+            {
+                PlayerOfTheMatchContentView.IsVisible = true;
+                if(EventsGrid.RowDefinitions.Count == 4)
+                {
+                    EventsGrid.RowDefinitions.Add(new RowDefinition() { Height = 55});
+                }
+            }
+            else
+            {
+                PlayerOfTheMatchContentView.IsVisible = false;
+                if (EventsGrid.RowDefinitions.Count == 5)
+                {
+                    EventsGrid.RowDefinitions.RemoveAt(4);
+                }
+            }
+            
         }
 
         private async void MatchTime_Clicked(object sender, EventArgs e)
