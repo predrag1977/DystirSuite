@@ -23,8 +23,6 @@ namespace Dystir
 {
     public partial class App : Application
     {
-        public const string URL = "http://localhost:51346/client/mobileclient";
-
         private DystirViewModel _dystirViewModel;
         private MatchesViewModel _viewModel = new MatchesViewModel();
         private bool _isBusy;

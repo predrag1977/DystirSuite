@@ -7,10 +7,13 @@ namespace Dystir.Views
 {
     public partial class DystirWebViewPage : ContentPage
     {
+        //private const string URL = "http://localhost:51346/client/mobileclient";
+        private const string URL = "https://www.dystir.fo/client/mobileclient";
+
         public DystirWebViewPage()
         {
             InitializeComponent();
-            DystirWebView.Source = App.URL;
+            DystirWebView.Source = URL;
             DystirWebView.Reload();
         }
 
@@ -28,7 +31,7 @@ namespace Dystir.Views
         [Obsolete]
         private void DystirWebView_Navigating(object sender, WebNavigatingEventArgs e)
         {
-            if (e.Url.Equals(App.URL))
+            if (e.Url.Equals(URL))
             {
                 return;
             }

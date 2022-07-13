@@ -77,7 +77,7 @@ else if (SelectedPage == SelectedPage.Statistics)
         </div>
         break;
     case SelectedPage.Standings:
-        <div id="main_container">
+        <div id="main_container_mobile_client">
             <div class="standings_table pt-2">
                 <table class="content_table">
                     @if (StandingsView?.Standing?.TeamStandings?.Count() > 0 == true)
@@ -120,7 +120,7 @@ else if (SelectedPage == SelectedPage.Statistics)
         </div>
         break;
     case SelectedPage.Statistics:
-        <div id="main_container">
+        <div id="main_container_mobile_client">
             @if (FullStatistics?.CompetitionStatistic != null)
             {
                 <table class="lineups content_table">

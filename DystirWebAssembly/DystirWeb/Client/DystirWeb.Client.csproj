@@ -12,6 +12,7 @@
     <None Remove="InfoShareWebSite\" />
     <None Remove="Quick.AspNetCore.Components.Web.Extensions" />
     <None Remove="PagesMobileClient\" />
+    <None Remove="Microsoft.Extensions.Localization" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shared\NavMenu.razor" />
@@ -23,6 +24,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.6" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.6" />
     <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.7" />
   </ItemGroup>
 
   <ItemGroup>

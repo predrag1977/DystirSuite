@@ -1,10 +1,41 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using DystirWeb.Shared;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DystirWeb.ViewBases
 {
     public class MatchBase : ComponentBase
     {
+        [Inject]
+        private IJSRuntime _jsRuntime { get; set; }
+
+        [Parameter]
+        public Matches MatchItem { get; set; }
+
+        [Parameter]
+        public bool IsMatchForSameDayList { get; set; }
+
+        [Parameter]
+        public bool IsMatchInDetails { get; set; }
+
+        [Parameter]
+        public int TimeZoneOffset { get; set; }
+
+        [Parameter]
+        public bool ShowMatchType { get; set; }
+
+        public string MatchDayName { get; set; }
+
+        protected override async Task OnParametersSetAsync()
+        {
+            var matchDayNameResult = await _jsRuntime.InvokeAsync<string>("matchDateFormat", MatchItem?.Time?.AddMinutes(-TimeZoneOffset).ToString());
+            MatchDayName = string.IsNullOrEmpty(matchDayNameResult) ? string.Empty : new CultureInfo("fo-FO").TextInfo.ToTitleCase(matchDayNameResult + ". ");
+        }
+
         public string GetMatchTime(DateTime? statusTime, DateTime? matchDateTime, int? statusId)
         {
             try {

@@ -64,7 +64,8 @@
             <table>
                 <tr>
                     <td class="match_info text-center">
-                        <span>@MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString("ddd dd.MM.", new CultureInfo("fo-FO"))</span>
+                        <span>@MatchDayName</span>
+                        <span>@MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString("dd.MM.", new CultureInfo("fo-FO"))</span>
                         <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "" : MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString(" HH:mm"))</span>
                         <span>@(string.IsNullOrWhiteSpace(MatchItem.MatchTypeName) ? "" : " - ")</span>
                         <span>@MatchItem.MatchTypeName</span>
@@ -133,18 +134,6 @@
 }
 
 @code {
-
-    [Parameter]
-    public Matches MatchItem { get; set; }
-
-    [Parameter]
-    public int TimeZoneOffset { get; set; }
-
-    [Parameter]
-    public bool IsMatchForSameDayList { get; set; }
-
-    [Parameter]
-    public bool ShowMatchType { get; set; }
 
     [Parameter]
     public bool IsSelectedMatch { get; set; }
