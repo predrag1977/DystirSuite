@@ -7,8 +7,8 @@ namespace Dystir.Views
 {
     public partial class DystirWebViewPage : ContentPage
     {
-        //private const string URL = "http://localhost:51346/client/mobileclient";
-        private const string URL = "https://www.dystir.fo/client/mobileclient";
+        private const string URL = "http://localhost:51346/client/mobileclient";
+        //private const string URL = "https://www.dystir.fo/client/mobileclient";
 
         public DystirWebViewPage()
         {

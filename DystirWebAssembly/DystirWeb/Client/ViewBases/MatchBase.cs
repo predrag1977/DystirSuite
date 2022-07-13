@@ -1,18 +1,12 @@
 ﻿using DystirWeb.Shared;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using System;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DystirWeb.ViewBases
 {
     public class MatchBase : ComponentBase
     {
-        [Inject]
-        private IJSRuntime _jsRuntime { get; set; }
-
         [Parameter]
         public Matches MatchItem { get; set; }
 
@@ -28,13 +22,12 @@ namespace DystirWeb.ViewBases
         [Parameter]
         public bool ShowMatchType { get; set; }
 
-        public string MatchDayName { get; set; }
+        [Parameter]
+        public bool IsSelectedMatch { get; set; }
 
-        protected override async Task OnParametersSetAsync()
-        {
-            var matchDayNameResult = await _jsRuntime.InvokeAsync<string>("matchDateFormat", MatchItem?.Time?.AddMinutes(-TimeZoneOffset).ToString());
-            MatchDayName = string.IsNullOrEmpty(matchDayNameResult) ? string.Empty : new CultureInfo("fo-FO").TextInfo.ToTitleCase(matchDayNameResult + ". ");
-        }
+        [Parameter]
+        public int NumberOfMatches { get; set; }
+
 
         public string GetMatchTime(DateTime? statusTime, DateTime? matchDateTime, int? statusId)
         {
@@ -182,6 +175,43 @@ namespace DystirWeb.ViewBases
             }
             var ticks = (DateTime.UtcNow.Ticks - matchDateTime.Value.Ticks);
             return TimeSpan.FromTicks(ticks).TotalMinutes.ToString();
+        }
+
+        public string MatchItemWidth()
+        {
+            if (NumberOfMatches > 0)
+            {
+                return "calc(" + 100 / NumberOfMatches + "% - " + NumberOfMatches * 1.2 + "px)";
+            }
+            return "0px";
+        }
+
+        public string GetMatchDayName()
+        {
+            var faroeseDayName = ConvertToFaroese(MatchItem?.Time?.AddMinutes(-TimeZoneOffset).ToString("ddd", new CultureInfo("en-US")));
+            return faroeseDayName + ". ";
+        }
+
+        private string ConvertToFaroese(string day)
+        {
+            switch (day.ToLower()) {
+                case "mon":
+                    return "Mán";
+                case "tue":
+                    return "Týs";
+                case "wed":
+                    return "Mik";
+                case "thu":
+                    return "Hós";
+                case "fri":
+                    return "Frí";
+                case "sat":
+                    return "Ley";
+                case "sun":
+                    return "Sun";
+                default:
+                    return day;
+            }
         }
     }
 }
