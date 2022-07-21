@@ -2,7 +2,7 @@
 @using System.Globalization
 
 <div class="navbar navbar-dark p-0">
-    <table style="width: 100%; background-color: #374E32">
+    <table style="width: 100%;">
         <tr>
             <td style="white-space:nowrap;width:0">
                 @if (selectedPage == SelectedPage.MatchDetails)
@@ -34,7 +34,8 @@
                         <span>HAGTØL</span>
                         break;
                     case SelectedPage.MatchDetails:
-                        <span>@SelectedMatch.Time?.AddMinutes(-TimeZoneOffset).ToString("ddd. dd.MM.", new CultureInfo("fo-FO")).ToUpper()</span>
+                        <span>@GetMatchDayName()</span>
+                        <span>@SelectedMatch.Time?.AddMinutes(-TimeZoneOffset).ToString("dd.MM.", new CultureInfo("fo-FO")).ToUpper()</span>
                         break;
                 }
             </td>
@@ -64,6 +65,35 @@
 
     [Parameter]
     public int TimeZoneOffset { get; set; }
+
+    private string GetMatchDayName()
+    {
+        var faroeseDayName = ConvertToFaroese(SelectedMatch?.Time?.AddMinutes(-TimeZoneOffset).ToString("ddd", new CultureInfo("en-US")));
+        return faroeseDayName + ". ";
+    }
+
+    private string ConvertToFaroese(string day)
+    {
+        switch (day.ToLower())
+        {
+            case "mon":
+                return "Mán";
+            case "tue":
+                return "Týs";
+            case "wed":
+                return "Mik";
+            case "thu":
+                return "Hós";
+            case "fri":
+                return "Frí";
+            case "sat":
+                return "Ley";
+            case "sun":
+                return "Sun";
+            default:
+                return day;
+        }
+    }
 
 }
 

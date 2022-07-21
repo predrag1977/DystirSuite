@@ -200,7 +200,7 @@ else if (SelectedPage == SelectedPage.Statistics)
                         <div id="horizontal_menu_wrapper_mobile_client">
                             @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
                             {
-                                <a style="cursor:pointer;" @onclick="() => { ChangePage(SelectedPage.MatchDetails); }">
+                                <a style="cursor:pointer;" @onclick="() => { SelectedMatch = match; ChangePage(SelectedPage.MatchDetails); }">
                                     <MatchView MatchItem="@match" TimeZoneOffset="@TimeZoneOffset" IsMatchForSameDayList="@true" />
                                 </a>
                             }
@@ -212,7 +212,7 @@ else if (SelectedPage == SelectedPage.Statistics)
                 </div>
             }
 
-            <div id="selected_match_details">
+            <div id="selected_match_details" style="padding-top:5px;">
                 <MatchView MatchItem="@SelectedMatch" TimeZoneOffset="@TimeZoneOffset" ShowMatchType="@true" IsMatchInDetails="@true" />
             </div>
 
