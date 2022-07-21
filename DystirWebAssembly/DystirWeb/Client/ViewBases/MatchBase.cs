@@ -188,8 +188,8 @@ namespace DystirWeb.ViewBases
 
         public string GetMatchDayName()
         {
-            var faroeseDayName = ConvertToFaroese(MatchItem?.Time?.AddMinutes(-TimeZoneOffset).ToString("ddd", new CultureInfo("en-US")));
-            return faroeseDayName + ". ";
+            var dayName = MatchItem?.Time?.AddMinutes(-TimeZoneOffset).ToString("ddd", new CultureInfo("en-US"));
+            return string.IsNullOrEmpty(dayName) ? "" : ConvertToFaroese(dayName) + ". ";
         }
 
         private string ConvertToFaroese(string day)

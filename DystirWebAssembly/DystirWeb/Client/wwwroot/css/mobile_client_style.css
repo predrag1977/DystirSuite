@@ -27,7 +27,7 @@
 
 #header_container_mobile_client {
     height: 50px;
-    border-bottom: 1px solid dimgray;
+    background-color: #374E32;
 }
 
 #foother_menu_mobile_client {
@@ -36,6 +36,7 @@
     left: 5px;
     right: 5px;
     bottom: 0;
+    background-color: #374E32;
 }
 
 #horizontal_foother_menu {
@@ -43,8 +44,7 @@
     height: 60px;
     text-align: center;
     justify-content: center;
-    border-bottom: 1px solid dimgray;
-    border-top: 1px solid dimgray;
+    background-color: #374E32;
 }
 
     #horizontal_foother_menu .tab {
@@ -54,6 +54,11 @@
         white-space: nowrap;
         width: 20%;
         margin: 20px 0 0 0;
+    }
+
+    #horizontal_foother_menu .selected_tab {
+        color:white;
+        font-weight:700;
     }
 
 #horizontal_menu_mobile_client {

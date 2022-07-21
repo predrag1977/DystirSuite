@@ -248,10 +248,18 @@ namespace DystirWeb.Services
                     if (eventOfMatch.EventTeam.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())
                     {
                         homeScore += 1;
+                        //if(eventOfMatch.EventPeriodId != 10)
+                        //{
+                        //    homeScore += 1;
+                        //}
                     }
                     if (eventOfMatch.EventTeam.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())
                     {
                         awayScore += 1;
+                        //if (eventOfMatch.EventPeriodId != 10)
+                        //{
+                        //    awayScore += 1;
+                        //}
                     }
                 }
                 summaryEventOfMatch.HomeTeamScore = homeScore;
@@ -294,6 +302,7 @@ namespace DystirWeb.Services
         private List<SummaryEventOfMatch> GetCommentary(MatchDetails matchDetails)
         {
             List<SummaryEventOfMatch> summaryEventOfMatchesList = new List<SummaryEventOfMatch>();
+            Matches selectedMatch = matchDetails.Match;
             var eventsList = matchDetails.EventsOfMatch?.Where(x => x != null).ToList();
             int homeScore = 0;
             int awayScore = 0;
@@ -302,8 +311,8 @@ namespace DystirWeb.Services
                 SummaryEventOfMatch summaryEventOfMatch = new SummaryEventOfMatch()
                 {
                     EventOfMatch = eventOfMatch,
-                    HomeTeam = eventOfMatch.EventTeam == matchDetails.Match.HomeTeam ? eventOfMatch.EventTeam : null,
-                    AwayTeam = eventOfMatch.EventTeam == matchDetails.Match.AwayTeam ? eventOfMatch.EventTeam : null,
+                    HomeTeam = eventOfMatch.EventTeam == selectedMatch.HomeTeam ? eventOfMatch.EventTeam : null,
+                    AwayTeam = eventOfMatch.EventTeam == selectedMatch.AwayTeam ? eventOfMatch.EventTeam : null,
                     EventMinute = eventOfMatch.EventMinute,
                     EventName = eventOfMatch.EventName,
                     HomeTeamScore = 0,
@@ -311,13 +320,21 @@ namespace DystirWeb.Services
                 };
                 if (IsGoal(eventOfMatch))
                 {
-                    if (eventOfMatch.EventTeam.ToUpper().Trim() == matchDetails.Match.HomeTeam.ToUpper().Trim())
+                    if (eventOfMatch.EventTeam.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())
                     {
                         homeScore += 1;
+                        //if (eventOfMatch.EventPeriodId != 10)
+                        //{
+                        //    homeScore += 1;
+                        //}
                     }
-                    if (eventOfMatch.EventTeam.ToUpper().Trim() == matchDetails.Match.AwayTeam.ToUpper().Trim())
+                    if (eventOfMatch.EventTeam.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())
                     {
                         awayScore += 1;
+                        //if (eventOfMatch.EventPeriodId != 10)
+                        //{
+                        //    awayScore += 1;
+                        //}
                     }
                 }
                 summaryEventOfMatch.HomeTeamScore = homeScore;
