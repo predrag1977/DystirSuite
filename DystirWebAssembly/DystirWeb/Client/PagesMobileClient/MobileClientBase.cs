@@ -325,6 +325,7 @@ namespace DystirWeb.Client.PagesMobileClient
         {
             if (_matchid == matchDetails?.MatchDetailsID)
             {
+                SelectedMatch = matchDetails.Match;
                 await LoadMatchDetails();
             }
             MatchesListSameDay = _dystirWebClientService.GetMatchesListSameDay(SelectedMatch);

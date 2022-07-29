@@ -68,7 +68,6 @@ namespace DystirWeb.Services
 
         public async Task LoadDataAsync()
         {
-            
             var loadAllMatchesTask = LoadAllMatchesAsync();
             var loadSponsorsTask = LoadSponsorsAsync();
             await Task.WhenAll(loadAllMatchesTask, loadSponsorsTask);
