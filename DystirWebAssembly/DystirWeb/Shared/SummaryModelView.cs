@@ -6,6 +6,8 @@ namespace DystirWeb.Shared
         public EventsOfMatches EventOfMatch { get; set; }
         public int HomeTeamScore { get; set; }
         public int AwayTeamScore { get; set; }
+        public int HomeTeamPenaltiesScore { get; set; }
+        public int AwayTeamPenaltiesScore { get; set; }
         public string HomeTeam { get; set; }
         public string AwayTeam { get; set; }
         public string EventName { get; set; }

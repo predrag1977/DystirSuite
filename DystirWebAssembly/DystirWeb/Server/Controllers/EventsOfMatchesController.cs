@@ -50,6 +50,12 @@ namespace DystirWeb.Controllers
                 selectedMatch.AwayTeamOnTarget = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "ONTARGET" && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())?.Count();
                 selectedMatch.HomeTeamCorner = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "CORNER" && x.EventTeam?.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())?.Count();
                 selectedMatch.AwayTeamCorner = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "CORNER" && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())?.Count();
+                selectedMatch.HomeTeamPenaltiesScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL")
+                && x.EventTeam?.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim()
+                && x.EventPeriodId== 10)?.Count();
+                selectedMatch.AwayTeamPenaltiesScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL")
+                && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim()
+                && x.EventPeriodId == 10)?.Count();
 
                 var playersOfMatch = _dystirDBContext.PlayersOfMatches.Where(x => x.MatchId == selectedMatch.MatchID)?.ToList();
                 foreach (PlayersOfMatches playerOfMatch in playersOfMatch ?? new List<PlayersOfMatches>())

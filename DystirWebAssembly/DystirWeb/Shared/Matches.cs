@@ -41,6 +41,12 @@ namespace DystirWeb.Shared
         [JsonProperty("AwayTeamScore")]
         public int? AwayTeamScore { get; set; }
 
+        [JsonProperty("HomeTeamPenaltiesScore")]
+        public int? HomeTeamPenaltiesScore { get; set; }
+
+        [JsonProperty("AwayTeamPenaltiesScore")]
+        public int? AwayTeamPenaltiesScore { get; set; }
+
         [JsonProperty("MatchTypeName")]
         public string MatchTypeName { get; set; }
 

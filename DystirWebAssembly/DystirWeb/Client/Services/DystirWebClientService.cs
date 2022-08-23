@@ -211,8 +211,11 @@ namespace DystirWeb.Services
                  || x.EventName == "BIGCHANCE"
                  || x.EventName == "PLAYEROFTHEMATCH"
                  || x.EventName == "ASSIST").ToList();
+
             int homeScore = 0;
             int awayScore = 0;
+            int homeTeamPenaltiesScore = 0;
+            int awayTeamPenaltiesScore = 0;
             foreach (var eventOfMatch in eventsList ?? new List<EventsOfMatches>())
             {
                 SummaryEventOfMatch summaryEventOfMatch = new SummaryEventOfMatch()
@@ -246,23 +249,31 @@ namespace DystirWeb.Services
                 {
                     if (eventOfMatch.EventTeam.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())
                     {
-                        homeScore += 1;
-                        //if(eventOfMatch.EventPeriodId != 10)
-                        //{
-                        //    homeScore += 1;
-                        //}
+                        if (eventOfMatch.EventPeriodId != 10)
+                        {
+                            homeScore += 1;
+                        }
+                        else
+                        {
+                            homeTeamPenaltiesScore += 1;
+                        }
                     }
                     if (eventOfMatch.EventTeam.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())
                     {
-                        awayScore += 1;
-                        //if (eventOfMatch.EventPeriodId != 10)
-                        //{
-                        //    awayScore += 1;
-                        //}
+                        if (eventOfMatch.EventPeriodId != 10)
+                        {
+                            awayScore += 1;
+                        }
+                        else
+                        {
+                            awayTeamPenaltiesScore += 1;
+                        }
                     }
                 }
                 summaryEventOfMatch.HomeTeamScore = homeScore;
                 summaryEventOfMatch.AwayTeamScore = awayScore;
+                summaryEventOfMatch.HomeTeamPenaltiesScore = homeTeamPenaltiesScore;
+                summaryEventOfMatch.AwayTeamPenaltiesScore = awayTeamPenaltiesScore;
 
                 if (eventOfMatch.EventName == "GOAL")
                 {
@@ -305,6 +316,8 @@ namespace DystirWeb.Services
             var eventsList = matchDetails.EventsOfMatch?.Where(x => x != null).ToList();
             int homeScore = 0;
             int awayScore = 0;
+            int homeTeamPenaltiesScore = 0;
+            int awayTeamPenaltiesScore = 0;
             foreach (var eventOfMatch in eventsList ?? new List<EventsOfMatches>())
             {
                 SummaryEventOfMatch summaryEventOfMatch = new SummaryEventOfMatch()
@@ -321,23 +334,31 @@ namespace DystirWeb.Services
                 {
                     if (eventOfMatch.EventTeam.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())
                     {
-                        homeScore += 1;
-                        //if (eventOfMatch.EventPeriodId != 10)
-                        //{
-                        //    homeScore += 1;
-                        //}
+                        if (eventOfMatch.EventPeriodId != 10)
+                        {
+                            homeScore += 1;
+                        }
+                        else
+                        {
+                            homeTeamPenaltiesScore += 1;
+                        }
                     }
                     if (eventOfMatch.EventTeam.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())
                     {
-                        awayScore += 1;
-                        //if (eventOfMatch.EventPeriodId != 10)
-                        //{
-                        //    awayScore += 1;
-                        //}
+                        if (eventOfMatch.EventPeriodId != 10)
+                        {
+                            awayScore += 1;
+                        }
+                        else
+                        {
+                            awayTeamPenaltiesScore += 1;
+                        }
                     }
                 }
                 summaryEventOfMatch.HomeTeamScore = homeScore;
                 summaryEventOfMatch.AwayTeamScore = awayScore;
+                summaryEventOfMatch.HomeTeamPenaltiesScore = homeTeamPenaltiesScore;
+                summaryEventOfMatch.AwayTeamPenaltiesScore = awayTeamPenaltiesScore;
                 summaryEventOfMatchesList.Add(summaryEventOfMatch);
             }
             summaryEventOfMatchesList.Reverse();
