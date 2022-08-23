@@ -169,6 +169,10 @@ namespace DystirWeb.Server.DystirDB
 
                 entity.Property(e => e.AwayTeamScore).HasColumnName("AwayTeamScore");
 
+                entity.Property(e => e.HomeTeamPenaltiesScore).HasColumnName("HomeTeamPenaltiesScore");
+
+                entity.Property(e => e.AwayTeamPenaltiesScore).HasColumnName("AwayTeamPenaltiesScore");
+
                 entity.Property(e => e.HomeTeamOnTarget).HasColumnName("HomeTeamOnTarget");
 
                 entity.Property(e => e.AwayTeamOnTarget).HasColumnName("AwayTeamOnTarget");

@@ -9,12 +9,30 @@
                     </tr>
                 </table>
 
-                @if (summaryEventOfMatch.EventName == "GOAL" || summaryEventOfMatch.EventName == "OWNGOAL" || summaryEventOfMatch.EventName == "PENALTYSCORED")
+                @if (summaryEventOfMatch.EventOfMatch.EventPeriodId != 10)
+                {
+                    if (summaryEventOfMatch.EventName == "GOAL"
+                       || summaryEventOfMatch.EventName == "OWNGOAL"
+                       || summaryEventOfMatch.EventName == "PENALTYSCORED")
+                    {
+                        <div>
+                            <div class="score d-inline-block">@summaryEventOfMatch.HomeTeamScore</div>
+                            <div class="d-inline-block">:</div>
+                            <div class="score d-inline-block">@summaryEventOfMatch.AwayTeamScore</div>
+                        </div>
+                    }
+
+                }
+                else if (summaryEventOfMatch.EventName == "GOAL"
+                  || summaryEventOfMatch.EventName == "OWNGOAL"
+                  || summaryEventOfMatch.EventName == "PENALTYSCORED"
+                  || summaryEventOfMatch.EventName == "PENALTYMISSED")
+
                 {
                     <div>
-                        <div class="score d-inline-block">@summaryEventOfMatch.HomeTeamScore</div>
+                        <div class="score_match_view d-inline-block">@summaryEventOfMatch.HomeTeamPenaltiesScore</div>
                         <div class="d-inline-block">:</div>
-                        <div class="score d-inline-block">@summaryEventOfMatch.AwayTeamScore</div>
+                        <div class="score_match_view d-inline-block">@summaryEventOfMatch.AwayTeamPenaltiesScore</div>
                     </div>
                 }
 
@@ -26,12 +44,16 @@
                             <div class="main_player d-inline-block">@(summaryEventOfMatch.HomeMainPlayer)</div>
                             if (!string.IsNullOrWhiteSpace(summaryEventOfMatch.HomeSecondPlayer))
                             {
-                                <div class="second_player d-inline-block"> - @(summaryEventOfMatch.HomeSecondPlayer)</div>
+                                <div class="second_player d-inline-block">&nbsp;@("- " + summaryEventOfMatch.HomeSecondPlayer)</div>
                             }
                         }
                         else if (summaryEventOfMatch.EventName == "OWNGOAL")
                         {
                             <div class="owngoal_player d-inline-block">@(summaryEventOfMatch.HomeMainPlayer)</div>
+                        }
+                        else if (summaryEventOfMatch.EventName == "PENALTYMISSED")
+                        {
+                            <div class="second_player d-inline-block">@(summaryEventOfMatch.HomeMainPlayer)</div>
                         }
                         else
                         {
@@ -48,12 +70,16 @@
                             <div class="main_player d-inline-block">@(summaryEventOfMatch.AwayMainPlayer)</div>
                             if (!string.IsNullOrWhiteSpace(summaryEventOfMatch.AwaySecondPlayer))
                             {
-                                <div class="second_player d-inline-block"> - @(summaryEventOfMatch.AwaySecondPlayer)</div>
+                                <div class="second_player d-inline-block">&nbsp;@("- " + summaryEventOfMatch.AwaySecondPlayer)</div>
                             }
                         }
                         else if (summaryEventOfMatch.EventName == "OWNGOAL")
                         {
                             <div class="owngoal_player d-inline-block">@(summaryEventOfMatch.AwayMainPlayer)</div>
+                        }
+                        else if (summaryEventOfMatch.EventName == "PENALTYMISSED")
+                        {
+                            <div class="second_player d-inline-block">@(summaryEventOfMatch.AwayMainPlayer)</div>
                         }
                         else
                         {
