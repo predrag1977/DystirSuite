@@ -89,7 +89,14 @@ namespace DystirXamarin.Models
         public string SelectedTeam
         {
             get { return _selectedTeam; }
-            set { SetProperty(ref _selectedTeam, value); CreatePlayersOfTeam(value); }
+            set { SetProperty(ref _selectedTeam, value); CreatePlayersOfTeam(value, SearchingTextPlayersOfTeam); }
+        }
+
+        string _searchingTextPlayersOfTeam;
+        public string SearchingTextPlayersOfTeam
+        {
+            get { return _searchingTextPlayersOfTeam; }
+            set { SetProperty(ref _searchingTextPlayersOfTeam, value); CreatePlayersOfTeam(SelectedTeam, value); }
         }
 
         public ObservableCollection<Team> Teams { get; set; }
@@ -138,7 +145,8 @@ namespace DystirXamarin.Models
                 .ThenBy(x => x.FirstName)
                 .ThenBy(x => x.LastName);
 
-            PlayersOfTeam = new ObservableCollection<PlayerOfMatch>(playersOfMatchSorted?.Where(p => p.TeamName == SelectedTeam));
+            PlayersOfTeam = new ObservableCollection<PlayerOfMatch>(playersOfMatchSorted?.Where(p => p.TeamName == SelectedTeam
+            && p.FirstName.StartsWith((SearchingTextPlayersOfTeam ?? ""), StringComparison.OrdinalIgnoreCase)));
             return new ObservableCollection<PlayerOfMatch>(playersOfMatchSorted);
         }
 
@@ -179,9 +187,10 @@ namespace DystirXamarin.Models
             return new ObservableCollection<EventOfMatch>(sortEvents.Reverse());
         }
 
-        private void CreatePlayersOfTeam(string selectedTeam)
+        private void CreatePlayersOfTeam(string selectedTeam, string searchingTextPlayersOfTeam)
         {
-            PlayersOfTeam = new ObservableCollection<PlayerOfMatch>(PlayersOfMatch?.Where(p => p.TeamName == selectedTeam));
+            PlayersOfTeam = new ObservableCollection<PlayerOfMatch>(PlayersOfMatch?.Where(p => p.TeamName == selectedTeam
+            && p.FirstName.StartsWith((searchingTextPlayersOfTeam ?? ""), StringComparison.OrdinalIgnoreCase)));
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,

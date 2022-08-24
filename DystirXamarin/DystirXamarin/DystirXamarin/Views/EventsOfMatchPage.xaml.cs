@@ -43,6 +43,12 @@ namespace DystirXamarin.Views
             });
         }
 
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            _ = _viewModel.GetMatches();
+        }
+
         private async void LoadMatchData()
         {
             LoadingDataLabel.IsVisible = true;

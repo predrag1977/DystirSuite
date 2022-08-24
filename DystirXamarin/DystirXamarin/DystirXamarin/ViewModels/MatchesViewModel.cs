@@ -55,14 +55,7 @@ namespace DystirXamarin.ViewModels
         public async Task GetMatches()
         {
             AllMatches = await _dataLoaderService.GetMatchesAsync("active", this);
-            if (AdministratorLoggedIn.AdministratorTeamID == 0)
-            {
-                Matches = new ObservableCollection<Match>(AllMatches.Where(x => x.Time.Value.ToLocalTime().Date == DateTime.Now.ToLocalTime().Date));
-            }
-            else
-            {
-                Matches = new ObservableCollection<Match>(AllMatches);
-            }
+            SetMatches();
         }
 
         public async Task GetTeams()
@@ -151,15 +144,34 @@ namespace DystirXamarin.ViewModels
             {
                 MainException = ex;
             }
-            var matches = new ObservableCollection<Match>(Matches);
-            var mat = matches.FirstOrDefault(m => m.MatchID == match.MatchID);
+
+            var mat = AllMatches.FirstOrDefault(m => m.MatchID == match.MatchID);
             if (mat != null)
             {
-                matches.Remove(mat);
+                AllMatches.Remove(mat);
             }
-            matches.Add(match);
-            Matches = new ObservableCollection<Match>(matches);
+            AllMatches.Add(match);
+            SetMatches();
+            
             IsLoading = false;
+        }
+
+        public void SetMatches()
+        {
+            var matches = new ObservableCollection<Match>();
+            switch (SelectedMatchListType)
+            {
+                case MatchListType.Before:
+                    matches = new ObservableCollection<Match>(AllMatches.Where(x => x.Time.Value.ToLocalTime().Date < DateTime.Now.ToLocalTime().Date));
+                    break;
+                case MatchListType.Today:
+                    matches = new ObservableCollection<Match>(AllMatches.Where(x => x.Time.Value.ToLocalTime().Date == DateTime.Now.ToLocalTime().Date));
+                    break;
+                case MatchListType.Next:
+                    matches = new ObservableCollection<Match>(AllMatches.Where(x => x.Time.Value.ToLocalTime().Date > DateTime.Now.ToLocalTime().Date));
+                    break;
+            }
+            Matches = new ObservableCollection<Match>(matches?.OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time));
         }
 
         internal async Task NewMatch(Match match)

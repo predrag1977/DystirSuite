@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.4.0" package="fo.Dystir" android:installLocation="auto" android:versionCode="47">
-	<uses-sdk android:targetSdkVersion="28" android:minSdkVersion="16" />
+	<uses-sdk android:targetSdkVersion="31" android:minSdkVersion="21" />
 	<application android:label="Dystir" android:icon="@drawable/dystir_icon"></application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>
