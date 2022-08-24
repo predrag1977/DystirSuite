@@ -48,6 +48,7 @@ namespace DystirXamarin.Views
             {
                 if (!string.IsNullOrWhiteSpace(userName))
                 {
+                    userName = userName.Trim();
                     string token = _encryptorService.Encrypt(string.Format("{0}{1}", userName, password));
                     _viewModel.AdministratorLoggedIn = await _viewModel.LoginAsync(token);
                     if (_viewModel.AdministratorLoggedIn != null)

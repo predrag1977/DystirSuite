@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converter="clr-namespace:DystirXamarin.Converter"
@@ -86,11 +86,31 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Padding="5,3,5,0">
+        
+        <Grid Grid.Row="0"
+              VerticalOptions="FillAndExpand"
+              Padding="0"
+              Margin="5"
+              HorizontalOptions="FillAndExpand">
+            <SearchBar BindingContext="{Binding SelectedLiveMatch}"
+                       Placeholder="Search player..."
+                       FontSize="Medium"
+                       FontAttributes="Italic"
+                       VerticalOptions="CenterAndExpand"
+                       Margin="0"
+                       BackgroundColor="DarkGreen"
+                       CancelButtonColor="white"
+                       PlaceholderColor="white"
+                       TextColor="White"
+                       Text="{Binding SearchingTextPlayersOfTeam}">
+            </SearchBar>
+        </Grid>
+        <Grid  Grid.Row="1" Padding="5,3,5,2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -102,14 +122,16 @@
                 <Label TextColor="Black" Text="{Binding Source={x:Reference PlayingListView},Path=ItemsSource, Converter={StaticResource SubsTotalConverter}}" />
             </StackLayout>
         </Grid>
-        <Grid Grid.Row="1" BackgroundColor="DimGray" IsVisible="{Binding IsLoading}"
+        <Grid Grid.Row="2" BackgroundColor="DimGray" IsVisible="{Binding IsLoading}"
               Padding="5" VerticalOptions="FillAndExpand"  HorizontalOptions="FillAndExpand">
             <Label Text="Loading players..." VerticalOptions="CenterAndExpand"/>
         </Grid>
-        <ListView x:Name="PlayingListView" Grid.Row="2" BindingContext="{Binding SelectedLiveMatch}"
-                Margin="7,0"
-                ItemsSource="{Binding PlayersOfTeam}"                  
-                VerticalOptions="FillAndExpand"
+        
+        <ListView x:Name="PlayingListView"
+                  Grid.Row="3" BindingContext="{Binding SelectedLiveMatch}"
+                  Margin="7,0"
+                  ItemsSource="{Binding PlayersOfTeam}"
+                  VerticalOptions="FillAndExpand"
                 HasUnevenRows="True"
                 CachingStrategy="RecycleElementAndDataTemplate"
                 IsRefreshing="False"
@@ -120,8 +142,8 @@
                 Refreshing="PlayingListView_Refreshing"
                 SeparatorVisibility="None">
         </ListView>
-        <BoxView Grid.Row="3" HeightRequest="1" Margin="5,0,5,5" BackgroundColor="Gray"/>
-        <ContentView Grid.Row="4" Padding="1" Margin="7,0,7,20" BackgroundColor="DarkGreen" HorizontalOptions="Fill">
+        <BoxView Grid.Row="4" HeightRequest="1" Margin="5,0,5,5" BackgroundColor="Gray"/>
+        <ContentView Grid.Row="5" Padding="1" Margin="7,0,7,20" BackgroundColor="DarkGreen" HorizontalOptions="Fill">
             <StackLayout BackgroundColor="DarkGreen" Padding="10">
                 <Label Text="NEW PLAYER" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontAttributes="Bold" TextColor="White" />
             </StackLayout>

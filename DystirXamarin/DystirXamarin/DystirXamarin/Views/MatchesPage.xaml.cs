@@ -22,12 +22,14 @@ namespace DystirXamarin.Views
             _viewModel.PropertyChanged += _viewModel_PropertyChanged;
             BindingContext = _viewModel;
             _viewModel.IsLoading = true;
+            Populate();
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            Populate();
+            _viewModel.SetMatches();
+            PopulateMatchList();
         }
 
         private async void Populate()
@@ -45,7 +47,7 @@ namespace DystirXamarin.Views
                 NewMatchButton.IsVisible = false;
             }
             //TODO Change this
-            VersionLabel.Text = "4.0.0.49";
+            VersionLabel.Text = "4.0.0.51";
         }
 
         private void PopulateMatchList()
@@ -57,15 +59,12 @@ namespace DystirXamarin.Views
             switch (_viewModel.SelectedMatchListType)
             {
                 case MatchListType.Before:
-                    _viewModel.Matches = new ObservableCollection<Match>(_viewModel.AllMatches.Where(x => x.Time.Value.ToLocalTime().Date < DateTime.Now.ToLocalTime().Date));
                     BeforeLayout.BackgroundColor = Color.White;
                     break;
                 case MatchListType.Today:
-                    _viewModel.Matches = new ObservableCollection<Match>(_viewModel.AllMatches.Where(x => x.Time.Value.ToLocalTime().Date == DateTime.Now.ToLocalTime().Date));
                     TodayLayout.BackgroundColor = Color.White;
                     break;
                 case MatchListType.Next:
-                    _viewModel.Matches = new ObservableCollection<Match>(_viewModel.AllMatches.Where(x => x.Time.Value.ToLocalTime().Date > DateTime.Now.ToLocalTime().Date));
                     NextLayout.BackgroundColor = Color.White;
                     break;
             }
@@ -160,18 +159,21 @@ namespace DystirXamarin.Views
         private void Before_Tapped(object sender, EventArgs e)
         {
             _viewModel.SelectedMatchListType = MatchListType.Before;
+            _viewModel.Matches = new ObservableCollection<Match>(_viewModel.AllMatches.Where(x => x.Time.Value.ToLocalTime().Date < DateTime.Now.ToLocalTime().Date));
             PopulateMatchList();
         }
 
         private void Today_Tapped(object sender, EventArgs e)
         {
             _viewModel.SelectedMatchListType = MatchListType.Today;
+            _viewModel.Matches = new ObservableCollection<Match>(_viewModel.AllMatches.Where(x => x.Time.Value.ToLocalTime().Date == DateTime.Now.ToLocalTime().Date));
             PopulateMatchList();
         }
 
         private void Next_Tapped(object sender, EventArgs e)
         {
             _viewModel.SelectedMatchListType = MatchListType.Next;
+            _viewModel.Matches = new ObservableCollection<Match>(_viewModel.AllMatches.Where(x => x.Time.Value.ToLocalTime().Date > DateTime.Now.ToLocalTime().Date));
             PopulateMatchList();
         }
     }
