@@ -10,12 +10,12 @@
     </ContentView.Resources>
 
     <Grid HorizontalOptions="FillAndExpand" HeightRequest="33" ColumnSpacing="0" 
-          BackgroundColor="#222222" IsVisible="{Binding Sponsors.Count, Converter={StaticResource ItemsCountToBooleanConverter}}" RowSpacing="0" >
+          BackgroundColor="Black" IsVisible="{Binding Sponsors.Count, Converter={StaticResource ItemsCountToBooleanConverter}}" RowSpacing="0" >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <BoxView Grid.Row="0" HeightRequest="1" BackgroundColor="DimGray" Margin="0,0,0,2" />
+        <!--<BoxView Grid.Row="0" HeightRequest="1" BackgroundColor="DimGray" Margin="0,0,0,2" />-->
 
         <CollectionView x:Name="SponsorsCarouselView" Grid.Row="1"
                 HorizontalScrollBarVisibility="Never"

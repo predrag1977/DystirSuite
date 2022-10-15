@@ -1,13 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Dystir.Models
 {
-    public class Round
+    public partial class Round
     {
-        [JsonProperty("RoundID")]
-        public int? RoundID { get; set; }
-
-        [JsonProperty("RoundName")]
+        public int Id { get; set; }
         public string RoundName { get; set; }
+        public int? RoundId { get; set; }
     }
 }

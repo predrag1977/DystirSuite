@@ -8,9 +8,9 @@ namespace Dystir.Views
     [DesignTimeVisible(true)]
     public partial class FixturesPage : ContentView
     {
-        public MatchesViewModel _viewModel;
+        public DystirViewModel _viewModel;
 
-        public FixturesPage(MatchesViewModel viewModel)
+        public FixturesPage(DystirViewModel viewModel)
         {
             _viewModel = viewModel;
             InitializeComponent();

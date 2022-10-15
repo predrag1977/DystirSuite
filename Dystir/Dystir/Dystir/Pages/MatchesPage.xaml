@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:Dystir.ViewModels"
+    xmlns:converter="clr-namespace:Dystir.Converter"
+    xmlns:views="clr-namespace:Dystir.Views"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    ios:Page.UseSafeArea="True"
+    NavigationPage.HasNavigationBar="False"
+    x:Class="Dystir.Pages.MatchesPage" >
+
+    <ContentPage.Resources>
+        <converter:LanguageConverter x:Key="LanguageConverter" />
+        <converter:LanguageToVisibleConverter x:Key="LanguageToVisibleConverter" />
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+        <converter:InverseItemsCountToBooleanConverter x:Key="InverseItemsCountToBooleanConverter" />
+        <converter:DateToDayTextConverter x:Key="DateToDayTextConverter" />
+        <converter:ToLocalTimeConverter x:Key="ToLocalTimeConverter" />
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <viewModels:DystirViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <views:HeaderView Grid.Row="0" BindingContext="{Binding}" />
+
+            <CollectionView ItemsSource="{Binding MatchesDays}"
+                            HeightRequest="50"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding MatchesDaySelected, Mode=TwoWay}"
+                            HorizontalOptions="FillAndExpand"
+                            BackgroundColor="#181818"
+                            Margin="0,5,0,2"
+                            Grid.Row="1"
+                            ItemsLayout="VerticalGrid, 7">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Spacing="0" VerticalOptions="Center" Padding="2,5">
+                            <Label VerticalOptions="End" FontSize="12"
+                                    FontFamily="{StaticResource BoldFont}"
+                                    TextColor="{Binding TextColor}"
+                                    Text="{Binding Date, Converter={StaticResource DateToDayTextConverter}}">
+                            </Label>
+                            <Label VerticalOptions="Start" FontSize="11"
+                                    FontFamily="{StaticResource BoldFont}"
+                                    TextColor="{Binding TextColor}"
+                                    Text="{Binding Date, Converter={StaticResource ToLocalTimeConverter},ConverterParameter=ddd}" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <ListView x:Name="MatchesListView" Grid.Row="2"
+                      SeparatorVisibility="None" HasUnevenRows="True"
+                      CachingStrategy="RecycleElement"
+                      SelectionMode="None"
+                      BackgroundColor="Transparent"
+                      IsGroupingEnabled="True"
+                      VerticalOptions="FillAndExpand"
+                      Footer=""
+                      ItemsSource="{Binding MatchesGroupList}">
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid BackgroundColor="Black" Padding="10,10,5,10"
+                                  VerticalOptions="FillAndExpand"
+                                  HorizontalOptions="FillAndExpand" >
+                                <Label Text="{Binding Key}" FontSize="15"
+                                       TextColor="White"
+                                       FontAttributes="Bold"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="FillAndExpand"
+                                       HorizontalTextAlignment="Start" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <views:MatchView BindingContext="{Binding}" >
+                                <views:MatchView.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        NumberOfTapsRequired="1"
+                                        Tapped="SeeMore_Tapped"		
+                                        CommandParameter="{Binding}">
+                                    </TapGestureRecognizer>
+                                </views:MatchView.GestureRecognizers>
+                            </views:MatchView>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Grid x:Name="NoMatchesPanel" Grid.Row="2"
+                  VerticalOptions="FillAndExpand"
+                  HorizontalOptions="FillAndExpand"
+                  IsVisible="{Binding MatchesGroupList.Count, Converter={StaticResource InverseItemsCountToBooleanConverter}}">
+                <Grid  BackgroundColor="Black" Margin="5,0" HeightRequest="80"
+                       IsVisible="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
+                       VerticalOptions="Start" HorizontalOptions="FillAndExpand" >
+                    <Label Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=NoMatches}"
+                           FontFamily="{StaticResource NormalFont}" FontSize="Small"
+                           TextColor="#a6a6a6"
+                           VerticalOptions="Center" HorizontalOptions="Center" />
+                </Grid>
+            </Grid>
+            <views:LoadingIndicatorView Grid.RowSpan="3" IsVisible="{Binding IsLoading}"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
+

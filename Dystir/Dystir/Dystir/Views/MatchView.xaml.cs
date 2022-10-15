@@ -1,5 +1,6 @@
 ﻿using System;
 using Dystir.Models;
+using Dystir.Pages;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,12 +12,6 @@ namespace Dystir.Views
         public MatchView()
         {
             InitializeComponent();
-        }
-
-        private void SeeMore_Tapped(object sender, System.EventArgs e)
-        {
-            Match selectedMatch = BindingContext as Match;
-            ((Application.Current.MainPage as NavigationPage).CurrentPage as DystirPage).SeeMatchDetailsAsync(selectedMatch, true);
         }
     }
 }

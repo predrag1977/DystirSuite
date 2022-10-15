@@ -1,4 +1,5 @@
 ﻿using Dystir.Models;
+using Dystir.Services;
 using Dystir.ViewModels;
 using Microsoft.AppCenter.Analytics;
 using System;
@@ -13,32 +14,35 @@ namespace Dystir.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HeaderView : ContentView
     {
-        private MatchesViewModel _viewModel;
+        private DystirViewModel _viewModel;
+        private readonly DystirService _dystirService;
 
         public HeaderView()
         {
+            _dystirService = DependencyService.Get<DystirService>();
             InitializeComponent();
         }
 
         private void ContentView_BindingContextChanged(object sender, EventArgs e)
         {
-            _viewModel = BindingContext as MatchesViewModel;
+            _viewModel = BindingContext as DystirViewModel;
             ShowLanguageFlag();
         }
 
         private void Refresh_Tapped(object sender, EventArgs e)
         {
-            MatchesViewModel viewModel = (e as TappedEventArgs).Parameter as MatchesViewModel;
+            DystirViewModel viewModel = (e as TappedEventArgs).Parameter as DystirViewModel;
             RefreshAllData(viewModel);
         }
 
-        private async void RefreshAllData(MatchesViewModel viewModel)
+        private async void RefreshAllData(DystirViewModel viewModel)
         {
             if (viewModel != null)
             {
                 viewModel.IsLoading = true;
             }
-            await (Application.Current as App).ReloadAsync(LoadDataType.MainData);
+            await _dystirService.LoadDataAsync();
+            //await (Application.Current as App).ReloadAsync(LoadDataType.MainData);
         }
 
         private async void Language_Tapped(object sender, EventArgs e)

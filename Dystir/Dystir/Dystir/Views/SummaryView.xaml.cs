@@ -21,13 +21,18 @@ namespace Dystir.Views
             {
                 Grid parentLayout = (sender as Grid);
                 parentLayout.Children.Clear();
-                var eventOfMatch = parentLayout.BindingContext as EventOfMatch;
+                var eventOfMatch = (parentLayout.BindingContext as SummaryEventOfMatch).EventOfMatch;
                 new Summary().PopulateSummaryView(parentLayout, eventOfMatch);
             }
             catch (Exception)
             {
 
             }
+        }
+
+        void ContentView_BindingContextChanged(System.Object sender, System.EventArgs e)
+        {
+            var t = BindingContext;
         }
     }
 }

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             SelectedTabColor="LimeGreen"
+             UnselectedTabColor="White"
+             BarBackgroundColor="#181818"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    ios:Page.UseSafeArea="True"
+    NavigationPage.HasNavigationBar="False"
+             xmlns:page="clr-namespace:Dystir.Pages"
+             x:Class="Dystir.Pages.DystirTabbedPage" >
+
+   
+    <!--Pages can be added as references or inline-->
+    <page:MatchesPage Title="Matches" BackgroundColor="Black" BindingContext="{Binding}" />
+    <ContentPage Title="Results" BackgroundColor="Black" />
+    <ContentPage Title="Features" BackgroundColor="Black" />
+    <ContentPage Title="Standings" BackgroundColor="Black" />
+    <ContentPage Title="Statistics" BackgroundColor="Black" />
+</TabbedPage>

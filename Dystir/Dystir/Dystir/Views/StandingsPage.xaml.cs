@@ -13,9 +13,9 @@ namespace Dystir.Views
     [DesignTimeVisible(true)]
     public partial class StandingsPage : ContentView
     {
-        public MatchesViewModel _viewModel;
+        public DystirViewModel _viewModel;
 
-        public StandingsPage(MatchesViewModel viewModel)
+        public StandingsPage(DystirViewModel viewModel)
         {
             _viewModel = viewModel;
             InitializeComponent();

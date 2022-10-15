@@ -7,8 +7,9 @@
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              ios:Page.UseSafeArea="true"
              NavigationPage.HasNavigationBar="False"
-             BackgroundColor="DimGray"
+             BackgroundColor="Black"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:viewmodels="clr-namespace:Dystir.ViewModels"
              x:Class="Dystir.Views.DystirPage">
 
     <ContentPage.Resources>
@@ -27,30 +28,46 @@
             <Setter Property="VerticalTextAlignment" Value="Center" />
             <Setter Property="FontFamily" Value="{StaticResource NormalFont}" />
         </Style>
+        <ResourceDictionary>
+            <Style x:Key="BaseStyle" TargetType="Element">
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.ForegroundColor" Value="White" />
+                <Setter Property="Shell.TitleColor" Value="White" />
+                <Setter Property="Shell.DisabledColor" Value="#B4FFFFFF" />
+                <Setter Property="Shell.UnselectedColor" Value="#95FFFFFF" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#95FFFFFF"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+            </Style>
+            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
+            <Style TargetType="FlyoutItem" BasedOn="{StaticResource BaseStyle}" />
+        </ResourceDictionary>
     </ContentPage.Resources>
 
     <Grid VerticalOptions="FillAndExpand">
-        <Grid>
+        <!--<Grid>
             <ff:CachedImage Aspect="Fill" HorizontalOptions="Fill" VerticalOptions="Fill"  Source="resource://Dystir.Images.background.png" />
-        </Grid>
+        </Grid>-->
 
         <Grid x:Name="MainGrid" BindingContext="{Binding}" 
               VerticalOptions="FillAndExpand" 
-              BackgroundColor="#222222" Opacity="0.9">
+              BackgroundColor="Black"
+              Opacity="0.9">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="45" />
+                <RowDefinition Height="60" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Grid x:Name="HeaderMatchDetails" BindingContext="{Binding SelectedMatch}" Grid.Row="0" BackgroundColor="#2F4F2F" Padding="5">
+            <Grid x:Name="HeaderMatchDetails" BindingContext="{Binding SelectedMatch}" Grid.Row="0" BackgroundColor="Black" Padding="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="60" />
                     <ColumnDefinition Width="*" />
@@ -88,8 +105,16 @@
                 </CarouselView>
             </Grid>
             
-            <Grid Grid.Row="1" x:Name="MatchesLoadingPanel" IsVisible="{Binding IsLoading}" VerticalOptions="Center" HorizontalOptions="Center">
-                <ff:CachedImage WidthRequest="50" HeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center" Source="resource://Dystir.loadingicon.gif" />
+            <Grid x:Name="MatchesLoadingPanel"
+                  Grid.Row="1" 
+                  IsVisible="{Binding IsLoading}"
+                  VerticalOptions="Center"
+                  HorizontalOptions="Center">
+                <ff:CachedImage WidthRequest="30"
+                                HeightRequest="30"
+                                VerticalOptions="Center"
+                                HorizontalOptions="Center"
+                                Source="resource://Dystir.loadingicon.gif" />
             </Grid>
 
             <views:SponsorsMainView Grid.Row="2" BindingContext="{Binding}" Margin="0,0,0,3" />
@@ -116,7 +141,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <Grid x:Name="MenuButtomItemsView" Grid.Row="5" ColumnSpacing="3" HorizontalOptions="FillAndExpand" >
+            <Grid x:Name="MenuButtomItemsView" BackgroundColor="#181818" Grid.Row="5" ColumnSpacing="2" HorizontalOptions="FillAndExpand" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
@@ -124,31 +149,31 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <StackLayout Grid.Column="0" BackgroundColor="#2F4F2F" >
+                <StackLayout Grid.Column="0" >
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="Button_Clicked" CommandParameter="0" NumberOfTapsRequired="1" />
                     </StackLayout.GestureRecognizers>
-                    <Label FontFamily="{StaticResource BoldFont}" FontSize="10" Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=Matches}" />
+                    <Label FontFamily="{StaticResource BoldFont}" FontSize="10" TextColor="LimeGreen" Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=Matches}" />
                 </StackLayout>
-                <StackLayout Grid.Column="1" BackgroundColor="DimGray" >
+                <StackLayout Grid.Column="1" >
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="Button_Clicked" CommandParameter="1" NumberOfTapsRequired="1" />
                     </StackLayout.GestureRecognizers>
                     <Label FontFamily="{StaticResource BoldFont}" FontSize="10" Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=Results}" />
                 </StackLayout>
-                <StackLayout Grid.Column="2" BackgroundColor="DimGray">
+                <StackLayout Grid.Column="2" >
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="Button_Clicked" CommandParameter="2" NumberOfTapsRequired="1" />
                     </StackLayout.GestureRecognizers>
                     <Label FontFamily="{StaticResource BoldFont}" FontSize="10" Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=Fixtures}" />
                 </StackLayout>
-                <StackLayout Grid.Column="3" BackgroundColor="DimGray">
+                <StackLayout Grid.Column="3" >
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="Button_Clicked" CommandParameter="3" NumberOfTapsRequired="1" />
                     </StackLayout.GestureRecognizers>
                     <Label FontFamily="{StaticResource BoldFont}" FontSize="10" Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=Standings}" />
                 </StackLayout>
-                <StackLayout Grid.Column="4" BackgroundColor="DimGray">
+                <StackLayout Grid.Column="4" >
                     <StackLayout.GestureRecognizers>
                         <TapGestureRecognizer Tapped="Button_Clicked" CommandParameter="4" NumberOfTapsRequired="1" />
                     </StackLayout.GestureRecognizers>
@@ -156,7 +181,7 @@
                 </StackLayout>
             </Grid>
 
-            <Grid Grid.Row="1" HeightRequest="40" Margin="0,6" Opacity="0.8" VerticalOptions="End" IsVisible="{Binding IsConnectionError}" BackgroundColor="DarkRed">
+            <Grid Grid.Row="1" HeightRequest="40" Margin="0,6" Opacity="0.8" VerticalOptions="End" IsVisible="{Binding IsConnectionError}" BackgroundColor="Black">
                 <Label FontSize="13" Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=ConnectionLost}" TextColor="White" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
             </Grid>
             
