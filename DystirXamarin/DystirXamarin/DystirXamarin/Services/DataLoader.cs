@@ -18,6 +18,7 @@ namespace DystirXamarin.Services
         private const string Url = "https://www.dystir.fo/api/";
         //private const string Url = "http://localhost:51346/api/";
         //private const string Url = "http://localhost:64974/api/";
+        //private const string Url = "http://localhost:21166/api";
 
         private string _token;
 
@@ -302,15 +303,23 @@ namespace DystirXamarin.Services
 
         public async Task<Match> UpdateMatchAsync(Match match)
         {
-            HttpClient client = new HttpClient();
-            StringContent content = new StringContent(JsonConvert.SerializeObject(match), Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PutAsync(Url + "Matches/" + match.MatchID + "/" + _token, content);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var resultMatch = await response.Content.ReadAsStringAsync();
-                match =  JsonConvert.DeserializeObject<Match>(resultMatch);
+                HttpClient client = new HttpClient();
+                StringContent content = new StringContent(JsonConvert.SerializeObject(match), Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PutAsync(Url + "Matches/" + match.MatchID + "/" + _token, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var resultMatch = await response.Content.ReadAsStringAsync();
+                    match = JsonConvert.DeserializeObject<Match>(resultMatch);
+                }
             }
+            catch (Exception ex)
+            {
+                var t = ex;
+            }
+            
             return match;
         }
 
