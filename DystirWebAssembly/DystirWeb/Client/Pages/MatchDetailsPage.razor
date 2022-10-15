@@ -4,6 +4,10 @@
 @implements IDisposable
 
 <div id="match-details_static_part">
+    
+</div>
+
+<div id="match_details_container">
     <div id="matches_same_day">
         @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
         {
@@ -23,9 +27,6 @@
             <MatchDetailsTabs TabOnClick="OnTabClick" Match="@(SelectedMatch)" />
         </div>
     }
-</div>
-
-<div id="match_details_container">
 
     <div class="@(selectedTab == "0" ? "active_tab" : "no_active_tab")">
         <SummaryView SummaryEventsOfMatch="@(fullMatchDetails?.Summary)" />

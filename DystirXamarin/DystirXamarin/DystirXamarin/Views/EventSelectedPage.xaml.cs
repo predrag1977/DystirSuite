@@ -85,7 +85,7 @@ namespace DystirXamarin.Views
             _totalEventMinutesAndSeconds = GetTotalEventMinutesAndSeconds(_eventOfMatch.EventTotalTime, 0);
             MatchTime(_totalEventMinutesAndSeconds, _eventOfMatch.EventPeriodID);
 
-            if (_matchEventName.ToUpper() == "GOAL" || _matchEventName?.ToUpper().Trim() == "OWNGOAL")
+            if (_matchEventName.ToUpper() == "GOAL" || _matchEventName.ToUpper() == "DIRECTFREEKICKGOAL" || _matchEventName?.ToUpper().Trim() == "OWNGOAL")
             {
                 GoalEventView.IsVisible = true;
                 if (_matchEventName.ToUpper() == "GOAL" && _isUpdateEvent)

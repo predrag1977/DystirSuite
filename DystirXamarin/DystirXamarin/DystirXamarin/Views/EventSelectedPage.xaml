@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converter="clr-namespace:DystirXamarin.Converter"
@@ -153,6 +153,15 @@
                             <Label Text="goal" FontSize="13" HorizontalTextAlignment="Center" 
                                    VerticalTextAlignment="Center" TextColor="LightGray" FontAttributes="Bold" />
                         </StackLayout>
+
+                        <!--<StackLayout Margin="10,15,10,0" Spacing="2">
+                            <Button Text="DIRECT FREE KICK" BorderColor="ForestGreen" 
+                                    HeightRequest="50" BackgroundColor="ForestGreen" 
+                                    Margin="0" CommandParameter="DIRECTFREEKICKGOAL" Clicked="GoalEvent_Clicked" 
+                                    TextColor="White" />
+                            <Label Text="direct free kick" FontSize="13" HorizontalTextAlignment="Center" 
+                                   VerticalTextAlignment="Center" TextColor="LightGray" FontAttributes="Bold" />
+                        </StackLayout>-->
 
                         <StackLayout Margin="10,15,10,0" Spacing="2">
                             <Button Text="OWN GOAL" BorderColor="IndianRed" 

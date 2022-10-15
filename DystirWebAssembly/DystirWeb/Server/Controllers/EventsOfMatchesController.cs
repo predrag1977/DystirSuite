@@ -44,16 +44,16 @@ namespace DystirWeb.Controllers
         {
             if (selectedMatch != null)
             {
-                selectedMatch.HomeTeamScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL") && x.EventTeam?.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())?.Count();
-                selectedMatch.AwayTeamScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL") && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())?.Count();
+                selectedMatch.HomeTeamScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL" || x.EventName?.ToUpper() == "DIRECTFREEKICKGOAL") && x.EventTeam?.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())?.Count();
+                selectedMatch.AwayTeamScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL" || x.EventName?.ToUpper() == "DIRECTFREEKICKGOAL") && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())?.Count();
                 selectedMatch.HomeTeamOnTarget = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "ONTARGET" && x.EventTeam?.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())?.Count();
                 selectedMatch.AwayTeamOnTarget = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "ONTARGET" && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())?.Count();
                 selectedMatch.HomeTeamCorner = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "CORNER" && x.EventTeam?.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())?.Count();
                 selectedMatch.AwayTeamCorner = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "CORNER" && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())?.Count();
-                selectedMatch.HomeTeamPenaltiesScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL")
+                selectedMatch.HomeTeamPenaltiesScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL" || x.EventName?.ToUpper() == "DIRECTFREEKICKGOAL")
                 && x.EventTeam?.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim()
                 && x.EventPeriodId== 10)?.Count();
-                selectedMatch.AwayTeamPenaltiesScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL")
+                selectedMatch.AwayTeamPenaltiesScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL" || x.EventName?.ToUpper() == "DIRECTFREEKICKGOAL")
                 && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim()
                 && x.EventPeriodId == 10)?.Count();
 
@@ -88,6 +88,7 @@ namespace DystirWeb.Controllers
                 {
                     case "GOAL":
                     case "PENALTYSCORED":
+                    case "DIRECTFREEKICKGOAL":
                         playerOfMatch.Goal += 1;
                         break;
                     case "OWNGOAL":
@@ -358,6 +359,10 @@ namespace DystirWeb.Controllers
             {
                 case "GOAL":
                     eventsOfMatches.EventText = "MÁL til " + eventsOfMatches.EventTeam + ". " + (string.IsNullOrWhiteSpace(mainPlayerFullName) ? "" : "Málskjútti " + mainPlayerFullName + ".");
+                    break;
+                case "DIRECTFREEKICKGOAL":
+                    eventsOfMatches.EventText = "MÁL til " + eventsOfMatches.EventTeam + ". Beinleiðis fríspark. " + (string.IsNullOrWhiteSpace(mainPlayerFullName) ? "" : "Málskjútti " + mainPlayerFullName + ".");
+                    eventsOfMatches.EventName = "GOAL";
                     break;
                 case "OWNGOAL":
                     eventsOfMatches.EventText = "MÁL til " + eventsOfMatches.EventTeam + ". " + (string.IsNullOrWhiteSpace(mainPlayerFullName) ? "" : "Sjálvmál " + mainPlayerFullName + ".");

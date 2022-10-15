@@ -146,7 +146,7 @@ namespace DystirXamarin.Models
                 .ThenBy(x => x.LastName);
 
             PlayersOfTeam = new ObservableCollection<PlayerOfMatch>(playersOfMatchSorted?.Where(p => p.TeamName == SelectedTeam
-            && p.FirstName.StartsWith((SearchingTextPlayersOfTeam ?? ""), StringComparison.OrdinalIgnoreCase)));
+            && p.FirstName?.StartsWith((SearchingTextPlayersOfTeam ?? ""), StringComparison.OrdinalIgnoreCase) == true));
             return new ObservableCollection<PlayerOfMatch>(playersOfMatchSorted);
         }
 
@@ -190,7 +190,7 @@ namespace DystirXamarin.Models
         private void CreatePlayersOfTeam(string selectedTeam, string searchingTextPlayersOfTeam)
         {
             PlayersOfTeam = new ObservableCollection<PlayerOfMatch>(PlayersOfMatch?.Where(p => p.TeamName == selectedTeam
-            && p.FirstName.StartsWith((searchingTextPlayersOfTeam ?? ""), StringComparison.OrdinalIgnoreCase)));
+            && p.FirstName?.StartsWith((searchingTextPlayersOfTeam ?? ""), StringComparison.OrdinalIgnoreCase) == true));
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
