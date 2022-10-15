@@ -7,10 +7,9 @@ namespace Dystir.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DayView : ContentView
     {
-        public DayView(DateTime date)
+        public DayView()
         {
             InitializeComponent();
-            BindingContext = date;
         }
     }
 }

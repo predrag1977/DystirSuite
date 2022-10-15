@@ -2,25 +2,41 @@
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Dystir.App">
-
+    <!--
+        Define global resources and styles here, that apply to all pages in your app.
+    -->
     <Application.Resources>
         <ResourceDictionary>
             <OnPlatform x:TypeArguments="x:String" x:Key="BoldFont">
                 <On Platform="Android" Value="Fonts/OpenSans-Bold.ttf#Open Sans" />
-                <On Platform="UWP" Value="/Assets/Fonts/OpenSans-Bold.ttf#Open Sans" />
                 <On Platform="iOS" Value="OpenSans-Bold" />
             </OnPlatform>
             <OnPlatform x:TypeArguments="x:String" x:Key="NormalFont">
                 <On Platform="Android" Value="Fonts/OpenSans-Regular.ttf#Open Sans" />
-                <On Platform="UWP" Value="/Assets/Fonts/OpenSans-Regular.ttf#Open Sans" />
                 <On Platform="iOS" Value="OpenSans-Regular" />
             </OnPlatform>
             <!--Global Styles-->
-            <Color x:Key="NavigationPrimary">#222222</Color>
-            <Color x:Key="BackgroundPageColor">#222222</Color>
-            <Style TargetType="NavigationPage">
-                <Setter Property="BarBackgroundColor" Value="#222222" />
-                <Setter Property="BarTextColor" Value="White" />
+            <Color x:Key="Primary">#2F4F2F</Color>
+            <Style TargetType="Button">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontSize" Value="10" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="DimGray" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
             </Style>
             <Style TargetType="Label">
                 <Setter Property="HorizontalTextAlignment" Value="Center" />
@@ -38,8 +54,6 @@
             <Style TargetType="StackLayout">
                 <Setter Property="Spacing" Value="0" />
             </Style>
-        </ResourceDictionary>
+        </ResourceDictionary>        
     </Application.Resources>
-    
-    
 </Application>

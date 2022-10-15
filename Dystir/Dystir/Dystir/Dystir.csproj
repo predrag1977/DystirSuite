@@ -21,12 +21,12 @@
     <None Remove="Images\commentary_icon.png" />
     <None Remove="Images\summary_icon.png" />
     <None Remove="Images\statistics_icon.png" />
+    <None Remove="Pages\" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Images\goal.png" />
     <EmbeddedResource Include="Images\owngoal.png" />
-    <EmbeddedResource Include="loadingicon.gif" />
     <EmbeddedResource Include="Images\background.png" />
     <EmbeddedResource Include="Images\faroe_islands_flag.png" />
     <EmbeddedResource Include="Images\great_britain_flag.png" />
@@ -34,6 +34,7 @@
     <EmbeddedResource Include="Images\commentary_icon.png" />
     <EmbeddedResource Include="Images\summary_icon.png" />
     <EmbeddedResource Include="Images\statistics_icon.png" />
+    <EmbeddedResource Include="Images\loadingicon.gif" />
   </ItemGroup>
 
   <ItemGroup>
@@ -158,5 +159,8 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Pages\" />
   </ItemGroup>
 </Project>

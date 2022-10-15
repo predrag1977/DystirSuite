@@ -27,7 +27,7 @@ namespace Dystir.Services.DystirHubService
 
         private async Task Connection_Closed(Exception arg)
         {
-
+            await Task.CompletedTask;
         }
 
         private async Task<bool> TryHubConnectAsync()

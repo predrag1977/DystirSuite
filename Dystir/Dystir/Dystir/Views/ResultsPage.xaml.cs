@@ -9,10 +9,10 @@ namespace Dystir.Views
     [DesignTimeVisible(true)]
     public partial class ResultsPage : ContentView
     {
-        public MatchesViewModel _viewModel;
+        public DystirViewModel _viewModel;
         private bool isNavigate;
 
-        public ResultsPage(MatchesViewModel viewModel)
+        public ResultsPage(DystirViewModel viewModel)
         {
             _viewModel = viewModel;
             InitializeComponent();

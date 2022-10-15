@@ -1,16 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Dystir.Models
 {
-    public class Squad
+    public partial class Squad
     {
-        [JsonProperty("SquadID")]
-        public int SquadID { get; set; }
-
-        [JsonProperty("SquadName")]
-        public string SquadName { get; internal set; }
-
-        [JsonProperty("SquadShortName")]
-        public string SquadShortName { get; internal set; }
+        public int Id { get; set; }
+        public string SquadName { get; set; }
+        public int? SquadId { get; set; }
+        public string SquadShortName { get; set; }
     }
 }

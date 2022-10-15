@@ -8,42 +8,7 @@ namespace Dystir.Models
 {
     public class TimeCounter
     {
-        internal void MatchesTime(MatchesViewModel viewModel)
-        {
-            foreach (MatchDetails matchDetails in viewModel.MatchesBySelectedDate ?? new ObservableCollection<MatchDetails>())
-            {
-                if (matchDetails?.Match != null)
-                {
-                    if ((!viewModel.IsDisconnected && !viewModel.IsLoading) || matchDetails.Match.StatusID > 11 || matchDetails.Match.StatusID < 2)
-                    {
-                        matchDetails.Match.LiveTime = MatchPeriod(matchDetails.Match);
-                        ShowLiveColor(matchDetails?.Match, true);
-                    }
-                    else
-                    {
-                        matchDetails.Match.LiveTime = "....";
-                    }
-                }
-            }
-
-            foreach (Match match in viewModel.AllMatches ?? new ObservableCollection<Match>())
-            {
-                match.LiveTime = (!viewModel.IsDisconnected && !viewModel.IsLoading) || match.StatusID > 11 || match.StatusID < 2 ? MatchPeriod(match) : "....";
-                ShowLiveColor(match, false);
-            }
-
-            foreach (TeamStanding teamStanding in viewModel.CompetitionTeamStandings ?? new ObservableCollection<TeamStanding>())
-            {
-                if (teamStanding.IsLive)
-                {
-                    ShowLiveStandingsColorBlinking(teamStanding);
-                }
-                else
-                {
-                    teamStanding.LiveColor = "Transparent";
-                }
-            }
-        }
+        
 
         internal string MatchPeriod(Match match)
         {

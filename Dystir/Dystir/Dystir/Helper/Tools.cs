@@ -419,7 +419,7 @@ namespace Dystir.Helper
         }
     }
 
-    class Commentary
+    public class Commentary
     {
         readonly Summary summary = new Summary();
         internal void PopulateCommentaryView(Grid commentaryView, EventOfMatch summaryEventOfMatch)

@@ -10,12 +10,15 @@ namespace Dystir.Services
 {
     public interface IDataLoader<T>
     {
-        Task<Match> GetMatchAsync(string matchID);
-        Task<ObservableCollection<Match>> GetMatchesAsync(string typeOfMatches, MatchesViewModel matchesViewModel);
+        Task<ObservableCollection<Match>> GetMatchesAsync();
+        Task<MatchDetails> GetMatchDetailsAsync(int? matchID);
         Task<ObservableCollection<Standing>> GetStandingsAsync();
-        Task<ObservableCollection<CompetitionStatistic>> GetCompetitionStatisticsAsync();
+        Task<ObservableCollection<CompetitionStatistic>> GetStatisticsAsync();
         Task<ObservableCollection<Sponsor>> GetSponsorsAsync();
-        Task<MatchDetails> GetMatchDetailsAsync(string matchID);
+
+        Task<Match> GetMatchAsync(string matchID);
+        //Task<ObservableCollection<Match>> GetMatchesAsync(string typeOfMatches, MatchesViewModel matchesViewModel);
+        
         
     }
 }

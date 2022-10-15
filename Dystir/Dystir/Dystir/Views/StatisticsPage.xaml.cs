@@ -13,9 +13,9 @@ namespace Dystir.Views
     [DesignTimeVisible(true)]
     public partial class StatisticsPage : ContentView
     {
-        public MatchesViewModel _viewModel;
+        public DystirViewModel _viewModel;
 
-        public StatisticsPage(MatchesViewModel viewModel)
+        public StatisticsPage(DystirViewModel viewModel)
         {
             _viewModel = viewModel;
             InitializeComponent();

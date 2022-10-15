@@ -3,42 +3,44 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using Xamarin.Forms;
 
 namespace Dystir.Models
 {
+    [DataContract]
     public class TeamStanding : INotifyPropertyChanged
     {
-        [JsonProperty("Team")]
-        public string Team { get; internal set; }
-        [JsonProperty("TeamID")]
-        public int TeamID { get; internal set; }
-        [JsonProperty("MatchesNo")]
-        public int? MatchesNo { get; internal set; } = 0;
-        [JsonProperty("Points")]
-        public int? Points { get; internal set; } = 0;
-        [JsonProperty("GoalScored")]
-        public int? GoalScored { get; internal set; } = 0;
-        [JsonProperty("GoalAgainst")]
-        public int? GoalAgainst { get; internal set; } = 0;
-        [JsonProperty("GoalDifference")]
-        public int? GoalDifference { get; internal set; } = 0;
-        [JsonProperty("PointsProcent")]
-        public double? PointsProcent { get; internal set; }
-        [JsonProperty("Victories")]
-        public int Victories { get; internal set; }
-        [JsonProperty("Draws")]
-        public int Draws { get; internal set; }
-        [JsonProperty("Losses")]
-        public int Losses { get; internal set; }
-        [JsonProperty("CompetitionName")]
-        public string CompetitionName { get; internal set; }
-        [JsonProperty("Position")]
-        public int Position { get; internal set; }
-        [JsonProperty("PositionColor")]
-        public string PositionColor { get; internal set; }
-        [JsonProperty("IsLive")]
-        public bool IsLive { get; internal set; }
+        [DataMember]
+        public string Team { get; set; }
+        [DataMember]
+        public int TeamID { get; set; }
+        [DataMember]
+        public int? MatchesNo { get; set; } = 0;
+        [DataMember]
+        public int? Points { get; set; } = 0;
+        [DataMember]
+        public int? GoalScored { get; set; } = 0;
+        [DataMember]
+        public int? GoalAgainst { get; set; } = 0;
+        [DataMember]
+        public int? GoalDifference { get; set; } = 0;
+        [DataMember]
+        public double? PointsProcent { get; set; }
+        [DataMember]
+        public int Victories { get; set; }
+        [DataMember]
+        public int Draws { get; set; }
+        [DataMember]
+        public int Losses { get; set; }
+        [DataMember]
+        public string CompetitionName { get; set; }
+        [DataMember]
+        public int Position { get; set; }
+        [DataMember]
+        public string PositionColor { get; set; }
+        [DataMember]
+        public bool IsLive { get; set; }
 
         string _liveColor = "Transparent";
         public string LiveColor
@@ -48,7 +50,7 @@ namespace Dystir.Models
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
-            [CallerMemberName]string propertyName = "",
+            [CallerMemberName] string propertyName = "",
             Action onChanged = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))

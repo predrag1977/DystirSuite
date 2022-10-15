@@ -6,6 +6,7 @@
              xmlns:views="clr-namespace:Dystir.Views"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:viewmodels="clr-namespace:Dystir.ViewModels"
              x:Class="Dystir.Views.MatchesPage">
 
     <ContentView.Resources>
@@ -37,8 +38,15 @@
             <ListView.GroupHeaderTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid BackgroundColor="#2F4F2F" Padding="6" Margin="0,2,0,0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
-                            <Label Text="{Binding Key}" FontSize="12" TextColor="White" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
+                        <Grid BackgroundColor="Black" Padding="10,10,5,10"
+                              VerticalOptions="FillAndExpand"
+                              HorizontalOptions="FillAndExpand" >
+                            <Label Text="{Binding Key}" FontSize="15"
+                                   TextColor="White"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="FillAndExpand"
+                                   HorizontalTextAlignment="Start" />
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
@@ -46,15 +54,23 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <views:MatchView />
+                        <views:MatchView BindingContext="{Binding}" />
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
 
-        <Grid x:Name="NoMatchesPanel" Grid.Row="2"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" IsVisible="{Binding MatchesGroupList.Count, Converter={StaticResource InverseItemsCountToBooleanConverter}}">
-            <Grid  BackgroundColor="#222222" Margin="5,0" HeightRequest="80"  IsVisible="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}" VerticalOptions="Start" HorizontalOptions="FillAndExpand" >
-                <Label Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=NoMatches}" FontFamily="{StaticResource NormalFont}" FontSize="Small" TextColor="#a6a6a6" VerticalOptions="Center" HorizontalOptions="Center" />
+        <Grid x:Name="NoMatchesPanel" Grid.Row="2"
+              VerticalOptions="FillAndExpand"
+              HorizontalOptions="FillAndExpand"
+              IsVisible="{Binding MatchesGroupList.Count, Converter={StaticResource InverseItemsCountToBooleanConverter}}">
+            <Grid  BackgroundColor="Black" Margin="5,0" HeightRequest="80"
+                   IsVisible="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
+                   VerticalOptions="Start" HorizontalOptions="FillAndExpand" >
+                <Label Text="{Binding LanguageCode, Converter={StaticResource LanguageConverter}, ConverterParameter=NoMatches}"
+                       FontFamily="{StaticResource NormalFont}" FontSize="Small"
+                       TextColor="#a6a6a6"
+                       VerticalOptions="Center" HorizontalOptions="Center" />
             </Grid>
         </Grid>
 

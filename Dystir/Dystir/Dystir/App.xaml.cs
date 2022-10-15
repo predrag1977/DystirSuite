@@ -18,36 +18,51 @@ using Device = Xamarin.Forms.Device;
 using Newtonsoft.Json;
 using Plugin.LatestVersion;
 using Dystir.Services.DystirHubService;
+using Dystir.Pages;
 
 namespace Dystir
 {
     public partial class App : Application
     {
-        private DystirViewModel _dystirViewModel;
-        private MatchesViewModel _viewModel = new MatchesViewModel();
+        private DystirViewModel dystirViewModel;
         private bool _isBusy;
+        private DystirService _dystirService;
 
         public App()
         {
             InitializeComponent();
-            //_dystirViewModel = new DystirViewModel();
-            //ServiceRegistrations();
-            //StartDystirHub();
-
+            ServiceRegistrations();
+            
+            dystirViewModel = DependencyService.Get<DystirViewModel>();
 
             AppAnalytics();
-            //SetLanguage();
-            MainPage = new NavigationPage(new DystirWebViewPage());
+            SetLanguage();
+
+            MainPage = new NavigationPage(new DystirTabbedPage())
+            {
+                BindingContext = dystirViewModel,
+                BarTextColor = Color.White
+            };
+
+            LoadData();
             //StartLoading();
             //TimeOfMatches();
             //StartSponsors();
             CheckLatestVersion();
         }
 
+        private void LoadData()
+        {
+            _dystirService = DependencyService.Get<DystirService>();
+            _ = _dystirService.StartUpAsync();
+        }
+
         private void ServiceRegistrations()
         {
+            DependencyService.Register<DystirViewModel>();
             DependencyService.Register<DataLoader>();
-            //DependencyService.Register<DystirHub>();
+            DependencyService.Register<TimeService>();
+            DependencyService.Register<DystirService>();
         }
 
         private async void CheckLatestVersion()
@@ -75,18 +90,10 @@ namespace Dystir
             });
         }
 
-        private async void StartDystirHub()
-        {
-            await Task.Run(() =>
-            {
-                _dystirViewModel.GetDystirHubService().StartDystirHub();
-            });
-        }
-
         private async void StartLoading()
         {
             Connectivity.ConnectivityChanged += Connectivity_Changed;
-            _viewModel.IsLoading = true;
+            dystirViewModel.IsLoading = true;
             await ReloadAsync(LoadDataType.MainData);
         }
 
@@ -98,7 +105,7 @@ namespace Dystir
                 return;
             }
             _isBusy = true;
-            _viewModel.IsDisconnected = true;
+            dystirViewModel.IsDisconnected = true;
             bool connected = false;
 
             var refreshDataTask = RefreshData(loadDataType);
@@ -106,8 +113,8 @@ namespace Dystir
             bool[] result = await Task.WhenAll(refreshDataTask/*, tryHubConnectTask*/);
             connected = result.All(x => x == true);
 
-            _viewModel.IsDisconnected = !connected;
-            _viewModel.IsConnectionError = !connected && _viewModel.IsApplicationActive;
+            dystirViewModel.IsDisconnected = !connected;
+            dystirViewModel.IsConnectionError = !connected && dystirViewModel.IsApplicationActive;
             _isBusy = false;
             if (!connected)
             {
@@ -121,7 +128,7 @@ namespace Dystir
             switch (loadDataType)
             {
                 case LoadDataType.FullData:
-                    _viewModel.AllMatchesWithDetails.ToList().ForEach(x => x.IsDataLoaded = false);
+                    //_viewModel.AllMatchesWithDetails.ToList().ForEach(x => x.IsDataLoaded = false);
                     var refrRefreshSelectedMatchDataTask = RefreshSelectedMatchData();
                     var refreshFullDataTask = RefreshFullData();
                     bool[] result = await Task.WhenAll(refrRefreshSelectedMatchDataTask, refreshFullDataTask);
@@ -139,18 +146,18 @@ namespace Dystir
 
         public async Task<bool> RefreshFullData()
         {
-            bool connected = await _viewModel.GetFullDataAsync();
-            _viewModel.IsLoading = false;
+            bool connected = await dystirViewModel.GetFullDataAsync();
+            dystirViewModel.IsLoading = false;
             return connected;
         }
 
         public async Task<bool> RefreshSelectedMatchData()
         {
             bool success = true;
-            if (_viewModel?.SelectedMatch?.MatchID > 0)
+            if (dystirViewModel?.SelectedMatch?.MatchID > 0)
             {
-                success = await _viewModel.GetSelectedLiveMatch(_viewModel.SelectedMatch);
-                _viewModel.IsLoadingSelectedMatch = false;
+                success = await dystirViewModel.GetSelectedLiveMatch(dystirViewModel.SelectedMatch);
+                dystirViewModel.IsLoadingSelectedMatch = false;
             }
             return success;
         }
@@ -162,74 +169,74 @@ namespace Dystir
 
         
 
-        private void UpdateMatch(string matchID, MatchDetails matchDetails)
-        {
-            try
-            {
-                Match match = matchDetails?.Match;
-                if (match != null)
-                {
-                    var allmatches = new ObservableCollection<Match>(_viewModel.AllMatches);
-                    var allMatchesWithDetails = new ObservableCollection<MatchDetails>(_viewModel.AllMatchesWithDetails);
-                    Match findMatch = allmatches?.FirstOrDefault(x => x.MatchID == match?.MatchID);
-                    if (findMatch != null)
-                    {
-                        // UPDATE MATCH
-                        allmatches.Remove(findMatch);
-                        allmatches.Add(match);
-                        _viewModel.AllMatches = new ObservableCollection<Match>(allmatches);
+        //private void UpdateMatch(string matchID, MatchDetails matchDetails)
+        //{
+        //    try
+        //    {
+        //        Match match = matchDetails?.Match;
+        //        if (match != null)
+        //        {
+        //            var allmatches = new ObservableCollection<Match>(_viewModel.AllMatches);
+        //            var allMatchesWithDetails = new ObservableCollection<MatchDetails>(_viewModel.AllMatchesWithDetails);
+        //            Match findMatch = allmatches?.FirstOrDefault(x => x.MatchID == match?.MatchID);
+        //            if (findMatch != null)
+        //            {
+        //                // UPDATE MATCH
+        //                allmatches.Remove(findMatch);
+        //                allmatches.Add(match);
+        //                _viewModel.AllMatches = new ObservableCollection<Match>(allmatches);
 
-                        // REMOVE MATCH
-                        if (match.StatusID > 14)
-                        {
-                            allmatches?.Remove(findMatch);
-                            _viewModel.AllMatches = new ObservableCollection<Match>(allmatches);
-                        }
+        //                // REMOVE MATCH
+        //                if (match.StatusID > 14)
+        //                {
+        //                    allmatches?.Remove(findMatch);
+        //                    _viewModel.AllMatches = new ObservableCollection<Match>(allmatches);
+        //                }
 
-                        MatchDetails findMatchDetails = _viewModel.AllMatchesWithDetails.FirstOrDefault(x => x?.Match?.MatchID == findMatch?.MatchID);
-                        if (findMatchDetails != null)
-                        {
-                            // UPDATE MATCH DETAILS
-                            findMatchDetails.Match = match;
-                            findMatchDetails.PlayersOfMatch = new ObservableCollection<PlayerOfMatch>(matchDetails.PlayersOfMatch);
-                            findMatchDetails.EventsOfMatch = new ObservableCollection<EventOfMatch>(matchDetails.EventsOfMatch);
-                            findMatchDetails.IsDataLoaded = true;
+        //                MatchDetails findMatchDetails = _viewModel.AllMatchesWithDetails.FirstOrDefault(x => x?.Match?.MatchID == findMatch?.MatchID);
+        //                if (findMatchDetails != null)
+        //                {
+        //                    // UPDATE MATCH DETAILS
+        //                    findMatchDetails.Match = match;
+        //                    findMatchDetails.PlayersOfMatch = new ObservableCollection<PlayerOfMatch>(matchDetails.PlayersOfMatch);
+        //                    findMatchDetails.EventsOfMatch = new ObservableCollection<EventOfMatch>(matchDetails.EventsOfMatch);
+        //                    findMatchDetails.IsDataLoaded = true;
 
-                            // REMOVE MATCH DETAILS
-                            if (match.StatusID > 14)
-                            {
-                                allMatchesWithDetails.Remove(findMatchDetails);
-                                _viewModel.AllMatchesWithDetails = new ObservableCollection<MatchDetails>(allMatchesWithDetails);
-                                _viewModel.SetMatchesBySelectedDate();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // ADD MATCH
-                        allmatches?.Add(match);
-                        _viewModel.AllMatches = new ObservableCollection<Match>(allmatches);
+        //                    // REMOVE MATCH DETAILS
+        //                    if (match.StatusID > 14)
+        //                    {
+        //                        allMatchesWithDetails.Remove(findMatchDetails);
+        //                        _viewModel.AllMatchesWithDetails = new ObservableCollection<MatchDetails>(allMatchesWithDetails);
+        //                        _viewModel.SetMatchesBySelectedDate();
+        //                    }
+        //                }
+        //            }
+        //            else
+        //            {
+        //                // ADD MATCH
+        //                allmatches?.Add(match);
+        //                _viewModel.AllMatches = new ObservableCollection<Match>(allmatches);
 
-                        // ADD MATCH DETAILS
-                        allMatchesWithDetails.Add(matchDetails);
-                        _viewModel.AllMatchesWithDetails = new ObservableCollection<MatchDetails>(allMatchesWithDetails);
-                        _viewModel.SetMatchesBySelectedDate();
-                    }
+        //                // ADD MATCH DETAILS
+        //                allMatchesWithDetails.Add(matchDetails);
+        //                _viewModel.AllMatchesWithDetails = new ObservableCollection<MatchDetails>(allMatchesWithDetails);
+        //                _viewModel.SetMatchesBySelectedDate();
+        //            }
 
-                    if (match.StatusID!= findMatch.StatusID || match.HomeTeamScore != findMatch.HomeTeamScore || match.AwayTeamScore != findMatch.AwayTeamScore)
-                    {
-                        _ = _viewModel.GetStandingsAsync();
-                        _ = _viewModel.GetCompetitionStatisticsAsync();
-                    }
-                    _viewModel.TimeCounter.MatchesTime(_viewModel);
-                }
-            }
-            catch (Exception ex)
-            {
-                _ = ReloadAsync(LoadDataType.FullData);
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-        }
+        //            if (match.StatusID!= findMatch.StatusID || match.HomeTeamScore != findMatch.HomeTeamScore || match.AwayTeamScore != findMatch.AwayTeamScore)
+        //            {
+        //                _ = _viewModel.GetStandingsAsync();
+        //                _ = _viewModel.GetCompetitionStatisticsAsync();
+        //            }
+        //            _viewModel.TimeCounter.MatchesTime(_viewModel);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _ = ReloadAsync(LoadDataType.FullData);
+        //        Console.WriteLine($"Error: {ex.Message}");
+        //    }
+        //}
 
         internal void SetLanguage()
         {
@@ -241,35 +248,26 @@ namespace Dystir
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(languageCode);
         }
 
-        private void TimeOfMatches()
-        {
-            Device.StartTimer(TimeSpan.FromMilliseconds(300), () =>
-            {
-                _viewModel.TimeCounter.MatchesTime(_viewModel);
-                return true;
-            });
-        }
-
         private void StartSponsors()
         {
             Device.StartTimer(TimeSpan.FromMilliseconds(10000), () =>
             {
-                if (_viewModel.Sponsors != null && _viewModel.Sponsors.Count > 0)
+                if (dystirViewModel.Sponsors != null && dystirViewModel.Sponsors.Count > 0)
                 {
-                    var tempList = new ObservableCollection<Sponsor>(_viewModel.Sponsors);
+                    var tempList = new ObservableCollection<Sponsor>(dystirViewModel.Sponsors);
                     var item = tempList.FirstOrDefault();
                     tempList.Remove(item);
                     tempList.Add(item);
-                    _viewModel.Sponsors = new ObservableCollection<Sponsor>(tempList);
+                    dystirViewModel.Sponsors = new ObservableCollection<Sponsor>(tempList);
                 }
-                if (_viewModel.AllMainSponsors != null && _viewModel.AllMainSponsors.Count > 0)
+                if (dystirViewModel.AllMainSponsors != null && dystirViewModel.AllMainSponsors.Count > 0)
                 {
-                    var tempList = new ObservableCollection<Sponsor>(_viewModel.AllMainSponsors);
+                    var tempList = new ObservableCollection<Sponsor>(dystirViewModel.AllMainSponsors);
                     var item = tempList.FirstOrDefault();
                     tempList.Remove(item);
                     tempList.Add(item);
-                    _viewModel.AllMainSponsors = new ObservableCollection<Sponsor>(tempList);
-                    _viewModel.SponsorsMain = new ObservableCollection<Sponsor>(tempList.Take(2));
+                    dystirViewModel.AllMainSponsors = new ObservableCollection<Sponsor>(tempList);
+                    dystirViewModel.SponsorsMain = new ObservableCollection<Sponsor>(tempList.Take(2));
                 }
                 return true;
             });
@@ -319,12 +317,12 @@ namespace Dystir
         protected override void OnSleep()
         {
             // Handle when your app sleeps
-            _viewModel.IsApplicationActive = false;
+            dystirViewModel.IsApplicationActive = false;
         }
 
         protected override void OnResume()
         {
-            _viewModel.IsApplicationActive = true;
+            dystirViewModel.IsApplicationActive = true;
         }
     }
 }

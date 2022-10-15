@@ -3,9 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converter="clr-namespace:Dystir.Converter"
              xmlns:local="clr-namespace:Dystir.Views"
+             xmlns:models="clr-namespace:Dystir.Models"
+             xmlns:viewModels="clr-namespace:Dystir.ViewModels"
              xmlns:properties="clr-namespace:Dystir.Properties"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:DataType="viewModels:DystirViewModel"
              x:Class="Dystir.Views.SelectedMatchDetailsView">
 
     <ContentView.Resources>
@@ -19,15 +22,16 @@
         <converter:MatchResultDisplayConverter x:Key="MatchResultDisplayConverter" />
     </ContentView.Resources>
 
-    <Grid>
-        <Grid BindingContext="{Binding SelectedMatchDetails}" HorizontalOptions="FillAndExpand">
+    <Grid BindingContext="{Binding SelectedMatch}">
+        <Grid x:DataType="models:Match"
+              HorizontalOptions="FillAndExpand">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid BindingContext="{Binding Match}" RowSpacing="4" Grid.Row="0" BackgroundColor="#222222" Padding="0,7" Margin="3,0" >
+            <Grid  RowSpacing="4" Grid.Row="0" BackgroundColor="#222222" Padding="0,7" Margin="3,0" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -45,8 +49,8 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0" Text="{Binding Converter={StaticResource MatchInfoTextConverter}}"  TextColor="#a6a6a6" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Start" />
-                    <Label Grid.Column="1" Text="{Binding LiveTime}" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" HorizontalOptions="FillAndExpand" FontFamily="{StaticResource BoldFont}" TextColor="{Binding StatusColor}" />
+                    <Label Grid.Column="0" Text="{Binding MatchInfo}"  TextColor="#a6a6a6" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Start" />
+                    <Label Grid.Column="1" Text="{Binding MatchTime}" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" HorizontalOptions="FillAndExpand" FontFamily="{StaticResource BoldFont}" TextColor="{Binding StatusColor}" />
                 </Grid>
                 <Label Grid.Row="1" Grid.Column="1" TextColor="White" Text="{Binding Converter={StaticResource HomeTeamFullConverter}}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" FontSize="14" FontFamily="{StaticResource BoldFont}"/>
                 <Label Grid.Row="1" Grid.Column="2" TextColor="White" Text="{Binding Converter={StaticResource MatchResultDisplayConverter},ConverterParameter=home}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" FontSize="14" FontFamily="{StaticResource BoldFont}" />
@@ -56,8 +60,7 @@
             </Grid>
 
             <Grid x:Name="DetailsMenuItem" Grid.Row="1" ColumnSpacing="3"
-                  HorizontalOptions="FillAndExpand"
-                  BindingContext="{Binding}" >
+                  HorizontalOptions="FillAndExpand" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
@@ -91,12 +94,9 @@
             </Grid>
 
             <local:SummaryView Grid.Row="2" BindingContext="{Binding}" IsVisible="{Binding SummarySelected}"  />
-            <local:FirstElevenView Grid.Row="2" BindingContext="{Binding}" IsVisible="{Binding FirstElevenSelected}" />
+            <!--<local:FirstElevenView Grid.Row="2" BindingContext="{Binding}" IsVisible="{Binding FirstElevenSelected}" />
             <local:CommentaryView Grid.Row="2" BindingContext="{Binding}" IsVisible="{Binding CommentarySelected}" />
-            <local:StatisticsView Grid.Row="2" BindingContext="{Binding}" IsVisible="{Binding StatisticSelected}" />
-        </Grid>
-        <Grid IsVisible="{Binding IsLoadingSelectedMatch}" VerticalOptions="Center" HorizontalOptions="Center">
-            <ff:CachedImage WidthRequest="50" HeightRequest="50" VerticalOptions="Center" HorizontalOptions="Center" Source="resource://Dystir.loadingicon.gif" />
+            <local:StatisticsView Grid.Row="2" BindingContext="{Binding}" IsVisible="{Binding StatisticSelected}" />-->
         </Grid>
     </Grid>
 </ContentView>

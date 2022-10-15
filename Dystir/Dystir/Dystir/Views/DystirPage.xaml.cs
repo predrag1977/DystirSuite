@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Dystir.Models;
+using Dystir.Services;
 using Dystir.ViewModels;
 using Microsoft.AppCenter.Analytics;
 using Xamarin.Forms;
@@ -12,11 +13,13 @@ namespace Dystir.Views
 {
     public partial class DystirPage : ContentPage
     {
-        private MatchesViewModel _viewModel = new MatchesViewModel();
+        private readonly DystirService _dystirService;
+        private DystirViewModel _viewModel = new DystirViewModel();
         private int _lastSelectedPage = 0;
 
-        public DystirPage(MatchesViewModel viewModel)
+        public DystirPage(DystirViewModel viewModel)
         {
+            _dystirService = DependencyService.Get<DystirService>();
             _viewModel = viewModel;
             _viewModel.PageTitle = Properties.Resources.Matches;
             Analytics.TrackEvent("Matches");
@@ -25,7 +28,7 @@ namespace Dystir.Views
             AddViews(_viewModel);
         }
 
-        private void AddViews(MatchesViewModel viewModel)
+        private void AddViews(DystirViewModel viewModel)
         {
             List<ContentView> pagesList = new List<ContentView>();
             pagesList.Add(new MatchesPage(viewModel));
@@ -33,7 +36,10 @@ namespace Dystir.Views
             pagesList.Add(new FixturesPage(viewModel));
             pagesList.Add(new StandingsPage(viewModel));
             pagesList.Add(new StatisticsPage(viewModel));
-            pagesList.Add(new SelectedMatchDetailsView(viewModel));
+            pagesList.Add(new SelectedMatchDetailsView()
+            {
+                BindingContext = viewModel
+            });
             DystirCarouselView.ItemsSource = pagesList; 
             ShowSelectedPage(0);
         }
@@ -47,9 +53,10 @@ namespace Dystir.Views
             SetPageTitle();
             foreach (View btn in ((sender as View).Parent as Grid).Children)
             {
-                btn.BackgroundColor = Color.DimGray;
+                Label btnLabel = (btn as StackLayout).Children.First() as Label;
+                btnLabel.TextColor = Color.White;
             }
-            (sender as View).BackgroundColor = Color.FromHex("#2F4F2F");
+            ((sender as StackLayout).Children.First() as Label).TextColor = Color.LimeGreen;
         }
 
         private void ShowSelectedPage(int index)
@@ -57,9 +64,11 @@ namespace Dystir.Views
             DystirCarouselView.ScrollTo(index, -1, ScrollToPosition.MakeVisible, false);
         }
 
-        internal async void SeeMatchDetailsAsync(Match selectedMatch, bool refreshMatchesBySelectedDate)
+        internal void SeeMatchDetailsAsync(Match selectedMatch, bool refreshMatchesBySelectedDate)
         {
+            
             _viewModel.SelectedMatch = selectedMatch;
+            
             if (refreshMatchesBySelectedDate)
             {
                 ShowSelectedPage(5);
@@ -67,36 +76,30 @@ namespace Dystir.Views
             }
             else
             {
-                _viewModel.SelectedMatchDetails = new MatchDetails();
+                _viewModel.SelectedMatch.Details = new MatchDetails();
             }
-            _viewModel.SelectedMatchDetails.Match = selectedMatch;
 
-            await Task.Run(() =>
-            {
-                _viewModel.AllMatchesWithDetails.ToList().ForEach(x => x.IsSelected = false);
-                MatchDetails matchDetails = _viewModel.AllMatchesWithDetails?.FirstOrDefault(x => x.Match?.MatchID == selectedMatch?.MatchID);
-                matchDetails.IsSelected = true;
-                _viewModel.SelectedMatchDetails = matchDetails;
-                if (refreshMatchesBySelectedDate)
-                {
-                    _viewModel.SetMatchesBySelectedDate();
-                }
-            });
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                MenuMatchesScrollView.BackgroundColor = Color.Transparent;
-                int matchDetailsIndex = _viewModel.MatchesBySelectedDate.IndexOf(_viewModel.MatchesBySelectedDate.FirstOrDefault(x => x.Match.MatchID == selectedMatch?.MatchID));
-                if (matchDetailsIndex > -1)
-                {
-                    MenuMatchesScrollView.ScrollTo(matchDetailsIndex, -1, ScrollToPosition.Center, true);
-                }
-            });
+            _ = _dystirService.LoadMatchDetailsAsync(_viewModel.SelectedMatch);
 
-            if (_viewModel.SelectedMatchDetails != null && !_viewModel.SelectedMatchDetails.IsDataLoaded)
+            if (refreshMatchesBySelectedDate)
             {
-                _viewModel.IsLoadingSelectedMatch = true;
-                _ = (Application.Current as App).ReloadAsync(LoadDataType.MatchDataOnly);
+                //_viewModel.SetMatchesBySelectedDate();
             }
+            //Device.BeginInvokeOnMainThread(() =>
+            //{
+            //    MenuMatchesScrollView.BackgroundColor = Color.Transparent;
+            //    int matchDetailsIndex = _viewModel.MatchesBySelectedDate.IndexOf(_viewModel.MatchesBySelectedDate.FirstOrDefault(x => x.MatchID == selectedMatch?.MatchID));
+            //    if (matchDetailsIndex > -1)
+            //    {
+            //        MenuMatchesScrollView.ScrollTo(matchDetailsIndex, -1, ScrollToPosition.Center, true);
+            //    }
+            //});
+
+            //if (_viewModel.SelectedMatch?.Details != null && !_viewModel.SelectedMatch?.Details.IsDataLoaded)
+            //{
+            //    _viewModel.IsLoadingSelectedMatch = true;
+            //    _ = (Application.Current as App).ReloadAsync(LoadDataType.MatchDataOnly);
+            //}
 
             AnalyticsMatchDetails(selectedMatch);
         }
@@ -112,10 +115,9 @@ namespace Dystir.Views
 
         private void BackToMatchesView_Tapped(object sender, EventArgs e)
         {
-            _viewModel.AllMatchesWithDetails.ToList().ForEach(x => x.IsSelected = false);
-            _viewModel.MatchesBySelectedDate = new ObservableCollection<MatchDetails>();
+            //_viewModel.AllMatchesWithDetails.ToList().ForEach(x => x.IsSelected = false);
+            _viewModel.MatchesBySelectedDate = new ObservableCollection<Match>();
             _viewModel.SelectedMatch = null;
-            _viewModel.SelectedMatchDetails = new MatchDetails();
             ShowMainTab(true);
             SetPageTitle();
             ShowSelectedPage(_lastSelectedPage);

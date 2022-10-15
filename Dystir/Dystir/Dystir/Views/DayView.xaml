@@ -14,8 +14,12 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Label x:Name="DayLabel" Grid.Row="0" VerticalOptions="End" FontSize="10" FontFamily="{StaticResource BoldFont}" Text="{Binding Date, Converter={StaticResource DateToDayTextConverter}}" />
-            <Label x:Name="DaySecondLabel" Grid.Row="1" VerticalOptions="Start" FontSize="10" FontFamily="{StaticResource BoldFont}" Text="{Binding Date, Converter={StaticResource ToLocalTimeConverter},ConverterParameter=ddd}" />
+            <Label x:Name="DayLabel" Grid.Row="0" VerticalOptions="End" FontSize="12"
+                   FontFamily="{StaticResource BoldFont}"
+                   Text="{Binding Date, Converter={StaticResource DateToDayTextConverter}}" />
+            <Label x:Name="DaySecondLabel" Grid.Row="1" VerticalOptions="Start" FontSize="11"
+                   FontFamily="{StaticResource BoldFont}"
+                   Text="{Binding Date, Converter={StaticResource ToLocalTimeConverter},ConverterParameter=ddd}" />
         </Grid>
     </ContentView.Content>
 </ContentView>

@@ -1,74 +1,94 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:converter="clr-namespace:Dystir.Converter"
-             x:Class="Dystir.Views.MatchView">
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Dystir.Views.MatchView"
+    xmlns:model="clr-namespace:Dystir.Models"
+    xmlns:ff="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
 
-    <ContentView.Resources>
-        <converter:HomeTeamFullConverter x:Key="HomeTeamFullConverter" />
-        <converter:AwayTeamFullConverter x:Key="AwayTeamFullConverter" />
-        <converter:ToLocalTimeConverter x:Key="ToLocalTimeConverter" />
-        <converter:LiveMatchVisibilityConverter x:Key="LiveMatchVisibilityConverter" />
-        <converter:TimeAndResultMatchVisibilityConverter x:Key="TimeAndResultMatchVisibilityConverter" />
-        <converter:FullMatchInfoTextConverter x:Key="FullMatchInfoTextConverter" />
-        <converter:LanguageConverter x:Key="LanguageConverter" />
-        <converter:MatchInfoTextConverter x:Key="MatchInfoTextConverter" />
-        <converter:MatchResultDisplayConverter x:Key="MatchResultDisplayConverter" />
+    <ContentView.BindingContext>
+        <model:Match />
+    </ContentView.BindingContext>
 
-        <Style TargetType="Label">
-            <Setter Property="FontSize" Value="11" />
-            <Setter Property="VerticalOptions" Value="FillAndExpand" />
-            <Setter Property="VerticalTextAlignment" Value="Center" />
-            <Setter Property="FontFamily" Value="{StaticResource NormalFont}" />
-        </Style>
-    </ContentView.Resources>
-
-    <Grid BackgroundColor="#222222" RowSpacing="0" IsEnabled="{Binding StatusID, Converter={StaticResource LiveMatchVisibilityConverter}}" >
-        <Grid.GestureRecognizers>
-            <TapGestureRecognizer Tapped="SeeMore_Tapped" CommandParameter="{Binding}" NumberOfTapsRequired="1" />
-        </Grid.GestureRecognizers>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <Grid Grid.Row="0" RowSpacing="0" ColumnSpacing="0" Padding="3,5,0,7">
+    <ContentView.Content>
+        <Grid BackgroundColor="Black" Padding="0" RowSpacing="0" ColumnSpacing="0">
+            <Grid Padding="10,5"
+                  Margin="0,5,0,0"
+                  BackgroundColor="#181818"
+                  ColumnSpacing="0"
+                  RowSpacing="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="30" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="23" />
-                <ColumnDefinition Width="15" />
-                <ColumnDefinition Width="23" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="34" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Grid.ColumnSpan="7" Padding="2,0" HorizontalOptions="Fill">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Text="{Binding Converter={StaticResource MatchInfoTextConverter}}"  TextColor="#a6a6a6" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Start" />
-                <Label Grid.Column="1" Text="{Binding LiveTime}" VerticalOptions="CenterAndExpand" Padding="0,0,3,0"
-                       VerticalTextAlignment="Center" HorizontalTextAlignment="End" HorizontalOptions="EndAndExpand" 
-                       FontFamily="{StaticResource BoldFont}" TextColor="{Binding StatusColor}" 
-                       IsVisible="{Binding StatusID, Converter={StaticResource TimeAndResultMatchVisibilityConverter}}"/>
-            </Grid>
-            <Label Grid.Row="1" Grid.Column="1" TextColor="White" Text="{Binding Converter={StaticResource HomeTeamFullConverter}}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" FontSize="13" FontFamily="{StaticResource BoldFont}"/>
-            <Label Grid.Row="1" Grid.Column="2" TextColor="White" Text="{Binding Converter={StaticResource MatchResultDisplayConverter},ConverterParameter=home}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" FontSize="13" FontFamily="{StaticResource BoldFont}" />
-            <Label Grid.Row="1" Grid.Column="3" TextColor="White" Text=":" FontFamily="{StaticResource BoldFont}" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
-            <Label Grid.Row="1" Grid.Column="4" TextColor="White" Text="{Binding Converter={StaticResource MatchResultDisplayConverter},ConverterParameter=away}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Start" FontSize="13" FontFamily="{StaticResource BoldFont}" />
-            <Label Grid.Row="1" Grid.Column="5" TextColor="White" Text="{Binding Converter={StaticResource AwayTeamFullConverter}}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Start" FontSize="13" FontFamily="{StaticResource BoldFont}" />
-            <StackLayout Spacing="0" Grid.Row="1" Grid.Column="0" IsVisible="{Binding StatusID, Converter={StaticResource LiveMatchVisibilityConverter}}" Padding="0,0,3,0" >
-                <Label Text="❯" TextColor="Transparent" FontSize="13" />
-            </StackLayout>
-            <StackLayout Spacing="0" Grid.Row="1" Grid.Column="6" IsVisible="{Binding StatusID, Converter={StaticResource LiveMatchVisibilityConverter}}" Padding="0,0,3,0" >
-                <Label Text="❯" TextColor="#a6a6a6" FontSize="13" />
-            </StackLayout>
+
+            <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0"
+                   Text="{Binding MatchInfo}"
+                   LineBreakMode="TailTruncation"
+                   HorizontalOptions="Start"
+                   Style="{DynamicResource ListItemDetailTextStyle}"
+                   TextColor="DarkGray"
+                   FontSize="12" />
+
+            <Label Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2"
+                   Text="{Binding MatchTime}"
+                   VerticalTextAlignment="End"
+                   LineBreakMode="NoWrap"
+                   Style="{DynamicResource ListItemDetailTextStyle}"
+                   TextColor="{Binding StatusColor}"
+                   FontSize="12" />
+
+            <ff:CachedImage Grid.Column="0" Grid.Row="1" Margin="0,0,5,0"
+                            WidthRequest="30" HeightRequest="28"
+                            Source="{Binding HomeTeamLogo}"
+                            HorizontalOptions="CenterAndExpand"
+                            VerticalOptions="CenterAndExpand"  />
+            <ff:CachedImage Grid.Column="0" Grid.Row="2" Margin="0,0,5,0"
+                            WidthRequest="30" HeightRequest="28"
+                            Source="{Binding AwayTeamLogo}"
+                            HorizontalOptions="CenterAndExpand"
+                            VerticalOptions="CenterAndExpand"  />
+
+            <Label Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding HomeTeam}"
+                   LineBreakMode="TailTruncation"
+                   HorizontalOptions="Start"
+                   Style="{DynamicResource ListItemTextStyle}"
+                   FontSize="16" />
+
+            <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding AwayTeam}"
+                   LineBreakMode="TailTruncation"
+                   HorizontalOptions="Start"
+                   Style="{DynamicResource ListItemTextStyle}"
+                   FontSize="16" />
+
+            <Frame Grid.Column="4" Grid.Row="1"
+                   BackgroundColor="Transparent"
+                   Margin="4" CornerRadius="5" Padding="0">
+                <Label Text="{Binding HomeTeamScore}" FontAttributes="Bold"
+                        TextColor="White"
+                        LineBreakMode="NoWrap" HorizontalOptions="Center"
+                        FontSize="15" />
+            </Frame>
+
+            <Frame Grid.Column="4" Grid.Row="2"
+                   BackgroundColor="Transparent"
+                   Margin="4" CornerRadius="5" Padding="0">
+                <Label Text="{Binding AwayTeamScore}" FontAttributes="Bold"
+                        TextColor="White"
+                        LineBreakMode="NoWrap" HorizontalOptions="Center"
+                        FontSize="15" />
+            </Frame>
         </Grid>
-        <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="DimGray" />
-    </Grid>
+        </Grid>
+    </ContentView.Content>
+
 </ContentView>

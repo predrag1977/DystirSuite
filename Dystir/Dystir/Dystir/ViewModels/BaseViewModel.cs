@@ -19,22 +19,11 @@ namespace Dystir.ViewModels
             return DependencyService.Get<IDataLoader<Match>>() ?? new DataLoader();
         }
 
-        public TimeCounter TimeCounter = new TimeCounter();
-
         ObservableCollection<Match> _allMatches = new ObservableCollection<Match>();
         public ObservableCollection<Match> AllMatches
         {
             get { return _allMatches; }
             set {  _allMatches = value; SetAllMatches(); }
-        }
-
-        public ObservableCollection<MatchDetails> AllMatchesWithDetails { get; set; } = new ObservableCollection<MatchDetails>();
-
-        MatchDetails _selectedMatchDetails = new MatchDetails();
-        public MatchDetails SelectedMatchDetails
-        {
-            get { return _selectedMatchDetails; }
-            set { SetProperty(ref _selectedMatchDetails, value); }
         }
     
         ObservableCollection<Standing> _allStandings = new ObservableCollection<Standing>();
@@ -89,7 +78,7 @@ namespace Dystir.ViewModels
         public ObservableCollection<Sponsor> Sponsors
         {
             get { return _sponsors; }
-            set { SetProperty(ref _sponsors, value); }
+            set { SetProperty(ref _sponsors, value); SetSponsors(); }
         }
 
         public ObservableCollection<Sponsor> AllMainSponsors { get; set; }
@@ -122,15 +111,15 @@ namespace Dystir.ViewModels
             set { SetProperty(ref _fixturesGroupList, value); }
         }
 
-        DateTime _matchesDaySelected = DateTime.Now.ToLocalTime();
-        public DateTime MatchesDaySelected
+        DayOfMatch _matchesDaySelected = new DayOfMatch();
+        public DayOfMatch MatchesDaySelected
         {
             get { return _matchesDaySelected; }
             set { SetProperty(ref _matchesDaySelected, value); SetMatches(); }
         }
 
-        ObservableCollection<DateTime> _matchesDays = new ObservableCollection<DateTime>();
-        public ObservableCollection<DateTime> MatchesDays
+        ObservableCollection<DayOfMatch> _matchesDays = new ObservableCollection<DayOfMatch>();
+        public ObservableCollection<DayOfMatch> MatchesDays
         {
             get { return _matchesDays; }
             set { SetProperty(ref _matchesDays, value); }
@@ -192,15 +181,20 @@ namespace Dystir.ViewModels
             set { SetProperty(ref _statisticCompetitions, value); }
         }
 
-        Match _selectedMatch = new Match();
+        Match _selectedMatch;
         public Match SelectedMatch
         {
-            get { return _selectedMatch; }
-            set { SetProperty(ref _selectedMatch, value); }
+            get {
+                return _selectedMatch;
+            }
+            set {
+                SetProperty(ref _selectedMatch, value);
+                SetMatchesBySelectedDate();
+            }
         }
 
-        ObservableCollection<MatchDetails> _matchesBySelectedDate = new ObservableCollection<MatchDetails>();
-        public ObservableCollection<MatchDetails> MatchesBySelectedDate
+        ObservableCollection<Match> _matchesBySelectedDate = new ObservableCollection<Match>();
+        public ObservableCollection<Match> MatchesBySelectedDate
         {
             get { return _matchesBySelectedDate; }
             set { SetProperty(ref _matchesBySelectedDate, value); }
@@ -260,19 +254,24 @@ namespace Dystir.ViewModels
         private void SetMatches()
         {
             SetMatchesDays();
-            var matches = AllMatches?.OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).Where(x => x.Time?.Date == MatchesDaySelected.Date);
+            var matches = AllMatches?.OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).Where(x => x.Time?.Date == MatchesDaySelected.Date.Date);
             var matchesGroupList = new ObservableCollection<IGrouping<string, Match>>(matches?.GroupBy(x => x.MatchTypeName));
-            MatchesGroupList = matchesGroupList;
+            MatchesGroupList = new ObservableCollection<IGrouping<string, Match>>(matchesGroupList);
         }
 
         private void SetMatchesDays()
         {
-            var matchesDays = new ObservableCollection<DateTime>();
+            var matchesDays = new ObservableCollection<DayOfMatch>();
             for (DateTime date = DateTime.Now.AddDays(-3); date <= DateTime.Now.AddDays(3); date = date.AddDays(1))
             {
-                matchesDays.Add(date);
+                var dayOfMatch = new DayOfMatch()
+                {
+                    Date = date.Date,
+                    TextColor = date.Date == MatchesDaySelected.Date ? Color.LimeGreen : Color.White
+                };
+                matchesDays.Add(dayOfMatch);
             }
-            MatchesDays = new ObservableCollection<DateTime>(matchesDays);
+            MatchesDays = new ObservableCollection<DayOfMatch>(matchesDays);
         }
 
 
@@ -337,7 +336,7 @@ namespace Dystir.ViewModels
             {
                 StandingsCompetitionSelected = StandingsCompetitions.FirstOrDefault();
             }
-            var teamStandings = AllStandings.FirstOrDefault(x => x.StandingCompetitionName == StandingsCompetitionSelected)?.TeamStandings ?? Enumerable.Empty<TeamStanding>();
+            var teamStandings = AllStandings.FirstOrDefault(x => x.StandingCompetitionName == StandingsCompetitionSelected)?.TeamStandings ?? new ObservableCollection<TeamStanding>();
             CompetitionTeamStandings = new ObservableCollection<TeamStanding>(teamStandings);
         }
 
@@ -388,10 +387,24 @@ namespace Dystir.ViewModels
         // MATCHES BY SELECTED DATE
         internal void SetMatchesBySelectedDate()
         {
-            var matchesBySelectedDate = AllMatchesWithDetails?.Where(x => x?.Match?.Time?.Date == SelectedMatch?.Time?.Date && x?.Match?.StatusID < 13);
-            MatchesBySelectedDate = new ObservableCollection<MatchDetails>(matchesBySelectedDate);
+            if (SelectedMatch != null)
+            {
+                var matches = AllMatches?.OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).Where(x => x.Time?.Date == MatchesDaySelected.Date.Date);
+                var matchesBySelectedDate = matches?.Where(x => x?.Time?.Date == SelectedMatch?.Time?.Date);
+                MatchesBySelectedDate = new ObservableCollection<Match>(matchesBySelectedDate);
+            }
         }
 
+        // SPONSORS
+        public void SetSponsors()
+        {
+            var sponsors = new ObservableCollection<Sponsor>(Sponsors.OrderBy(a => Guid.NewGuid()));
+            AllMainSponsors = new ObservableCollection<Sponsor>(sponsors.Where(x => x.SponsorID < 100).OrderBy(a => Guid.NewGuid()));
+            SponsorsMain = new ObservableCollection<Sponsor>(AllMainSponsors?.Take(2));
+        }
+
+
+        #region INotifyPropertyChanged
         protected bool SetProperty<T>(ref T backingStore, T value,
             [CallerMemberName]string propertyName = "",
             Action onChanged = null)
@@ -404,8 +417,7 @@ namespace Dystir.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
-
-        #region INotifyPropertyChanged
+        
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
