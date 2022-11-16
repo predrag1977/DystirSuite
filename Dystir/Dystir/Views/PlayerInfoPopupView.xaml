@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Dystir.Models"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:views="clr-namespace:Dystir.Views"
+             BindingContext="{Binding}"
+             Size="300,400"
+             x:Class="Dystir.Views.PlayerInfoPopupView">
+
+    <views:PlayerInfoView BackgroundColor="#181818" />
+    
+</toolkit:Popup>
+

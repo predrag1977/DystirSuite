@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:localization="clr-namespace:Dystir.Resources.Localization"
+             xmlns:models="clr-namespace:Dystir.Models"
+             x:DataType="models:Match"
+             x:Class="Dystir.Views.StatisticView">
+    
+    <ContentView.Resources>
+        <Style TargetType="Label">
+            <Setter Property="VerticalOptions" Value="End" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+    </ContentView.Resources>
+
+    <Grid BindingContext="{Binding MatchDetails}"
+          BackgroundColor="Black" >
+         <Grid x:DataType="models:MatchDetails">
+            <ScrollView BindingContext="{Binding Statistics}" >
+                <Grid x:DataType="models:Statistic" Padding="30,0" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="40" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0"
+                               FontAttributes="Bold"
+                               Text="{Binding HomeTeamStatistic.Goal}" />
+                        <Label Grid.Column="1"
+                               Text="{x:Static localization:Resources.GoalStatistic}" />
+                        <Label Grid.Column="2"
+                               FontAttributes="Bold"
+                               Text="{Binding AwayTeamStatistic.Goal}" />
+                    </Grid>
+                    <ProgressBar Grid.Row="1" 
+                                 Progress="{Binding HomeTeamStatistic.GoalProcent}" />
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="40" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" FontAttributes="Bold" Text="{Binding HomeTeamStatistic.OnTarget}" />
+                        <Label Grid.Column="1" Text="{x:Static localization:Resources.OnTargetStatistic}" />
+                        <Label Grid.Column="2" FontAttributes="Bold" Text="{Binding AwayTeamStatistic.OnTarget}" />
+                    </Grid>
+                    <ProgressBar Grid.Row="3" Progress="{Binding HomeTeamStatistic.OnTargetProcent}" />
+
+                    <Grid Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="40" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" FontAttributes="Bold" Text="{Binding HomeTeamStatistic.OffTarget}" />
+                        <Label Grid.Column="1" Text="{x:Static localization:Resources.OffTargetStatistic}" />
+                        <Label Grid.Column="2" FontAttributes="Bold" Text="{Binding AwayTeamStatistic.OffTarget}" />
+                    </Grid>
+                    <ProgressBar Grid.Row="5" Progress="{Binding HomeTeamStatistic.OffTargetProcent}" />
+
+                    <Grid Grid.Row="6">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="40" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" FontAttributes="Bold" Text="{Binding HomeTeamStatistic.BlockedShot}" />
+                        <Label Grid.Column="1" Text="{x:Static localization:Resources.BlockedShotStatistic}" />
+                        <Label Grid.Column="2" FontAttributes="Bold" Text="{Binding AwayTeamStatistic.BlockedShot}" />
+                    </Grid>
+                    <ProgressBar Grid.Row="7" Progress="{Binding HomeTeamStatistic.BlockedShotProcent}" />
+
+                    <Grid Grid.Row="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="40" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" FontAttributes="Bold" Text="{Binding HomeTeamStatistic.Corner}" />
+                        <Label Grid.Column="1" Text="{x:Static localization:Resources.CornerStatistic}" />
+                        <Label Grid.Column="2" FontAttributes="Bold" Text="{Binding AwayTeamStatistic.Corner}" />
+                    </Grid>
+                    <ProgressBar Grid.Row="9" Progress="{Binding HomeTeamStatistic.CornerProcent}" />
+
+                    <Grid Grid.Row="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="40" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" FontAttributes="Bold" Text="{Binding HomeTeamStatistic.BigChance}" />
+                        <Label Grid.Column="1" Text="{x:Static localization:Resources.BigChanceStatistic}" />
+                        <Label Grid.Column="2" FontAttributes="Bold" Text="{Binding AwayTeamStatistic.BigChance}" />
+                    </Grid>
+                    <ProgressBar Grid.Row="11" Progress="{Binding HomeTeamStatistic.BigChanceProcent}" />
+
+                    <Grid Grid.Row="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="40" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" FontAttributes="Bold" Text="{Binding HomeTeamStatistic.YellowCard}" />
+                        <Label Grid.Column="1" Text="{x:Static localization:Resources.YellowCardStatistic}" />
+                        <Label Grid.Column="2" FontAttributes="Bold" Text="{Binding AwayTeamStatistic.YellowCard}" />
+                    </Grid>
+                    <ProgressBar Grid.Row="13" Progress="{Binding HomeTeamStatistic.YellowCardProcent}" />
+
+                    <Grid Grid.Row="14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="40" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" FontAttributes="Bold" Text="{Binding HomeTeamStatistic.RedCard}" />
+                        <Label Grid.Column="1" Text="{x:Static localization:Resources.RedCardStatistic}" />
+                        <Label Grid.Column="2" FontAttributes="Bold" Text="{Binding AwayTeamStatistic.RedCard}" />
+                    </Grid>
+                    <ProgressBar Grid.Row="15" Progress="{Binding HomeTeamStatistic.RedCardProcent}" />
+                </Grid>
+            </ScrollView>
+        </Grid>
+    </Grid>
+</ContentView>
+

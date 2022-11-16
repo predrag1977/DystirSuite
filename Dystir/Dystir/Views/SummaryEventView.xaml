@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Dystir.Models"
+             x:DataType="models:SummaryEventOfMatch"
+             x:Class="Dystir.Views.SummaryEventView">
+
+    <ContentView.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="13" />
+        </Style>
+    </ContentView.Resources>
+
+    <VerticalStackLayout Padding="0,0,0,5">
+        <Frame CornerRadius="15"
+               BackgroundColor="#181818"
+               HorizontalOptions="StartAndExpand"
+               VerticalOptions="CenterAndExpand"
+               MinimumHeightRequest="70"
+               BorderColor="#181818"
+               Padding="5,0,10,0"
+               IsVisible="{Binding IsHomeTeamEvent}" >
+            <HorizontalStackLayout HorizontalOptions="Start"
+                                   MinimumHeightRequest="70"
+                                   VerticalOptions="CenterAndExpand">
+                <Label Text="{Binding EventMinute}"
+                       IsVisible="{Binding ShowMinutes}"
+                       TextColor="Khaki"
+                       Margin="4,0"
+                       FontAttributes="Bold"
+                       FontFamily="NunitoSemiBold" />
+                <Image Source="{Binding EventIconSource}"
+                       Margin="4,0"
+                       HeightRequest="22"
+                       WidthRequest="22" />
+                <VerticalStackLayout VerticalOptions="CenterAndExpand"
+                                     Margin="4,0">
+                    <Label Text="{Binding HomeMainPlayer}"
+                           HorizontalOptions="Start"/>
+                    <Label Text="{Binding HomeSecondPlayer}"
+                           TextColor="DarkGray"
+                           HorizontalOptions="Start"/>
+                </VerticalStackLayout>
+                <HorizontalStackLayout IsVisible="{Binding IsGoal}"
+                                       Margin="4,0">
+                    <Label Text="{Binding HomeTeamScore}"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           FontFamily="NunitoSemiBold"/>
+                    <Label Text=":" FontSize="14"
+                           FontAttributes="Bold"
+                           FontFamily="NunitoSemiBold"/>
+                    <Label Text="{Binding AwayTeamScore}"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           FontFamily="NunitoSemiBold"/>
+                </HorizontalStackLayout>
+                <Image Source="messi.png"
+                       Margin="4,0"
+                       IsVisible="{Binding IsGoal}"
+                       HeightRequest="45"
+                       WidthRequest="45" />
+            </HorizontalStackLayout>
+        </Frame>
+
+        <Frame CornerRadius="15"
+                BackgroundColor="#181818"
+                HorizontalOptions="EndAndExpand"
+                VerticalOptions="CenterAndExpand"
+                MinimumHeightRequest="70"
+                BorderColor="#181818"
+                Padding="10,0,5,0"
+                IsVisible="{Binding IsAwayTeamEvent}">
+            <HorizontalStackLayout HorizontalOptions="End"
+                                   MinimumHeightRequest="70"
+                                   VerticalOptions="CenterAndExpand">
+                <Image Source="salah.png"
+                       Margin="4,0"
+                       IsVisible="{Binding IsGoal}"
+                       HeightRequest="45"
+                       WidthRequest="45" />
+                <HorizontalStackLayout IsVisible="{Binding IsGoal}"
+                                       Margin="4,0">
+                    <Label Text="{Binding HomeTeamScore}"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           FontFamily="NunitoSemiBold"/>
+                    <Label Text=":" FontSize="14"
+                           FontAttributes="Bold"
+                           FontFamily="NunitoSemiBold"/>
+                    <Label Text="{Binding AwayTeamScore}"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           FontFamily="NunitoSemiBold"/>
+                </HorizontalStackLayout>
+                <VerticalStackLayout VerticalOptions="CenterAndExpand"
+                                     Margin="4,0">
+                    <Label Text="{Binding AwayMainPlayer}"
+                           HorizontalOptions="End"/>
+                    <Label Text="{Binding AwaySecondPlayer}"
+                           TextColor="DarkGray"
+                           HorizontalOptions="End"/>
+                </VerticalStackLayout>
+                <Image Source="{Binding EventIconSource}"
+                       Margin="4,0"
+                       HeightRequest="22"
+                       WidthRequest="22" />
+                <Label Text="{Binding EventMinute}"
+                       IsVisible="{Binding ShowMinutes}"
+                       TextColor="Khaki"
+                       Margin="4,0"
+                       VerticalOptions="Center"
+                       FontAttributes="Bold"
+                       FontFamily="NunitoSemiBold"/>
+            </HorizontalStackLayout>
+        </Frame>
+    </VerticalStackLayout>
+
+</ContentView>
+

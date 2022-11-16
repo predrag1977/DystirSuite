@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Dystir.Models"
+             xmlns:views="clr-namespace:Dystir.Views"
+             x:DataType="models:Match"
+             x:Class="Dystir.Views.CommentaryView">
+
+    <Grid BindingContext="{Binding MatchDetails}"
+          BackgroundColor="Black">
+        <CollectionView SelectionMode="None"
+                        Margin="5,0"
+                        x:DataType="models:MatchDetails"
+                        BackgroundColor="Black"
+                        VerticalScrollBarVisibility="Never"
+                        ItemsSource="{Binding Commentary}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <views:SummaryEventView />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentView>
+
