@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Dystir.Views.MatchView"
+    xmlns:model="clr-namespace:Dystir.Models"
+    x:DataType="model:Match">
+
+    <ContentView.Content>
+        <StackLayout Spacing="0">
+            <BoxView HeightRequest="4" BackgroundColor="Black" />
+            <Grid Padding="10,5"
+                  BackgroundColor="#181818">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="34" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0"
+                        Text="{Binding MatchInfo}"
+                        LineBreakMode="TailTruncation"
+                        HorizontalOptions="Start"
+                        TextColor="DarkGray"
+                        FontSize="12" />
+
+                <Label Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2"
+                        Text="{Binding MatchTime}"
+                        VerticalTextAlignment="End"
+                        LineBreakMode="NoWrap"
+                        TextColor="{Binding StatusColor}"
+                        FontSize="12" />
+
+                <Image Grid.Column="0" Grid.Row="1" Margin="0,0,10,0"
+                        WidthRequest="30" HeightRequest="28"
+                        Source="{Binding HomeTeamLogo}"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="CenterAndExpand"  />
+
+                <Image Grid.Column="0" Grid.Row="2" Margin="0,0,10,0"
+                        WidthRequest="30" HeightRequest="28"
+                        Source="{Binding AwayTeamLogo}"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="CenterAndExpand"  />
+
+                <Label Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding HomeTeam}"
+                        LineBreakMode="TailTruncation"
+                        HorizontalOptions="Start"
+                        FontSize="16" />
+
+                <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding AwayTeam}"
+                        LineBreakMode="TailTruncation"
+                        HorizontalOptions="Start"
+                        FontSize="16" />
+
+                <Label Text="{Binding HomeTeamScore}"
+                        Grid.Column="4"
+                        Grid.Row="1"
+                        Margin="4" 
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        FontFamily="NunitoSemiBold"
+                        LineBreakMode="NoWrap"
+                        HorizontalOptions="Center"
+                        FontSize="15" />
+
+                <Label Text="{Binding AwayTeamScore}"
+                        Grid.Column="4"
+                        Grid.Row="2"
+                        Margin="4"
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        FontFamily="NunitoSemiBold"
+                        LineBreakMode="NoWrap"
+                        HorizontalOptions="Center"
+                        FontSize="15" />
+            </Grid>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

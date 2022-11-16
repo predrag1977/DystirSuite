@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Dystir.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:localization="clr-namespace:Dystir.Resources.Localization" 
+    xmlns:pages="clr-namespace:Dystir.Pages"
+    BackgroundColor="Black">
+
+    <TabBar>
+        <Tab Title="{x:Static localization:Resources.Matches}"
+             Icon="matches">
+            <ShellContent Title="{x:Static localization:Resources.Matches}"
+                          Icon="matches"
+                          ContentTemplate="{DataTemplate pages:MatchesPage}" />
+        </Tab>
+
+        <Tab Title="{x:Static localization:Resources.Results}"
+             Icon="results">
+            <ShellContent Title="{x:Static localization:Resources.Results}"
+                          Icon="results"
+                          ContentTemplate="{DataTemplate pages:ResultsPage}" />
+        </Tab>
+
+        <Tab Title="{x:Static localization:Resources.Fixtures}"
+             Icon="fixtures">
+            <ShellContent Title="{x:Static localization:Resources.Fixtures}"
+                          Icon="fixtures"
+                          ContentTemplate="{DataTemplate pages:FixturesPage}" />
+        </Tab>
+
+        
+    </TabBar>
+
+    
+</Shell>
+

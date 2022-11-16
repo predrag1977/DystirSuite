@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:Dystir.Converter"
+             BindingContextChanged="ContentView_BindingContextChanged"
+             BackgroundColor="Black"
+             x:Class="Dystir.Views.HeaderView">
+
+    <ContentView.Resources>
+        <converter:LanguageConverter x:Key="LanguageConverter" />
+        <converter:LanguageToVisibleConverter x:Key="LanguageToVisibleConverter" />
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    </ContentView.Resources>
+
+    <Grid Grid.Row="0" BindingContext="{Binding}" Padding="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="60"/>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="Language_Tapped" NumberOfTapsRequired="1" />
+            </Grid.GestureRecognizers>
+            <!--<ff:CachedImage x:Name="FaroeseFlag" WidthRequest="25" HeightRequest="25"
+                            VerticalOptions="Center" HorizontalOptions="Center"
+                            Source="resource://Dystir.Images.faroe_islands_flag.png" />
+            <ff:CachedImage x:Name="EnglishFlag" WidthRequest="25" HeightRequest="25"
+                            VerticalOptions="Center" HorizontalOptions="Center"
+                            Source="resource://Dystir.Images.great_britain_flag.png" />-->
+        </Grid>
+        <Label x:Name="TitleLabel" Text="{Binding PageTitle}" Grid.Column="1" FontSize="16"
+               FontFamily="{StaticResource BoldFont}" TextColor="White"
+               HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"
+               VerticalOptions="CenterAndExpand" />
+        <Grid Grid.Column="2" Padding="0,3" >
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="Refresh_Tapped" CommandParameter="{Binding}" NumberOfTapsRequired="1" />
+            </Grid.GestureRecognizers>
+            <Label Text="&#x21bb;" FontSize="24" FontFamily="{StaticResource NormalFont}" TextColor="White" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+        </Grid>
+    </Grid>
+</ContentView>
+
