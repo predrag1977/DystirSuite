@@ -35,11 +35,16 @@ namespace Dystir.ViewModels
         //**********************//
         //      CONSTRUCTOR     //
         //**********************//
-        public ResultsViewModel(DystirService dystirService)
+        public ResultsViewModel(DystirService dystirService, TimeService timeService)
         {
             DystirService = dystirService;
             DystirService.OnShowLoading += DystirService_OnShowLoading;
             DystirService.OnFullDataLoaded += DystirService_OnFullDataLoaded;
+            DystirService.OnMatchDetailsLoaded += DystirService_OnMatchDetailsLoaded;
+
+            timeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
+            timeService.StartSponsorsTime();
+
             SetResults();
             SetSponsors();
         }
@@ -57,6 +62,16 @@ namespace Dystir.ViewModels
             SetResults();
             SetSponsors();
             IsLoading = false;
+        }
+
+        private void DystirService_OnMatchDetailsLoaded(Match match)
+        {
+            SetResults();
+        }
+
+        private void TimeService_OnSponsorsTimerElapsed()
+        {
+            SetSponsors();
         }
 
         private void SetResults()
