@@ -30,11 +30,11 @@ namespace Dystir.ViewModels
         }
 
         //**********************//
-        //   PRIVATE METHODS    //
+        //    PRIVATE METHODS   //
         //**********************//
         private void DystirService_OnShowLoading()
         {
-            if(SelectedMatch != null)
+            if (SelectedMatch != null)
             {
                 SelectedMatch.IsLoading = true;
             }
@@ -47,14 +47,6 @@ namespace Dystir.ViewModels
                 SelectedMatch = match;
             }
             //SetMatchesBySelectedDate();
-        }
-
-        //**********************//
-        //    PRIVATE METHODS   //
-        //**********************//
-        private void MatchDetailsViewModel_OnRefreshSelectedMatch(Match match)
-        {
-            
         }
 
         private void SetMatchesBySelectedDate()
