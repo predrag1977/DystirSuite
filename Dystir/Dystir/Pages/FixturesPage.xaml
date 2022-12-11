@@ -84,6 +84,10 @@
                         <Label Text="{x:Static localization:Resources.NoMatches}"
                                VerticalOptions="Center"
                                HorizontalOptions="Center" />
+                        <StackLayout IsVisible="{Binding IsLoading}"
+                                     HeightRequest="100"
+                                     BackgroundColor="Black"
+                                     HorizontalOptions="FillAndExpand"/>
                     </Grid>
                 </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>

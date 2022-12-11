@@ -109,6 +109,9 @@ namespace Dystir.Models
             set { awayTeamLogo = "https://www.dystir.fo/team_logos/" + value; }
         }
 
+        public string HomeTeamFullName { get; internal set; }
+        public string AwayTeamFullName { get; internal set; }
+
         string matchTime = string.Empty;
         public string MatchTime
         {
@@ -384,8 +387,8 @@ namespace Dystir.Models
 
         private void SetFullTeamsName()
         {
-            HomeTeam = string.Format($"{HomeTeam} {HomeCategoriesName} {HomeSquadName}").Trim();
-            AwayTeam = string.Format($"{AwayTeam} {AwayCategoriesName} {AwaySquadName}").Trim();
+            HomeTeamFullName = string.Format($"{HomeTeam} {HomeCategoriesName} {HomeSquadName}").Trim();
+            AwayTeamFullName = string.Format($"{AwayTeam} {AwayCategoriesName} {AwaySquadName}").Trim();
         }
 
         private void SetMatchInfo()

@@ -22,8 +22,17 @@ public partial class FixturesPage : ContentPage
         var collectionView = (sender as CollectionView);
         if (collectionView.SelectedItem is Match selectedMatch)
         {
-            selectedMatch.MatchDetails = null;
-            selectedMatch.IsLoading = true;
+            //var matchDetailsPage = _fixturesViewModel.AllMatchDetailsPage.FirstOrDefault(x => x.MatchID == selectedMatch.MatchID);
+            //if (matchDetailsPage == null)
+            //{
+            //    matchDetailsPage = new MatchDetailsPage(new MatchDetailsViewModel(_fixturesViewModel.DystirService)
+            //    {
+            //        SelectedMatch = selectedMatch
+            //    });
+            //    _fixturesViewModel.AllMatchDetailsPage.Add(matchDetailsPage);
+            //}
+
+            //await Shell.Current.Navigation.PushAsync(matchDetailsPage);
 
             await Shell.Current.GoToAsync($"{nameof(FixturesPage)}/{nameof(MatchDetailsPage)}?matchID={selectedMatch.MatchID}");
 

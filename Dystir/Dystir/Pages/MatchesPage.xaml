@@ -13,6 +13,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="40" />
                 <RowDefinition Height="50" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -40,14 +41,14 @@
                             SelectionMode="Single"
                             SelectedItem="{Binding MatchesDaySelected}"
                             HorizontalOptions="FillAndExpand"
-                            BackgroundColor="#181818"
+                            BackgroundColor="Black"
                             Margin="0,2"
                             ItemsLayout="VerticalGrid, 7">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Spacing="0"
                                      Padding="0,10,0,0"
-                                     BackgroundColor="#181818"
+                                     BackgroundColor="Black"
                                      HeightRequest="50"
                                      x:DataType="models:DayOfMatch"
                                      HorizontalOptions="Center"
@@ -70,7 +71,13 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <CollectionView Grid.Row="2"
+            <StackLayout Grid.Row="2"
+                         HeightRequest="2"
+                         Orientation="Horizontal"
+                         BackgroundColor="#181818"
+                         HorizontalOptions="FillAndExpand"/>
+
+            <CollectionView Grid.Row="3"
                             SelectionMode="Single"
                             BackgroundColor="Black"
                             IsGrouped="True"
@@ -89,11 +96,6 @@
                                      HorizontalOptions="FillAndExpand"/>
                     </Grid>
                 </CollectionView.EmptyView>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <views:MatchView BindingContext="{Binding}" />
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
                 <CollectionView.GroupHeaderTemplate>
                     <DataTemplate>
                         <Grid BackgroundColor="Black"
@@ -110,9 +112,14 @@
                         </Grid>
                     </DataTemplate>
                 </CollectionView.GroupHeaderTemplate>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <views:MatchView BindingContext="{Binding}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <StackLayout Grid.Row="2"
+            <StackLayout Grid.Row="3"
                          HorizontalOptions="Center"
                          VerticalOptions="Center"
                          IsVisible="{Binding IsLoading}">
@@ -123,7 +130,7 @@
                                    HeightRequest="30" />
             </StackLayout>
 
-            <BoxView Grid.Row="3" />
+            <BoxView Grid.Row="4" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -101,10 +101,10 @@ namespace Dystir.Services
 
             if (responseMatchDetails.IsSuccessStatusCode)
             {
-                var resultMatchDetails = await responseMatchDetails.Content.ReadAsStringAsync().ConfigureAwait(false); ;
+                var resultMatchDetails = await responseMatchDetails.Content.ReadAsStringAsync();
                 matchDetails = JsonConvert.DeserializeObject<MatchDetails>(resultMatchDetails);
             }
-            return await Task.FromResult(matchDetails).ConfigureAwait(false); ;
+            return await Task.FromResult(matchDetails);
         }
 
         public async Task<ObservableCollection<Sponsor>> GetSponsorsAsync()

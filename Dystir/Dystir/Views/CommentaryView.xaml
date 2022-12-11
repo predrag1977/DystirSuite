@@ -1,25 +1,55 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:Dystir.Models"
              xmlns:views="clr-namespace:Dystir.Views"
-             x:DataType="models:Match"
+             xmlns:models="clr-namespace:Dystir.Models"
+             xmlns:viewModels="clr-namespace:Dystir.ViewModels"
+             x:DataType="viewModels:MatchDetailsViewModel"
              x:Class="Dystir.Views.CommentaryView">
+    
+    <CollectionView SelectionMode="None"
+                    IsGrouped="True"
+                    Margin="5,0"
+                    BackgroundColor="Black"
+                    VerticalScrollBarVisibility="Never"
+                    ItemsSource="{Binding Commentary}">
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <views:CommentaryEventView />
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
 
-    <Grid BindingContext="{Binding MatchDetails}"
-          BackgroundColor="Black">
-        <CollectionView SelectionMode="None"
-                        Margin="5,0"
-                        x:DataType="models:MatchDetails"
-                        BackgroundColor="Black"
-                        VerticalScrollBarVisibility="Never"
-                        ItemsSource="{Binding Commentary}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <views:SummaryEventView />
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </Grid>
+        <CollectionView.GroupFooterTemplate>
+            <DataTemplate>
+                <Grid>
+                    <StackLayout BackgroundColor="#181818"
+                                 HorizontalOptions="Fill"
+                                 VerticalOptions="Start"
+                                 HeightRequest="20" />
+
+                    <Frame CornerRadius="15"
+                           x:DataType="models:CommentaryEventGroup"
+                           BackgroundColor="#181818"
+                           HorizontalOptions="Fill"
+                           VerticalOptions="Center"
+                           MinimumHeightRequest="30"
+                           BorderColor="#181818"
+                           Padding="7,0,7,5">
+
+                        <Label Text="{Binding EventText}"
+                               TextColor="DarkGray"
+                               Margin="5,0"
+                               MaxLines="5"
+                               FontSize="14"
+                               LineBreakMode="WordWrap"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Fill"
+                               HorizontalTextAlignment="Center"/>
+                    </Frame>
+                </Grid>
+            </DataTemplate>
+        </CollectionView.GroupFooterTemplate>
+    </CollectionView>
+    
 </ContentView>
 

@@ -11,6 +11,8 @@ namespace Dystir.ViewModels
         //**********************//
         //      PROPERTIES      //
         //**********************//
+        private ObservableCollection<Match> AllResultsMatches = new ObservableCollection<Match>();
+
         ObservableCollection<MatchGroup> resultsGroupList = new ObservableCollection<MatchGroup>();
         public ObservableCollection<MatchGroup> ResultsGroupList
         {
@@ -45,8 +47,20 @@ namespace Dystir.ViewModels
             timeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
             timeService.StartSponsorsTime();
 
+            IsLoading = true;
+            SetResultCompetitions();
+        }
+
+        //**********************//
+        //    PUBLIC METHODS    //
+        //**********************//
+        public async void LoadDataAsync()
+        {
+            await Task.Delay(100);
+            SetResultCompetitions();
             SetResults();
             SetSponsors();
+            IsLoading = false;
         }
 
         //**********************//
@@ -59,14 +73,12 @@ namespace Dystir.ViewModels
 
         private void DystirService_OnFullDataLoaded()
         {
-            SetResults();
-            SetSponsors();
-            IsLoading = false;
+            LoadDataAsync();
         }
 
         private void DystirService_OnMatchDetailsLoaded(Match match)
         {
-            SetResults();
+            LoadDataAsync();
         }
 
         private void TimeService_OnSponsorsTimerElapsed()
@@ -74,14 +86,16 @@ namespace Dystir.ViewModels
             SetSponsors();
         }
 
-        private void SetResults()
+        private void SetResultCompetitions()
         {
             var toDate = DateTime.Now.Date.AddDays(0);
             var fromDate = new DateTime(toDate.Year - 1, 12, 31);
-            var allResultsMatches = DystirService.AllMatches?.OrderBy(x => x.MatchTypeID).ThenByDescending(x => x.Time).Where(x => x.Time > fromDate && x.Time < toDate
-            || (x.StatusID == 13 || x.StatusID == 12)) ?? new ObservableCollection<Match>();
-            var allResultsGroupList = new ObservableCollection<IGrouping<string, Match>>(allResultsMatches?.GroupBy(x => x.MatchTypeName));
 
+            var resultsMatches = DystirService.AllMatches?.Where(x => x.Time > fromDate && x.Time < toDate || (x.StatusID == 13 || x.StatusID == 12));
+            var orderedResultsMatches = resultsMatches.OrderBy(x => x.MatchTypeID).ThenByDescending(x => x.Time);
+            AllResultsMatches = new ObservableCollection<Match>(orderedResultsMatches);
+
+            var allResultsGroupList = new ObservableCollection<IGrouping<string, Match>>(AllResultsMatches?.GroupBy(x => x.MatchTypeName));
             var resultsCompetitions = new ObservableCollection<string>();
             foreach (IGrouping<string, Match> competitionMatches in allResultsGroupList ?? new ObservableCollection<IGrouping<string, Match>>())
             {
@@ -90,15 +104,21 @@ namespace Dystir.ViewModels
                     resultsCompetitions.Add(competitionMatches.Key);
                 }
             }
+
             ResultsCompetitions = new ObservableCollection<string>(resultsCompetitions);
             if (string.IsNullOrEmpty(ResultsCompetitionSelected) && ResultsCompetitions.Count > 0)
             {
                 ResultsCompetitionSelected = ResultsCompetitions.FirstOrDefault();
             }
+        }
 
-            var resultsMatches = allResultsMatches?.Where(x => x.MatchTypeName == ResultsCompetitionSelected).OrderByDescending(x => x.RoundID).ThenByDescending(x => x.Time).ThenBy(x => x.MatchTypeID);
+        private void SetResults()
+        {
+            var resultsMatches = AllResultsMatches?.Where(x => x.MatchTypeName == ResultsCompetitionSelected)
+                .OrderByDescending(x => x.RoundID)
+                .ThenByDescending(x => x.Time)
+                .ThenBy(x => x.MatchTypeID);
             ResultsGroupList = new ObservableCollection<MatchGroup>(resultsMatches.GroupBy(x => x.RoundName).Select(group => new MatchGroup(group.Key, group.ToList())));
-
         }
     }
 }

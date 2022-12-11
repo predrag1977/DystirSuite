@@ -3,22 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="clr-namespace:Dystir.Models"
              xmlns:views="clr-namespace:Dystir.Views"
-             x:DataType="models:Match"
+             xmlns:viewModels="clr-namespace:Dystir.ViewModels"
+             x:DataType="viewModels:MatchDetailsViewModel"
              x:Class="Dystir.Views.SummaryView">
 
-    <Grid BackgroundColor="Black">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <VerticalStackLayout BindingContext="{Binding}"
+        <VerticalStackLayout BindingContext="{Binding SelectedMatch}"
                              HorizontalOptions="FillAndExpand"
                              Margin="5,5,5,0">
-            <AbsoluteLayout HorizontalOptions="CenterAndExpand">
+
+            <AbsoluteLayout HorizontalOptions="CenterAndExpand"
+                            x:DataType="models:Match">
                 <Image HorizontalOptions="Center"
-                        Source="football_pitch_3d.png"
-                        WidthRequest="300" />
+                       Source="football_pitch_3d.png"
+                       WidthRequest="300" />
                 <StackLayout WidthRequest="300"
                              HeightRequest="50"
                              Orientation="Horizontal"
@@ -39,26 +42,24 @@
                 </StackLayout>
             </AbsoluteLayout>
             <StackLayout HeightRequest="2"
-                         Margin="0,5,0,0"
+                         Margin="0,10,0,0"
                          Orientation="Horizontal"
                          BackgroundColor="#181818"
                          HorizontalOptions="FillAndExpand"/>
         </VerticalStackLayout>
-
-        <Grid Grid.Row="1" BindingContext="{Binding MatchDetails}">
-            <CollectionView SelectionMode="None"
-                            Margin="5,0"
-                            x:DataType="models:MatchDetails"
-                            BackgroundColor="Transparent"
-                            VerticalScrollBarVisibility="Never"
-                            ItemsSource="{Binding Summary}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <views:SummaryEventView />
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </Grid>
+        
+        <CollectionView Grid.Row="1"
+                        SelectionMode="None"
+                        Margin="5,0"
+                        BackgroundColor="Transparent"
+                        VerticalScrollBarVisibility="Never"
+                        ItemsSource="{Binding Summary}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <views:SummaryEventView />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </Grid>
 </ContentView>
 

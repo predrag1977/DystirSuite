@@ -14,7 +14,9 @@ public partial class ResultsPage : ContentPage
         _resultsViewModel = resultsViewModel;
 
         InitializeComponent();
-        BindingContext = resultsViewModel;
+        BindingContext = _resultsViewModel;
+
+        _resultsViewModel.LoadDataAsync();
     }
 
     private async void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -22,8 +24,7 @@ public partial class ResultsPage : ContentPage
         var collectionView = (sender as CollectionView);
         if (collectionView.SelectedItem is Match selectedMatch)
         {
-            selectedMatch.MatchDetails = null;
-            selectedMatch.IsLoading = true;
+            //await Shell.Current.Navigation.PushAsync(new MatchDetailsPage(selectedMatch));
 
             await Shell.Current.GoToAsync($"{nameof(ResultsPage)}/{nameof(MatchDetailsPage)}?matchID={selectedMatch.MatchID}");
 

@@ -2,6 +2,7 @@
 using Dystir.Models;
 using Dystir.ViewModels;
 using Dystir.Services;
+using Dystir.Views;
 
 namespace Dystir.Pages;
 
@@ -14,7 +15,9 @@ public partial class MatchesPage : ContentPage
         _matchesViewModel = matchesViewModel;
 
         InitializeComponent();
-        BindingContext = matchesViewModel;
+        BindingContext = _matchesViewModel;
+
+        _matchesViewModel.LoadDataAsync();
     }
 
     private async void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -22,10 +25,9 @@ public partial class MatchesPage : ContentPage
         var collectionView = (sender as CollectionView);
         if (collectionView.SelectedItem is Match selectedMatch)
         {
-            selectedMatch.MatchDetails = null;
-            selectedMatch.IsLoading = true;
+            //await Shell.Current.Navigation.PushAsync(new MatchDetailsPage(selectedMatch));
 
-            await Shell.Current.GoToAsync($"{nameof(MatchesPage)}/{nameof(MatchDetailsPage)}?matchID={selectedMatch.MatchID}");
+            await Shell.Current.GoToAsync($"{nameof(MatchesPage)}/{nameof(MatchDetailsPage)}");
 
             collectionView.SelectedItem = null;
         }

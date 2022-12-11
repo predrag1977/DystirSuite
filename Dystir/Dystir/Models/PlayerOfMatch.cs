@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace Dystir.Models
 {
-    public class PlayerOfMatch : INotifyPropertyChanged
+    public class PlayerOfMatch
     {
         [JsonProperty("PlayerOfMatchID")]
         public int PlayerOfMatchID { get; set; }
@@ -16,7 +16,7 @@ namespace Dystir.Models
         public string FirstName
         {
             get { return _firstName; }
-            set { SetProperty(ref _firstName, value); }
+            set { _firstName = value; }
         }
 
         string _lastName;
@@ -24,7 +24,7 @@ namespace Dystir.Models
         public string LastName
         {
             get { return _lastName; }
-            set { SetProperty(ref _lastName, value); }
+            set { _lastName = value; }
         }
 
         [JsonProperty("TeamName")]
@@ -35,14 +35,14 @@ namespace Dystir.Models
         public int? Number
         {
             get { return _number; }
-            set { SetProperty(ref _number, value); }
+            set { _number = value;  }
         }
 
         int? _playingStatus;
         [JsonProperty("PlayingStatus")]
         public int? PlayingStatus {
             get { return _playingStatus; }
-            set { SetProperty(ref _playingStatus, value); }
+            set { _playingStatus = value;  }
         }
 
         string _position;
@@ -50,7 +50,7 @@ namespace Dystir.Models
         public string Position
         {
             get { return _position; }
-            set { SetProperty(ref _position, value); }
+            set { _position = value; }
         }
 
         [JsonProperty("PlayerID")]
@@ -68,26 +68,72 @@ namespace Dystir.Models
         [JsonProperty("MatchTypeName")]
         public string MatchTypeName { get; internal set; }
 
-        [JsonProperty("Goal")]
-        public int? Goal { get; internal set; }
-
         [JsonProperty("Assist")]
         public int? Assist { get; internal set; }
 
+        int? goal;
+        [JsonProperty("Goal")]
+        public int? Goal
+        {
+            get { return goal; }
+            set { goal = value; GoalVisible = value != null && value > 0; }
+        }
+
+        int? ownGoal;
         [JsonProperty("OwnGoal")]
-        public int? OwnGoal { get; internal set; }
+        public int? OwnGoal
+        {
+            get { return ownGoal; }
+            set { ownGoal = value; OwnGoalVisible = value != null && value > 0; }
+        }
 
+        int? yellowCard;
         [JsonProperty("YellowCard")]
-        public int? YellowCard { get; internal set; }
-        
+        public int? YellowCard
+        {
+            get { return yellowCard; }
+            set {
+                yellowCard = value;
+                YellowCardVisible = value != null && value > 0;
+                SecondYellowCardVisible = value != null && value > 1;
+            }
+        }
+
+        int? redCard;
         [JsonProperty("RedCard")]
-        public int? RedCard { get; internal set; }
+        public int? RedCard
+        {
+            get { return redCard; }
+            set
+            {
+                redCard = value;
+                RedCardVisible = (value != null && value > 0) || SecondYellowCardVisible == true;
+            }
+        }
 
+        int? subIn;
         [JsonProperty("SubIn")]
-        public int? SubIn { get; internal set; }
+        public int? SubIn
+        {
+            get { return subIn; }
+            set
+            {
+                subIn = value;
+                SubInVisible = (value != null && value >= 0);
+            }
+        }
 
+        int? subOut;
         [JsonProperty("SubOut")]
-        public int? SubOut { get; internal set; }
+        public int? SubOut
+        {
+            get { return subOut; }
+            set
+            {
+                subOut = value;
+                SubOutVisible = (value != null && value >= 0);
+            }
+        }
 
         public bool GoalVisible { get; internal set; }
 
@@ -104,31 +150,5 @@ namespace Dystir.Models
         public bool SubOutVisible { get; internal set; }
 
         public string NumberOrder { get; internal set; }
-
-
-        #region INotifyPropertyChanged
-        protected bool SetProperty<T>(ref T backingStore, T value,
-            [CallerMemberName]string propertyName = "",
-            Action onChanged = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(backingStore, value))
-                return false;
-
-            backingStore = value;
-            onChanged?.Invoke();
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            var changed = PropertyChanged;
-            if (changed == null)
-                return;
-
-            changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
     }
 }

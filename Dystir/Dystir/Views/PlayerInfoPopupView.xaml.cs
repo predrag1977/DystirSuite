@@ -10,4 +10,9 @@ public partial class PlayerInfoPopupView : Popup
         InitializeComponent();
         BindingContext = playerOfMatch;
     }
+
+    void Button_Clicked(System.Object sender, System.EventArgs e)
+    {
+        this.Close();
+    }
 }

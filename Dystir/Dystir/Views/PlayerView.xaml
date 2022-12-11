@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Dystir.Models"
+             x:DataType="models:PlayerOfMatch"
+             x:Class="Dystir.Views.PlayerView">
+
+    <ContentView.Resources>
+        <Style TargetType="Image">
+            <Setter Property="HeightRequest" Value="14" />
+            <Setter Property="WidthRequest" Value="14" />
+            <Setter Property="Margin" Value="2,0" />
+        </Style>
+    </ContentView.Resources>
+
+    <Frame CornerRadius="10"
+           Margin="2"
+           Padding="0"
+           MinimumHeightRequest="56"
+           BackgroundColor="#181818">
+        <Grid VerticalOptions="CenterAndExpand"
+              HorizontalOptions="FillAndExpand"
+              Padding="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <VerticalStackLayout Grid.Column="0"
+                                 VerticalOptions="Center">
+                <Label Text="{Binding Number}"
+                       TextColor="Khaki"/>
+
+                <Label FontSize="10"
+                       Text="{Binding Position}"
+                       TextColor="DarkGray"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Column="1"
+                                 VerticalOptions="Center">
+                <Label Text="{Binding FirstName}"
+                       HorizontalTextAlignment="Start"
+                       HorizontalOptions="StartAndExpand"
+                       LineBreakMode="WordWrap"
+                       FontSize="13"
+                       Margin="3,0,0,0"
+                       MaxLines="2"/>
+
+                <HorizontalStackLayout Margin="3,0,0,0">
+                    <Image Source="goal.png"
+                           IsVisible="{Binding GoalVisible}"/>
+                    <Label Text="{Binding Goal}"
+                           Margin="0,0,2,0"
+                           TextColor="DarkGray"
+                           IsVisible="{Binding GoalVisible}"/>
+                    <Image Source="owngoal.png"
+                           IsVisible="{Binding OwnGoalVisible}"/>
+                    <Label Text="{Binding OwnGoal}"
+                           Margin="0,0,2,0"
+                           TextColor="DarkGray"
+                           IsVisible="{Binding OwnGoalVisible}"/>
+                    <Image Source="yellow.png"
+                           WidthRequest="8"
+                           IsVisible="{Binding YellowCardVisible}"/>
+                    <Image Source="yellow.png"
+                           WidthRequest="8"
+                           IsVisible="{Binding SecondYellowCardVisible}"/>
+                    <Image Source="red.png"
+                           WidthRequest="8"
+                           IsVisible="{Binding RedCardVisible}"/>
+                    <Image Source="sub_in.png"
+                           WidthRequest="8"
+                           IsVisible="{Binding SubInVisible}"/>
+                    <Label Text="{Binding SubIn, StringFormat='{0}´'}"
+                           Margin="0,0,2,0"
+                           TextColor="DarkGray"
+                           IsVisible="{Binding SubInVisible}"/>
+                    <Image Source="sub_out.png"
+                           WidthRequest="8"
+                           IsVisible="{Binding SubOutVisible}"/>
+                    <Label Text="{Binding SubOut, StringFormat='{0}´'}"
+                           Margin="0,0,2,0"
+                           TextColor="DarkGray"
+                           IsVisible="{Binding SubOutVisible}"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+    </Frame>
+</ContentView>
+

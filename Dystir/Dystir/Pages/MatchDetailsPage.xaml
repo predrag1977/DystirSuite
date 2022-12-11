@@ -8,20 +8,24 @@
              BackgroundColor="Black"
              x:DataType="viewModels:MatchDetailsViewModel">
 
-    <Grid BindingContext="{Binding SelectedMatch}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <!--<RowDefinition Height="50" />-->
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" x:DataType="models:Match" >
+        <Grid Grid.Row="0" >
             <Grid.RowDefinitions>
-                <RowDefinition Height="40" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="50" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Grid>
+            <Grid Grid.Row="0" BindingContext="{Binding SelectedMatch}"> 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50" />
                     <ColumnDefinition Width="*" />
@@ -37,6 +41,7 @@
                         Clicked="BackButton_Clicked"/>
 
                 <Image Grid.Column="1"
+                       x:DataType="models:Match"
                        HeightRequest="30"
                        WidthRequest="60"
                        Aspect="AspectFit"
@@ -46,14 +51,15 @@
 
                 <Grid Grid.Column="2" >
                     <Label FontSize="20"
-                           FontFamily="NunitoSemiBold"
-                           WidthRequest="20"
-                           HorizontalTextAlignment="Center"
-                           FontAttributes="Bold"
-                           Text="-" />
+                            FontFamily="NunitoSemiBold"
+                            WidthRequest="20"
+                            HorizontalTextAlignment="Center"
+                            FontAttributes="Bold"
+                            Text="-" />
                 </Grid>
 
                 <Image Grid.Column="3"
+                       x:DataType="models:Match"
                        HeightRequest="30"
                        WidthRequest="60"
                        Aspect="AspectFit"
@@ -68,62 +74,75 @@
                         Clicked="RefreshButton_Clicked" />
             </Grid>
 
-            <views:MatchInDetailsView Grid.Row="1" />
-        </Grid>
+            <StackLayout Grid.Row="1"
+                         Margin="0,5,0,0"
+                         HeightRequest="2"
+                         Orientation="Horizontal"
+                         BackgroundColor="#181818"
+                         HorizontalOptions="FillAndExpand"/>
 
-        <Grid Grid.Row="1" x:DataType="models:Match" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+            <views:MatchInDetailsView Grid.Row="2" BindingContext="{Binding SelectedMatch}" />
 
-            <CollectionView Grid.Row="0"
+            <StackLayout Grid.Row="3"
+                         Margin="0,5,0,0"
+                         HeightRequest="2"
+                         Orientation="Horizontal"
+                         BackgroundColor="#181818"
+                         HorizontalOptions="FillAndExpand"/>
+
+            <CollectionView Grid.Row="4"
                             HeightRequest="50"
+                            ItemsSource="{Binding MatchDetailsTabs}"
                             SelectionMode="Single"
                             SelectedItem="{Binding SelectedMatchDetailsTab}"
                             HorizontalOptions="FillAndExpand"
                             BackgroundColor="Black"
-                            ItemsSource="{Binding MatchDetailsTabs}"
                             ItemsLayout="VerticalGrid, 5">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout x:DataType="models:MatchDetailsTab"
                                      BindingContext="{Binding}" 
-                                     BackgroundColor="#181818"
+                                     BackgroundColor="Black"
                                      HeightRequest="50">
                             <Label VerticalTextAlignment="Center"
                                    HorizontalOptions="Center"
                                    HeightRequest="50"
                                    FontSize="11"
-                                   FontAttributes="Bold"
-                                   FontFamily="NunitoSemiBold"
-                                   TextColor="{Binding TextColor}"
-                                   Text="{Binding TabName}" />
+                                    FontAttributes="Bold"
+                                    FontFamily="NunitoSemiBold"
+                                    TextColor="{Binding TextColor}"
+                                    Text="{Binding TabName}" />
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <views:SummaryView Grid.Row="1" IsVisible="{Binding SummarySelected}" />
-            <views:LineupsView Grid.Row="1" IsVisible="{Binding FirstElevenSelected}" />
-            <views:CommentaryView Grid.Row="1" IsVisible="{Binding CommentarySelected}" />
-            <views:StatisticView Grid.Row="1" IsVisible="{Binding StatisticSelected}" />
-            <!--<views:StatisticView Grid.Row="1" IsVisible="{Binding LiveStandingsSelected}" />-->
-            
-
-            <StackLayout Grid.Row="1"
-                         HorizontalOptions="Center"
-                         VerticalOptions="Center"
-                         IsVisible="{Binding IsLoading}">
-                <ActivityIndicator IsRunning="True"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="Center"
-                                   WidthRequest="30"
-                                   HeightRequest="30" />
-            </StackLayout>
+            <StackLayout Grid.Row="5"
+                         HeightRequest="2"
+                         Orientation="Horizontal"
+                         BackgroundColor="#181818"
+                         HorizontalOptions="FillAndExpand"/>
         </Grid>
 
-        <!--<Button Grid.Row="3"
+        <views:SummaryView Grid.Row="1" IsVisible="{Binding SummarySelected}"/>
+        <views:LineupsView Grid.Row="1" IsVisible="{Binding FirstElevenSelected}" />
+        <views:CommentaryView Grid.Row="1" IsVisible="{Binding CommentarySelected}"/>
+        <views:StatisticView Grid.Row="1" IsVisible="{Binding StatisticSelected}" />
+        <views:StatisticView Grid.Row="1" IsVisible="{Binding LiveStandingsSelected}" />
+       
+
+        <StackLayout Grid.Row="1"
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center"
+                     IsVisible="{Binding IsLoadingSelectedMatch}">
+            <ActivityIndicator IsRunning="True"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               WidthRequest="30"
+                               HeightRequest="30" />
+        </StackLayout>
+
+        <!--<Button Grid.Row="2"
                 Text="Other live matches"
                 TextColor="DimGray"
                 BorderColor="DimGray"
@@ -131,76 +150,6 @@
                 CornerRadius="8"
                 Padding="10"
                 Clicked="Button_Clicked" />-->
+
     </Grid>
 </ContentPage>
-
-
-
-
-<!--<CarouselView x:Name="MatchesBySelectedDateCarouselView"
-                      Grid.Row="1"
-                      BackgroundColor="Black"
-                      HorizontalScrollBarVisibility="Never"
-                      VerticalScrollBarVisibility="Never"
-                      PositionChangedCommand="{Binding SelectedMatchChangedCommand}"
-                      PositionChangedCommandParameter="{Binding SelectedMatch}"
-                      ItemsSource="{Binding MatchesBySelectedDate}">
-            <CarouselView.ItemTemplate>
-                <DataTemplate>
-                    <Frame Margin="0"
-                           Padding="0"
-                           BackgroundColor="Black"
-                           BorderColor="#181818">
-                        <Grid x:DataType="models:Match">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-
-                            <views:MatchInDetailsView Grid.Row="0" BindingContext="{Binding}"  />
-
-                            <CollectionView SelectionMode="Single"
-                                            SelectedItem="{Binding SelectedMatchDetailsTab}"
-                                            HorizontalOptions="FillAndExpand"
-                                            BackgroundColor="Black"
-                                            Margin="0,0,0,2"
-                                            Grid.Row="1"
-                                            ItemsSource="{Binding MatchDetailsTabs}"
-                                            ItemsLayout="VerticalGrid, 5">
-                                <CollectionView.ItemTemplate>
-                                    <DataTemplate>
-                                        <Label BackgroundColor="#181818"
-                                               HeightRequest="50"
-                                               VerticalOptions="CenterAndExpand"
-                                               VerticalTextAlignment="Center"
-                                               LineBreakMode="MiddleTruncation"
-                                               FontSize="11"
-                                               FontAttributes="Bold"
-                                               FontFamily="NunitoSemiBold"
-                                               TextColor="White"
-                                               Text="{Binding}">
-                                        </Label>
-                                    </DataTemplate>
-                                </CollectionView.ItemTemplate>
-                            </CollectionView>
-
-                            <views:SummaryView Grid.Row="2" BackgroundColor="Black" IsVisible="{Binding SummarySelected}" Loaded="SummaryView_Loaded" />
-                            <views:LineupsView Grid.Row="2" BackgroundColor="Black" IsVisible="{Binding FirstElevenSelected}" Loaded="MatchDetailsTabView_Loaded" />
-                            <views:CommentaryView Grid.Row="2" BackgroundColor="Black" IsVisible="{Binding CommentarySelected}" Loaded="MatchDetailsTabView_Loaded" />
-                            <views:StatisticView Grid.Row="2" BackgroundColor="Black" IsVisible="{Binding StatisticSelected}" Loaded="MatchDetailsTabView_Loaded" />
-                            <views:StatisticView Grid.Row="2" BackgroundColor="Black" IsVisible="{Binding LiveStandingsSelected}" Loaded="MatchDetailsTabView_Loaded" />
-
-                            <StackLayout IsVisible="{Binding IsLoading}" Grid.Row="2">
-                                <ActivityIndicator IsRunning="True"
-                                                   HorizontalOptions="Center"
-                                                   VerticalOptions="Center"
-                                                   WidthRequest="30"
-                                                   HeightRequest="30" />
-                            </StackLayout>
-
-                        </Grid>
-                    </Frame>
-                </DataTemplate>
-            </CarouselView.ItemTemplate>
-        </CarouselView>-->

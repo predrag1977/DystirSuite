@@ -2,8 +2,9 @@
 {
     public class PlayersInRow
     {
-        public int? PlayingStatus { get; internal set; }
-        public PlayerOfMatch FirstPlayer { get; internal set; } = new PlayerOfMatch();
-        public PlayerOfMatch SecondPlayer { get; internal set; } = new PlayerOfMatch();
+        public PlayerOfMatch HomePlayer { get; internal set; }
+        public PlayerOfMatch AwayPlayer { get; internal set; }
+        public bool IsFirstSub { get; internal set; } = false;
+        public int RowIndex { get; internal set; }
     }
 }
