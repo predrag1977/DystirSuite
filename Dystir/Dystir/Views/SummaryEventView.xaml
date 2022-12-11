@@ -55,7 +55,7 @@
                            FontAttributes="Bold"
                            FontFamily="NunitoSemiBold"/>
                 </HorizontalStackLayout>
-                <Image Source="messi.png"
+                <Image Source="unknown_player.png"
                        Margin="4,0"
                        IsVisible="{Binding IsGoal}"
                        HeightRequest="45"
@@ -74,7 +74,7 @@
             <HorizontalStackLayout HorizontalOptions="End"
                                    MinimumHeightRequest="70"
                                    VerticalOptions="CenterAndExpand">
-                <Image Source="salah.png"
+                <Image Source="unknown_player.png"
                        Margin="4,0"
                        IsVisible="{Binding IsGoal}"
                        HeightRequest="45"

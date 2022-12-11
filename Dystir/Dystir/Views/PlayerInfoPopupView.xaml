@@ -8,7 +8,112 @@
              Size="300,400"
              x:Class="Dystir.Views.PlayerInfoPopupView">
 
-    <views:PlayerInfoView BackgroundColor="#181818" />
+    <ContentView BackgroundColor="#181818">
+        <ContentView.Resources>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="FontFamily" Value="NunitoSemiBold" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="Padding" Value="0,5,0,0" />
+            </Style>
+        </ContentView.Resources>
+        <Frame CornerRadius="15"
+               BackgroundColor="#181818"
+               BorderColor="#181818"
+               Padding="0">
+
+            <Grid Padding="7">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0"
+                       Text="{Binding Number}"
+                       FontSize="20"
+                       Padding="15,0"
+                       TextColor="Khaki"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start"/>
+
+                <Label Grid.Column="1"
+                       Text="{Binding Position}"
+                       FontSize="16"
+                       Padding="5,0"
+                       TextColor="DarkGray"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
+                       VerticalTextAlignment="Center"/>
+
+                <ImageButton Grid.Column="2"
+                        HeightRequest="18"
+                        WidthRequest="18"
+                        Margin="15,0"
+                        HorizontalOptions="End"
+                        Source="cancel.png"
+                        Clicked="Button_Clicked"
+                        BackgroundColor="#181818" />
+
+                <VerticalStackLayout Grid.Row="1"
+                                     Grid.Column="0"
+                                     Grid.ColumnSpan="3"
+                                     VerticalOptions="Center">
+
+                    <Image Source="unknown_player.png"
+                           HeightRequest="160"
+                           WidthRequest="160" />
+
+                    <Label Text="{Binding FirstName}"
+                           FontSize="20"
+                           LineBreakMode="WordWrap"
+                           MaxLines="2"
+                           TextColor="White"
+                           Margin="0,10,0,15"
+                           HorizontalOptions="Center"/>
+
+                    <HorizontalStackLayout HorizontalOptions="CenterAndExpand">
+                        <AbsoluteLayout Margin="8,0">
+                            <Image Source="playerofthematch.png"
+                                   HeightRequest="50"
+                                   WidthRequest="50" />
+                            <Label Text="N/A"
+                                   TextColor="White"
+                                   HeightRequest="50"
+                                   WidthRequest="50"/>
+                        </AbsoluteLayout>
+                        <AbsoluteLayout Margin="8,0">
+                            <Image Source="playerofthematch.png"
+                                    HeightRequest="50"
+                                    WidthRequest="50" />
+                            <Label Text="N/A"
+                                    TextColor="White"
+                                    HeightRequest="50"
+                                    WidthRequest="50"/>
+                        </AbsoluteLayout>
+                        <AbsoluteLayout Margin="8,0">
+                            <Image Source="playerofthematch.png"
+                                    HeightRequest="50"
+                                    WidthRequest="50" />
+                            <Label Text="N/A"
+                                    TextColor="White"
+                                    HeightRequest="50"
+                                    WidthRequest="50"/>
+                        </AbsoluteLayout>
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+            </Grid>
+        </Frame>
+
+    </ContentView>
     
 </toolkit:Popup>
 

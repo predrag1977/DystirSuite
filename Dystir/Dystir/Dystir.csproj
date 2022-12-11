@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net7.0-android33.0;net7.0-ios16.0;net7.0-maccatalyst15.4</TargetFrameworks>
+		<TargetFrameworks>net7.0-android;net7.0-ios;net7.0-maccatalyst</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
 		<OutputType>Exe</OutputType>
 		<RootNamespace>Dystir</RootNamespace>
 		<UseMaui>true</UseMaui>
@@ -22,21 +22,12 @@
 		<ApplicationDisplayVersion>2022.0.0</ApplicationDisplayVersion>
 		<ApplicationVersion>50</ApplicationVersion>
 
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
-	</PropertyGroup>
-
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-	  <LangVersion>default</LangVersion>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-	  <LangVersion>default</LangVersion>
-	  <DebugSymbols>true</DebugSymbols>
-	  <WarningLevel>4</WarningLevel>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Release'">
@@ -44,14 +35,10 @@
 		<CodesignKey>Apple Distribution: Predrag Markovic (JX87ZR993H)</CodesignKey>
 		<CodesignProvision>Automatic</CodesignProvision>
 		<ArchiveOnBuild>true</ArchiveOnBuild>
+		<DeviceSpecificBuild>true</DeviceSpecificBuild>
+		<MtouchEnableSGenConc>true</MtouchEnableSGenConc>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-ios|AnyCPU'">
-	  <CreatePackage>false</CreatePackage>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-ios16.0|AnyCPU'">
-	  <CreatePackage>false</CreatePackage>
-	</PropertyGroup>
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.png" BaseSize="100,100" />
@@ -65,57 +52,7 @@
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Pages\" />
-	  <Folder Include="Views\" />
-	  <Folder Include="Resources\Localization\" />
-	  <Folder Include="Instructions\" />
-	</ItemGroup>
-	<ItemGroup>
-	  <MauiXaml Update="Pages\MatchesPage.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\HeaderView.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\MatchView.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\MatchDetailsPage.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\SummaryView.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\MatchInDetailsView.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\LineupsView.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\PlayerView.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\StatisticView.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\CommentaryView.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\SummaryEventView.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\ResultsPage.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\FixturesPage.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	  <MauiXaml Update="Views\PlayerEventView.xaml">
-	    <SubType></SubType>
-	  </MauiXaml>
-	</ItemGroup>
+	
 	<ItemGroup>
 	  <MauiImage Include="Resources\Images\matches.svg" BaseSize="20,20" />
 	  <MauiImage Include="Resources\Images\results.svg" BaseSize="20,20" />
@@ -134,12 +71,16 @@
 	  <MauiImage Include="Resources\Images\football_pitch_3d.svg" BaseSize="300,80" />
 	  <MauiImage Include="Resources\Images\refresh_button.svg" BaseSize="20,20" TintColor="#A9A9A9" />
 	  <MauiImage Include="Resources\Images\back_button.svg" BaseSize="25,25" TintColor="#A9A9A9" />
+	  <MauiImage Include="Resources\Images\sub_out.svg" BaseSize="20,20" />
+	  <MauiImage Include="Resources\Images\sub_in.svg" BaseSize="20,20" />
+	  <MauiImage Include="Resources\Images\unknown_player.svg" BaseSize="160,160" TintColor="#A9A9A9" />
+	  <MauiImage Include="Resources\Images\cancel.svg" BaseSize="20,20" TintColor="#A9A9A9" />
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.0" />
-	  <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-	  <PackageReference Include="Microsoft.AppCenter.Analytics" Version="4.5.3" />
-	  <PackageReference Include="CommunityToolkit.Maui" Version="3.0.0" />
+	  <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+	  <PackageReference Include="Microsoft.AppCenter.Analytics" Version="5.0.1" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="3.1.0" />
 	</ItemGroup>
 	<ItemGroup>
 	  <EmbeddedResource Update="Resources\Localization\Resources.resx">
@@ -158,9 +99,5 @@
 	  <Compile Update="Resources\Localization\Resources.fo.Designer.cs">
 	    <DependentUpon>Resources.fo.resx</DependentUpon>
 	  </Compile>
-	</ItemGroup>
-	<ItemGroup>
-	  <None Remove="CommunityToolkit.Maui" />
-	  <None Remove="Syncfusion.Maui.Core" />
 	</ItemGroup>
 </Project>

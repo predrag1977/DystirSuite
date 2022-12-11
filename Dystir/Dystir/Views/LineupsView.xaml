@@ -3,133 +3,52 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:views="clr-namespace:Dystir.Views"
              xmlns:models="clr-namespace:Dystir.Models"
-             x:DataType="models:Match"
+             xmlns:viewModels="clr-namespace:Dystir.ViewModels"
+             x:DataType="viewModels:MatchDetailsViewModel"
              x:Class="Dystir.Views.LineupsView">
 
-    <ScrollView BindingContext="{Binding MatchDetails}">
-        <Grid x:DataType="models:MatchDetails">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <VerticalStackLayout Grid.Column="0"
-                                 BindableLayout.ItemsSource="{Binding HomeTeamLineups}">
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate>
-                        <HorizontalStackLayout x:DataType="models:PlayerOfMatch"
-                                               BackgroundColor="#181818"
-                                               Padding="5"
-                                               Margin="3">
-                            <Label HeightRequest="30"
-                                   WidthRequest="30"
-                                   Text="{Binding Number}"
-                                   TextColor="Khaki"/>
+    <CollectionView ItemsSource="{Binding Lineups}"
+                    IsGrouped="True"
+                    SelectionMode="None">
+        <CollectionView.GroupHeaderTemplate>
+            <DataTemplate x:DataType="models:PlayersInRowGroup">
+                <Grid IsVisible="{Binding ShowSubtitutionLine}"
+                      HeightRequest="{Binding HeaderHeight}">
+                    <StackLayout HeightRequest="2"
+                                 VerticalOptions="Center"
+                                 HorizontalOptions="FillAndExpand"
+                                 BackgroundColor="Khaki" />
+                </Grid>
+            </DataTemplate>
+        </CollectionView.GroupHeaderTemplate>
+        <CollectionView.ItemTemplate >
+            <DataTemplate x:DataType="models:PlayersInRow">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                            <Label Text="{Binding FirstName}"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Start"
-                                   LineBreakMode="NoWrap"
-                                   Margin="5,0,0,0"
-                                   MaxLines="2"/>
-                            <HorizontalStackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"
-                                                      NumberOfTapsRequired="1"
-                                                      CommandParameter="{Binding}" />
-                            </HorizontalStackLayout.GestureRecognizers>
-                        </HorizontalStackLayout>
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
-            </VerticalStackLayout>
-            <VerticalStackLayout Grid.Column="1"
-                                 BindableLayout.ItemsSource="{Binding AwayTeamLineups}">
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate>
-                        <HorizontalStackLayout x:DataType="models:PlayerOfMatch"
-                                               BackgroundColor="#181818"
-                                               Padding="5"
-                                               Margin="3">
-                            <Label HeightRequest="30"
-                                   WidthRequest="30"
-                                   Text="{Binding Number}"
-                                   TextColor="Khaki"/>
-
-                            <Label Text="{Binding FirstName}"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Start"
-                                   LineBreakMode="NoWrap"
-                                   Margin="5,0,0,0"
-                                   MaxLines="2"/>
-                            <HorizontalStackLayout.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"
-                                                      NumberOfTapsRequired="1"
-                                                      CommandParameter="{Binding}" />
-                            </HorizontalStackLayout.GestureRecognizers>
-                        </HorizontalStackLayout>
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
-            </VerticalStackLayout>
-        </Grid>
-    </ScrollView>
-
-        <!--<StackLayout x:DataType="models:MatchDetails"
-                     BindableLayout.ItemsSource="{Binding PlayersOfMatch}"
-                     Orientation="Horizontal">
-            <BindableLayout.ItemTemplate>
-                <DataTemplate>
-                    <views:PlayerEventView />
-                </DataTemplate>
-            </BindableLayout.ItemTemplate>
-        </StackLayout>
-
-        <StackLayout x:DataType="models:MatchDetails"
-                     BindableLayout.ItemsSource="{Binding PlayersOfMatch}"
-                     Orientation="Horizontal">
-            <BindableLayout.ItemTemplate>
-                <DataTemplate>
-                    <views:PlayerEventView />
-                </DataTemplate>
-            </BindableLayout.ItemTemplate>
-        </StackLayout>-->
+                    <views:PlayerView Grid.Column="0"
+                                      BindingContext="{Binding HomePlayer}">
+                        <views:PlayerView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"
+                                                  NumberOfTapsRequired="1"
+                                                  CommandParameter="{Binding}" />
+                        </views:PlayerView.GestureRecognizers>
+                    </views:PlayerView>
+                    <views:PlayerView Grid.Column="1"
+                                      BindingContext="{Binding AwayPlayer}">
+                        <views:PlayerView.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"
+                                                  NumberOfTapsRequired="1"
+                                                  CommandParameter="{Binding}" />
+                        </views:PlayerView.GestureRecognizers>
+                    </views:PlayerView>
+                </Grid>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
     
 </ContentView>
-
-    <!--<ContentView.Resources>
-        <ResourceDictionary>
-            <converter:TwoItemsTovisibleConverter x:Key="TwoItemsTovisibleConverter" />
-        </ResourceDictionary>
-    </ContentView.Resources>
-
-    <ListView SelectionMode="None" Margin="3,0"
-              IsGroupingEnabled="True"
-              CachingStrategy="RecycleElement"
-              HasUnevenRows="True"
-              SeparatorVisibility="None"
-              BackgroundColor="Transparent"
-              VerticalScrollBarVisibility="Never"
-              ItemsSource="{Binding PlayerList}">
-        <ListView.GroupHeaderTemplate>
-            <DataTemplate>
-                <ViewCell>
-                    <Label HeightRequest="3"
-                           Margin="0,5"
-                           BackgroundColor="DarkKhaki"
-                           VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" />
-                </ViewCell>
-            </DataTemplate>
-        </ListView.GroupHeaderTemplate>
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <ViewCell>
-                    <Grid HorizontalOptions="FillAndExpand" x:DataType="models:PlayerOfMatch">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <views:PlayerView Grid.Column="0" BindingContext="{Binding}" />
-                        <views:PlayerView Grid.Column="1" BindingContext="{Binding}" />
-                    </Grid>
-                </ViewCell>
-            </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>-->
 

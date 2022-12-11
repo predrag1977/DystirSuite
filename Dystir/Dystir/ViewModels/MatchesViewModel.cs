@@ -50,8 +50,18 @@ namespace Dystir.ViewModels
             timeService.StartSponsorsTime();
 
             IsLoading = true;
+            SetMatchesDays();
+        }
+
+        //**********************//
+        //    PUBLIC METHODS    //
+        //**********************//
+        public async void LoadDataAsync()
+        {
+            await Task.Delay(100);
             SetMatches();
             SetSponsors();
+            IsLoading = false;
         }
 
         //**********************//

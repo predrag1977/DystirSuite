@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using Dystir.Models;
 using Dystir.Services;
 using System.Reflection;
+using Dystir.Views;
 
 namespace Dystir.ViewModels
 {
@@ -15,13 +16,6 @@ namespace Dystir.ViewModels
         //        PROPERTIES        //
         //**************************//
         public DystirService DystirService;
-
-        Match selectedMatch;
-        public Match SelectedMatch
-        {
-            get { return selectedMatch; }
-            set { selectedMatch = value; OnPropertyChanged(); }
-        }
 
         ObservableCollection<Sponsor> sponsors = new ObservableCollection<Sponsor>();
         public ObservableCollection<Sponsor> Sponsors
@@ -228,7 +222,7 @@ namespace Dystir.ViewModels
                 foreach (PlayerOfMatch goalPlayer in selectedCompetitionStatistics.GoalPlayers)
                 {
                     PlayersInRow statisticRow = new PlayersInRow();
-                    statisticRow.FirstPlayer = goalPlayer;
+                    //statisticRow.FirstPlayer = goalPlayer;
                     goalPlayer.NumberOrder = (selectedCompetitionStatistics.GoalPlayers.IndexOf(goalPlayer) + 1).ToString() + ".";
                     selectedCompetitionStatisticsRowsList.Add(statisticRow); 
                 }
@@ -240,11 +234,11 @@ namespace Dystir.ViewModels
                     if (selectedCompetitionStatisticsRowsList.Count > index)
                     {
                         statisticRow = selectedCompetitionStatisticsRowsList[index];
-                        statisticRow.SecondPlayer = assistPlayer;
+                        //statisticRow.SecondPlayer = assistPlayer;
                     }
                     else
                     {
-                        statisticRow.SecondPlayer = assistPlayer;
+                        //statisticRow.SecondPlayer = assistPlayer;
                         selectedCompetitionStatisticsRowsList.Add(statisticRow);
                     }
                 }

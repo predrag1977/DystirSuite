@@ -12,7 +12,7 @@
             <Grid Padding="10,5"
                   BackgroundColor="#181818">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="50" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
@@ -39,27 +39,37 @@
                         TextColor="{Binding StatusColor}"
                         FontSize="12" />
 
-                <Image Grid.Column="0" Grid.Row="1" Margin="0,0,10,0"
+                <Image Grid.Column="0" Grid.Row="1" Margin="5,0,10,0"
                         WidthRequest="30" HeightRequest="28"
                         Source="{Binding HomeTeamLogo}"
                         HorizontalOptions="CenterAndExpand"
                         VerticalOptions="CenterAndExpand"  />
 
-                <Image Grid.Column="0" Grid.Row="2" Margin="0,0,10,0"
+                <Image Grid.Column="0" Grid.Row="2" Margin="5,0,10,0"
                         WidthRequest="30" HeightRequest="28"
                         Source="{Binding AwayTeamLogo}"
                         HorizontalOptions="CenterAndExpand"
                         VerticalOptions="CenterAndExpand"  />
 
-                <Label Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding HomeTeam}"
-                        LineBreakMode="TailTruncation"
-                        HorizontalOptions="Start"
-                        FontSize="16" />
+                <Label Grid.Column="1"
+                       Grid.Row="1"
+                       Grid.ColumnSpan="3"
+                       Text="{Binding HomeTeam}"
+                       LineBreakMode="TailTruncation"
+                       FontAttributes="Bold"
+                       FontFamily="NunitoSemiBold"
+                       HorizontalOptions="Start"
+                       FontSize="16" />
 
-                <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding AwayTeam}"
-                        LineBreakMode="TailTruncation"
-                        HorizontalOptions="Start"
-                        FontSize="16" />
+                <Label Grid.Column="1"
+                       Grid.Row="2"
+                       Grid.ColumnSpan="3"
+                       Text="{Binding AwayTeam}"
+                       FontAttributes="Bold"
+                       FontFamily="NunitoSemiBold"
+                       LineBreakMode="TailTruncation"
+                       HorizontalOptions="Start"
+                       FontSize="16" />
 
                 <Label Text="{Binding HomeTeamScore}"
                         Grid.Column="4"

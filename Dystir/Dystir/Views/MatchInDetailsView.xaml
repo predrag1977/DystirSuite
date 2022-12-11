@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Dystir.Views.MatchInDetailsView"
              xmlns:model="clr-namespace:Dystir.Models"
+             BackgroundColor="Black"
              x:DataType="model:Match">
 
     <ContentView.Resources>
@@ -31,6 +32,9 @@
                Grid.ColumnSpan="5"
                Text="{Binding MatchInfo}"
                MaxLines="2"
+               Margin="0,0,0,4"
+               HorizontalOptions="Fill"
+               HorizontalTextAlignment="Start"
                LineBreakMode="WordWrap"
                TextColor="DarkGray" />
 
@@ -38,33 +42,24 @@
                Grid.Column="0"
                Grid.ColumnSpan="2"
                Text="{Binding HomeTeam}"
-               FontFamily="NunitoSemiBold"
                FontAttributes="Bold"
+               FontFamily="NunitoSemiBold"
                HorizontalOptions="EndAndExpand"
-               FontSize="16" />
+               FontSize="18" />
 
         <Label Grid.Row="1"
                 Grid.Column="2"
                 Text="-"
-                FontSize="16" />
+                FontSize="18" />
 
         <Label Grid.Row="1"
-                Grid.Column="3"
-                Grid.ColumnSpan="2"
-                Text="{Binding AwayTeam}"
-                FontFamily="NunitoSemiBold"
-                FontAttributes="Bold"
-                HorizontalOptions="StartAndExpand"
-                FontSize="16" />
-
-        <Label Grid.Row="2"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"
-                Text="{Binding MatchTime}"
-                HorizontalOptions="StartAndExpand"
-                HorizontalTextAlignment="Start"
-                LineBreakMode="NoWrap"
-                TextColor="{Binding StatusColor}"/>
+               Grid.Column="3"
+               Grid.ColumnSpan="2"
+               Text="{Binding AwayTeam}"
+               FontAttributes="Bold"
+               FontFamily="NunitoSemiBold"
+               HorizontalOptions="StartAndExpand"
+               FontSize="18" />
 
         <Label Grid.Row="2"
                 Grid.Column="1"
@@ -73,11 +68,12 @@
                 FontFamily="NunitoSemiBold"
                 LineBreakMode="NoWrap"
                 HorizontalOptions="End"
-                FontSize="16" />
+                FontSize="18" />
 
         <Label Grid.Row="2"
-                Grid.Column="2"
-                Text=":" />
+               Grid.Column="2"
+               FontSize="18"
+               Text=":" />
 
         <Label Grid.Row="2"
                 Grid.Column="3"
@@ -86,7 +82,17 @@
                 FontFamily="NunitoSemiBold"
                 LineBreakMode="NoWrap"
                 HorizontalOptions="Start"
-                FontSize="16" />
+                FontSize="18" />
+
+        <Label Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Text="{Binding MatchTime}"
+                HorizontalOptions="Fill"
+                HorizontalTextAlignment="Start"
+                LineBreakMode="NoWrap"
+                TextColor="{Binding StatusColor}"/>
+
     </Grid>
 </ContentView>
 
