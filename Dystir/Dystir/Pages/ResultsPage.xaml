@@ -14,6 +14,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="40" />
                 <RowDefinition Height="50" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -41,19 +42,17 @@
                             SelectionMode="Single"
                             SelectedItem="{Binding ResultsCompetitionSelected}"
                             HorizontalOptions="FillAndExpand"
-                            BackgroundColor="#181818"
+                            BackgroundColor="Black"
                             Margin="0,2">
                 <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Horizontal" HorizontalItemSpacing="10">
-                    </GridItemsLayout>
-               </CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Horizontal" HorizontalItemSpacing="10" />
+                </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Spacing="0"
                                      Padding="0,10,0,0"
-                                     BackgroundColor="#181818"
+                                     BackgroundColor="Black"
                                      HeightRequest="50"
-                                     x:DataType="models:DayOfMatch"
                                      HorizontalOptions="Center"
                                      VerticalOptions="Center">
                             <Label VerticalOptions="End"
@@ -62,18 +61,24 @@
                                    FontFamily="NunitoSemiBold"
                                    Text="{Binding}">
                             </Label>
-                            <Label VerticalOptions="Start"
+                            <!--<Label VerticalOptions="Start"
                                    FontSize="11"
                                    FontAttributes="Bold"
                                    FontFamily="NunitoSemiBold"
                                    TextColor="{Binding TextColor}"
-                                   Text="{Binding DayText}" />
+                                   Text="{Binding DayText}" />-->
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <CollectionView Grid.Row="2"
+            <StackLayout Grid.Row="2"
+                         HeightRequest="2"
+                         Orientation="Horizontal"
+                         BackgroundColor="#181818"
+                         HorizontalOptions="FillAndExpand"/>
+
+            <CollectionView Grid.Row="3"
                             SelectionMode="Single"
                             BackgroundColor="Black"
                             IsGrouped="True"
@@ -115,13 +120,17 @@
                 </CollectionView.GroupHeaderTemplate>
             </CollectionView>
 
-            <ActivityIndicator Grid.RowSpan="3"
+            <ActivityIndicator Grid.RowSpan="4"
                                IsVisible="{Binding IsLoading}"
                                IsRunning="True"
                                WidthRequest="30"
                                HeightRequest="30" />
 
-            <BoxView Grid.Row="3" />
+            <StackLayout Grid.Row="4"
+                         HeightRequest="2"
+                         Orientation="Horizontal"
+                         BackgroundColor="#181818"
+                         HorizontalOptions="FillAndExpand"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

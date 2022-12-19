@@ -1,11 +1,20 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
 namespace Dystir.Models
 {
-    public class CommentaryEventGroup : List<SummaryEventOfMatch>
+    public class CommentaryEventGroup : ObservableCollection<SummaryEventOfMatch>
     {
-        public string EventText { get; set; }
+        string eventText = string.Empty;
+        public string EventText
+        {
+            get { return eventText; }
+            set { eventText = value; }
+        }
 
-        public CommentaryEventGroup(int key, List<SummaryEventOfMatch> group) : base(group)
+        public CommentaryEventGroup(int key, ObservableCollection<SummaryEventOfMatch> group) : base(group)
         {
             EventText = group?.FirstOrDefault()?.EventOfMatch?.EventText;
         }

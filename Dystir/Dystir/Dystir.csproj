@@ -30,15 +30,20 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="$(TargetFramework.Contains('-ios')) and '$(Configuration)' == 'Release'">
-		<RuntimeIdentifier>ios-arm64</RuntimeIdentifier>
-		<CodesignKey>Apple Distribution: Predrag Markovic (JX87ZR993H)</CodesignKey>
-		<CodesignProvision>Automatic</CodesignProvision>
-		<ArchiveOnBuild>true</ArchiveOnBuild>
-		<DeviceSpecificBuild>true</DeviceSpecificBuild>
-		<MtouchEnableSGenConc>true</MtouchEnableSGenConc>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-ios|AnyCPU'">
+	  <CreatePackage>false</CreatePackage>
+	  <MtouchLink>None</MtouchLink>
+	  <CodesignProvision>Automatic</CodesignProvision>
+	  <CodesignKey>Apple Distribution: Predrag Markovic (JX87ZR993H)</CodesignKey>
 	</PropertyGroup>
-
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-ios|AnyCPU'">
+	  <CreatePackage>false</CreatePackage>
+	  <MtouchLink>SdkOnly</MtouchLink>
+	  <CodesignProvision>Automatic</CodesignProvision>
+	  <CodesignKey>Apple Distribution: Predrag Markovic (JX87ZR993H)</CodesignKey>
+	  <DeviceSpecificBuild>true</DeviceSpecificBuild>
+	  <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
+	</PropertyGroup>
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.png" BaseSize="100,100" />
@@ -75,9 +80,12 @@
 	  <MauiImage Include="Resources\Images\sub_in.svg" BaseSize="20,20" />
 	  <MauiImage Include="Resources\Images\unknown_player.svg" BaseSize="160,160" TintColor="#A9A9A9" />
 	  <MauiImage Include="Resources\Images\cancel.svg" BaseSize="20,20" TintColor="#A9A9A9" />
+	  <MauiImage Include="Resources\Images\penaltyscored.svg" BaseSize="20,20" />
+	  <MauiImage Include="Resources\Images\corner.svg" BaseSize="20,20" />
+	  <MauiImage Include="Resources\Images\bigchance.svg" BaseSize="20,20" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.1" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 	  <PackageReference Include="Microsoft.AppCenter.Analytics" Version="5.0.1" />
 	  <PackageReference Include="CommunityToolkit.Maui" Version="3.1.0" />

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+    xmlns:ns1="http://sozi.baierouge.fr"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:cc="http://web.resource.org/cc/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    version="1.1"
+    id="Corner_Flag"
+    x="0px"
+    y="0px"
+    width="800px"
+    height="800px"
+    viewBox="0 0 800 800"
+    enable-background="new 0 0 800 800"
+    xml:space="preserve"
+  >
+<g
+    >
+	
+		<linearGradient
+        id="SVGID_1_"
+        gradientUnits="userSpaceOnUse"
+        x1="311.4199"
+        y1="199.7168"
+        x2="331.4199"
+        y2="199.7168"
+        gradientTransform="matrix(1 0 0 -1 -106 605)"
+      >
+		<stop
+          offset="0"
+          style="stop-color:#A6A6A6"
+      />
+		<stop
+          offset="0.3851"
+          style="stop-color:#FFFFFF"
+      />
+		<stop
+          offset="0.9138"
+          style="stop-color:#999999"
+      />
+	</linearGradient
+    >
+	<path
+        fill="url(#SVGID_1_)"
+        d="M225.42,53.506v665.973c0,5.523-4.477,37.582-10,37.582c-5.522,0-10-32.059-10-37.582V53.506H225.42   z"
+    />
+	
+		<linearGradient
+        id="SVGID_2_"
+        gradientUnits="userSpaceOnUse"
+        x1="311.4199"
+        y1="437.0332"
+        x2="700.5801"
+        y2="437.0332"
+        gradientTransform="matrix(1 0 0 -1 -106 605)"
+      >
+		<stop
+          offset="0"
+          style="stop-color:#EF0000"
+      />
+		<stop
+          offset="0.431"
+          style="stop-color:#FF4000"
+      />
+		<stop
+          offset="0.9138"
+          style="stop-color:#EF0000"
+      />
+	</linearGradient
+    >
+	<path
+        fill="url(#SVGID_2_)"
+        d="M225.42,53.506c122.843,21.956,246.315-35.422,369.16-4.003c0,78.996,0,157.991,0,236.987   c-129.721-33.179-259.44,33.179-389.16,0c0-78.996,0-153.988,0-232.984"
+    />
+	
+		<linearGradient
+        id="SVGID_3_"
+        gradientUnits="userSpaceOnUse"
+        x1="311.4199"
+        y1="199.7168"
+        x2="331.4199"
+        y2="199.7168"
+        gradientTransform="matrix(1 0 0 -1 -106 605)"
+      >
+		<stop
+          offset="0"
+          style="stop-color:#A6A6A6"
+      />
+		<stop
+          offset="0.3851"
+          style="stop-color:#FFFFFF"
+      />
+		<stop
+          offset="0.9138"
+          style="stop-color:#999999"
+      />
+	</linearGradient
+    >
+	<path
+        opacity="0.5"
+        fill="url(#SVGID_3_)"
+        enable-background="new    "
+        d="M225.42,53.506v665.973c0,5.523-4.477,37.582-10,37.582   c-5.522,0-10-32.059-10-37.582V53.506H225.42z"
+    />
+</g
+  >
+<metadata
+    ><rdf:RDF
+      ><cc:Work
+        ><dc:format
+          >image/svg+xml</dc:format
+        ><dc:type
+            rdf:resource="http://purl.org/dc/dcmitype/StillImage"
+        /><cc:license
+            rdf:resource="http://creativecommons.org/licenses/publicdomain/"
+        /><dc:publisher
+          ><cc:Agent
+              rdf:about="http://openclipart.org/"
+            ><dc:title
+              >Openclipart</dc:title
+            ></cc:Agent
+          ></dc:publisher
+        ><dc:title
+          >Corner flag in Football</dc:title
+        ><dc:date
+          >2014-06-12T08:40:34</dc:date
+        ><dc:description
+          >Corner flag in Football</dc:description
+        ><dc:source
+          >https://openclipart.org/detail/194162/corner-flag-in-football-by-casino-194162</dc:source
+        ><dc:creator
+          ><cc:Agent
+            ><dc:title
+              >casino</dc:title
+            ></cc:Agent
+          ></dc:creator
+        ><dc:subject
+          ><rdf:Bag
+            ><rdf:li
+              >Corner flag in Football</rdf:li
+            ></rdf:Bag
+          ></dc:subject
+        ></cc:Work
+      ><cc:License
+          rdf:about="http://creativecommons.org/licenses/publicdomain/"
+        ><cc:permits
+            rdf:resource="http://creativecommons.org/ns#Reproduction"
+        /><cc:permits
+            rdf:resource="http://creativecommons.org/ns#Distribution"
+        /><cc:permits
+            rdf:resource="http://creativecommons.org/ns#DerivativeWorks"
+        /></cc:License
+      ></rdf:RDF
+    ></metadata
+  ></svg
+>

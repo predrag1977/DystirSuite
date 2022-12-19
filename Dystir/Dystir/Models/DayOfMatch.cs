@@ -21,36 +21,16 @@ namespace Dystir.Models
         public Color TextColor
         {
             get { return textColor; }
-            set { SetProperty(ref textColor, value); }
+            set { textColor = value; OnPropertyChanged(); }
         }
 
-
-        //----------------------------//
-        //    INotifyPropertyChanged  //
-        //----------------------------//
-        #region INotifyPropertyChanged
-        protected bool SetProperty<T>(ref T backingStore, T value,
-            [CallerMemberName] string propertyName = "",
-            Action onChanged = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(backingStore, value))
-                return false;
-
-            backingStore = value;
-            onChanged?.Invoke();
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
+        //**************************//
+        //  INotifyPropertyChanged  //
+        //**************************//
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
-            var changed = PropertyChanged;
-            if (changed == null)
-                return;
-
-            changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-        #endregion
     }
 }

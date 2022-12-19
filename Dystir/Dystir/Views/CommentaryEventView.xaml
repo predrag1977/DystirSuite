@@ -10,132 +10,99 @@
             <Setter Property="FontSize" Value="13" />
         </Style>
     </ContentView.Resources>
-
-    <Grid Margin="0,5,0,0">
-        <StackLayout BackgroundColor="#181818"
-                     HorizontalOptions="Fill"
-                     VerticalOptions="End"
-                     HeightRequest="20" />
-
         <Frame CornerRadius="15"
                BackgroundColor="#181818"
-               HorizontalOptions="Fill"
-               VerticalOptions="Center"
-               HeightRequest="35"
                BorderColor="#181818"
-               Padding="7,5"
-               IsVisible="{Binding IsHomeTeamEvent}">
+               Padding="7,5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <VerticalStackLayout HorizontalOptions="Fill"
-                                 VerticalOptions="Center">
-                <Grid HorizontalOptions="Fill"
-                      VerticalOptions="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+                <HorizontalStackLayout Grid.Column="0"
+                                        IsVisible="{Binding IsHomeTeamEvent}"
+                                        HorizontalOptions="End">
+                    <Label Text="{Binding HomeTeamScore}"
+                            IsVisible="{Binding IsGoal}"
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            FontFamily="NunitoSemiBold"/>
+                    <Label Text=":"
+                            IsVisible="{Binding IsGoal}"
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            FontFamily="NunitoSemiBold"/>
+                    <Label Text="{Binding AwayTeamScore}"
+                            IsVisible="{Binding IsGoal}"
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            FontFamily="NunitoSemiBold"/>
 
-                    <Label Grid.Column="1"
-                           Text="{Binding EventMinute}"
-                           IsVisible="{Binding ShowMinutes}"
-                           TextColor="Khaki"
-                           Margin="10,0"
-                           VerticalOptions="Center"
-                           FontAttributes="Bold"
-                           FontFamily="NunitoSemiBold"/>
+                    <Image Source="{Binding EventIconSource}"
+                            Margin="10,0"
+                            HeightRequest="20"
+                            WidthRequest="20" />
+                </HorizontalStackLayout>
 
-                    <HorizontalStackLayout Grid.Column="0"
-                                           HorizontalOptions="End"
-                                           Margin="5">
+                <Label Grid.Column="1"
+                        Text="{Binding EventMinute}"
+                        IsVisible="{Binding ShowMinutes}"
+                        TextColor="Khaki"
+                        Margin="10,0"
+                        VerticalOptions="Center"
+                        FontAttributes="Bold"
+                        FontFamily="NunitoSemiBold"/>
 
-                        <Label Text="{Binding HomeTeamScore}"
-                               IsVisible="{Binding IsGoal}"
-                               FontSize="14"
-                               FontAttributes="Bold"
-                               FontFamily="NunitoSemiBold"/>
-                        <Label Text=":"
-                               IsVisible="{Binding IsGoal}"
-                               FontSize="14"
-                               FontAttributes="Bold"
-                               FontFamily="NunitoSemiBold"/>
-                        <Label Text="{Binding AwayTeamScore}"
-                               IsVisible="{Binding IsGoal}"
-                               FontSize="14"
-                               FontAttributes="Bold"
-                               FontFamily="NunitoSemiBold"/>
+                <HorizontalStackLayout Grid.Column="2"
+                                        IsVisible="{Binding IsAwayTeamEvent}">
+                    <Image Source="{Binding EventIconSource}"
+                            Margin="10,0"
+                            HeightRequest="20"
+                            WidthRequest="20" />
 
-                        <Image Source="{Binding EventIconSource}"
-                               Margin="10,0"
-                               HeightRequest="20"
-                               WidthRequest="20" />
-                        
-                    </HorizontalStackLayout>
-                    
+                    <Label Text="{Binding HomeTeamScore}"
+                            IsVisible="{Binding IsGoal}"
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            FontFamily="NunitoSemiBold"/>
+                    <Label Text=":"
+                            IsVisible="{Binding IsGoal}"
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            FontFamily="NunitoSemiBold"/>
+                    <Label Text="{Binding AwayTeamScore}"
+                            IsVisible="{Binding IsGoal}"
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            FontFamily="NunitoSemiBold"/>
+                </HorizontalStackLayout>
+
+                <Label Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        MinimumHeightRequest="10"
+                        Text="{Binding EventOfMatch.EventText}"
+                        TextColor="DarkGray"
+                        Margin="5,0,5,8"
+                        MaxLines="5"
+                        FontSize="14"
+                        LineBreakMode="WordWrap"
+                        HorizontalOptions="Fill"
+                        HorizontalTextAlignment="Center"/>
+
+                <!--<Grid IsVisible="{Binding IsHomeTeamEvent}">
                 </Grid>
-            </VerticalStackLayout>
-            
+
+                <Grid IsVisible="{Binding IsAwayTeamEvent}">
+                </Grid>-->
+            </Grid>
         </Frame>
-
-        <Frame CornerRadius="15"
-               Margin="0"
-               BackgroundColor="#181818"
-               HorizontalOptions="Fill"
-               VerticalOptions="Center"
-               HeightRequest="35"
-               BorderColor="#181818"
-               Padding="7,5"
-               IsVisible="{Binding IsAwayTeamEvent}">
-
-            <VerticalStackLayout HorizontalOptions="Fill"
-                                 VerticalOptions="Center">
-                <Grid HorizontalOptions="Fill"
-                      VerticalOptions="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <Label Grid.Column="1"
-                           Text="{Binding EventMinute}"
-                           IsVisible="{Binding ShowMinutes}"
-                           TextColor="Khaki"
-                           Margin="10,0"
-                           VerticalOptions="Center"
-                           FontAttributes="Bold"
-                           FontFamily="NunitoSemiBold"/>
-
-                    <HorizontalStackLayout Grid.Column="2"
-                                           HorizontalOptions="Start"
-                                           Margin="5">
-                        <Image Source="{Binding EventIconSource}"
-                                Margin="10,0"
-                                HeightRequest="20"
-                                WidthRequest="20" />
-
-                        <Label Text="{Binding HomeTeamScore}"
-                               IsVisible="{Binding IsGoal}"
-                               FontSize="14"
-                               FontAttributes="Bold"
-                               FontFamily="NunitoSemiBold"/>
-                        <Label Text=":"
-                               IsVisible="{Binding IsGoal}"
-                               FontSize="14"
-                               FontAttributes="Bold"
-                               FontFamily="NunitoSemiBold"/>
-                        <Label Text="{Binding AwayTeamScore}"
-                               IsVisible="{Binding IsGoal}"
-                               FontSize="14"
-                               FontAttributes="Bold"
-                               FontFamily="NunitoSemiBold"/>
-                    </HorizontalStackLayout>
-                    
-                </Grid>
-            </VerticalStackLayout>
-            
-        </Frame>
-    </Grid>
 
 </ContentView>
 

@@ -6,15 +6,10 @@
              xmlns:views="clr-namespace:Dystir.Views"
              xmlns:models="clr-namespace:Dystir.Models"
              BackgroundColor="Black"
+
              x:DataType="viewModels:MatchDetailsViewModel">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <!--<RowDefinition Height="50" />-->
-        </Grid.RowDefinitions>
-
+    <Grid RowDefinitions="Auto,*" >
         <Grid Grid.Row="0" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
@@ -94,24 +89,23 @@
                             HeightRequest="50"
                             ItemsSource="{Binding MatchDetailsTabs}"
                             SelectionMode="Single"
-                            SelectedItem="{Binding SelectedMatchDetailsTab}"
-                            HorizontalOptions="FillAndExpand"
+                            SelectionChanged="CollectionView_SelectionChanged"
+                            HorizontalOptions="Fill"
                             BackgroundColor="Black"
-                            ItemsLayout="VerticalGrid, 5">
+                            Loaded="CollectionView_Loaded">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout x:DataType="models:MatchDetailsTab"
-                                     BindingContext="{Binding}" 
                                      BackgroundColor="Black"
                                      HeightRequest="50">
                             <Label VerticalTextAlignment="Center"
                                    HorizontalOptions="Center"
                                    HeightRequest="50"
                                    FontSize="11"
-                                    FontAttributes="Bold"
-                                    FontFamily="NunitoSemiBold"
-                                    TextColor="{Binding TextColor}"
-                                    Text="{Binding TabName}" />
+                                   FontAttributes="Bold"
+                                   FontFamily="NunitoSemiBold"
+                                   TextColor="{Binding TextColor}"
+                                   Text="{Binding TabName}" />
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
@@ -124,12 +118,19 @@
                          HorizontalOptions="FillAndExpand"/>
         </Grid>
 
-        <views:SummaryView Grid.Row="1" IsVisible="{Binding SummarySelected}"/>
-        <views:LineupsView Grid.Row="1" IsVisible="{Binding FirstElevenSelected}" />
-        <views:CommentaryView Grid.Row="1" IsVisible="{Binding CommentarySelected}"/>
-        <views:StatisticView Grid.Row="1" IsVisible="{Binding StatisticSelected}" />
-        <views:StatisticView Grid.Row="1" IsVisible="{Binding LiveStandingsSelected}" />
-       
+        <CarouselView x:Name="MatchDetailsTabsCarouselView"
+                      Grid.Row="1"
+                      HorizontalOptions="Fill"
+                      VerticalOptions="Fill"
+                      CurrentItemChanged="MatchDetailsTabsCarouselView_CurrentItemChanged"
+                      PositionChanged="MatchDetailsTabsCarouselView_PositionChanged"
+                      ItemsSource="{Binding MatchDetailsTabsViews}" > 
+			<CarouselView.ItemTemplate>
+				<DataTemplate>
+					<ContentView Content="{Binding}" />
+				</DataTemplate>
+			</CarouselView.ItemTemplate>
+		</CarouselView>
 
         <StackLayout Grid.Row="1"
                      HorizontalOptions="Center"

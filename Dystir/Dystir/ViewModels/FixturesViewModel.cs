@@ -94,7 +94,7 @@ namespace Dystir.ViewModels
                 FixturesCompetitionSelected = FixturesCompetitions.FirstOrDefault();
             }
             var resultsGroupList = new ObservableCollection<IGrouping<string, Match>>(fixturesMatches?.GroupBy(x => x.MatchTypeName));
-            FixturesGroupList = new ObservableCollection<MatchGroup>(resultsGroupList.Select(group => new MatchGroup(group.Key, group.ToList())));
+            FixturesGroupList = new ObservableCollection<MatchGroup>(resultsGroupList.Select(group => new MatchGroup(group.Key, new ObservableCollection<Match>(group))));
         }
     }
 }

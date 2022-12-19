@@ -245,10 +245,6 @@ namespace Dystir.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.design_bottom_sheet_slide_out = global::Dystir.Droid.Resource.Animation.design_bottom_sheet_slide_out;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.design_snackbar_in = global::Dystir.Droid.Resource.Animation.design_snackbar_in;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.design_snackbar_out = global::Dystir.Droid.Resource.Animation.design_snackbar_out;
-			global::Xamarin.Forms.Platform.Android.Resource.Animation.EnterFromLeft = global::Dystir.Droid.Resource.Animation.EnterFromLeft;
-			global::Xamarin.Forms.Platform.Android.Resource.Animation.EnterFromRight = global::Dystir.Droid.Resource.Animation.EnterFromRight;
-			global::Xamarin.Forms.Platform.Android.Resource.Animation.ExitToLeft = global::Dystir.Droid.Resource.Animation.ExitToLeft;
-			global::Xamarin.Forms.Platform.Android.Resource.Animation.ExitToRight = global::Dystir.Droid.Resource.Animation.ExitToRight;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.fragment_fast_out_extra_slow_in = global::Dystir.Droid.Resource.Animation.fragment_fast_out_extra_slow_in;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.mtrl_bottom_sheet_slide_in = global::Dystir.Droid.Resource.Animation.mtrl_bottom_sheet_slide_in;
 			global::Xamarin.Forms.Platform.Android.Resource.Animation.mtrl_bottom_sheet_slide_out = global::Dystir.Droid.Resource.Animation.mtrl_bottom_sheet_slide_out;
@@ -2625,7 +2621,6 @@ namespace Dystir.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.abc_search_view = global::Dystir.Droid.Resource.Layout.abc_search_view;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.abc_select_dialog_material = global::Dystir.Droid.Resource.Layout.abc_select_dialog_material;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.abc_tooltip = global::Dystir.Droid.Resource.Layout.abc_tooltip;
-			global::Xamarin.Forms.Platform.Android.Resource.Layout.BottomTabLayout = global::Dystir.Droid.Resource.Layout.BottomTabLayout;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.custom_dialog = global::Dystir.Droid.Resource.Layout.custom_dialog;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.design_bottom_navigation_item = global::Dystir.Droid.Resource.Layout.design_bottom_navigation_item;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.design_bottom_sheet_dialog = global::Dystir.Droid.Resource.Layout.design_bottom_sheet_dialog;
@@ -2642,9 +2637,6 @@ namespace Dystir.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.design_navigation_menu_item = global::Dystir.Droid.Resource.Layout.design_navigation_menu_item;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.design_text_input_end_icon = global::Dystir.Droid.Resource.Layout.design_text_input_end_icon;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.design_text_input_start_icon = global::Dystir.Droid.Resource.Layout.design_text_input_start_icon;
-			global::Xamarin.Forms.Platform.Android.Resource.Layout.FallbackTabbarDoNotUse = global::Dystir.Droid.Resource.Layout.FallbackTabbarDoNotUse;
-			global::Xamarin.Forms.Platform.Android.Resource.Layout.FallbackToolbarDoNotUse = global::Dystir.Droid.Resource.Layout.FallbackToolbarDoNotUse;
-			global::Xamarin.Forms.Platform.Android.Resource.Layout.FlyoutContent = global::Dystir.Droid.Resource.Layout.FlyoutContent;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.material_chip_input_combo = global::Dystir.Droid.Resource.Layout.material_chip_input_combo;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.material_clockface_textview = global::Dystir.Droid.Resource.Layout.material_clockface_textview;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.material_clockface_view = global::Dystir.Droid.Resource.Layout.material_clockface_view;
@@ -2703,11 +2695,9 @@ namespace Dystir.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.notification_template_media_custom = global::Dystir.Droid.Resource.Layout.notification_template_media_custom;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.notification_template_part_chronometer = global::Dystir.Droid.Resource.Layout.notification_template_part_chronometer;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.notification_template_part_time = global::Dystir.Droid.Resource.Layout.notification_template_part_time;
-			global::Xamarin.Forms.Platform.Android.Resource.Layout.RootLayout = global::Dystir.Droid.Resource.Layout.RootLayout;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.select_dialog_item_material = global::Dystir.Droid.Resource.Layout.select_dialog_item_material;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.select_dialog_multichoice_material = global::Dystir.Droid.Resource.Layout.select_dialog_multichoice_material;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.select_dialog_singlechoice_material = global::Dystir.Droid.Resource.Layout.select_dialog_singlechoice_material;
-			global::Xamarin.Forms.Platform.Android.Resource.Layout.ShellContent = global::Dystir.Droid.Resource.Layout.ShellContent;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.support_simple_spinner_dropdown_item = global::Dystir.Droid.Resource.Layout.support_simple_spinner_dropdown_item;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.Tabbar = global::Dystir.Droid.Resource.Layout.Tabbar;
 			global::Xamarin.Forms.Platform.Android.Resource.Layout.test_action_chip = global::Dystir.Droid.Resource.Layout.test_action_chip;
@@ -5532,10 +5522,6 @@ namespace Dystir.Droid
 			global::Xamarin.Forms.Platform.Resource.Animation.design_bottom_sheet_slide_out = global::Dystir.Droid.Resource.Animation.design_bottom_sheet_slide_out;
 			global::Xamarin.Forms.Platform.Resource.Animation.design_snackbar_in = global::Dystir.Droid.Resource.Animation.design_snackbar_in;
 			global::Xamarin.Forms.Platform.Resource.Animation.design_snackbar_out = global::Dystir.Droid.Resource.Animation.design_snackbar_out;
-			global::Xamarin.Forms.Platform.Resource.Animation.EnterFromLeft = global::Dystir.Droid.Resource.Animation.EnterFromLeft;
-			global::Xamarin.Forms.Platform.Resource.Animation.EnterFromRight = global::Dystir.Droid.Resource.Animation.EnterFromRight;
-			global::Xamarin.Forms.Platform.Resource.Animation.ExitToLeft = global::Dystir.Droid.Resource.Animation.ExitToLeft;
-			global::Xamarin.Forms.Platform.Resource.Animation.ExitToRight = global::Dystir.Droid.Resource.Animation.ExitToRight;
 			global::Xamarin.Forms.Platform.Resource.Animation.fragment_fast_out_extra_slow_in = global::Dystir.Droid.Resource.Animation.fragment_fast_out_extra_slow_in;
 			global::Xamarin.Forms.Platform.Resource.Animation.mtrl_bottom_sheet_slide_in = global::Dystir.Droid.Resource.Animation.mtrl_bottom_sheet_slide_in;
 			global::Xamarin.Forms.Platform.Resource.Animation.mtrl_bottom_sheet_slide_out = global::Dystir.Droid.Resource.Animation.mtrl_bottom_sheet_slide_out;
@@ -7912,7 +7898,6 @@ namespace Dystir.Droid
 			global::Xamarin.Forms.Platform.Resource.Layout.abc_search_view = global::Dystir.Droid.Resource.Layout.abc_search_view;
 			global::Xamarin.Forms.Platform.Resource.Layout.abc_select_dialog_material = global::Dystir.Droid.Resource.Layout.abc_select_dialog_material;
 			global::Xamarin.Forms.Platform.Resource.Layout.abc_tooltip = global::Dystir.Droid.Resource.Layout.abc_tooltip;
-			global::Xamarin.Forms.Platform.Resource.Layout.BottomTabLayout = global::Dystir.Droid.Resource.Layout.BottomTabLayout;
 			global::Xamarin.Forms.Platform.Resource.Layout.custom_dialog = global::Dystir.Droid.Resource.Layout.custom_dialog;
 			global::Xamarin.Forms.Platform.Resource.Layout.design_bottom_navigation_item = global::Dystir.Droid.Resource.Layout.design_bottom_navigation_item;
 			global::Xamarin.Forms.Platform.Resource.Layout.design_bottom_sheet_dialog = global::Dystir.Droid.Resource.Layout.design_bottom_sheet_dialog;
@@ -7929,9 +7914,6 @@ namespace Dystir.Droid
 			global::Xamarin.Forms.Platform.Resource.Layout.design_navigation_menu_item = global::Dystir.Droid.Resource.Layout.design_navigation_menu_item;
 			global::Xamarin.Forms.Platform.Resource.Layout.design_text_input_end_icon = global::Dystir.Droid.Resource.Layout.design_text_input_end_icon;
 			global::Xamarin.Forms.Platform.Resource.Layout.design_text_input_start_icon = global::Dystir.Droid.Resource.Layout.design_text_input_start_icon;
-			global::Xamarin.Forms.Platform.Resource.Layout.FallbackTabbarDoNotUse = global::Dystir.Droid.Resource.Layout.FallbackTabbarDoNotUse;
-			global::Xamarin.Forms.Platform.Resource.Layout.FallbackToolbarDoNotUse = global::Dystir.Droid.Resource.Layout.FallbackToolbarDoNotUse;
-			global::Xamarin.Forms.Platform.Resource.Layout.FlyoutContent = global::Dystir.Droid.Resource.Layout.FlyoutContent;
 			global::Xamarin.Forms.Platform.Resource.Layout.material_chip_input_combo = global::Dystir.Droid.Resource.Layout.material_chip_input_combo;
 			global::Xamarin.Forms.Platform.Resource.Layout.material_clockface_textview = global::Dystir.Droid.Resource.Layout.material_clockface_textview;
 			global::Xamarin.Forms.Platform.Resource.Layout.material_clockface_view = global::Dystir.Droid.Resource.Layout.material_clockface_view;
@@ -7990,11 +7972,9 @@ namespace Dystir.Droid
 			global::Xamarin.Forms.Platform.Resource.Layout.notification_template_media_custom = global::Dystir.Droid.Resource.Layout.notification_template_media_custom;
 			global::Xamarin.Forms.Platform.Resource.Layout.notification_template_part_chronometer = global::Dystir.Droid.Resource.Layout.notification_template_part_chronometer;
 			global::Xamarin.Forms.Platform.Resource.Layout.notification_template_part_time = global::Dystir.Droid.Resource.Layout.notification_template_part_time;
-			global::Xamarin.Forms.Platform.Resource.Layout.RootLayout = global::Dystir.Droid.Resource.Layout.RootLayout;
 			global::Xamarin.Forms.Platform.Resource.Layout.select_dialog_item_material = global::Dystir.Droid.Resource.Layout.select_dialog_item_material;
 			global::Xamarin.Forms.Platform.Resource.Layout.select_dialog_multichoice_material = global::Dystir.Droid.Resource.Layout.select_dialog_multichoice_material;
 			global::Xamarin.Forms.Platform.Resource.Layout.select_dialog_singlechoice_material = global::Dystir.Droid.Resource.Layout.select_dialog_singlechoice_material;
-			global::Xamarin.Forms.Platform.Resource.Layout.ShellContent = global::Dystir.Droid.Resource.Layout.ShellContent;
 			global::Xamarin.Forms.Platform.Resource.Layout.support_simple_spinner_dropdown_item = global::Dystir.Droid.Resource.Layout.support_simple_spinner_dropdown_item;
 			global::Xamarin.Forms.Platform.Resource.Layout.Tabbar = global::Dystir.Droid.Resource.Layout.Tabbar;
 			global::Xamarin.Forms.Platform.Resource.Layout.test_action_chip = global::Dystir.Droid.Resource.Layout.test_action_chip;
@@ -10881,16 +10861,16 @@ namespace Dystir.Droid
 			public const int design_snackbar_out = 2130771995;
 			
 			// aapt resource value: 0x7F01001C
-			public const int EnterFromLeft = 2130771996;
+			public const int enterfromleft = 2130771996;
 			
 			// aapt resource value: 0x7F01001D
-			public const int EnterFromRight = 2130771997;
+			public const int enterfromright = 2130771997;
 			
 			// aapt resource value: 0x7F01001E
-			public const int ExitToLeft = 2130771998;
+			public const int exittoleft = 2130771998;
 			
 			// aapt resource value: 0x7F01001F
-			public const int ExitToRight = 2130771999;
+			public const int exittoright = 2130771999;
 			
 			// aapt resource value: 0x7F010020
 			public const int fragment_fast_out_extra_slow_in = 2130772000;
@@ -18415,7 +18395,7 @@ namespace Dystir.Droid
 			public const int abc_tooltip = 2131427355;
 			
 			// aapt resource value: 0x7F0B001C
-			public const int BottomTabLayout = 2131427356;
+			public const int bottomtablayout = 2131427356;
 			
 			// aapt resource value: 0x7F0B001D
 			public const int browser_actions_context_menu_page = 2131427357;
@@ -18475,13 +18455,13 @@ namespace Dystir.Droid
 			public const int expand_button = 2131427375;
 			
 			// aapt resource value: 0x7F0B0030
-			public const int FallbackTabbarDoNotUse = 2131427376;
+			public const int fallbacktabbardonotuse = 2131427376;
 			
 			// aapt resource value: 0x7F0B0031
-			public const int FallbackToolbarDoNotUse = 2131427377;
+			public const int fallbacktoolbardonotuse = 2131427377;
 			
 			// aapt resource value: 0x7F0B0032
-			public const int FlyoutContent = 2131427378;
+			public const int flyoutcontent = 2131427378;
 			
 			// aapt resource value: 0x7F0B0033
 			public const int image_frame = 2131427379;
@@ -18709,7 +18689,7 @@ namespace Dystir.Droid
 			public const int preference_widget_switch_compat = 2131427453;
 			
 			// aapt resource value: 0x7F0B007E
-			public const int RootLayout = 2131427454;
+			public const int rootlayout = 2131427454;
 			
 			// aapt resource value: 0x7F0B007F
 			public const int select_dialog_item_material = 2131427455;
@@ -18721,7 +18701,7 @@ namespace Dystir.Droid
 			public const int select_dialog_singlechoice_material = 2131427457;
 			
 			// aapt resource value: 0x7F0B0082
-			public const int ShellContent = 2131427458;
+			public const int shellcontent = 2131427458;
 			
 			// aapt resource value: 0x7F0B0083
 			public const int support_simple_spinner_dropdown_item = 2131427459;

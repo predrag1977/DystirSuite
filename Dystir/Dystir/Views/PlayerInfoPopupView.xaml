@@ -1,9 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:Dystir.Models"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:views="clr-namespace:Dystir.Views"
              BindingContext="{Binding}"
              Size="300,400"
              x:Class="Dystir.Views.PlayerInfoPopupView">
@@ -15,9 +13,6 @@
                 <Setter Property="FontFamily" Value="NunitoSemiBold" />
                 <Setter Property="FontAttributes" Value="Bold" />
                 <Setter Property="TextColor" Value="White" />
-                <Setter Property="HorizontalTextAlignment" Value="Center" />
-                <Setter Property="VerticalTextAlignment" Value="Center" />
-                <Setter Property="Padding" Value="0,5,0,0" />
             </Style>
         </ContentView.Resources>
         <Frame CornerRadius="15"
@@ -39,19 +34,18 @@
                 <Label Grid.Column="0"
                        Text="{Binding Number}"
                        FontSize="20"
-                       Padding="15,0"
+                       Padding="15,0,0,0"
                        TextColor="Khaki"
-                       VerticalOptions="Center"
-                       HorizontalOptions="Start"/>
+                       HorizontalOptions="Fill"
+                       HorizontalTextAlignment="Start"/>
 
                 <Label Grid.Column="1"
                        Text="{Binding Position}"
                        FontSize="16"
                        Padding="5,0"
                        TextColor="DarkGray"
-                       VerticalOptions="Center"
-                       HorizontalOptions="Center"
-                       VerticalTextAlignment="Center"/>
+                       HorizontalOptions="Fill"
+                       HorizontalTextAlignment="Center"/>
 
                 <ImageButton Grid.Column="2"
                         HeightRequest="18"
@@ -76,8 +70,9 @@
                            LineBreakMode="WordWrap"
                            MaxLines="2"
                            TextColor="White"
-                           Margin="0,10,0,15"
-                           HorizontalOptions="Center"/>
+                           Margin="3,10,3,15"
+                           HorizontalTextAlignment="Center"
+                           HorizontalOptions="Fill"/>
 
                     <HorizontalStackLayout HorizontalOptions="CenterAndExpand">
                         <AbsoluteLayout Margin="8,0">
