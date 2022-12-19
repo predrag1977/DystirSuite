@@ -5,8 +5,9 @@ namespace Dystir.Views;
 
 public partial class SummaryView : ContentView
 {
-	public SummaryView()
+	public SummaryView(MatchDetailsViewModel matchDetailsViewModel)
 	{
         InitializeComponent();
+        BindingContext = matchDetailsViewModel;
     }
 }

@@ -3,7 +3,7 @@ using System;
 
 namespace Dystir.Models
 {
-    public class Lineups : ObservableCollection<PlayersInRow>
+    public class Lineups : List<PlayersInRow>
     {
         public Lineups(ObservableCollection<PlayerOfMatch> homeTeamLineups, ObservableCollection<PlayerOfMatch> awayTeamLineups, ObservableCollection<PlayerOfMatch> homeTeamSubtitutions, ObservableCollection<PlayerOfMatch> awayTeamSubtitutions)
         {
@@ -20,8 +20,8 @@ namespace Dystir.Models
                 Add(playerInRow);
             }
 
-            biggerLineups = homeTeamSubtitutions.Count >= awayTeamLineups.Count ? homeTeamSubtitutions : awayTeamSubtitutions;
-            for (int i = 0; i < biggerLineups.Count; i++)
+            var biggerSubstitution = homeTeamSubtitutions.Count >= awayTeamLineups.Count ? homeTeamSubtitutions : awayTeamSubtitutions;
+            for (int i = 0; i < biggerSubstitution.Count; i++)
             {
                 var playerInRow = new PlayersInRow()
                 {

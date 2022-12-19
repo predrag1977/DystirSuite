@@ -47,7 +47,6 @@ namespace Dystir.ViewModels
             timeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
             timeService.StartSponsorsTime();
 
-            IsLoading = true;
             SetResultCompetitions();
         }
 
@@ -118,7 +117,7 @@ namespace Dystir.ViewModels
                 .OrderByDescending(x => x.RoundID)
                 .ThenByDescending(x => x.Time)
                 .ThenBy(x => x.MatchTypeID);
-            ResultsGroupList = new ObservableCollection<MatchGroup>(resultsMatches.GroupBy(x => x.RoundName).Select(group => new MatchGroup(group.Key, group.ToList())));
+            ResultsGroupList = new ObservableCollection<MatchGroup>(resultsMatches.GroupBy(x => x.RoundName).Select(group => new MatchGroup(group.Key, new ObservableCollection<Match>(group))));
         }
     }
 }

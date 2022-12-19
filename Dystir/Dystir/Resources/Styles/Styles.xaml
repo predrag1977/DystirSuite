@@ -199,7 +199,7 @@
     <Style TargetType="ProgressBar">
         <Setter Property="ProgressColor" Value="#006400" />
         <Setter Property="BackgroundColor" Value="#A6A6A6" />
-        <Setter Property="MinimumHeightRequest" Value="10" />
+        <Setter Property="HeightRequest" Value="20" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
@@ -373,7 +373,7 @@
         <Setter Property="Shell.NavBarHasShadow" Value="False" />
         <Setter Property="Shell.NavBarIsVisible" Value="False" />
         <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource Black}}" />
-        <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Light={StaticResource LimeGreen}, Dark={StaticResource White}}" />
+        <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Light={StaticResource LimeGreen}, Dark={StaticResource LimeGreen}}" />
         <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Light={StaticResource LimeGreen}, Dark={StaticResource White}}" />
         <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray300}}" />
     </Style>

@@ -25,16 +25,15 @@ public partial class MatchDetailsPage : ContentPage
 
     protected override void OnAppearing()
     {
-        //_matchDetailsViewModel.ClearMatchDetails();
+        matchDetailsViewModel.ClearMatchDetails();
         matchDetailsViewModel.SelectedMatch = matchDetailsViewModel.DystirService.AllMatches.FirstOrDefault(x => x.MatchID == MatchID);
-
-        _ = LoadingData();
+        _ = matchDetailsViewModel.PopulateMatchDetailsTabs(matchDetailsViewModel.SelectedMatch);
+        _ = matchDetailsViewModel.SetDetailsTabSelected(0);
     }
 
-    private async Task LoadingData()
+    protected override void OnDisappearing()
     {
-        await Task.Delay(200);
-        await matchDetailsViewModel.LoadMatchDataAsync(MatchID);
+        MatchDetailsTabsCarouselView.Position = 0;
     }
 
     async void BackButton_Clicked(object sender, EventArgs e)
@@ -46,7 +45,7 @@ public partial class MatchDetailsPage : ContentPage
     {
         if(!matchDetailsViewModel.IsLoadingSelectedMatch)
         {
-            _ = matchDetailsViewModel.LoadMatchDataAsync(MatchID);
+            //_ = matchDetailsViewModel.LoadMatchDataAsync(MatchID);
         }
         return;
     }
@@ -54,5 +53,34 @@ public partial class MatchDetailsPage : ContentPage
     void Button_Clicked(object sender, System.EventArgs e)
     {
 
+    }
+
+    void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var selectedItem = (sender as CollectionView).SelectedItem;
+        var position = matchDetailsViewModel.MatchDetailsTabs.IndexOf(selectedItem as MatchDetailsTab);
+        if(position >= 0)
+        {
+            MatchDetailsTabsCarouselView.Position = position;
+        }
+    }
+
+    void MatchDetailsTabsCarouselView_PositionChanged(object sender, PositionChangedEventArgs e)
+    {
+
+    }
+
+    void MatchDetailsTabsCarouselView_CurrentItemChanged(object sender, CurrentItemChangedEventArgs e)
+    {
+        if (MatchDetailsTabsCarouselView.Position >= 0)
+        {
+            _ = matchDetailsViewModel.SetDetailsTabSelected(MatchDetailsTabsCarouselView.Position);
+        }
+    }
+
+    void CollectionView_Loaded(System.Object sender, System.EventArgs e)
+    {
+        var t = matchDetailsViewModel.MatchDetailsTabs.Count;
+        (sender as CollectionView).ItemsLayout = new GridItemsLayout(matchDetailsViewModel.MatchDetailsTabs.Count, ItemsLayoutOrientation.Vertical);
     }
 }
