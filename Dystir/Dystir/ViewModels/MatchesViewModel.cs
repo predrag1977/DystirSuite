@@ -79,7 +79,7 @@ namespace Dystir.ViewModels
             IsLoading = false;
         }
 
-        private void DystirService_OnMatchDetailsLoaded(Match match)
+        private void DystirService_OnMatchDetailsLoaded(MatchDetails matchDetails)
         {
             SetMatches();
         }

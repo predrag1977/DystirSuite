@@ -10,27 +10,19 @@
         <StackLayout Spacing="0">
             <BoxView HeightRequest="4" BackgroundColor="Black" />
             <Grid Padding="10,5"
-                  BackgroundColor="#181818">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="34" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+                  BackgroundColor="#181818"
+                  ColumnDefinitions="50,*,*,Auto,34" 
+                  RowDefinitions="Auto,30,30,Auto">
 
-                <Label Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0"
-                        Text="{Binding MatchInfo}"
-                        LineBreakMode="TailTruncation"
-                        HorizontalOptions="Start"
-                        TextColor="DarkGray"
-                        FontSize="12" />
+                <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="3"
+                       Text="{Binding MatchInfo}"
+                       LineBreakMode="TailTruncation"
+                       HorizontalOptions="Fill"
+                       HorizontalTextAlignment="Start"
+                       TextColor="DarkGray"
+                       FontSize="12"/>
 
                 <Label Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2"
                         Text="{Binding MatchTime}"
@@ -41,15 +33,26 @@
 
                 <Image Grid.Column="0" Grid.Row="1" Margin="5,0,10,0"
                         WidthRequest="30" HeightRequest="28"
-                        Source="{Binding HomeTeamLogo}"
                         HorizontalOptions="CenterAndExpand"
-                        VerticalOptions="CenterAndExpand"  />
+                        VerticalOptions="CenterAndExpand"  >
+                    <Image.Source>
+                        <UriImageSource Uri="{Binding HomeTeamLogo}"
+                                        CacheValidity="10:00:00:00" />
+                    </Image.Source>
+                </Image>
 
-                <Image Grid.Column="0" Grid.Row="2" Margin="5,0,10,0"
-                        WidthRequest="30" HeightRequest="28"
-                        Source="{Binding AwayTeamLogo}"
-                        HorizontalOptions="CenterAndExpand"
-                        VerticalOptions="CenterAndExpand"  />
+                <Image Grid.Column="0"
+                       Grid.Row="2"
+                       Margin="5,0,10,0"
+                       WidthRequest="30"
+                       HeightRequest="28"
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalOptions="CenterAndExpand">
+                    <Image.Source>
+                        <UriImageSource Uri="{Binding AwayTeamLogo}"
+                                        CacheValidity="10:00:00:00" />
+                    </Image.Source>
+                </Image>
 
                 <Label Grid.Column="1"
                        Grid.Row="1"

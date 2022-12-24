@@ -2,7 +2,6 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:views="clr-namespace:Dystir.Views"
-             xmlns:models="clr-namespace:Dystir.Models"
              xmlns:viewModels="clr-namespace:Dystir.ViewModels"
              x:DataType="viewModels:MatchDetailsViewModel"
              x:Class="Dystir.Views.CommentaryView">
@@ -20,7 +19,12 @@
             <DataTemplate>
                 <ViewCell IsEnabled="False" >
                     <Grid Margin="0,5,0,0">
-                        <views:CommentaryEventView />
+                        <Frame CornerRadius="15"
+                               BackgroundColor="#181818"
+                               BorderColor="#181818"
+                               Padding="7,5">
+                            <views:CommentaryEventView />
+                        </Frame>
                     </Grid>
                 </ViewCell>
             </DataTemplate>

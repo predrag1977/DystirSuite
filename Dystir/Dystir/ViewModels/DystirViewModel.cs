@@ -16,6 +16,7 @@ namespace Dystir.ViewModels
         //        PROPERTIES        //
         //**************************//
         public DystirService DystirService;
+        public LiveStandingService LiveStandingService;
 
         ObservableCollection<Sponsor> sponsors = new ObservableCollection<Sponsor>();
         public ObservableCollection<Sponsor> Sponsors
@@ -77,8 +78,6 @@ namespace Dystir.ViewModels
 
 
 
-
-
         ObservableCollection<Standing> allStandings = new ObservableCollection<Standing>();
         public ObservableCollection<Standing> AllStandings
         {
@@ -100,8 +99,8 @@ namespace Dystir.ViewModels
             set { allCompetitionStatistics = value; SetCompetitionStatistics(); }
         }
 
-        ObservableCollection<PlayersInRow> selectedCompetitionStatistics = new ObservableCollection<PlayersInRow>();
-        public ObservableCollection<PlayersInRow> SelectedCompetitionStatistics
+        ObservableCollection<PlayersInLineups> selectedCompetitionStatistics = new ObservableCollection<PlayersInLineups>();
+        public ObservableCollection<PlayersInLineups> SelectedCompetitionStatistics
         {
             get { return selectedCompetitionStatistics; }
             set { selectedCompetitionStatistics = value; }
@@ -216,12 +215,12 @@ namespace Dystir.ViewModels
                 StatisticsCompetitionSelected = StatisticCompetitions.FirstOrDefault();
             }
             var selectedCompetitionStatistics = AllCompetitionStatistics.FirstOrDefault(x => x.CompetitionName == StatisticsCompetitionSelected);
-            var selectedCompetitionStatisticsRowsList = new ObservableCollection<PlayersInRow>();
+            var selectedCompetitionStatisticsRowsList = new ObservableCollection<PlayersInLineups>();
             if (selectedCompetitionStatistics != null)
             {
                 foreach (PlayerOfMatch goalPlayer in selectedCompetitionStatistics.GoalPlayers)
                 {
-                    PlayersInRow statisticRow = new PlayersInRow();
+                    PlayersInLineups statisticRow = new PlayersInLineups();
                     //statisticRow.FirstPlayer = goalPlayer;
                     goalPlayer.NumberOrder = (selectedCompetitionStatistics.GoalPlayers.IndexOf(goalPlayer) + 1).ToString() + ".";
                     selectedCompetitionStatisticsRowsList.Add(statisticRow); 
@@ -230,7 +229,7 @@ namespace Dystir.ViewModels
                 {
                     int index = selectedCompetitionStatistics.AssistPlayers.IndexOf(assistPlayer);
                     assistPlayer.NumberOrder = (index + 1).ToString() + ".";
-                    PlayersInRow statisticRow = new PlayersInRow();
+                    PlayersInLineups statisticRow = new PlayersInLineups();
                     if (selectedCompetitionStatisticsRowsList.Count > index)
                     {
                         statisticRow = selectedCompetitionStatisticsRowsList[index];

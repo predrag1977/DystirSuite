@@ -1,12 +1,12 @@
 ﻿using Dystir.ViewModels;
+using Dystir.Models;
 
 namespace Dystir.Views;
 
 public partial class StatisticView : ContentView
 {
-	public StatisticView(MatchDetailsViewModel matchDetailsViewModel)
+    public StatisticView()
 	{
         InitializeComponent();
-        BindingContext = matchDetailsViewModel;
     }
 }

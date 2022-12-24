@@ -16,25 +16,9 @@
 
     <ScrollView>
         <Grid BindingContext="{Binding MatchStatistics}">
-            <Grid x:DataType="models:MatchStatistics" Padding="30,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+            <Grid x:DataType="models:MatchStatistics"
+                  Padding="30,0"
+                  RowDefinitions="30,Auto,30,Auto,30,Auto,30,Auto,30,Auto,30,Auto,30,Auto,30,Auto">
                 <Grid Grid.Row="0"
                       ColumnDefinitions="40,*,40">
                     <Label Grid.Column="0"

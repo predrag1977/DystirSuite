@@ -6,10 +6,9 @@ namespace Dystir.Views;
 
 public partial class LineupsView : ContentView
 {
-	public LineupsView(MatchDetailsViewModel matchDetailsViewModel)
+    public LineupsView()
 	{
 		InitializeComponent();
-        BindingContext = matchDetailsViewModel;
     }
 
     async void TapGestureRecognizer_Tapped(System.Object sender, System.EventArgs e)

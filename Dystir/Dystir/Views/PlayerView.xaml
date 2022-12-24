@@ -20,25 +20,28 @@
            BackgroundColor="#181818">
         <Grid VerticalOptions="CenterAndExpand"
               HorizontalOptions="FillAndExpand"
-              Padding="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+              Padding="2"
+              ColumnDefinitions="30,*">
 
-            <VerticalStackLayout Grid.Column="0"
-                                 VerticalOptions="Center">
-                <Label Text="{Binding Number}"
+            <Grid Grid.Column="0"
+                  RowDefinitions="Auto,Auto"
+                  VerticalOptions="Center">
+
+                <Label Grid.Row="0"
+                       Text="{Binding Number}"
                        TextColor="Khaki"/>
 
-                <Label FontSize="10"
+                <Label Grid.Row="1"
+                       FontSize="10"
                        Text="{Binding Position}"
                        TextColor="DarkGray"/>
-            </VerticalStackLayout>
+            </Grid>
 
-            <VerticalStackLayout Grid.Column="1"
-                                 VerticalOptions="Center">
-                <Label Text="{Binding FirstName}"
+            <Grid Grid.Column="1"
+                  RowDefinitions="Auto,Auto"
+                  VerticalOptions="Center">
+                <Label Grid.Row="0"
+                       Text="{Binding FirstName}"
                        HorizontalTextAlignment="Start"
                        HorizontalOptions="StartAndExpand"
                        LineBreakMode="WordWrap"
@@ -46,44 +49,57 @@
                        Margin="3,0,0,0"
                        MaxLines="2"/>
 
-                <HorizontalStackLayout Margin="3,0,0,0">
-                    <Image Source="goal.png"
+                <Grid Grid.Row="1"
+                      Margin="3,0,0,0"
+                      ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" >
+                    <Image Grid.Column="0"
+                           Source="goal.png"
                            IsVisible="{Binding GoalVisible}"/>
-                    <Label Text="{Binding Goal}"
+                    <Label Grid.Column="1"
+                           Text="{Binding Goal}"
                            Margin="0,0,2,0"
                            TextColor="DarkGray"
                            IsVisible="{Binding GoalVisible}"/>
-                    <Image Source="owngoal.png"
+                    <Image Grid.Column="2"
+                           Source="owngoal.png"
                            IsVisible="{Binding OwnGoalVisible}"/>
-                    <Label Text="{Binding OwnGoal}"
+                    <Label Grid.Column="3"
+                           Text="{Binding OwnGoal}"
                            Margin="0,0,2,0"
                            TextColor="DarkGray"
                            IsVisible="{Binding OwnGoalVisible}"/>
-                    <Image Source="yellow.png"
+                    <Image Grid.Column="4"
+                           Source="yellow.png"
                            WidthRequest="8"
                            IsVisible="{Binding YellowCardVisible}"/>
-                    <Image Source="yellow.png"
+                    <Image Grid.Column="5"
+                           Source="yellow.png"
                            WidthRequest="8"
                            IsVisible="{Binding SecondYellowCardVisible}"/>
-                    <Image Source="red.png"
+                    <Image Grid.Column="6"
+                           Source="red.png"
                            WidthRequest="8"
                            IsVisible="{Binding RedCardVisible}"/>
-                    <Image Source="sub_in.png"
+                    <Image Grid.Column="7"
+                           Source="sub_in.png"
                            WidthRequest="8"
                            IsVisible="{Binding SubInVisible}"/>
-                    <Label Text="{Binding SubIn, StringFormat='{0}´'}"
+                    <Label Grid.Column="8"
+                           Text="{Binding SubIn, StringFormat='{0}´'}"
                            Margin="0,0,2,0"
                            TextColor="DarkGray"
                            IsVisible="{Binding SubInVisible}"/>
-                    <Image Source="sub_out.png"
+                    <Image Grid.Column="9"
+                           Source="sub_out.png"
                            WidthRequest="8"
                            IsVisible="{Binding SubOutVisible}"/>
-                    <Label Text="{Binding SubOut, StringFormat='{0}´'}"
+                    <Label Grid.Column="10"
+                           Text="{Binding SubOut, StringFormat='{0}´'}"
                            Margin="0,0,2,0"
                            TextColor="DarkGray"
                            IsVisible="{Binding SubOutVisible}"/>
-                </HorizontalStackLayout>
-            </VerticalStackLayout>
+                </Grid>
+            </Grid>
         </Grid>
     </Frame>
 </ContentView>

@@ -119,13 +119,6 @@ namespace Dystir.Models
             set { matchTime = value; OnPropertyChanged(); }
         }
 
-        CultureInfo _languageCode;
-        public CultureInfo LanguageCode
-        {
-            get { return _languageCode; }
-            set { _languageCode = value; OnPropertyChanged();}
-        }
-
         Color statusColor = Colors.Transparent;
         public Color StatusColor
         {
@@ -138,13 +131,6 @@ namespace Dystir.Models
         {
             get { return matchInfo; }
             set { matchInfo = value; OnPropertyChanged();}
-        }
-
-        MatchDetails _matchDetails;
-        public MatchDetails MatchDetails
-        {
-            get { return _matchDetails; }
-            set { _matchDetails = value; OnPropertyChanged(); }
         }
 
         bool _summarySelected = true;
@@ -182,31 +168,6 @@ namespace Dystir.Models
             set { liveStandingsSelected = value; OnPropertyChanged();}
         }
 
-        MatchDetailsTab selectedMatchDetailsTab = new MatchDetailsTab()
-        {
-            TabName = Resources.Localization.Resources.Summary,
-            TextColor = Colors.LimeGreen
-        };
-        public MatchDetailsTab SelectedMatchDetailsTab
-        {
-            get { return selectedMatchDetailsTab; }
-            set { selectedMatchDetailsTab = value; SetDetailsTabSelected(value); OnPropertyChanged();}
-        }
-
-        ObservableCollection<MatchDetailsTab> matchDetailsTabs = new ObservableCollection<MatchDetailsTab>();
-        public ObservableCollection<MatchDetailsTab> MatchDetailsTabs
-        {
-            get { return matchDetailsTabs; }
-            set { matchDetailsTabs = value; OnPropertyChanged();}
-        }
-
-        bool isLoading = false;
-        public bool IsLoading
-        {
-            get { return isLoading; }
-            set { isLoading = value; OnPropertyChanged();}
-        }
-
         //**********************//
         //      CONSTRUCTOR     //
         //**********************//
@@ -215,9 +176,8 @@ namespace Dystir.Models
             TimeService timeService = DependencyService.Get<TimeService>();
             timeService.OnTimerElapsed += OnTimerElapsed;
             LanguageService languageService = DependencyService.Get<LanguageService>();
-            //languageService.OnLanguageChanged += LanguageServiceOnLanguageChanged;
+            languageService.OnLanguageChanged += LanguageServiceOnLanguageChanged;
             SetMatchTime();
-            SetMatchDetailsTabs();
         }
 
         //**********************//
@@ -256,9 +216,9 @@ namespace Dystir.Models
                 switch (matchStatus)
                 {
                     case 0:
-                        return GetTimeToStart(secondsToStart, "--:--");
+                        return Match.GetTimeToStart(secondsToStart, "--:--");
                     case 1:
-                        return GetTimeToStart(secondsToStart, "00:00");
+                        return Match.GetTimeToStart(secondsToStart, "00:00");
                     case 2:
                         if (minutes > 45)
                         {
@@ -321,7 +281,7 @@ namespace Dystir.Models
             }
         }
 
-        private string GetTimeToStart(double secToStart, string defaultText)
+        private static string GetTimeToStart(double secToStart, string defaultText)
         {
             var minutesToStart = Math.Ceiling(secToStart / 60);
             if (minutesToStart > 0)
@@ -371,14 +331,6 @@ namespace Dystir.Models
             }
         }
 
-        private void ShowLiveStandingsColorBlinking(TeamStanding teamStanding)
-        {
-            if (teamStanding.LiveColor == "LightGreen")
-                teamStanding.LiveColor = "LimeGreen";
-            else
-                teamStanding.LiveColor = "LightGreen";
-        }
-
         private void SetMatchAdditionalInfo()
         {
             SetFullTeamsName();
@@ -405,54 +357,8 @@ namespace Dystir.Models
             MatchInfo = matchInfo.Trim();
         }
 
-        private void SetMatchDetailsTabs()
-        {
-            var matchDetailsTabs = new ObservableCollection<MatchDetailsTab>();
-            matchDetailsTabs.Add(new MatchDetailsTab()
-            {
-                TabIndex = matchDetailsTabs.Count,
-                TabName = Resources.Localization.Resources.Summary,
-                TextColor = Colors.LimeGreen
-            });
-            matchDetailsTabs.Add(new MatchDetailsTab()
-            {
-                TabIndex = matchDetailsTabs.Count,
-                TabName = Resources.Localization.Resources.FirstEleven
-            });
-            matchDetailsTabs.Add(new MatchDetailsTab()
-            {
-                TabIndex = matchDetailsTabs.Count,
-                TabName = Resources.Localization.Resources.Commentary
-            });
-            matchDetailsTabs.Add(new MatchDetailsTab()
-            {
-                TabIndex = matchDetailsTabs.Count,
-                TabName = Resources.Localization.Resources.Statistics
-            });
-            matchDetailsTabs.Add(new MatchDetailsTab()
-            {
-                TabIndex = matchDetailsTabs.Count,
-                TabName = Resources.Localization.Resources.StandingsTab
-            });
-            MatchDetailsTabs = new ObservableCollection<MatchDetailsTab>(matchDetailsTabs);
-        }
-
-        private void SetDetailsTabSelected(MatchDetailsTab selectedMatchDetailsMatchTab)
-        {
-            SummarySelected = selectedMatchDetailsMatchTab.TabIndex == 0;
-            FirstElevenSelected = selectedMatchDetailsMatchTab.TabIndex == 1;
-            CommentarySelected = selectedMatchDetailsMatchTab.TabIndex == 2;
-            StatisticSelected = selectedMatchDetailsMatchTab.TabIndex == 3;
-            LiveStandingsSelected = selectedMatchDetailsMatchTab.TabIndex == 4;
-
-            foreach (MatchDetailsTab matchDetailsTab in MatchDetailsTabs)
-            {
-                matchDetailsTab.TextColor = matchDetailsTab.TabIndex == selectedMatchDetailsMatchTab.TabIndex ? Colors.LimeGreen : Colors.White;
-            }
-        }
-
         //**************************//
-        //  INotifyPropertyChanged  //
+        //  INOTIFYPROPERTYCHANGED  //
         //**************************//
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)

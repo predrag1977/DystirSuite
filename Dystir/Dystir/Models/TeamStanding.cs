@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 namespace Dystir.Models
 {
     [DataContract]
-    public class TeamStanding : INotifyPropertyChanged
+    public class TeamStanding
     {
         [DataMember]
         public string Team { get; set; }
@@ -41,36 +41,6 @@ namespace Dystir.Models
         [DataMember]
         public bool IsLive { get; set; }
 
-        string _liveColor = "Transparent";
-        public string LiveColor
-        {
-            get { return _liveColor; }
-            set { SetProperty(ref _liveColor, value); }
-        }
-
-        protected bool SetProperty<T>(ref T backingStore, T value,
-            [CallerMemberName] string propertyName = "",
-            Action onChanged = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(backingStore, value))
-                return false;
-
-            backingStore = value;
-            onChanged?.Invoke();
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            var changed = PropertyChanged;
-            if (changed == null)
-                return;
-
-            changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
+        public Color LiveColor { get; set; } = Colors.Transparent;
     }
 }

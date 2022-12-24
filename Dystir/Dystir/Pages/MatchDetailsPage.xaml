@@ -6,29 +6,15 @@
              xmlns:views="clr-namespace:Dystir.Views"
              xmlns:models="clr-namespace:Dystir.Models"
              BackgroundColor="Black"
-
              x:DataType="viewModels:MatchDetailsViewModel">
 
-    <Grid RowDefinitions="Auto,*" >
-        <Grid Grid.Row="0" >
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="50" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+    <Grid RowDefinitions="Auto,*,Auto,Auto" >
+        <Grid Grid.Row="0"
+              RowDefinitions="50,Auto,Auto,Auto,50,Auto">
 
-            <Grid Grid.Row="0" BindingContext="{Binding SelectedMatch}"> 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="20" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="50" />
-                </Grid.ColumnDefinitions>
-                
+            <Grid Grid.Row="0"
+                  BindingContext="{Binding SelectedMatch}"
+                  ColumnDefinitions="50,*,20,*,50"> 
                 <Button Grid.Column="0"
                         Padding="0"
                         ImageSource="back_button.png"
@@ -41,8 +27,12 @@
                        WidthRequest="60"
                        Aspect="AspectFit"
                        HorizontalOptions="End"
-                       VerticalOptions="Center"
-                       Source="{Binding HomeTeamLogo}" />
+                       VerticalOptions="Center">
+                    <Image.Source>
+                        <UriImageSource Uri="{Binding HomeTeamLogo}"
+                                        CacheValidity="10:00:00:00" />
+                    </Image.Source>
+                </Image>
 
                 <Grid Grid.Column="2" >
                     <Label FontSize="20"
@@ -59,8 +49,12 @@
                        WidthRequest="60"
                        Aspect="AspectFit"
                        HorizontalOptions="Start"
-                       VerticalOptions="Center"
-                       Source="{Binding AwayTeamLogo}" />
+                       VerticalOptions="Center" >
+                    <Image.Source>
+                        <UriImageSource Uri="{Binding AwayTeamLogo}"
+                                        CacheValidity="10:00:00:00" />
+                    </Image.Source>
+                </Image>
 
                 <Button Grid.Column="4"
                         Padding="0"
@@ -120,9 +114,10 @@
 
         <CarouselView x:Name="MatchDetailsTabsCarouselView"
                       Grid.Row="1"
+                      IsSwipeEnabled="False"
+                      IsScrollAnimated="False"
                       HorizontalOptions="Fill"
                       VerticalOptions="Fill"
-                      CurrentItemChanged="MatchDetailsTabsCarouselView_CurrentItemChanged"
                       PositionChanged="MatchDetailsTabsCarouselView_PositionChanged"
                       ItemsSource="{Binding MatchDetailsTabsViews}" > 
 			<CarouselView.ItemTemplate>
@@ -134,23 +129,28 @@
 
         <StackLayout Grid.Row="1"
                      HorizontalOptions="Center"
-                     VerticalOptions="Center"
-                     IsVisible="{Binding IsLoadingSelectedMatch}">
-            <ActivityIndicator IsRunning="True"
+                     VerticalOptions="Center">
+            <ActivityIndicator IsRunning="{Binding IsLoadingSelectedMatch}"
                                HorizontalOptions="Center"
                                VerticalOptions="Center"
                                WidthRequest="30"
                                HeightRequest="30" />
         </StackLayout>
 
-        <!--<Button Grid.Row="2"
+        <Button Grid.Row="2"
                 Text="Other live matches"
                 TextColor="DimGray"
                 BorderColor="DimGray"
-                BorderWidth="2"
+                BorderWidth="1"
                 CornerRadius="8"
-                Padding="10"
-                Clicked="Button_Clicked" />-->
+                Padding="10,12"
+                Clicked="Button_Clicked" />
+
+        <StackLayout Grid.Row="3"
+                     HeightRequest="2"
+                     Orientation="Horizontal"
+                     BackgroundColor="#181818"
+                     HorizontalOptions="FillAndExpand"/>
 
     </Grid>
 </ContentPage>
