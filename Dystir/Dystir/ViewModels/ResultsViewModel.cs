@@ -75,7 +75,7 @@ namespace Dystir.ViewModels
             LoadDataAsync();
         }
 
-        private void DystirService_OnMatchDetailsLoaded(Match match)
+        private void DystirService_OnMatchDetailsLoaded(MatchDetails matchDetails)
         {
             LoadDataAsync();
         }

@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Dystir.ViewModels"
+             xmlns:models="clr-namespace:Dystir.Models"
+             BackgroundColor="Black"
+             x:DataType="viewModels:MatchDetailsViewModel"
+             x:Class="Dystir.Views.LiveStandingView">
+
+    <ContentView.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="TextColor" Value="DarkGray" />
+        </Style>
+    </ContentView.Resources>
+
+    <Grid RowDefinitions="40,Auto,*">
+        <Grid Grid.Row="0">
+            <Label Text="{Binding LiveStanding.StandingCompetitionName}"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Fill"
+                   HorizontalTextAlignment="Center"
+                   FontFamily="NunitoSemiBold"/>
+        </Grid>
+
+        <StackLayout Grid.Row="1"
+                     HeightRequest="2"
+                     Orientation="Horizontal"
+                     BackgroundColor="#181818"
+                     HorizontalOptions="FillAndExpand"/>
+
+        <ListView Grid.Row="2"
+                  SelectionMode="None"
+                  BackgroundColor="Black"
+                  SeparatorVisibility="None"
+                  Margin="5,0"
+                  VerticalScrollBarVisibility="Never"
+                  CachingStrategy="RecycleElement"
+                  VerticalOptions="FillAndExpand"
+                  HasUnevenRows="True"
+                  ItemsSource="{Binding LiveStanding.TeamStandings}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:TeamStanding" >
+                    <ViewCell IsEnabled="False" >
+                        <StackLayout BindingContext="{Binding}"
+                                     BackgroundColor="#181818"
+                                     HeightRequest="50"
+                                     Margin="0,0,0,4">
+                            <Grid ColumnDefinitions="40,120,*,*,*,*,*,*,*,*,5"
+                                  VerticalOptions="CenterAndExpand">
+                                <Frame Grid.Column="0"
+                                       Padding="0"
+                                       BorderColor="{Binding LiveColor}"
+                                       HeightRequest="32"
+                                       WidthRequest="32"
+                                       CornerRadius="16"
+                                       BackgroundColor="#181818" >
+                                    <Label Padding="2,1,1,1"
+                                           TextColor="Khaki"
+                                           FontAttributes="Bold"
+                                           FontFamily="NunitoSemiBold"
+                                           Text="{Binding Position, StringFormat='{0}.'}" />
+                                </Frame>
+                                <Label Grid.Column="1"
+                                       FontAttributes="Bold"
+                                       FontFamily="NunitoSemiBold"
+                                       HorizontalOptions="Fill"
+                                       HorizontalTextAlignment="Start"
+                                       TextColor="White"
+                                       Text="{Binding Team}"  />
+                                <Label Grid.Column="2"
+                                       Text="{Binding MatchesNo}" />
+                                <Label Grid.Column="3"
+                                       Text="{Binding Victories}"  />
+                                <Label Grid.Column="4"
+                                       Text="{Binding Draws}" />
+                                <Label Grid.Column="5"
+                                       Text="{Binding Losses}"  />
+                                <Label Grid.Column="6"
+                                       Text="{Binding GoalScored}"  />
+                                <Label Grid.Column="7"
+                                       Text="{Binding GoalAgainst}" />
+                                <Label Grid.Column="8"
+                                       Text="{Binding GoalDifference}"  />
+                                <Label Grid.Column="9"
+                                       FontAttributes="Bold"
+                                       FontFamily="NunitoSemiBold"
+                                       TextColor="White"
+                                       Text="{Binding Points}" />
+                            </Grid>
+                            <StackLayout HeightRequest="2"
+                                         BackgroundColor="{Binding PositionColor}" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+    
+</ContentView>
+

@@ -20,11 +20,12 @@ public static class MauiProgram
         }).UseMauiCommunityToolkit();
         builder.Services.AddSingleton<DataLoadService>();
         builder.Services.AddSingleton<TimeService>();
+        builder.Services.AddSingleton<LanguageService>();
         builder.Services.AddSingleton<MatchesViewModel>();
         builder.Services.AddSingleton<ResultsViewModel>();
         builder.Services.AddSingleton<FixturesViewModel>();
-        builder.Services.AddSingleton<MatchDetailsViewModel>();
         builder.Services.AddSingleton<DystirService>();
+        builder.Services.AddSingleton<LiveStandingService>();
         builder.Services.AddSingleton<MatchesPage>();
         builder.Services.AddSingleton<ResultsPage>();
         builder.Services.AddSingleton<FixturesPage>();

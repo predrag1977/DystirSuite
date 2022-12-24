@@ -15,25 +15,24 @@ public partial class MatchDetailsPage : ContentPage
     public int MatchID { get; set; } = 0;
 
     private MatchDetailsViewModel matchDetailsViewModel;
+    private readonly LiveStandingService liveStandingService;
+    private readonly DystirService dystirService;
 
-    public MatchDetailsPage(MatchDetailsViewModel matchDetailsViewModel)
+    public MatchDetailsPage(DystirService dystirService, LiveStandingService liveStandingService)
     {
-        this.matchDetailsViewModel = matchDetailsViewModel;
+        this.liveStandingService = liveStandingService;
+        this.dystirService = dystirService;
         InitializeComponent();
-        BindingContext = matchDetailsViewModel;
     }
 
     protected override void OnAppearing()
     {
-        matchDetailsViewModel.ClearMatchDetails();
-        matchDetailsViewModel.SelectedMatch = matchDetailsViewModel.DystirService.AllMatches.FirstOrDefault(x => x.MatchID == MatchID);
-        _ = matchDetailsViewModel.PopulateMatchDetailsTabs(matchDetailsViewModel.SelectedMatch);
-        _ = matchDetailsViewModel.SetDetailsTabSelected(0);
-    }
-
-    protected override void OnDisappearing()
-    {
-        MatchDetailsTabsCarouselView.Position = 0;
+        matchDetailsViewModel = dystirService.AllMatchesDetailViewModels.FirstOrDefault(x => x.SelectedMatch.MatchID == MatchID);
+        if(matchDetailsViewModel == null)
+        {
+            matchDetailsViewModel = new MatchDetailsViewModel(MatchID, dystirService, liveStandingService);
+        }
+        BindingContext = matchDetailsViewModel;
     }
 
     async void BackButton_Clicked(object sender, EventArgs e)
@@ -50,37 +49,36 @@ public partial class MatchDetailsPage : ContentPage
         return;
     }
 
-    void Button_Clicked(object sender, System.EventArgs e)
+    async void Button_Clicked(object sender, System.EventArgs e)
     {
-
+        await Shell.Current.CurrentPage.ShowPopupAsync(new MatchesPopupView(matchDetailsViewModel));
     }
 
     void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var selectedItem = (sender as CollectionView).SelectedItem;
         var position = matchDetailsViewModel.MatchDetailsTabs.IndexOf(selectedItem as MatchDetailsTab);
-        if(position >= 0)
-        {
-            MatchDetailsTabsCarouselView.Position = position;
-        }
+        MatchDetailsTabsCarouselView.Position = position;
+        _ = ChangeMatchDetailsView(position);
     }
 
     void MatchDetailsTabsCarouselView_PositionChanged(object sender, PositionChangedEventArgs e)
     {
-
+        _ = ChangeMatchDetailsView(MatchDetailsTabsCarouselView.Position);
     }
 
-    void MatchDetailsTabsCarouselView_CurrentItemChanged(object sender, CurrentItemChangedEventArgs e)
+    private async Task ChangeMatchDetailsView(int position)
     {
-        if (MatchDetailsTabsCarouselView.Position >= 0)
-        {
-            _ = matchDetailsViewModel.SetDetailsTabSelected(MatchDetailsTabsCarouselView.Position);
-        }
+        matchDetailsViewModel.SetDetailsTabSelected(position);
+        matchDetailsViewModel.IsLoadingSelectedMatch = true;
+        await Task.Delay(500);
+        matchDetailsViewModel.MatchDetailsTabsViews[position].BindingContext = matchDetailsViewModel;
+
+        matchDetailsViewModel.IsLoadingSelectedMatch = false;
     }
 
     void CollectionView_Loaded(System.Object sender, System.EventArgs e)
     {
-        var t = matchDetailsViewModel.MatchDetailsTabs.Count;
         (sender as CollectionView).ItemsLayout = new GridItemsLayout(matchDetailsViewModel.MatchDetailsTabs.Count, ItemsLayoutOrientation.Vertical);
     }
 }

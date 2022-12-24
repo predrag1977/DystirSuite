@@ -8,16 +8,18 @@ namespace Dystir.Pages;
 
 public partial class MatchesPage : ContentPage
 {
-    private readonly MatchesViewModel _matchesViewModel;
+    private readonly MatchesViewModel matchesViewModel;
+    private readonly LiveStandingService liveStandingService;
 
-    public MatchesPage(MatchesViewModel matchesViewModel)
+    public MatchesPage(MatchesViewModel matchesViewModel, LiveStandingService liveStandingService)
     {
-        _matchesViewModel = matchesViewModel;
+        this.matchesViewModel = matchesViewModel;
+        this.liveStandingService = liveStandingService;
 
         InitializeComponent();
-        BindingContext = _matchesViewModel;
+        BindingContext = this.matchesViewModel;
 
-        _matchesViewModel.LoadDataAsync();
+        this.matchesViewModel.LoadDataAsync();
     }
 
     private async void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -25,7 +27,7 @@ public partial class MatchesPage : ContentPage
         var collectionView = (sender as CollectionView);
         if (collectionView.SelectedItem is Match selectedMatch)
         {
-            //await Shell.Current.Navigation.PushAsync(new MatchDetailsPage(selectedMatch));
+            //await Shell.Current.Navigation.PushAsync(new MatchDetailsPage(selectedMatch, matchesViewModel.DystirService, liveStandingService));
 
             await Shell.Current.GoToAsync($"{nameof(MatchesPage)}/{nameof(MatchDetailsPage)}");
 
@@ -35,9 +37,9 @@ public partial class MatchesPage : ContentPage
 
     private async void RefreshButton_Clicked(object sender, EventArgs e)
     {
-        if(_matchesViewModel.IsLoading == false)
+        if(matchesViewModel.IsLoading == false)
         {
-            await _matchesViewModel.DystirService.LoadDataAsync(true);
+            await matchesViewModel.DystirService.LoadDataAsync(true);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Dystir.Models
         }
 
         [JsonProperty("TeamName")]
-        public string TeamName { get; internal set; }
+        public string TeamName { get; set; }
 
         int? _number;
         [JsonProperty("Number")]
@@ -66,10 +66,10 @@ namespace Dystir.Models
         public int? MatchTypeID { get; set; }
 
         [JsonProperty("MatchTypeName")]
-        public string MatchTypeName { get; internal set; }
+        public string MatchTypeName { get; set; }
 
         [JsonProperty("Assist")]
-        public int? Assist { get; internal set; }
+        public int? Assist { get; set; }
 
         int? goal;
         [JsonProperty("Goal")]
@@ -135,20 +135,20 @@ namespace Dystir.Models
             }
         }
 
-        public bool GoalVisible { get; internal set; }
+        public bool GoalVisible { get; set; } = false;
 
-        public bool OwnGoalVisible { get; internal set; }
+        public bool OwnGoalVisible { get; set; } = false;
 
-        public bool YellowCardVisible { get; internal set; }
+        public bool YellowCardVisible { get; set; } = false;
 
-        public bool SecondYellowCardVisible { get; internal set; }
+        public bool SecondYellowCardVisible { get; set; } = false;
 
-        public bool RedCardVisible { get; internal set; }
+        public bool RedCardVisible { get; set; } = false;
 
-        public bool SubInVisible { get; internal set; }
+        public bool SubInVisible { get; set; } = false;
 
-        public bool SubOutVisible { get; internal set; }
+        public bool SubOutVisible { get; set; } = false;
 
-        public string NumberOrder { get; internal set; }
+        public string NumberOrder { get; set; } = string.Empty;
     }
 }

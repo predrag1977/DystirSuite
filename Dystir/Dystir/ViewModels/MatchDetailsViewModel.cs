@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using Dystir.Models;
 using Dystir.Services;
 using Dystir.Views;
@@ -11,10 +12,7 @@ namespace Dystir.ViewModels
         //**********************//
         //      PROPERTIES      //
         //**********************//
-        private ObservableCollection<MatchDetails> AllMatchesDetails = new ObservableCollection<MatchDetails>();
-        private MatchDetails _matchDetails;
-
-        Match selectedMatch = new Match();
+        Match selectedMatch;
         public Match SelectedMatch
         {
             get { return selectedMatch; }
@@ -35,8 +33,8 @@ namespace Dystir.ViewModels
             set { summary = value; OnPropertyChanged(); }
         }
 
-        ObservableCollection<PlayersInRow> lineups;
-        public ObservableCollection<PlayersInRow> Lineups
+        ObservableCollection<PlayersInLineups> lineups;
+        public ObservableCollection<PlayersInLineups> Lineups
         {
             get { return lineups; }
             set { lineups = value; OnPropertyChanged(); }
@@ -56,11 +54,18 @@ namespace Dystir.ViewModels
             set { matchStatistics = value; OnPropertyChanged(); }
         }
 
-        ObservableCollection<MatchDetailsTab> matchDetailsTabs = new ObservableCollection<MatchDetailsTab>();
-        public ObservableCollection<MatchDetailsTab> MatchDetailsTabs
+        Standing liveStanding;
+        public Standing LiveStanding
         {
-            get { return matchDetailsTabs; }
-            set { matchDetailsTabs = value; OnPropertyChanged(); }
+            get { return liveStanding; }
+            set { liveStanding = value; OnPropertyChanged(); }
+        }
+
+        bool isLoadingSelectedMatch = false;
+        public bool IsLoadingSelectedMatch
+        {
+            get { return isLoadingSelectedMatch; }
+            set { isLoadingSelectedMatch = value; OnPropertyChanged(); }
         }
 
         MatchDetailsTab selectedMatchDetailsTab = new MatchDetailsTab()
@@ -68,97 +73,80 @@ namespace Dystir.ViewModels
             TabName = Resources.Localization.Resources.Summary,
             TextColor = Colors.LimeGreen
         };
-
         public MatchDetailsTab SelectedMatchDetailsTab
         {
             get { return selectedMatchDetailsTab; }
-            set
-            {
-                selectedMatchDetailsTab = value;
-                OnPropertyChanged();
-            }
+            set { selectedMatchDetailsTab = value; }
         }
 
-        ObservableCollection<ContentView> matchDetailsTabsViews = new ObservableCollection<ContentView>();
+        ObservableCollection<MatchDetailsTab> matchDetailsTabs = new ObservableCollection<MatchDetailsTab>();
+        public ObservableCollection<MatchDetailsTab> MatchDetailsTabs
+        {
+            get { return matchDetailsTabs; }
+            set { matchDetailsTabs = value; OnPropertyChanged(); }
+        }
+
+        ObservableCollection<ContentView> matchDetailsTabsViews;
         public ObservableCollection<ContentView> MatchDetailsTabsViews
         {
             get { return matchDetailsTabsViews; }
             set { matchDetailsTabsViews = value; OnPropertyChanged(); }
         }
 
-        bool isLoadingSelectedMatch = false;
-
-        public bool IsLoadingSelectedMatch
-        {
-            get { return isLoadingSelectedMatch; }
-            set { isLoadingSelectedMatch = value; OnPropertyChanged(); }
-        }
-
         //**********************//
         //     CONSTRUCTOR      //
         //**********************//
-        public MatchDetailsViewModel(DystirService dystirService)
+        public MatchDetailsViewModel(int matchID, DystirService dystirService, LiveStandingService liveStandingService)
         {
             DystirService = dystirService;
-            DystirService.OnShowLoading += DystirService_OnShowLoading;
-            DystirService.OnMatchDetailsLoaded += DystirService_OnMatchDetailsLoaded;
-            DystirService.OnFullDataLoaded += DystirService_OnFullDataLoaded;
+            LiveStandingService = liveStandingService;
+            dystirService.OnShowLoading += DystirService_OnShowLoading;
+            dystirService.OnMatchDetailsLoaded += DystirService_OnMatchDetailsLoaded;
+            dystirService.OnFullDataLoaded += DystirService_OnFullDataLoaded;
+
+            SelectedMatch = dystirService.AllMatches.FirstOrDefault(x => x.MatchID == matchID);
+            
+            _ = LoadMatchDetailsAsync();
+            _ = PopulateMatchDetailsTabs();
         }
 
         //**********************//
         //    PUBLIC METHODS    //
         //**********************//
-        public async Task SetDetailsTabSelected(int tabIndex)
+        public void SetDetailsTabSelected(int tabIndex)
         {
-            await Task.Delay(200);
             foreach (MatchDetailsTab matchDetailsTab in MatchDetailsTabs)
             {
                 matchDetailsTab.TextColor = matchDetailsTab.TabIndex == tabIndex ? Colors.LimeGreen : Colors.White;
             }
-            await LoadMatchDataAsync();
-
-            switch (tabIndex)
-            {
-                case 0:
-                default:
-                    if (Summary == null)
-                    {
-                        _ = LoadSummaryAsync(_matchDetails);
-                    }
-                    break;
-                case 1:
-                    if (Lineups == null)
-                    {
-                        _ = LoadLineupsAsync(_matchDetails);
-                    }
-                    break;
-                case 2:
-                    if (Commentary == null)
-                    {
-                        _ = LoadCommentaryAsync(_matchDetails);
-                    }
-                    break;
-                case 3:
-                    if (MatchStatistics == null)
-                    {
-                        _ = LoadMatchStatisticsAsync(_matchDetails);
-                    }
-                    break;
-                case 4:
-                    if (MatchStatistics == null)
-                    {
-                        _ = LoadMatchStatisticsAsync(_matchDetails);
-                    }
-                    break;
-            }
         }
 
-        public async Task PopulateMatchDetailsTabs(Match match)
+        //**********************//
+        //    PRIVATE METHODS   //
+        //**********************//
+        private async Task LoadMatchDetailsAsync()
+        {
+            IsLoadingSelectedMatch = true;
+            await Task.Delay(200);
+            var matchDetails = DystirService.AllMatchesDetails.FirstOrDefault(x => x.MatchDetailsID == SelectedMatch.MatchID);
+            if (matchDetails == null || matchDetails.IsDataLoaded == false)
+            {
+                matchDetails = await DystirService.GetMatchDetailsAsync(SelectedMatch.MatchID);
+                matchDetails.IsDataLoaded = true;
+                SetMatchDetails(matchDetails);
+            }
+            await PopulateMatchDetails(matchDetails);
+            SetMatchesBySelectedDate();
+            DystirService.AllMatchesDetailViewModels.Add(this);
+            await Task.CompletedTask;
+        }
+
+        private async Task PopulateMatchDetailsTabs()
         {
             var matchDetailsTabs = new ObservableCollection<MatchDetailsTab>();
             var matchDetailsTabsViews = new ObservableCollection<ContentView>();
 
-            if (match.MatchTypeID != null)
+            if (SelectedMatch.MatchTypeID != null)
             {
                 matchDetailsTabs.Add(new MatchDetailsTab()
                 {
@@ -181,108 +169,51 @@ namespace Dystir.ViewModels
                     TabIndex = matchDetailsTabs.Count,
                     TabName = Resources.Localization.Resources.Statistics
                 });
-                matchDetailsTabsViews.Add(new SummaryView(this));
-                matchDetailsTabsViews.Add(new LineupsView(this));
-                matchDetailsTabsViews.Add(new CommentaryView(this));
-                matchDetailsTabsViews.Add(new StatisticView(this));
 
-                if (match.MatchTypeID == 1
-                    || match.MatchTypeID == 5
-                    || match.MatchTypeID == 6
-                    || match.MatchTypeID == 15
-                    || match.MatchTypeID == 101)
+                matchDetailsTabsViews.Add(new SummaryView() { BindingContext = this});
+                matchDetailsTabsViews.Add(new LineupsView());
+                matchDetailsTabsViews.Add(new CommentaryView());
+                matchDetailsTabsViews.Add(new StatisticView());
+
+                if (SelectedMatch.MatchTypeID == 1
+                    || SelectedMatch.MatchTypeID == 5
+                    || SelectedMatch.MatchTypeID == 6
+                    || SelectedMatch.MatchTypeID == 15
+                    || SelectedMatch.MatchTypeID == 101)
                 {
                     matchDetailsTabs.Add(new MatchDetailsTab()
                     {
                         TabIndex = matchDetailsTabs.Count,
                         TabName = Resources.Localization.Resources.StandingsTab
                     });
-                    matchDetailsTabsViews.Add(new StatisticView(this));
+                    matchDetailsTabsViews.Add(new LiveStandingView());
                 }
             }
-            
+
             MatchDetailsTabs = new ObservableCollection<MatchDetailsTab>(matchDetailsTabs);
             MatchDetailsTabsViews = new ObservableCollection<ContentView>(matchDetailsTabsViews);
             await Task.CompletedTask;
         }
 
-        public void ClearMatchDetails()
-        {
-            Summary = null;
-            Lineups = null;
-            Commentary = null;
-            MatchStatistics = null;
-        }
-
-        //**********************//
-        //    PRIVATE METHODS   //
-        //**********************//
-        private async Task LoadMatchDataAsync()
-        {
-            _matchDetails = AllMatchesDetails.FirstOrDefault(x => x.MatchDetailsID == SelectedMatch.MatchID);
-            if (_matchDetails == null || _matchDetails.IsDataLoaded == false)
-            {
-                IsLoadingSelectedMatch = true;
-                _matchDetails = await DystirService.GetMatchDetailsAsync(SelectedMatch.MatchID);
-                _matchDetails.IsDataLoaded = true;
-                SelectedMatch = _matchDetails.Match;
-                SetMatchesBySelectedDate();
-                SetMatchDetails(_matchDetails);
-                _ = PopulateMatchDetailsTabs(SelectedMatch);
-            }
-            IsLoadingSelectedMatch = false;
-        }
-
-        private async Task LoadDataAsync(MatchDetails matchDetails)
+        private async Task PopulateMatchDetails(MatchDetails matchDetails)
         {
             if (matchDetails != null)
             {
-                var loadLineupsTask = LoadLineupsAsync(matchDetails);
-                var loadSummaryTask = LoadSummaryAsync(matchDetails);
-                var loadCommentaryTask = LoadCommentaryAsync(matchDetails);
-                var loadMatchStatisticsTask = LoadMatchStatisticsAsync(matchDetails);
-                await Task.WhenAll(loadLineupsTask, loadSummaryTask, loadCommentaryTask, loadMatchStatisticsTask);
+                await Task.WhenAll(LoadSummaryAsync(matchDetails), LoadLineupsAsync(matchDetails), LoadCommentaryAsync(matchDetails), LoadMatchStatisticsAsync(matchDetails), LoadLiveStandingAsync(matchDetails));
             }
-        }
-
-        private void DystirService_OnShowLoading()
-        {
-            if (SelectedMatch != null)
-            {
-                IsLoadingSelectedMatch = true;
-            }
-        }
-
-        private void DystirService_OnMatchDetailsLoaded(Match match)
-        {
-            if (SelectedMatch?.MatchID == match?.MatchID)
-            {
-                _matchDetails.IsDataLoaded = false;
-                _ = LoadMatchDataAsync();
-            }
-            else
-            {
-                SetMatchesBySelectedDate();
-            }
-        }
-
-        private void DystirService_OnFullDataLoaded()
-        {
-            _matchDetails.IsDataLoaded = false;
-            _ = LoadMatchDataAsync();
+            IsLoadingSelectedMatch = false;
         }
 
         private void SetMatchDetails(MatchDetails matchDetails)
         {
             if (matchDetails != null)
             {
-                var foundMatchDetails = AllMatchesDetails.FirstOrDefault(x => x.MatchDetailsID == matchDetails.MatchDetailsID);
+                var foundMatchDetails = DystirService.AllMatchesDetails.FirstOrDefault(x => x.MatchDetailsID == SelectedMatch.MatchID);
                 if (foundMatchDetails != null)
                 {
-                    AllMatchesDetails.Remove(foundMatchDetails);
+                    DystirService.AllMatchesDetails.Remove(foundMatchDetails);
                 }
-                AllMatchesDetails.Add(matchDetails);
-                //_ = LoadDataAsync(matchDetails);
+                DystirService.AllMatchesDetails.Add(matchDetails);
             }
         }
 
@@ -302,67 +233,93 @@ namespace Dystir.ViewModels
 
         private async Task LoadSummaryAsync(MatchDetails matchDetails)
         {
-            Summary = new ObservableCollection<SummaryEventOfMatch>(GetSummary(matchDetails));
+            if (Summary == null)
+            {
+                Summary = new ObservableCollection<SummaryEventOfMatch>(GetSummary(matchDetails));
+            }
             await Task.CompletedTask;
         }
 
         private async Task LoadLineupsAsync(MatchDetails matchDetails)
         {
-            var homeTeamLineups = new ObservableCollection<PlayerOfMatch>();
-            var awayTeamLineups = new ObservableCollection<PlayerOfMatch>();
-            var homeTeamSubtitutions = new ObservableCollection<PlayerOfMatch>();
-            var awayTeamSubtitutions = new ObservableCollection<PlayerOfMatch>();
-
-            var starterPlayers = matchDetails.PlayersOfMatch.Where(x => x.PlayingStatus == 1)
-                .OrderByDescending(x => x.Position == "GK")
-                .ThenBy(x => x.Number);
-            var substitutionPlayers = matchDetails.PlayersOfMatch.Where(x => x.PlayingStatus == 2)
-                .OrderByDescending(x => x.Position == "GK")
-                .ThenBy(x => x.Number);
-
-            var homeTeamLineupsTask = Task.Run(() =>
+            if (Lineups == null)
             {
-                homeTeamLineups = new ObservableCollection<PlayerOfMatch>(starterPlayers.Where(x => x.TeamName == matchDetails?.Match.HomeTeam));
-            });
-            var awayTeamLineupsTask = Task.Run(() =>
-            {
-                awayTeamLineups = new ObservableCollection<PlayerOfMatch>(starterPlayers.Where(x => x.TeamName == matchDetails?.Match.AwayTeam));
-            });
-            var homeTeamSubtitutionsTask = Task.Run(() =>
-            {
-                homeTeamSubtitutions = new ObservableCollection<PlayerOfMatch>(substitutionPlayers.Where(x => x.TeamName == matchDetails?.Match.HomeTeam));
-            });
-            var awayTeamSubtitutionsTask = Task.Run(() =>
-            {
-                awayTeamSubtitutions = new ObservableCollection<PlayerOfMatch>(substitutionPlayers.Where(x => x.TeamName == matchDetails?.Match.AwayTeam));
-            });
+                var starterPlayers = matchDetails.PlayersOfMatch.Where(x => x.PlayingStatus == 1)
+                    .OrderByDescending(x => x.Position == "GK")
+                    .ThenBy(x => x.Number);
+                var substitutionPlayers = matchDetails.PlayersOfMatch.Where(x => x.PlayingStatus == 2)
+                    .OrderByDescending(x => x.Position == "GK")
+                    .ThenBy(x => x.Number);
 
-            await Task.WhenAll(homeTeamLineupsTask, awayTeamLineupsTask, homeTeamSubtitutionsTask, awayTeamSubtitutionsTask);
+                var homeTeamLineups = new ObservableCollection<PlayerOfMatch>(starterPlayers.Where(x => x.TeamName == matchDetails?.Match.HomeTeam));
+                var awayTeamLineups = new ObservableCollection<PlayerOfMatch>(starterPlayers.Where(x => x.TeamName == matchDetails?.Match.AwayTeam));
+                var homeTeamSubtitutions = new ObservableCollection<PlayerOfMatch>(substitutionPlayers.Where(x => x.TeamName == matchDetails?.Match.HomeTeam));
+                var awayTeamSubtitutions = new ObservableCollection<PlayerOfMatch>(substitutionPlayers.Where(x => x.TeamName == matchDetails?.Match.AwayTeam));
 
-            Lineups = new ObservableCollection<PlayersInRow>(new Lineups(homeTeamLineups, awayTeamLineups, homeTeamSubtitutions, awayTeamSubtitutions));
+                var lineups = new ObservableCollection<PlayersInLineups>();
+
+                var biggerLineups = homeTeamLineups.Count >= awayTeamLineups.Count ? homeTeamLineups : awayTeamLineups;
+                for (int i = 0; i < biggerLineups.Count; i++)
+                {
+                    var playerInLineups = new PlayersInLineups()
+                    {
+                        HomePlayer = homeTeamLineups.Count > i ? homeTeamLineups[i] : null,
+                        AwayPlayer = awayTeamLineups.Count > i ? awayTeamLineups[i] : null
+                    };
+                    lineups.Add(playerInLineups);
+                }
+
+                var biggerSubstitution = homeTeamSubtitutions.Count >= awayTeamLineups.Count ? homeTeamSubtitutions : awayTeamSubtitutions;
+                for (int i = 0; i < biggerSubstitution.Count; i++)
+                {
+                    var playerInLineups = new PlayersInLineups()
+                    {
+                        HomePlayer = homeTeamSubtitutions.Count > i ? homeTeamSubtitutions[i] : null,
+                        AwayPlayer = awayTeamSubtitutions.Count > i ? awayTeamSubtitutions[i] : null,
+                        IsFirstSub = i == 0
+                    };
+                    lineups.Add(playerInLineups);
+                }
+
+                Lineups = new ObservableCollection<PlayersInLineups>(lineups);
+            }
+            await Task.CompletedTask;
         }
 
         private async Task LoadCommentaryAsync(MatchDetails matchDetails)
         {
-            Commentary = new ObservableCollection<SummaryEventOfMatch>(GetCommentary(matchDetails));
-            //Commentary = new ObservableCollection<CommentaryEventGroup>(commentary.GroupBy(x => x.EventOfMatch.EventOfMatchID).Select(group => new CommentaryEventGroup(group.Key, new ObservableCollection<SummaryEventOfMatch>(group))));
-
+            if (Commentary == null)
+            {
+                Commentary = new ObservableCollection<SummaryEventOfMatch>(GetCommentary(matchDetails));
+            }
             await Task.CompletedTask;
         }
 
         private async Task LoadMatchStatisticsAsync(MatchDetails matchDetails)
         {
-            MatchStatistics = new MatchStatistics(matchDetails.EventsOfMatch, matchDetails.Match);
+            if (MatchStatistics == null)
+            {
+                MatchStatistics = new MatchStatistics(matchDetails.EventsOfMatch, matchDetails.Match);
+            }
             await Task.CompletedTask;
         }
 
-        private ObservableCollection<PlayerOfMatch> GetLineups(MatchDetails matchDetails, string Team, int playingStatus)
+        private async Task LoadLiveStandingAsync(MatchDetails matchDetails)
+        {
+            if (LiveStanding == null)
+            {
+                LiveStanding = LiveStandingService.GetStanding(matchDetails.Match);
+            }
+            await Task.CompletedTask;
+        }
+
+        private static ObservableCollection<PlayerOfMatch> GetLineups(MatchDetails matchDetails, string Team, int playingStatus)
         {
             var lineUps = matchDetails.PlayersOfMatch.Where(x => x.TeamName == Team && x.PlayingStatus == playingStatus).OrderBy(x => x.Number);
             return new ObservableCollection<PlayerOfMatch>(lineUps);
         }
 
-        private ObservableCollection<SummaryEventOfMatch> GetSummary(MatchDetails matchDetails)
+        private static ObservableCollection<SummaryEventOfMatch> GetSummary(MatchDetails matchDetails)
         {
             List<SummaryEventOfMatch> listSummaryEvents = GetEventOfMatchList(matchDetails, true);
             if (matchDetails.Match?.StatusID < 12)
@@ -372,14 +329,14 @@ namespace Dystir.ViewModels
             return new ObservableCollection<SummaryEventOfMatch>(listSummaryEvents);
         }
 
-        private ObservableCollection<SummaryEventOfMatch> GetCommentary(MatchDetails matchDetails)
+        private static ObservableCollection<SummaryEventOfMatch> GetCommentary(MatchDetails matchDetails)
         {
             List<SummaryEventOfMatch> listCommentaryEvents = GetEventOfMatchList(matchDetails, false);
             listCommentaryEvents.Reverse();
             return new ObservableCollection<SummaryEventOfMatch>(listCommentaryEvents);
         }
 
-        private List<SummaryEventOfMatch> GetEventOfMatchList(MatchDetails matchDetails, bool isSummaryList)
+        private static List<SummaryEventOfMatch> GetEventOfMatchList(MatchDetails matchDetails, bool isSummaryList)
         {
             List<SummaryEventOfMatch> eventOfMatchesList = new List<SummaryEventOfMatch>();
             Match selectedMatch = matchDetails.Match;
@@ -497,6 +454,29 @@ namespace Dystir.ViewModels
             }
 
             return eventOfMatchesList.ToList();
+        }
+
+        //**********************//
+        //        EVENTS        //
+        //**********************//
+        private void DystirService_OnShowLoading()
+        {
+            _ = LoadMatchDetailsAsync();
+        }
+
+        private void DystirService_OnMatchDetailsLoaded(MatchDetails matchDetails)
+        {
+            if (SelectedMatch?.MatchID == matchDetails?.Match?.MatchID)
+            {
+                SetMatchDetails(matchDetails);
+                _ = PopulateMatchDetails(matchDetails);
+            }
+            SetMatchesBySelectedDate();
+        }
+
+        private void DystirService_OnFullDataLoaded()
+        {
+            _ = LoadMatchDetailsAsync();
         }
     }
 }

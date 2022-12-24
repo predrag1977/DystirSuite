@@ -1,1 +1,1 @@
-dotnet publish -f:net7.0-ios -c:Release
+dotnet publish -f:net7.0-ios -c:ReleaseApple specific password: igco-kxfv-rrhp-tdze

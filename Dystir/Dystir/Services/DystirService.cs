@@ -29,7 +29,8 @@ namespace Dystir.Services
         public ObservableCollection<Sponsor> AllSponsors = new ObservableCollection<Sponsor>();
         public ObservableCollection<Standing> Standings;
         public ObservableCollection<CompetitionStatistic> CompetitionStatistics;
-        public Match SelectedMatch;
+        public ObservableCollection<MatchDetails> AllMatchesDetails = new ObservableCollection<MatchDetails>();
+        public ObservableCollection<MatchDetailsViewModel> AllMatchesDetailViewModels = new ObservableCollection<MatchDetailsViewModel>();
 
         //**************************//
         //          EVENTS          //
@@ -43,8 +44,8 @@ namespace Dystir.Services
         public event Action OnFullDataLoaded;
         public void FullDataLoaded() => OnFullDataLoaded?.Invoke();
 
-        public event Action<Match> OnMatchDetailsLoaded;
-        public void MatchDetailsLoaded(Match match) => OnMatchDetailsLoaded?.Invoke(match);
+        public event Action<MatchDetails> OnMatchDetailsLoaded;
+        public void MatchDetailsLoaded(MatchDetails matchDetails) => OnMatchDetailsLoaded?.Invoke(matchDetails);
 
         //**************************//
         //        CONSTRUCTOR       //
@@ -160,7 +161,7 @@ namespace Dystir.Services
                         allMatches.Add(match);
                         AllMatches = new ObservableCollection<Match>(allMatches);
 
-                        MatchDetailsLoaded(match);
+                        MatchDetailsLoaded(matchDetails);
                     }
                 }
                 catch(Exception ex)

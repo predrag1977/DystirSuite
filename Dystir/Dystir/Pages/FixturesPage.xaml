@@ -119,7 +119,11 @@
                                WidthRequest="30"
                                HeightRequest="30" />
 
-            <BoxView Grid.Row="3" />
+            <StackLayout Grid.Row="4"
+                         HeightRequest="2"
+                         Orientation="Horizontal"
+                         BackgroundColor="#181818"
+                         HorizontalOptions="FillAndExpand"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

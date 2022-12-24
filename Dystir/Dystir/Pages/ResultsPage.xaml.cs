@@ -7,16 +7,16 @@ namespace Dystir.Pages;
 
 public partial class ResultsPage : ContentPage
 {
-    private readonly ResultsViewModel _resultsViewModel;
+    private readonly ResultsViewModel resultsViewModel;
 
     public ResultsPage(ResultsViewModel resultsViewModel)
     {
-        _resultsViewModel = resultsViewModel;
+        this.resultsViewModel = resultsViewModel;
 
         InitializeComponent();
-        BindingContext = _resultsViewModel;
+        BindingContext = this.resultsViewModel;
 
-        _resultsViewModel.LoadDataAsync();
+        this.resultsViewModel.LoadDataAsync();
     }
 
     private async void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -24,8 +24,6 @@ public partial class ResultsPage : ContentPage
         var collectionView = (sender as CollectionView);
         if (collectionView.SelectedItem is Match selectedMatch)
         {
-            //await Shell.Current.Navigation.PushAsync(new MatchDetailsPage(selectedMatch));
-
             await Shell.Current.GoToAsync($"{nameof(ResultsPage)}/{nameof(MatchDetailsPage)}?matchID={selectedMatch.MatchID}");
 
             collectionView.SelectedItem = null;
@@ -34,9 +32,9 @@ public partial class ResultsPage : ContentPage
 
     async void RefreshButton_Clicked(object sender, EventArgs e)
     {
-        if (_resultsViewModel.IsLoading == false)
+        if (resultsViewModel.IsLoading == false)
         {
-            await _resultsViewModel.DystirService.LoadDataAsync(true);
+            await resultsViewModel.DystirService.LoadDataAsync(true);
         }
     }
 }

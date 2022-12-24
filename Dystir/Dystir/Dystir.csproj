@@ -108,4 +108,12 @@
 	    <DependentUpon>Resources.fo.resx</DependentUpon>
 	  </Compile>
 	</ItemGroup>
+	<ItemGroup>
+	  <MauiXaml Update="Views\LiveStandingView.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MatchesPopupView.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	</ItemGroup>
 </Project>

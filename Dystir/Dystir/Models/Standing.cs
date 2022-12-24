@@ -4,18 +4,6 @@ using System.Runtime.Serialization;
 
 namespace Dystir.Models
 {
-    //public class Standing
-    //{
-    //    //[JsonProperty("StandingCompetitionName")]
-    //    //public string StandingCompetitionName { get; set; }
-
-    //    //[JsonProperty("TeamStandings")]
-    //    //public IEnumerable<TeamStanding> TeamStandings { get; internal set; }
-
-        
-
-    //}
-
     [DataContract]
     public class Standing
     {
