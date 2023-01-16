@@ -56,12 +56,13 @@ namespace Dystir.ViewModels
         //**************************//
         //      PRIVATE METHODS     //
         //**************************//
-        public void SetSponsors()
+        public async Task SetSponsors()
         {
             Sponsors = DystirService.AllSponsors;
             var sponsors = new ObservableCollection<Sponsor>(Sponsors.OrderBy(a => Guid.NewGuid()));
             PrimarySponsors = new ObservableCollection<Sponsor>(sponsors.Where(x => x.SponsorID < 100).OrderBy(a => Guid.NewGuid()));
             SecondarySponsors = new ObservableCollection<Sponsor>(PrimarySponsors?.Take(2));
+            await Task.CompletedTask;
         }
 
         //**************************//

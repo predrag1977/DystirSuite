@@ -2,8 +2,8 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:views="clr-namespace:Dystir.Views"
-             xmlns:viewModels="clr-namespace:Dystir.ViewModels"
-             x:DataType="viewModels:MatchDetailsViewModel"
+             xmlns:models="clr-namespace:Dystir.Models"
+             x:DataType="models:MatchDetails"
              x:Class="Dystir.Views.CommentaryView">
 
     <ListView SelectionMode="None"

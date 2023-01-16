@@ -14,6 +14,6 @@ public partial class LineupsView : ContentView
     async void TapGestureRecognizer_Tapped(System.Object sender, System.EventArgs e)
     {
         PlayerOfMatch playerOfMatch = (e as TappedEventArgs).Parameter as PlayerOfMatch;
-        await Shell.Current.CurrentPage.ShowPopupAsync(new PlayerInfoPopupView(playerOfMatch));
+        await App.Current.MainPage.ShowPopupAsync(new PlayerInfoPopupView(playerOfMatch));
     }
 }

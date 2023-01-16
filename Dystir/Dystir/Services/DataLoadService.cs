@@ -15,9 +15,8 @@ namespace Dystir.Services
     public class DataLoadService
     {
         //private const string Url = "https://www.faroekickoff.com/api/";
-        //private const string Url = "http://localhost:4621/api/";
-        //private const string Url = "http://localhost:6061/api/";
-        private const string Url = "https://www.dystir.fo/api/";
+        private const string Url = "http://localhost:51346/api/";
+        //private const string Url = "https://www.dystir.fo/api/";
 
         public async Task<ObservableCollection<Match>> GetMatchesAsync()
         {
@@ -92,7 +91,7 @@ namespace Dystir.Services
             return await Task.FromResult(competitionStatistics);
         }
 
-        public async Task<MatchDetails> GetMatchDetailsAsync(int? matchID)
+        public static async Task<MatchDetails> GetMatchDetailsAsync(int? matchID)
         {
             MatchDetails matchDetails = new MatchDetails();
             HttpClient client = new HttpClient();

@@ -6,6 +6,7 @@
              xmlns:localization="clr-namespace:Dystir.Resources.Localization"
              xmlns:views="clr-namespace:Dystir.Views"
              xmlns:models="clr-namespace:Dystir.Models"
+             NavigationPage.HasNavigationBar="False"
              x:DataType="viewModels:ResultsViewModel">
 
     <ContentPage.Content>

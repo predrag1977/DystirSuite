@@ -25,18 +25,18 @@ namespace Dystir.Services
         //**********************//
         public Standing GetStanding(Match match)
         {
-            var matchesList = _dystirService.AllMatches;
+            var matchesList = _dystirService.AllMatches.Select(x => x.Match);
 
             string competititionName = match?.MatchTypeName;
             Standing standing = new Standing()
             {
                 StandingCompetitionName = competititionName,
-                TeamStandings = LiveStandingService.GetStandings(competititionName, matchesList)
+                TeamStandings = GetStandings(competititionName, matchesList)
             };
             foreach (TeamStanding teamStanding in standing.TeamStandings)
             {
                 teamStanding.Position = standing.TeamStandings.ToList().IndexOf(teamStanding) + 1;
-                teamStanding.PositionColor = LiveStandingService.GetPositionColor(teamStanding);
+                teamStanding.PositionColor = GetPositionColor(teamStanding);
             }
             return standing;
         }
@@ -59,13 +59,13 @@ namespace Dystir.Services
                             IsLive = match.StatusID > 1 && match.StatusID < 6
                         };
                         teamStandings.Add(teamStanding);
-                        LiveStandingService.CalculatePoints(teamStanding, match, match.HomeTeamScore, match.AwayTeamScore);
+                        CalculatePoints(teamStanding, match, match.HomeTeamScore, match.AwayTeamScore);
                     }
                     else
                     {
                         TeamStanding teamStanding = teamStandings.FirstOrDefault(x => x.Team.Trim() == match.HomeTeam.Trim());
                         teamStanding.IsLive = match.StatusID > 1 && match.StatusID < 6;
-                        LiveStandingService.CalculatePoints(teamStanding, match, match.HomeTeamScore, match.AwayTeamScore);
+                        CalculatePoints(teamStanding, match, match.HomeTeamScore, match.AwayTeamScore);
                     }
 
                     if (!teamStandings.Any(x => x.Team.Trim() == match.AwayTeam.Trim()))

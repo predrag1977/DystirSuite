@@ -3,8 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:views="clr-namespace:Dystir.Views"
              xmlns:models="clr-namespace:Dystir.Models"
-             xmlns:viewModels="clr-namespace:Dystir.ViewModels"
-             x:DataType="viewModels:MatchDetailsViewModel"
+             x:DataType="models:MatchDetails"
              x:Class="Dystir.Views.LineupsView">
     
     <ListView SelectionMode="None"
@@ -12,7 +11,7 @@
               SeparatorVisibility="None"
               Margin="5,0"
               VerticalScrollBarVisibility="Never"
-              CachingStrategy="RecycleElementAndDataTemplate"
+              CachingStrategy="RecycleElement"
               VerticalOptions="FillAndExpand"
               HasUnevenRows="True"
               ItemsSource="{Binding Lineups}">
@@ -22,29 +21,29 @@
                     <Grid ColumnDefinitions="*,*"
                           RowDefinitions="Auto,Auto">
                         <Grid Grid.ColumnSpan="2"
-                                IsVisible="{Binding IsFirstSub}">
+                              IsVisible="{Binding IsFirstSub}">
                             <StackLayout HeightRequest="1"
-                                            Margin="0,8"
-                                            VerticalOptions="Center"
-                                            HorizontalOptions="FillAndExpand"
-                                            BackgroundColor="Khaki" />
+                                         Margin="0,8"
+                                         VerticalOptions="Center"
+                                         HorizontalOptions="FillAndExpand"
+                                         BackgroundColor="Khaki" />
                         </Grid>
                         <views:PlayerView Grid.Column="0"
-                                            Grid.Row="1"
-                                            BindingContext="{Binding HomePlayer}">
+                                          Grid.Row="1"
+                                          BindingContext="{Binding HomePlayer}">
                             <views:PlayerView.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"
-                                                        NumberOfTapsRequired="1"
-                                                        CommandParameter="{Binding}" />
+                                                      NumberOfTapsRequired="1"
+                                                      CommandParameter="{Binding}" />
                             </views:PlayerView.GestureRecognizers>
                         </views:PlayerView>
                         <views:PlayerView Grid.Column="1"
-                                            Grid.Row="1"
-                                            BindingContext="{Binding AwayPlayer}">
+                                          Grid.Row="1"
+                                          BindingContext="{Binding AwayPlayer}">
                             <views:PlayerView.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"
-                                                        NumberOfTapsRequired="1"
-                                                        CommandParameter="{Binding}" />
+                                                      NumberOfTapsRequired="1"
+                                                      CommandParameter="{Binding}" />
                             </views:PlayerView.GestureRecognizers>
                         </views:PlayerView>
                     </Grid>
@@ -52,7 +51,6 @@
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>
-    
     
 </ContentView>
 

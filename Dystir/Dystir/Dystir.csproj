@@ -46,7 +46,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.png" BaseSize="100,100" />
+		<MauiIcon Include="Resources\AppIcon\appicon.png" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" BaseSize="200,200" Color="#2F4F2F" />
@@ -83,9 +83,12 @@
 	  <MauiImage Include="Resources\Images\penaltyscored.svg" BaseSize="20,20" />
 	  <MauiImage Include="Resources\Images\corner.svg" BaseSize="20,20" />
 	  <MauiImage Include="Resources\Images\bigchance.svg" BaseSize="20,20" />
+	  <MauiImage Include="Resources\Images\ontarget.svg" BaseSize="20,20" TintColor="#A9A9A9" />
+	  <MauiImage Include="Resources\Images\offtarget.svg" BaseSize="20,20" TintColor="#A9A9A9" />
+	  <MauiImage Include="Resources\Images\blockedshot.svg" BaseSize="20,20" TintColor="#A9A9A9" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.1" />
+	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.2" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 	  <PackageReference Include="Microsoft.AppCenter.Analytics" Version="5.0.1" />
 	  <PackageReference Include="CommunityToolkit.Maui" Version="3.1.0" />

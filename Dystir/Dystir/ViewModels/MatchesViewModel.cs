@@ -92,7 +92,7 @@ namespace Dystir.ViewModels
         private void SetMatches()
         {
             SetMatchesDays();
-            var matches = DystirService.AllMatches?.OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).Where(x => x.Time?.Date == MatchesDaySelected.Date.Date);
+            var matches = DystirService.AllMatches?.Select(x=>x.Match).OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).Where(x => x.Time?.Date == MatchesDaySelected.Date.Date);
             MatchesGroupList = new ObservableCollection<MatchGroup>(matches.GroupBy(x => x.MatchTypeName).Select(group => new MatchGroup(group.Key, new ObservableCollection<Match>(group))));
         }
 

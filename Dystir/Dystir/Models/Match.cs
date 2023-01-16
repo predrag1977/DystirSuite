@@ -351,9 +351,10 @@ namespace Dystir.Models
             {
                 matchTime = string.Empty;
             }
+            string matchType = !string.IsNullOrWhiteSpace(MatchTypeName) ? MatchTypeName + " - " : string.Empty;
             string matchRound = !string.IsNullOrWhiteSpace(RoundName) ? RoundName + " - " : string.Empty;
             string matchLocation = Location;
-            matchInfo = matchTime + matchRound + matchLocation;
+            matchInfo = matchTime + matchType + matchRound + matchLocation;
             MatchInfo = matchInfo.Trim();
         }
 

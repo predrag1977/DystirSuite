@@ -17,7 +17,7 @@ public partial class App : Application
         //AppAnalytics();
         SetLanguage();
 
-        MainPage = new AppShell();
+        MainPage = new NavigationPage(new AppShell());
 
         _ = _dystirService.LoadDataAsync(true);
 
