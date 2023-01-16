@@ -9,76 +9,68 @@ using Microsoft.Maui.Controls;
 
 namespace Dystir.Pages;
 
-[QueryProperty(nameof(MatchID), "matchID")]
+//[QueryProperty(nameof(MatchID), "matchID")]
 public partial class MatchDetailsPage : ContentPage
 {
-    public int MatchID { get; set; } = 0;
+    public int MatchID = 0;
+    private readonly MatchDetails _matchDetails;
 
-    private MatchDetailsViewModel matchDetailsViewModel;
-    private readonly LiveStandingService liveStandingService;
-    private readonly DystirService dystirService;
-
-    public MatchDetailsPage(DystirService dystirService, LiveStandingService liveStandingService)
+    public MatchDetailsPage(DystirService dystirService, LiveStandingService liveStandingService, Match match)
     {
-        this.liveStandingService = liveStandingService;
-        this.dystirService = dystirService;
+        MatchID = match.MatchID;
+        _matchDetails = new MatchDetails(dystirService, liveStandingService);
+        _matchDetails.Match = match;
+
         InitializeComponent();
-    }
+        BindingContext = _matchDetails;
 
-    protected override void OnAppearing()
-    {
-        matchDetailsViewModel = dystirService.AllMatchesDetailViewModels.FirstOrDefault(x => x.SelectedMatch.MatchID == MatchID);
-        if(matchDetailsViewModel == null)
-        {
-            matchDetailsViewModel = new MatchDetailsViewModel(MatchID, dystirService, liveStandingService);
-        }
-        BindingContext = matchDetailsViewModel;
+        _matchDetails.IsLoadingSelectedMatch = true;
+        _ = _matchDetails.Startup();
     }
 
     async void BackButton_Clicked(object sender, EventArgs e)
     {
-        await Shell.Current.Navigation.PopAsync();
+        await App.Current.MainPage.Navigation.PopAsync();
     }
 
     void RefreshButton_Clicked(object sender, EventArgs e)
     {
-        if(!matchDetailsViewModel.IsLoadingSelectedMatch)
+        if(!_matchDetails.IsLoadingSelectedMatch)
         {
-            //_ = matchDetailsViewModel.LoadMatchDataAsync(MatchID);
+            _ = _matchDetails.Startup();
         }
         return;
     }
 
     async void Button_Clicked(object sender, System.EventArgs e)
     {
-        await Shell.Current.CurrentPage.ShowPopupAsync(new MatchesPopupView(matchDetailsViewModel));
+        await App.Current.MainPage.ShowPopupAsync(new MatchesPopupView(_matchDetails));
     }
 
     void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var selectedItem = (sender as CollectionView).SelectedItem;
-        var position = matchDetailsViewModel.MatchDetailsTabs.IndexOf(selectedItem as MatchDetailsTab);
+        var position = _matchDetails.MatchDetailsTabs.IndexOf(selectedItem as MatchDetailsTab);
         MatchDetailsTabsCarouselView.Position = position;
         _ = ChangeMatchDetailsView(position);
     }
 
     void MatchDetailsTabsCarouselView_PositionChanged(object sender, PositionChangedEventArgs e)
     {
-        _ = ChangeMatchDetailsView(MatchDetailsTabsCarouselView.Position);
+        //_ = ChangeMatchDetailsView(MatchDetailsTabsCarouselView.Position);
     }
 
     private async Task ChangeMatchDetailsView(int position)
     {
-        matchDetailsViewModel.SetDetailsTabSelected(position);
-        matchDetailsViewModel.IsLoadingSelectedMatch = true;
-        await Task.Delay(500);
-        matchDetailsViewModel.MatchDetailsTabsViews[position].BindingContext = matchDetailsViewModel;
-
-        matchDetailsViewModel.IsLoadingSelectedMatch = false;
+        _matchDetails.SetDetailsTabSelected(position);
+        _matchDetails.IsLoadingSelectedMatch = _matchDetails.MatchDetailsTabsViews[position].BindingContext == null;
+        await Task.Delay(200);
+        _matchDetails.MatchDetailsTabsViews[position].BindingContext = _matchDetails;
+        _matchDetails.IsLoadingSelectedMatch = false;
     }
 
     void CollectionView_Loaded(System.Object sender, System.EventArgs e)
     {
-        (sender as CollectionView).ItemsLayout = new GridItemsLayout(matchDetailsViewModel.MatchDetailsTabs.Count, ItemsLayoutOrientation.Vertical);
+        (sender as CollectionView).ItemsLayout = new GridItemsLayout(_matchDetails?.MatchDetailsTabs?.Count ?? 1, ItemsLayoutOrientation.Vertical);
     }
 }

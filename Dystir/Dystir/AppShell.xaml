@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:localization="clr-namespace:Dystir.Resources.Localization" 
     xmlns:pages="clr-namespace:Dystir.Pages"
+    xmlns:viewmodels="clr-namespace:Dystir.ViewModels"
+    x:DataType="viewmodels:DystirViewModel"
     BackgroundColor="Black">
 
     <TabBar>
@@ -28,10 +30,7 @@
                           Icon="fixtures"
                           ContentTemplate="{DataTemplate pages:FixturesPage}" />
         </Tab>
-
-        
     </TabBar>
 
-    
 </Shell>
 

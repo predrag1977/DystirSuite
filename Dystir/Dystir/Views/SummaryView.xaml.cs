@@ -9,4 +9,9 @@ public partial class SummaryView : ContentView
 	{
         InitializeComponent();
     }
+
+    void ContentView_BindingContextChanged(System.Object sender, System.EventArgs e)
+    {
+        var t = BindingContext;
+    }
 }

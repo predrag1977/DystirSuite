@@ -7,9 +7,9 @@ namespace Dystir.Views;
 
 public partial class MatchesPopupView : Popup
 {
-    public MatchesPopupView(MatchDetailsViewModel matchDetailsViewModel)
+    public MatchesPopupView(MatchDetails matchDetails)
     {
         InitializeComponent();
-        BindingContext = matchDetailsViewModel;
+        BindingContext = matchDetails;
     }
 }

@@ -24,7 +24,7 @@ namespace Dystir.ViewModels
         public string ResultsCompetitionSelected
         {
             get { return resultsCompetitionSelected; }
-            set { resultsCompetitionSelected = value; OnPropertyChanged(); SetResults(); }
+            set { resultsCompetitionSelected = value; OnPropertyChanged(); }
         }
 
         ObservableCollection<string> resultsCompetitions = new ObservableCollection<string>();
@@ -47,18 +47,18 @@ namespace Dystir.ViewModels
             timeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
             timeService.StartSponsorsTime();
 
-            SetResultCompetitions();
+            _ = SetResultCompetitions();
         }
 
         //**********************//
         //    PUBLIC METHODS    //
         //**********************//
-        public async void LoadDataAsync()
+        public async Task LoadDataAsync()
         {
-            await Task.Delay(100);
-            SetResultCompetitions();
-            SetResults();
-            SetSponsors();
+            await Task.Delay(200);
+            _ = SetResultCompetitions();
+            _ = SetResults();
+            _ = SetSponsors();
             IsLoading = false;
         }
 
@@ -72,26 +72,26 @@ namespace Dystir.ViewModels
 
         private void DystirService_OnFullDataLoaded()
         {
-            LoadDataAsync();
+            _ = LoadDataAsync();
         }
 
         private void DystirService_OnMatchDetailsLoaded(MatchDetails matchDetails)
         {
-            LoadDataAsync();
+            _ = LoadDataAsync();
         }
 
         private void TimeService_OnSponsorsTimerElapsed()
         {
-            SetSponsors();
+            _ = SetSponsors();
         }
 
-        private void SetResultCompetitions()
+        private async Task SetResultCompetitions()
         {
             var toDate = DateTime.Now.Date.AddDays(0);
-            var fromDate = new DateTime(toDate.Year - 1, 12, 31);
+            var fromDate = new DateTime(toDate.Year - 2, 12, 31);
 
-            var resultsMatches = DystirService.AllMatches?.Where(x => x.Time > fromDate && x.Time < toDate || (x.StatusID == 13 || x.StatusID == 12));
-            var orderedResultsMatches = resultsMatches.OrderBy(x => x.MatchTypeID).ThenByDescending(x => x.Time);
+            var resultsMatches = DystirService.AllMatches?.Where(x => x.Match.Time > fromDate && x.Match.Time < toDate || (x.Match.StatusID == 13 || x.Match.StatusID == 12));
+            var orderedResultsMatches = resultsMatches.OrderBy(x => x.Match.MatchTypeID).ThenByDescending(x => x.Match.Time).Select(x=>x.Match);
             AllResultsMatches = new ObservableCollection<Match>(orderedResultsMatches);
 
             var allResultsGroupList = new ObservableCollection<IGrouping<string, Match>>(AllResultsMatches?.GroupBy(x => x.MatchTypeName));
@@ -109,15 +109,17 @@ namespace Dystir.ViewModels
             {
                 ResultsCompetitionSelected = ResultsCompetitions.FirstOrDefault();
             }
+            await Task.CompletedTask;
         }
 
-        private void SetResults()
+        private async Task SetResults()
         {
             var resultsMatches = AllResultsMatches?.Where(x => x.MatchTypeName == ResultsCompetitionSelected)
                 .OrderByDescending(x => x.RoundID)
                 .ThenByDescending(x => x.Time)
                 .ThenBy(x => x.MatchTypeID);
             ResultsGroupList = new ObservableCollection<MatchGroup>(resultsMatches.GroupBy(x => x.RoundName).Select(group => new MatchGroup(group.Key, new ObservableCollection<Match>(group))));
+            await Task.CompletedTask;
         }
     }
 }

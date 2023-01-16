@@ -9,12 +9,10 @@ namespace Dystir.Pages;
 public partial class MatchesPage : ContentPage
 {
     private readonly MatchesViewModel matchesViewModel;
-    private readonly LiveStandingService liveStandingService;
 
-    public MatchesPage(MatchesViewModel matchesViewModel, LiveStandingService liveStandingService)
+    public MatchesPage(DystirService dystirService, TimeService timeService)
     {
-        this.matchesViewModel = matchesViewModel;
-        this.liveStandingService = liveStandingService;
+        this.matchesViewModel = new MatchesViewModel(dystirService, timeService);
 
         InitializeComponent();
         BindingContext = this.matchesViewModel;

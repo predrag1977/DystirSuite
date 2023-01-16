@@ -2,18 +2,18 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Dystir.Pages.MatchDetailsPage"
-             xmlns:viewModels="clr-namespace:Dystir.ViewModels"
              xmlns:views="clr-namespace:Dystir.Views"
              xmlns:models="clr-namespace:Dystir.Models"
              BackgroundColor="Black"
-             x:DataType="viewModels:MatchDetailsViewModel">
+             NavigationPage.HasNavigationBar="False"
+             x:DataType="models:MatchDetails">
 
     <Grid RowDefinitions="Auto,*,Auto,Auto" >
         <Grid Grid.Row="0"
               RowDefinitions="50,Auto,Auto,Auto,50,Auto">
 
             <Grid Grid.Row="0"
-                  BindingContext="{Binding SelectedMatch}"
+                  BindingContext="{Binding Match}"
                   ColumnDefinitions="50,*,20,*,50"> 
                 <Button Grid.Column="0"
                         Padding="0"
@@ -70,7 +70,7 @@
                          BackgroundColor="#181818"
                          HorizontalOptions="FillAndExpand"/>
 
-            <views:MatchInDetailsView Grid.Row="2" BindingContext="{Binding SelectedMatch}" />
+            <views:MatchInDetailsView Grid.Row="2" BindingContext="{Binding Match}" />
 
             <StackLayout Grid.Row="3"
                          Margin="0,5,0,0"
@@ -81,12 +81,12 @@
 
             <CollectionView Grid.Row="4"
                             HeightRequest="50"
-                            ItemsSource="{Binding MatchDetailsTabs}"
                             SelectionMode="Single"
                             SelectionChanged="CollectionView_SelectionChanged"
                             HorizontalOptions="Fill"
                             BackgroundColor="Black"
-                            Loaded="CollectionView_Loaded">
+                            Loaded="CollectionView_Loaded"
+                            ItemsSource="{Binding MatchDetailsTabs}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout x:DataType="models:MatchDetailsTab"
@@ -138,12 +138,14 @@
         </StackLayout>
 
         <Button Grid.Row="2"
-                Text="Other live matches"
-                TextColor="DimGray"
+                Text="Live matches"
+                TextColor="White"
+                BackgroundColor="#181818"
                 BorderColor="DimGray"
                 BorderWidth="1"
                 CornerRadius="8"
-                Padding="10,12"
+                Padding="12"
+                Margin="5,0"
                 Clicked="Button_Clicked" />
 
         <StackLayout Grid.Row="3"

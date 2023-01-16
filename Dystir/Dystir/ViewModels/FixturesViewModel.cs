@@ -79,7 +79,7 @@ namespace Dystir.ViewModels
             var fixturesCompetitions = new ObservableCollection<string>();
             var fromDate = DateTime.Now.Date.AddDays(0);
             var toDate = DateTime.Now.Date.AddDays(360);
-            var fixturesMatches = DystirService.AllMatches?.OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).Where(x => x.Time > fromDate && x.Time < toDate
+            var fixturesMatches = DystirService.AllMatches?.Select(x=>x.Match).OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).Where(x => x.Time > fromDate && x.Time < toDate
             && (x.StatusID < 12) || x.StatusID == 14) ?? new ObservableCollection<Match>();
             foreach (IGrouping<string, Match> competitionMatches in fixturesMatches?.GroupBy(x => x.MatchTypeName))
             {

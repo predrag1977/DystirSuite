@@ -11,6 +11,7 @@ using Dystir.Models;
 using Dystir.ViewModels;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Dystir.Pages;
 
 namespace Dystir.Services
 {
@@ -24,13 +25,11 @@ namespace Dystir.Services
 
         private readonly HubConnection hubConnection;
         private readonly DataLoadService _dataLoadService;
-
-        public ObservableCollection<Match> AllMatches = new ObservableCollection<Match>();
+        public ObservableCollection<MatchDetails> AllMatches = new ObservableCollection<MatchDetails>();
         public ObservableCollection<Sponsor> AllSponsors = new ObservableCollection<Sponsor>();
         public ObservableCollection<Standing> Standings;
         public ObservableCollection<CompetitionStatistic> CompetitionStatistics;
-        public ObservableCollection<MatchDetails> AllMatchesDetails = new ObservableCollection<MatchDetails>();
-        public ObservableCollection<MatchDetailsViewModel> AllMatchesDetailViewModels = new ObservableCollection<MatchDetailsViewModel>();
+        public ObservableCollection<MatchDetailsPage> AllMatchesDetailsPages = new ObservableCollection<MatchDetailsPage>();
 
         //**************************//
         //          EVENTS          //
@@ -98,7 +97,7 @@ namespace Dystir.Services
             MatchDetails matchDetails = null;
             try
             {
-                matchDetails = await _dataLoadService.GetMatchDetailsAsync(matchID);
+                matchDetails = await DataLoadService.GetMatchDetailsAsync(matchID);
             }
             catch (Exception ex)
             {
@@ -113,7 +112,15 @@ namespace Dystir.Services
         private async Task LoadAllMatchesAsync()
         {
             var matches = await _dataLoadService.GetMatchesAsync();
-            AllMatches = new ObservableCollection<Match>(matches ?? new ObservableCollection<Match>());
+            var matchesWithDetails = new ObservableCollection<MatchDetails>();
+            foreach (Match match in matches ?? new ObservableCollection<Match>()) {
+                var matchDetails = new MatchDetails()
+                {
+                    Match = match
+                };
+                matchesWithDetails.Add(matchDetails);
+            }
+            AllMatches = new ObservableCollection<MatchDetails>(matchesWithDetails);
         }
 
         private async Task LoadSponsorsAsync()
@@ -154,12 +161,10 @@ namespace Dystir.Services
                 {
                     if (matchDetails?.Match != null)
                     {
-                        Match match = matchDetails?.Match;
-
                         var allMatches = AllMatches.ToList();
-                        allMatches.RemoveAll(x => x.MatchID == match.MatchID);
-                        allMatches.Add(match);
-                        AllMatches = new ObservableCollection<Match>(allMatches);
+                        allMatches.RemoveAll(x => x.Match.MatchID == matchDetails.Match.MatchID);
+                        allMatches.Add(matchDetails);
+                        AllMatches = new ObservableCollection<MatchDetails>(allMatches);
 
                         MatchDetailsLoaded(matchDetails);
                     }
