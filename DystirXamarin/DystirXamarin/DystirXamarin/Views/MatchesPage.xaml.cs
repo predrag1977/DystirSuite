@@ -47,7 +47,7 @@ namespace DystirXamarin.Views
                 NewMatchButton.IsVisible = false;
             }
             //TODO Change this
-            VersionLabel.Text = "4.0.0.52";
+            VersionLabel.Text = "4.0.0.53";
         }
 
         private void PopulateMatchList()

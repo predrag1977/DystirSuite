@@ -58,7 +58,7 @@ namespace DystirXamarin.Services
                 matchesList = JsonConvert.DeserializeObject<List<Match>>(resultMatches);
             }
             List<Match> filteredMatchesList = new List<Match>(matchesList ?? new List<Match>())
-                .Where(x => x.Time?.Date < DateTime.Now.AddDays(45).Date && x.Time?.Date > DateTime.Now.AddDays(-45).Date).ToList();
+                .Where(x => x.Time?.Date < DateTime.Now.AddDays(100).Date && x.Time?.Date > DateTime.Now.AddDays(-45).Date).ToList();
             int adminTeamID = viewModel.AdministratorLoggedIn.AdministratorTeamID;
             if (adminTeamID > 0)
             {
