@@ -49,7 +49,7 @@
                     <GridItemsLayout Orientation="Horizontal" HorizontalItemSpacing="10" />
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="models:Competition">
                         <StackLayout Spacing="0"
                                      Padding="0,10,0,0"
                                      BackgroundColor="Black"
@@ -58,16 +58,11 @@
                                      VerticalOptions="Center">
                             <Label VerticalOptions="End"
                                    FontSize="12"
-                                   FontAttributes="Bold"
-                                   FontFamily="NunitoSemiBold"
-                                   Text="{Binding}">
-                            </Label>
-                            <!--<Label VerticalOptions="Start"
-                                   FontSize="11"
-                                   FontAttributes="Bold"
-                                   FontFamily="NunitoSemiBold"
                                    TextColor="{Binding TextColor}"
-                                   Text="{Binding DayText}" />-->
+                                   FontAttributes="Bold"
+                                   FontFamily="NunitoSemiBold"
+                                   Text="{Binding CompetitionName}">
+                            </Label>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

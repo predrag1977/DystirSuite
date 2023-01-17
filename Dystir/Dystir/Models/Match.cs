@@ -349,7 +349,7 @@ namespace Dystir.Models
             string matchTime = Time?.ToLocalTime().ToString("dd.MM. HH:mm - ");
             if (Time?.Hour == 0 && Time?.Minute == 0)
             {
-                matchTime = string.Empty;
+                matchTime = Time?.ToLocalTime().ToString("dd.MM. - ");
             }
             string matchType = !string.IsNullOrWhiteSpace(MatchTypeName) ? MatchTypeName + " - " : string.Empty;
             string matchRound = !string.IsNullOrWhiteSpace(RoundName) ? RoundName + " - " : string.Empty;

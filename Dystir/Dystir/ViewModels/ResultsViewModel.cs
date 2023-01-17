@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Dystir.Services;
 using Dystir.Models;
+using System.Runtime.CompilerServices;
 
 namespace Dystir.ViewModels
 {
@@ -20,15 +21,15 @@ namespace Dystir.ViewModels
             set { resultsGroupList = value; OnPropertyChanged(); }
         }
 
-        string resultsCompetitionSelected;
-        public string ResultsCompetitionSelected
+        Competition resultsCompetitionSelected;
+        public Competition ResultsCompetitionSelected
         {
             get { return resultsCompetitionSelected; }
-            set { resultsCompetitionSelected = value; OnPropertyChanged(); }
+            set { resultsCompetitionSelected = value; OnPropertyChanged(); _ = SetSelectedCompetition(); }
         }
 
-        ObservableCollection<string> resultsCompetitions = new ObservableCollection<string>();
-        public ObservableCollection<string> ResultsCompetitions
+        ObservableCollection<Competition> resultsCompetitions = new ObservableCollection<Competition>();
+        public ObservableCollection<Competition> ResultsCompetitions
         {
             get { return resultsCompetitions; }
             set { resultsCompetitions = value; OnPropertyChanged(); }
@@ -56,9 +57,8 @@ namespace Dystir.ViewModels
         public async Task LoadDataAsync()
         {
             await Task.Delay(200);
-            _ = SetResultCompetitions();
-            _ = SetResults();
-            _ = SetSponsors();
+            await SetResultCompetitions();
+            await SetSponsors();
             IsLoading = false;
         }
 
@@ -85,6 +85,23 @@ namespace Dystir.ViewModels
             _ = SetSponsors();
         }
 
+        private async Task SetSelectedCompetition()
+        {
+            await SetCompetitionsSelection();
+            await SetResults();
+        }
+
+        private async Task SetCompetitionsSelection()
+        {
+            var resultsCompetitions = ResultsCompetitions;
+            foreach (Competition competition in resultsCompetitions)
+            {
+                competition.TextColor = competition.CompetitionName == ResultsCompetitionSelected.CompetitionName ? Colors.LimeGreen : Colors.White;
+            }
+            ResultsCompetitions = new ObservableCollection<Competition>(resultsCompetitions);
+            await Task.CompletedTask;
+        }
+
         private async Task SetResultCompetitions()
         {
             var toDate = DateTime.Now.Date.AddDays(0);
@@ -95,26 +112,32 @@ namespace Dystir.ViewModels
             AllResultsMatches = new ObservableCollection<Match>(orderedResultsMatches);
 
             var allResultsGroupList = new ObservableCollection<IGrouping<string, Match>>(AllResultsMatches?.GroupBy(x => x.MatchTypeName));
-            var resultsCompetitions = new ObservableCollection<string>();
+            var resultsCompetitions = new ObservableCollection<Competition>();
             foreach (IGrouping<string, Match> competitionMatches in allResultsGroupList ?? new ObservableCollection<IGrouping<string, Match>>())
             {
                 if (!string.IsNullOrEmpty(competitionMatches.Key))
                 {
-                    resultsCompetitions.Add(competitionMatches.Key);
+                    Competition competition = new Competition()
+                    {
+                        CompetitionName = competitionMatches.Key,
+                        TextColor = Colors.White
+                    };
+                    resultsCompetitions.Add(competition);
                 }
             }
 
-            ResultsCompetitions = new ObservableCollection<string>(resultsCompetitions);
-            if (string.IsNullOrEmpty(ResultsCompetitionSelected) && ResultsCompetitions.Count > 0)
+            ResultsCompetitions = new ObservableCollection<Competition>(resultsCompetitions);
+            if (ResultsCompetitionSelected == null && ResultsCompetitions.Count > 0)
             {
                 ResultsCompetitionSelected = ResultsCompetitions.FirstOrDefault();
             }
+            await SetSelectedCompetition();
             await Task.CompletedTask;
         }
 
         private async Task SetResults()
         {
-            var resultsMatches = AllResultsMatches?.Where(x => x.MatchTypeName == ResultsCompetitionSelected)
+            var resultsMatches = AllResultsMatches?.Where(x => x.MatchTypeName == ResultsCompetitionSelected.CompetitionName)
                 .OrderByDescending(x => x.RoundID)
                 .ThenByDescending(x => x.Time)
                 .ThenBy(x => x.MatchTypeID);

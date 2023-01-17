@@ -9,15 +9,22 @@ namespace Dystir.Pages;
 public partial class MatchesPage : ContentPage
 {
     private readonly MatchesViewModel matchesViewModel;
+    private readonly DystirService dystirService;
+    private readonly LiveStandingService liveStandingService;
 
-    public MatchesPage(DystirService dystirService, TimeService timeService)
+    public MatchesPage(DystirService dystirService, LiveStandingService liveStandingService, TimeService timeService)
     {
         this.matchesViewModel = new MatchesViewModel(dystirService, timeService);
+        this.dystirService = dystirService;
+        this.liveStandingService = liveStandingService;
 
         InitializeComponent();
         BindingContext = this.matchesViewModel;
+    }
 
-        this.matchesViewModel.LoadDataAsync();
+    protected override void OnAppearing()
+    {
+        _ = matchesViewModel.LoadDataAsync();
     }
 
     private async void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -25,9 +32,17 @@ public partial class MatchesPage : ContentPage
         var collectionView = (sender as CollectionView);
         if (collectionView.SelectedItem is Match selectedMatch)
         {
-            //await Shell.Current.Navigation.PushAsync(new MatchDetailsPage(selectedMatch, matchesViewModel.DystirService, liveStandingService));
+            MatchDetailsPage matchDetailsPage = dystirService.AllMatchesDetailsPages.FirstOrDefault(x => x.MatchID == selectedMatch.MatchID);
 
-            await Shell.Current.GoToAsync($"{nameof(MatchesPage)}/{nameof(MatchDetailsPage)}");
+            if (matchDetailsPage == null)
+            {
+                matchDetailsPage = new MatchDetailsPage(dystirService, liveStandingService, selectedMatch);
+                dystirService.AllMatchesDetailsPages.Add(matchDetailsPage);
+            }
+
+            await App.Current.MainPage.Navigation.PushAsync(matchDetailsPage);
+
+            //await Shell.Current.GoToAsync($"{nameof(ResultsPage)}/{nameof(MatchDetailsPage)}?matchID={selectedMatch.MatchID}");
 
             collectionView.SelectedItem = null;
         }
