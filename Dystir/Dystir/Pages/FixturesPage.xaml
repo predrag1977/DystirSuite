@@ -36,40 +36,35 @@
                         Clicked="RefreshButton_Clicked" />
             </Grid>
 
-            <!--<CollectionView Grid.Row="1"
-                            ItemsSource="{Binding MatchesDays}"
+            <CollectionView Grid.Row="1"
+                            ItemsSource="{Binding FixturesCompetitions}"
                             SelectionMode="Single"
-                            SelectedItem="{Binding MatchesDaySelected}"
+                            SelectedItem="{Binding FixturesCompetitionSelected}"
                             HorizontalOptions="FillAndExpand"
-                            BackgroundColor="#181818"
-                            Margin="0,2"
-                            ItemsLayout="VerticalGrid, 7">
+                            BackgroundColor="Black"
+                            Margin="0,2">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Horizontal" HorizontalItemSpacing="10" />
+                </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="models:Competition">
                         <StackLayout Spacing="0"
                                      Padding="0,10,0,0"
-                                     BackgroundColor="#181818"
+                                     BackgroundColor="Black"
                                      HeightRequest="50"
-                                     x:DataType="models:DayOfMatch"
                                      HorizontalOptions="Center"
                                      VerticalOptions="Center">
                             <Label VerticalOptions="End"
                                    FontSize="12"
+                                   TextColor="{Binding TextColor}"
                                    FontAttributes="Bold"
                                    FontFamily="NunitoSemiBold"
-                                   TextColor="{Binding TextColor}"
-                                   Text="{Binding DateText}">
+                                   Text="{Binding CompetitionName}">
                             </Label>
-                            <Label VerticalOptions="Start"
-                                   FontSize="11"
-                                   FontAttributes="Bold"
-                                   FontFamily="NunitoSemiBold"
-                                   TextColor="{Binding TextColor}"
-                                   Text="{Binding DayText}" />
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-            </CollectionView>-->
+            </CollectionView>
 
             <CollectionView Grid.Row="2"
                             SelectionMode="Single"

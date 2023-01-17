@@ -36,11 +36,11 @@
 
                 <Grid Grid.Column="2" >
                     <Label FontSize="20"
-                            FontFamily="NunitoSemiBold"
-                            WidthRequest="20"
-                            HorizontalTextAlignment="Center"
-                            FontAttributes="Bold"
-                            Text="-" />
+                           FontFamily="NunitoSemiBold"
+                           WidthRequest="20"
+                           HorizontalTextAlignment="Center"
+                           FontAttributes="Bold"
+                           Text="-" />
                 </Grid>
 
                 <Image Grid.Column="3"

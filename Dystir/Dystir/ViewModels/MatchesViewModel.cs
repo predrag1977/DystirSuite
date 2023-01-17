@@ -26,7 +26,7 @@ namespace Dystir.ViewModels
         public DayOfMatch MatchesDaySelected
         {
             get { return matchesDaySelected; }
-            set { matchesDaySelected = value; OnPropertyChanged(); SetMatches(); }
+            set { matchesDaySelected = value; OnPropertyChanged(); _ = SetMatches(); }
         }
 
         ObservableCollection<DayOfMatch> matchesDays = new ObservableCollection<DayOfMatch>();
@@ -50,17 +50,17 @@ namespace Dystir.ViewModels
             timeService.StartSponsorsTime();
 
             IsLoading = true;
-            SetMatchesDays();
+            _ = SetMatchesDays();
         }
 
         //**********************//
         //    PUBLIC METHODS    //
         //**********************//
-        public async void LoadDataAsync()
+        public async Task LoadDataAsync()
         {
-            await Task.Delay(100);
-            SetMatches();
-            SetSponsors();
+            await Task.Delay(200);
+            await SetMatches();
+            await SetSponsors();
             IsLoading = false;
         }
 
@@ -74,29 +74,28 @@ namespace Dystir.ViewModels
 
         private void DystirService_OnFullDataLoaded()
         {
-            SetMatches();
-            SetSponsors();
-            IsLoading = false;
+            _ = LoadDataAsync();
         }
 
         private void DystirService_OnMatchDetailsLoaded(MatchDetails matchDetails)
         {
-            SetMatches();
+            _ = LoadDataAsync();
         }
 
         private void TimeService_OnSponsorsTimerElapsed()
         {
-            SetSponsors();
+            _ = SetSponsors();
         }
 
-        private void SetMatches()
+        private async Task SetMatches()
         {
-            SetMatchesDays();
+            await SetMatchesDays();
             var matches = DystirService.AllMatches?.Select(x=>x.Match).OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).Where(x => x.Time?.Date == MatchesDaySelected.Date.Date);
             MatchesGroupList = new ObservableCollection<MatchGroup>(matches.GroupBy(x => x.MatchTypeName).Select(group => new MatchGroup(group.Key, new ObservableCollection<Match>(group))));
+            await Task.CompletedTask;
         }
 
-        private void SetMatchesDays()
+        private async Task SetMatchesDays()
         {
             var matchesDays = new ObservableCollection<DayOfMatch>();
             for (DateTime date = DateTime.Now.AddDays(-3); date <= DateTime.Now.AddDays(3); date = date.AddDays(1))
@@ -111,6 +110,7 @@ namespace Dystir.ViewModels
                 matchesDays.Add(dayOfMatch);
             }
             MatchesDays = new ObservableCollection<DayOfMatch>(matchesDays);
+            await Task.CompletedTask;
         }
 
 

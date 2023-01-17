@@ -11,6 +11,8 @@ namespace Dystir.ViewModels
         //**********************//
         //      PROPERTIES      //
         //**********************//
+        private ObservableCollection<Match> AllFixturesMatches = new ObservableCollection<Match>();
+
         ObservableCollection<MatchGroup> fixturesGroupList = new ObservableCollection<MatchGroup>();
         public ObservableCollection<MatchGroup> FixturesGroupList
         {
@@ -18,15 +20,15 @@ namespace Dystir.ViewModels
             set { fixturesGroupList = value; OnPropertyChanged();  }
         }
 
-        string fixturesCompetitionSelected;
-        public string FixturesCompetitionSelected
+        Competition fixturesCompetitionSelected;
+        public Competition FixturesCompetitionSelected
         {
             get { return fixturesCompetitionSelected; }
-            set { fixturesCompetitionSelected = value; OnPropertyChanged(); SetFixtures(); }
+            set { fixturesCompetitionSelected = value; OnPropertyChanged(); _ = SetSelectedCompetition(); }
         }
 
-        ObservableCollection<string> fixturesCompetitions = new ObservableCollection<string>();
-        public ObservableCollection<string> FixturesCompetitions
+        ObservableCollection<Competition> fixturesCompetitions = new ObservableCollection<Competition>();
+        public ObservableCollection<Competition> FixturesCompetitions
         {
             get { return fixturesCompetitions; }
             set { fixturesCompetitions = value; OnPropertyChanged();  }
@@ -45,8 +47,18 @@ namespace Dystir.ViewModels
             timeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
             timeService.StartSponsorsTime();
 
-            SetFixtures();
-            SetSponsors();
+            _ = SetFixturesCompetitions();
+        }
+
+        //**********************//
+        //    PUBLIC METHODS    //
+        //**********************//
+        public async Task LoadDataAsync()
+        {
+            await Task.Delay(200);
+            await SetFixturesCompetitions();
+            await SetSponsors();
+            IsLoading = false;
         }
 
         //**********************//
@@ -59,42 +71,75 @@ namespace Dystir.ViewModels
 
         private void DystirService_OnFullDataLoaded()
         {
-            SetFixtures();
-            SetSponsors();
-            IsLoading = false;
+            _ = LoadDataAsync();
         }
 
         private void DystirService_OnMatchDetailsLoaded(MatchDetails matchDetails)
         {
-            SetFixtures();
+            _ = LoadDataAsync();
         }
 
         private void TimeService_OnSponsorsTimerElapsed()
         {
-            SetSponsors();
+            _ = SetSponsors();
         }
 
-        private void SetFixtures()
+        private async Task SetSelectedCompetition()
         {
-            var fixturesCompetitions = new ObservableCollection<string>();
+            await SetCompetitionsSelection();
+            await SetFixtures();
+        }
+
+        private async Task SetCompetitionsSelection()
+        {
+            var fixturesCompetitions = FixturesCompetitions;
+            foreach (Competition competition in fixturesCompetitions)
+            {
+                competition.TextColor = competition.CompetitionName == FixturesCompetitionSelected.CompetitionName ? Colors.LimeGreen : Colors.White;
+            }
+            FixturesCompetitions = new ObservableCollection<Competition>(fixturesCompetitions);
+            await Task.CompletedTask;
+        }
+
+        private async Task SetFixturesCompetitions()
+        {
+            var fixturesCompetitions = new ObservableCollection<Competition>();
             var fromDate = DateTime.Now.Date.AddDays(0);
             var toDate = DateTime.Now.Date.AddDays(360);
-            var fixturesMatches = DystirService.AllMatches?.Select(x=>x.Match).OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).Where(x => x.Time > fromDate && x.Time < toDate
-            && (x.StatusID < 12) || x.StatusID == 14) ?? new ObservableCollection<Match>();
-            foreach (IGrouping<string, Match> competitionMatches in fixturesMatches?.GroupBy(x => x.MatchTypeName))
+            var fixturesMatches = DystirService.AllMatches?.Where(x => x.Match.Time > fromDate && x.Match.Time < toDate || (x.Match.StatusID < 12 || x.Match.StatusID == 14));
+            var orderedFixturesMatches = fixturesMatches.OrderBy(x => x.Match.MatchTypeID).ThenByDescending(x => x.Match.Time).Select(x => x.Match);
+            AllFixturesMatches = new ObservableCollection<Match>(orderedFixturesMatches);
+
+            foreach (IGrouping<string, Match> competitionMatches in AllFixturesMatches?.GroupBy(x => x.MatchTypeName))
             {
                 if (!string.IsNullOrEmpty(competitionMatches.Key))
                 {
-                    fixturesCompetitions.Add(competitionMatches.Key);
+                    Competition competition = new Competition()
+                    {
+                        CompetitionName = competitionMatches.Key,
+                        TextColor = Colors.White
+                    };
+                    fixturesCompetitions.Add(competition);
                 }
             }
-            FixturesCompetitions = new ObservableCollection<string>(fixturesCompetitions);
-            if (string.IsNullOrEmpty(FixturesCompetitionSelected) && FixturesCompetitions.Count > 0)
+            FixturesCompetitions = new ObservableCollection<Competition>(fixturesCompetitions);
+            if (FixturesCompetitionSelected == null && FixturesCompetitions.Count > 0)
             {
                 FixturesCompetitionSelected = FixturesCompetitions.FirstOrDefault();
             }
-            var resultsGroupList = new ObservableCollection<IGrouping<string, Match>>(fixturesMatches?.GroupBy(x => x.MatchTypeName));
-            FixturesGroupList = new ObservableCollection<MatchGroup>(resultsGroupList.Select(group => new MatchGroup(group.Key, new ObservableCollection<Match>(group))));
+            await SetSelectedCompetition();
+            await Task.CompletedTask;
+
+            }
+
+        private async Task SetFixtures()
+        {
+            var fixturesMatches = AllFixturesMatches?.Where(x => x.MatchTypeName == FixturesCompetitionSelected.CompetitionName)
+                .OrderBy(x => x.RoundID)
+                .ThenBy(x => x.Time)
+                .ThenBy(x => x.MatchTypeID);
+            FixturesGroupList = new ObservableCollection<MatchGroup>(fixturesMatches.GroupBy(x => x.RoundName).Select(group => new MatchGroup(group.Key, new ObservableCollection<Match>(group))));
+            await Task.CompletedTask;
         }
     }
 }

@@ -14,9 +14,8 @@ namespace Dystir.Services
 {
     public class DataLoadService
     {
-        //private const string Url = "https://www.faroekickoff.com/api/";
-        private const string Url = "http://localhost:51346/api/";
-        //private const string Url = "https://www.dystir.fo/api/";
+        //private const string Url = "http://localhost:51346/api/";
+        private const string Url = "https://www.dystir.fo/api/";
 
         public async Task<ObservableCollection<Match>> GetMatchesAsync()
         {
