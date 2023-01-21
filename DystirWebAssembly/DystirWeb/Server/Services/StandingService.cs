@@ -23,13 +23,15 @@ namespace DystirWeb.Services
             var teamsList = _dystirService.AllTeams;
 
             List<Standing> standingsList = new List<Standing>();
-            var competititionNamesArray = new string[] { "Betri deildin", "1. deild", "Betri deildin kvinnur", "2. deild" };
-            foreach (string competititionName in competititionNamesArray)
+            var competititionsArray = _dystirService.AllCompetitions?
+                .Where(x=>x.CompetitionID > 0)
+                .OrderBy(x=>x.OrderID).ToList() ?? new List<MatchTypes>();
+            foreach (MatchTypes competitition in competititionsArray)
             {
                 Standing standing = new Standing()
                 {
-                    StandingCompetitionName = competititionName,
-                    TeamStandings = GetStandings(competititionName, teamsList, matchesList)
+                    StandingCompetitionName = competitition.MatchTypeName,
+                    TeamStandings = GetStandings(competitition.MatchTypeName, teamsList, matchesList)
                 };
                 foreach (TeamStanding teamStanding in standing.TeamStandings)
                 {

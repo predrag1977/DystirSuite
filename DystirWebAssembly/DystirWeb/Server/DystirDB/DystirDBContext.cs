@@ -131,6 +131,10 @@ namespace DystirWeb.Server.DystirDB
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.MatchTypeId).HasColumnName("MatchTypeID");
+
+                entity.Property(e => e.CompetitionID).HasColumnName("CompetitionID");
+
+                entity.Property(e => e.OrderID).HasColumnName("OrderID");
             });
 
             modelBuilder.Entity<Matches>(entity =>

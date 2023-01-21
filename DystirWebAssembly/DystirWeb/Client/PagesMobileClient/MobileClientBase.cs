@@ -386,7 +386,7 @@ namespace DystirWeb.Client.PagesMobileClient
 
         public bool ShowLiveStandings(Matches match)
         {
-            var competititionNamesArray = new string[] { "Betri deildin", "1. deild", "Betri deildin kvinnur", "2. deild" };
+            var competititionNamesArray = _dystirWebClientService.AllCompetitions.Where(x => x.CompetitionID > 0).Select(x => x.MatchTypeName);
             return competititionNamesArray.Any(x => x == match?.MatchTypeName);
         }
 
