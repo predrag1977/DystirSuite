@@ -24,7 +24,7 @@ namespace DystirWeb.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<DystirDBContext>(options =>
-            options.UseSqlServer("data source=162.250.122.185;initial catalog=dystirDB;persist security info=True;user id=predragmarkovic;password=Nadja11012012;"));
+            options.UseSqlServer("data source=162.250.122.185;initial catalog=dystirDB;persist security info=True;user id=predragmarkovic;password=Nadja11012012;TrustServerCertificate=True;"));
 
             services.AddControllersWithViews();
             services.AddRazorPages();

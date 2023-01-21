@@ -500,6 +500,7 @@ body {
     text-align: center;
     color: darkkhaki;
     padding: 15px 5px 0 5px;
+    vertical-align: top !important;
 }
 
 .statistics_border {
@@ -525,10 +526,10 @@ a, .btn-link, .nav-link {
 }
 
 .no-matches {
-    line-height: 80px;
+    line-height: 135px;
     text-align: center;
     color: dimgray;
-    height: 80px;
+    height: 135px;
 }
 
 .loading-spinner-parent {
@@ -686,6 +687,7 @@ a, .btn-link, .nav-link {
 
 .sponsors_below_matches {
     display: block;
+    margin: 20px 0;
 }
 
 .content {

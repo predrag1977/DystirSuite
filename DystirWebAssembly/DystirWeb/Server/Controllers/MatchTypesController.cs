@@ -1,10 +1,13 @@
 ﻿using DystirWeb.Server.DystirDB;
+using DystirWeb.Services;
 using DystirWeb.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace DystirWeb.Controllers
 {
@@ -12,25 +15,25 @@ namespace DystirWeb.Controllers
     [ApiController]
     public class MatchTypesController : ControllerBase
     {
-        private DystirDBContext _dystirDBContext;
+        private readonly DystirService _dystirService;
 
-        public MatchTypesController(DystirDBContext dystirDBContext)
+        public MatchTypesController(DystirService dystirService)
         {
-            _dystirDBContext = dystirDBContext;
+            _dystirService = dystirService;
         }
 
         // GET: api/MatchTypes
         [HttpGet]
-        public IQueryable<MatchTypes> GetMatchTypes()
+        public async Task<IEnumerable<MatchTypes>> GetMatchTypes()
         {
-            return _dystirDBContext.MatchTypes;
+            return await Task.FromResult(_dystirService.AllCompetitions);
         }
 
         // GET: api/MatchTypes/5
         [HttpGet("{id}", Name = "GetMatchType")]
         public IActionResult GetMatchTypes(int id)
         {
-            MatchTypes matchTypes = _dystirDBContext.MatchTypes.Find(id);
+            MatchTypes matchTypes = _dystirService.DystirDBContext.MatchTypes.Find(id);
             if (matchTypes == null)
             {
                 return NotFound();
@@ -53,11 +56,11 @@ namespace DystirWeb.Controllers
                 return BadRequest();
             }
 
-            _dystirDBContext.Entry(matchTypes).State = EntityState.Modified;
+            _dystirService.DystirDBContext.Entry(matchTypes).State = EntityState.Modified;
 
             try
             {
-                _dystirDBContext.SaveChanges();
+                _dystirService.DystirDBContext.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -83,8 +86,8 @@ namespace DystirWeb.Controllers
                 return BadRequest(ModelState);
             }
 
-            _dystirDBContext.MatchTypes.Add(matchTypes);
-            _dystirDBContext.SaveChanges();
+            _dystirService.DystirDBContext.MatchTypes.Add(matchTypes);
+            _dystirService.DystirDBContext.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = matchTypes.Id }, matchTypes);
         }
@@ -93,21 +96,21 @@ namespace DystirWeb.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteMatchTypes(int id)
         {
-            MatchTypes matchTypes = _dystirDBContext.MatchTypes.Find(id);
+            MatchTypes matchTypes = _dystirService.DystirDBContext.MatchTypes.Find(id);
             if (matchTypes == null)
             {
                 return NotFound();
             }
 
-            _dystirDBContext.MatchTypes.Remove(matchTypes);
-            _dystirDBContext.SaveChanges();
+            _dystirService.DystirDBContext.MatchTypes.Remove(matchTypes);
+            _dystirService.DystirDBContext.SaveChanges();
 
             return Ok(matchTypes);
         }
 
         private bool MatchTypesExists(int id)
         {
-            return _dystirDBContext.MatchTypes.Count(e => e.Id == id) > 0;
+            return _dystirService.DystirDBContext.MatchTypes.Count(e => e.Id == id) > 0;
         }
     }
 }

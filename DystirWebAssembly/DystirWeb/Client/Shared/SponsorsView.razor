@@ -9,6 +9,12 @@
 {
     <div class="sponsors" style="margin:10px 0 10px 0">
         <div style="cursor:pointer;font:bold;padding:10px 0 15px 0;">
+            <a style="color:white;text-decoration: none" href="https://www.facebook.com/groups/532784033893693">
+                <span class="fa fa-facebook p-1" style="color:white;font-size:1.2em" aria-hidden="true" />
+                <span style="font-size: 1em;text-decoration: underline">dystir@dystir.fo</span>
+            </a>
+        </div>
+        <div style="cursor:pointer;font:bold;padding:10px 0 15px 0;">
             <a style="color:white;text-decoration: none" href="mailto: dystir@dystir.fo">
                 <span class="fa fa-envelope p-1" style="color:white;font-size:1.2em" aria-hidden="true" />
                 <span style="font-size: 1em;text-decoration: underline">dystir@dystir.fo</span>
@@ -33,34 +39,40 @@
 }
 else
 {
-    <div class="sponsors_below_matches" style="margin:10px 0">
-        <div class="box">
-            <div class="matches_list_same_day" style="background-color:transparent;text-align:center">
-                @foreach (var sponsor in AllSponsors?.Where(x => x.SponsorId < 100) ?? new ObservableCollection<Sponsors>())
-                {
-                    <a href="@(sponsor.SponsorWebSite)" target="_blank">
-                        <img class="sponsors-main-img" src="@(sponsor.SponsorsName)">
-                    </a>
-                }
-            </div>
-        </div>
-        <div class="box" style="padding:0.3rem 0">
-            <div class="matches_list_same_day" style="background-color:transparent;text-align:center">
-                @foreach (var sponsor in AllSponsors ?? new ObservableCollection<Sponsors>())
-                {
-                    <a href="@(sponsor.SponsorWebSite)" target="_blank">
-                        <img class="sponsors-img" src="@(sponsor.SponsorsName)">
-                    </a>
-                }
-            </div>
-        </div>
-        <div style="cursor:pointer;font:bold;padding:15px 0;text-align:center">
-            <a style="color:white;text-decoration: none" href="mailto: dystir@dystir.fo">
-                <span class="fa fa-envelope p-1" style="color:white;font-size:1.2em" aria-hidden="true" />
-                <span style="font-size: 1em;text-decoration: underline">dystir@dystir.fo</span>
-            </a>
+<div class="sponsors_below_matches">
+    <div class="box">
+        <div class="matches_list_same_day" style="background-color:transparent;text-align:center">
+            @foreach (var sponsor in AllSponsors?.Where(x => x.SponsorId < 100) ?? new ObservableCollection<Sponsors>())
+            {
+                <a href="@(sponsor.SponsorWebSite)" target="_blank">
+                    <img class="sponsors-main-img" src="@(sponsor.SponsorsName)">
+                </a>
+            }
         </div>
     </div>
+    <div class="box" style="padding:0.3rem 0">
+        <div class="matches_list_same_day" style="background-color:transparent;text-align:center">
+            @foreach (var sponsor in AllSponsors ?? new ObservableCollection<Sponsors>())
+            {
+                <a href="@(sponsor.SponsorWebSite)" target="_blank">
+                    <img class="sponsors-img" src="@(sponsor.SponsorsName)">
+                </a>
+            }
+        </div>
+    </div>
+    <div style="cursor:pointer;font:bold;padding:15px 0;text-align:center;">
+        <a style="color:white; text-decoration: none" target="_blank" href="https://www.facebook.com/profile.php?id=100041392795765">
+            <span class="fa fa-facebook p-1" style="padding:5px; color: white; font-size: 1.3em" aria-hidden="true" />
+            <span style="font-size: 1em;text-decoration: underline">facebook - dystir</span>
+        </a>
+    </div>
+    <div style="cursor:pointer;font:bold;padding:0 0 10px 0;text-align:center">
+        <a style="color:white;text-decoration: none" href="mailto: dystir@dystir.fo">
+            <span class="fa fa-envelope p-1" style="color:white;font-size:1.2em" aria-hidden="true" />
+            <span style="font-size: 1em;text-decoration: underline">dystir@dystir.fo</span>
+        </a>
+    </div>
+</div>
 }
 
 @code {
