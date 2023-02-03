@@ -41,6 +41,7 @@
 	  <MtouchLink>SdkOnly</MtouchLink>
 	  <CodesignProvision>Automatic</CodesignProvision>
 	  <CodesignKey>Apple Distribution: Predrag Markovic (JX87ZR993H)</CodesignKey>
+	  <DeviceSpecificBuild>true</DeviceSpecificBuild>
 	  <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
 	</PropertyGroup>
 	<ItemGroup>
