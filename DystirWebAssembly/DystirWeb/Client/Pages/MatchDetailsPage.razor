@@ -43,7 +43,7 @@
             <StatisticView StatisticOfMatch="@(fullMatchDetails?.Statistics)" />
         </div>
     }
-    @if (ShowLiveStandings(SelectedMatch))
+    @if (ShowLiveStandings())
     {
         <div class="@(selectedTab == "4" ? "active_tab" : "no_active_tab")">
             <LiveStandingView Standing="@(standing)" Match="@(SelectedMatch)" />
@@ -153,13 +153,15 @@
 
     private async Task LoadLiveStandingAsync(Matches selectedMatch)
     {
-        standing = LiveStandingService.GetStanding(selectedMatch);
+        standing = LiveStandingService.GetStanding(selectedMatch?.MatchTypeName);
         await Task.CompletedTask;
     }
 
-    private bool ShowLiveStandings(Matches match)
+    private bool ShowLiveStandings()
     {
-        var competititionNamesArray = DystirWebClientService.AllCompetitions.Where(x=>x.CompetitionID > 0).Select(x=>x.MatchTypeName);
-        return competititionNamesArray.Any(x => x == match?.MatchTypeName);
+        var competititionNamesArray = DystirWebClientService?.AllCompetitions?
+            .Where(x=>x.CompetitionID > 0)?
+            .Select(x=>x.MatchTypeName);
+        return competititionNamesArray?.Any(x => x == SelectedMatch?.MatchTypeName) == true;
     }
 }

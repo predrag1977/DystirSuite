@@ -19,10 +19,10 @@
         }
         @foreach (var teamStanding in standing?.TeamStandings ?? new List<TeamStanding>())
         {
-            <tr style="border-bottom:1px solid @teamStanding.PositionColor">
+            <tr style="border-bottom:1px solid @(Match != null ? teamStanding.PositionColor : "lightGray")">
                 <td class="standings_cell standings_cell_number">
-                    <div class="@(Match.HomeTeam == teamStanding.Team || Match.AwayTeam == teamStanding.Team ? "live_standings_team_number" : "")">
-                        <i class="@(teamStanding.IsLive == true ? "fas fa-circle live_standings_indicator" : "")"></i>
+                    <div class="@(Match?.HomeTeam == teamStanding.Team || Match?.AwayTeam == teamStanding.Team ? "live_standings_team_number" : "")">
+                        <i class="@(teamStanding.IsLive ? "fas fa-circle live_standings_indicator" : "")"></i>
                         <span>@(teamStanding.Position).</span>
                     </div>
                 </td>

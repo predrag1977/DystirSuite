@@ -14,11 +14,10 @@ namespace DystirWeb.Services
             _dystirWebClientService = dystirWebClientService;
         }
 
-        internal Standing GetStanding(Matches match)
+        internal Standing GetStanding(string competititionName)
         {
             var matchesList = _dystirWebClientService.AllMatches;
 
-            string competititionName = match?.MatchTypeName;
             Standing standing = new Standing()
             {
                 StandingCompetitionName = competititionName,

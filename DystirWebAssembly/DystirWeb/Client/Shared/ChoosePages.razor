@@ -1,0 +1,33 @@
+﻿<div id="scroll_button_left" onclick="scrollOnMouseOver('left')">
+    &#10094;
+</div>
+<div id="horizontal_menu">
+    <div id="horizontal_menu_wrapper">
+        @foreach (var page in PagesList ?? new List<string>())
+        {
+            <div class="tab @(SelectedPage == page ? "selected_tab" : "")" @onclick="(() => SelectPage(page))">
+                <span>@(page)</span>
+            </div>
+        }
+    </div>
+</div>
+<div id="scroll_button_right" onclick="scrollOnMouseOver('right')">
+    &#10095;
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<string> PagesOnClick { get; set; }
+
+    [Parameter]
+    public List<string> PagesList { get; set; }
+
+    [Parameter]
+    public string SelectedPage { get; set; }
+
+    private void SelectPage(string page)
+    {
+        SelectedPage= page;
+        PagesOnClick.InvokeAsync(page);
+    }
+}

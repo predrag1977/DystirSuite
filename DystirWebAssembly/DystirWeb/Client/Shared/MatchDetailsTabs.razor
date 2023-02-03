@@ -21,7 +21,7 @@
         </span>
     </div>
 }
-@if (ShowLiveStandings(Match))
+@if (ShowLiveStandings())
 {
     <div class="tab @(selectedTab == 4 ? "selected_tab" : "")">
         <span @onclick="(() => SelectTab(4))">
@@ -45,9 +45,11 @@
         TabOnClick.InvokeAsync(tabIndex.ToString());
     }
 
-    private bool ShowLiveStandings(Matches match)
+    private bool ShowLiveStandings()
     {
-        var competititionNamesArray = DystirWebClientService.AllCompetitions.Where(x => x.CompetitionID > 0).Select(x => x.MatchTypeName);
-        return competititionNamesArray.Any(x => x == match?.MatchTypeName);
+        var competititionNamesArray = DystirWebClientService?.AllCompetitions?
+            .Where(x => x.CompetitionID > 0)?
+            .Select(x => x.MatchTypeName);
+        return competititionNamesArray?.Any(x => x == Match?.MatchTypeName) == true;
     }
 }

@@ -3,9 +3,11 @@
 @layout PagesWebSiteShareLayout
 @implements IDisposable
 
-<link href="css/@(page)_style.css?v=101" rel="stylesheet" />
+<link href="css/@(page)_style.css?v=105" rel="stylesheet" />
 
-@if (page.Equals("dimma") || page.Equals("info"))
+@if (page.Equals("dimma", StringComparison.CurrentCultureIgnoreCase)
+    || page.Equals("info", StringComparison.CurrentCultureIgnoreCase)
+    || page.Equals("portal", StringComparison.CurrentCultureIgnoreCase))
 {
     <div id="main_share">
         <div id="background_share">
@@ -31,7 +33,11 @@
                                     @foreach (Matches match in matches)
                                     {
                                         <NavLink style="cursor:pointer;" @onclick="@(() => isLoading = SelectedMatch?.MatchID != match.MatchID)" href="@(page + "/matchdetails/" + match.MatchID)">
-                                            <PagesWebSiteShareMatch MatchItem="@match" TimeZoneOffset="@timeZoneOffset" IsMatchForSameDayList="@true" NumberOfMatches="@numberOfMatches" />
+                                            <PagesWebSiteShareMatch MatchItem="@match"
+                                                                    TimeZoneOffset="@timeZoneOffset"
+                                                                    IsMatchForSameDayList="@true"
+                                                                    NumberOfMatches="@numberOfMatches"
+                                                                    Page="@(page)"/>
                                         </NavLink>
                                     }
                                 }
@@ -40,7 +46,10 @@
                     }
 
                     <div id="selected_match_details">
-                        <PagesWebSiteShareMatch MatchItem="@SelectedMatch" TimeZoneOffset="@timeZoneOffset" ShowMatchType="@true" />
+                        <PagesWebSiteShareMatch MatchItem="@SelectedMatch"
+                                                TimeZoneOffset="@timeZoneOffset"
+                                                ShowMatchType="@true"
+                                                Page="@(page)" />
                     </div>
 
                     @if (SelectedMatch != null)
@@ -225,13 +234,15 @@
 
     private async Task LoadLiveStandingAsync(Matches selectedMatch)
     {
-        standing = LiveStandingService.GetStanding(selectedMatch);
+        standing = LiveStandingService.GetStanding(selectedMatch?.MatchTypeName);
         await Task.CompletedTask;
     }
 
     private bool ShowLiveStandings(Matches match)
     {
-        var competititionNamesArray = DystirWebClientService.AllCompetitions.Where(x => x.CompetitionID > 0).Select(x => x.MatchTypeName);
-        return competititionNamesArray.Any(x => x == match?.MatchTypeName);
+        var competititionNamesArray = DystirWebClientService?.AllCompetitions?
+            .Where(x => x.CompetitionID > 0)?
+            .Select(x => x.MatchTypeName);
+        return competititionNamesArray?.Any(x => x == match?.MatchTypeName) == true;
     }
 }
