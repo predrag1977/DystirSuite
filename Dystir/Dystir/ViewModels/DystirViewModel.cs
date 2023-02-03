@@ -79,12 +79,7 @@ namespace Dystir.ViewModels
 
 
 
-        ObservableCollection<Standing> allStandings = new ObservableCollection<Standing>();
-        public ObservableCollection<Standing> AllStandings
-        {
-            get { return allStandings; }
-            set { allStandings = value; SetStandings(); }
-        }
+        
 
         ObservableCollection<TeamStanding> competitionTeamStandings = new ObservableCollection<TeamStanding>();
         public ObservableCollection<TeamStanding> CompetitionTeamStandings
@@ -132,7 +127,7 @@ namespace Dystir.ViewModels
         public string StandingsCompetitionSelected
         {
             get { return standingsCompetitionSelected; }
-            set { standingsCompetitionSelected = value; SetStandings(); }
+            set { standingsCompetitionSelected = value; }
         }
 
         ObservableCollection<string> standingsCompetitions = new ObservableCollection<string>();
@@ -185,22 +180,6 @@ namespace Dystir.ViewModels
         }
 
 
-        // COMPETITION STANDINGS
-        private void SetStandings()
-        {
-            var standingsCompetitions = new ObservableCollection<string>();
-            foreach (Standing standing in AllStandings)
-            {
-                standingsCompetitions.Add(standing?.StandingCompetitionName);
-            }
-            StandingsCompetitions = new ObservableCollection<string>(standingsCompetitions);
-            if (string.IsNullOrEmpty(StandingsCompetitionSelected) && StandingsCompetitions.Count > 0)
-            {
-                StandingsCompetitionSelected = StandingsCompetitions.FirstOrDefault();
-            }
-            var teamStandings = AllStandings.FirstOrDefault(x => x.StandingCompetitionName == StandingsCompetitionSelected)?.TeamStandings ?? new ObservableCollection<TeamStanding>();
-            CompetitionTeamStandings = new ObservableCollection<TeamStanding>(teamStandings);
-        }
 
         // COMPETITION STATISTICS
         private void SetCompetitionStatistics()

@@ -26,6 +26,7 @@ namespace Dystir.Models
         public bool IsAwayTeamEvent { get; set; }
         public string EventIconSource { get; set; }
         public bool ShowMinutes { get; set; }
+        public Color TextColorOfEventMinute { get; set; } = Colors.Khaki;
 
         //**********************//
         //      CONSTRUCTOR     //

@@ -30,6 +30,13 @@
                           Icon="fixtures"
                           ContentTemplate="{DataTemplate pages:FixturesPage}" />
         </Tab>
+
+        <Tab Title="{x:Static localization:Resources.Standings}"
+             Icon="standings">
+            <ShellContent Title="{x:Static localization:Resources.Standings}"
+                          Icon="standings"
+                          ContentTemplate="{DataTemplate pages:StandingsPage}" />
+        </Tab>
     </TabBar>
 
 </Shell>

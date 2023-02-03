@@ -204,4 +204,7 @@
   <data name="Sunday" xml:space="preserve">
     <value>Sunday</value>
   </data>
+  <data name="PlayerOfTheMatch" xml:space="preserve">
+    <value>Player of the match</value>
+  </data>
 </root>

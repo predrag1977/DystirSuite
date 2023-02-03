@@ -454,6 +454,15 @@ namespace Dystir.Resources.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dagsins leikari.
+        /// </summary>
+        internal static string PlayerOfTheMatch {
+            get {
+                return ResourceManager.GetString("PlayerOfTheMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to St..
         /// </summary>
         internal static string Points {

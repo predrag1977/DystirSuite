@@ -50,7 +50,7 @@
         <Label Grid.Column="1"
                 Text="{Binding EventMinute}"
                 IsVisible="{Binding ShowMinutes}"
-                TextColor="Khaki"
+                TextColor="{Binding TextColorOfEventMinute}"
                 Margin="10,0"
                 VerticalOptions="Center"
                 FontAttributes="Bold"

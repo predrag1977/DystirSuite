@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Dystir.ViewModels"
+             xmlns:localization="clr-namespace:Dystir.Resources.Localization"
+             BackgroundColor="Black"
+             x:DataType="viewModels:StandingsViewModel"
+             xmlns:models="clr-namespace:Dystir.Models"
+             x:Class="Dystir.Pages.StandingsPage">
+
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="TextColor" Value="DarkGray" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid RowDefinitions="40,50,Auto,*,Auto">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="50" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="1"
+                       Text="{x:Static localization:Resources.Standings}"
+                       FontSize="14"/>
+
+                <Button Grid.Column="2"
+                        Padding="0"
+                        ImageSource="refresh_button.png"
+                        BackgroundColor="Black"
+                        Clicked="RefreshButton_Clicked" />
+            </Grid>
+
+            <CollectionView Grid.Row="1"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding SelectedCompetition}"
+                            ItemsSource="{Binding StandingCompetitions}"
+                            HorizontalOptions="FillAndExpand"
+                            BackgroundColor="Black"
+                            Margin="0,2">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Horizontal" HorizontalItemSpacing="10" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Competition">
+                        <StackLayout Spacing="0"
+                                     Padding="0,10,0,0"
+                                     BackgroundColor="Black"
+                                     HeightRequest="50"
+                                     HorizontalOptions="Center"
+                                     VerticalOptions="Center">
+                            <Label VerticalOptions="End"
+                                   FontSize="12"
+                                   TextColor="{Binding TextColor}"
+                                   FontAttributes="Bold"
+                                   FontFamily="NunitoSemiBold"
+                                   Text="{Binding CompetitionName}">
+                            </Label>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <StackLayout Grid.Row="2"
+                         HeightRequest="2"
+                         Orientation="Horizontal"
+                         BackgroundColor="#181818"
+                         HorizontalOptions="FillAndExpand"/>
+
+            <ListView Grid.Row="3"
+                      SelectionMode="None"
+                      BackgroundColor="Black"
+                      SeparatorVisibility="None"
+                      Margin="5,0"
+                      VerticalScrollBarVisibility="Never"
+                      VerticalOptions="FillAndExpand"
+                      HasUnevenRows="True"
+                      ItemsSource="{Binding Standing.TeamStandings}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:TeamStanding" >
+                        <ViewCell IsEnabled="False" >
+                            <StackLayout BindingContext="{Binding}"
+                                         BackgroundColor="#181818"
+                                         HeightRequest="50"
+                                         Margin="0,0,0,4">
+                                <Grid ColumnDefinitions="40,120,*,*,*,*,*,*,*,*,5"
+                                      VerticalOptions="CenterAndExpand">
+                                    <Frame Grid.Column="0"
+                                           Padding="0"
+                                           BorderColor="{Binding LiveColor}"
+                                           HeightRequest="32"
+                                           WidthRequest="32"
+                                           CornerRadius="16"
+                                           BackgroundColor="#181818" >
+                                        <Label Padding="2,1,1,1"
+                                               TextColor="Khaki"
+                                               FontAttributes="Bold"
+                                               FontFamily="NunitoSemiBold"
+                                               Text="{Binding Position, StringFormat='{0}.'}" />
+                                    </Frame>
+                                    <Label Grid.Column="1"
+                                           FontAttributes="Bold"
+                                           FontFamily="NunitoSemiBold"
+                                           HorizontalOptions="Fill"
+                                           HorizontalTextAlignment="Start"
+                                           TextColor="White"
+                                           Text="{Binding Team}"  />
+                                    <Label Grid.Column="2"
+                                           Text="{Binding MatchesNo}" />
+                                    <Label Grid.Column="3"
+                                           Text="{Binding Victories}"  />
+                                    <Label Grid.Column="4"
+                                           Text="{Binding Draws}" />
+                                    <Label Grid.Column="5"
+                                           Text="{Binding Losses}"  />
+                                    <Label Grid.Column="6"
+                                           Text="{Binding GoalScored}"  />
+                                    <Label Grid.Column="7"
+                                           Text="{Binding GoalAgainst}" />
+                                    <Label Grid.Column="8"
+                                           Text="{Binding GoalDifference}"  />
+                                    <Label Grid.Column="9"
+                                           FontAttributes="Bold"
+                                           FontFamily="NunitoSemiBold"
+                                           TextColor="White"
+                                           Text="{Binding Points}" />
+                                </Grid>
+                                <StackLayout HeightRequest="2"
+                                             BackgroundColor="{Binding PositionColor}" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <ActivityIndicator Grid.RowSpan="4"
+                               IsVisible="{Binding IsLoading}"
+                               IsRunning="True"
+                               WidthRequest="30"
+                               HeightRequest="30" />
+
+            <StackLayout Grid.Row="4"
+                         HeightRequest="2"
+                         Orientation="Horizontal"
+                         BackgroundColor="#181818"
+                         HorizontalOptions="FillAndExpand"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

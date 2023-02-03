@@ -322,7 +322,7 @@ namespace Dystir.Models
         {
             if (LiveStanding == null)
             {
-                LiveStanding = liveStandingService.GetStanding(matchDetails.Match);
+                LiveStanding = liveStandingService.GetStanding(matchDetails?.Match?.MatchTypeName);
             }
             await Task.CompletedTask;
         }
@@ -453,7 +453,8 @@ namespace Dystir.Models
                 }
                 else if (eventOfMatch.EventName == "PLAYEROFTHEMATCH")
                 {
-                    summaryEventOfMatch.ShowMinutes = false;
+                    summaryEventOfMatch.TextColorOfEventMinute = Colors.DarkOrange;
+                    summaryEventOfMatch.EventMinute = Resources.Localization.Resources.PlayerOfTheMatch;
                 }
                 else if (eventOfMatch.EventName == "SUBSTITUTION")
                 {

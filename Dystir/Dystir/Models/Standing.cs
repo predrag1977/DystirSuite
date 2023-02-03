@@ -1,15 +1,13 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 
 namespace Dystir.Models
 {
-    [DataContract]
     public class Standing
     {
-        [DataMember]
         public string StandingCompetitionName { get; set; }
-        [DataMember]
-        public IEnumerable<TeamStanding> TeamStandings { get; set; }
+        public ObservableCollection<TeamStanding> TeamStandings { get; set; }
     }
 }
