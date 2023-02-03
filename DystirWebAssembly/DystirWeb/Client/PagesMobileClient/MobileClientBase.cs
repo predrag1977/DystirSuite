@@ -335,7 +335,7 @@ namespace DystirWeb.Client.PagesMobileClient
 
         private async Task LoadLiveStandingAsync(Matches selectedMatch)
         {
-            standing = _liveStandingService.GetStanding(selectedMatch);
+            standing = _liveStandingService.GetStanding(selectedMatch?.MatchTypeName);
             await Task.CompletedTask;
         }
 

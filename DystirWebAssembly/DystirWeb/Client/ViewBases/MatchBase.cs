@@ -28,6 +28,9 @@ namespace DystirWeb.ViewBases
         [Parameter]
         public int NumberOfMatches { get; set; }
 
+        [Parameter]
+        public string Page { get; set; }
+
 
         public string GetMatchTime(DateTime? statusTime, DateTime? matchDateTime, int? statusId)
         {
@@ -179,7 +182,11 @@ namespace DystirWeb.ViewBases
 
         public string MatchItemWidth()
         {
-            if (NumberOfMatches > 0)
+            if (Page?.Equals("portal", StringComparison.CurrentCultureIgnoreCase) == true)
+            {
+                return "calc(" + 100 + "% - " + 1.2 + "px)";
+            }
+            else if (NumberOfMatches > 0)
             {
                 return "calc(" + 100 / NumberOfMatches + "% - " + NumberOfMatches * 1.2 + "px)";
             }

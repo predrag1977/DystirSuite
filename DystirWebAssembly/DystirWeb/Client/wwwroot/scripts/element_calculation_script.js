@@ -38,8 +38,12 @@ function scrollButtonVisibility() {
 
 function setMainContainerHeight() {
     var mainContainer = document.getElementById('main_container');
+    var mainContainerVerticalList = document.getElementById('main_container_vertical_list');
     if (mainContainer != null) {
         mainContainer.style.height = (window.innerHeight - 140) + "px";
+    }
+    if (mainContainerVerticalList != null) {
+        mainContainerVerticalList.style.height = (window.innerHeight - 100) + "px";
     }
 }
 
