@@ -41,7 +41,6 @@
 	  <MtouchLink>SdkOnly</MtouchLink>
 	  <CodesignProvision>Automatic</CodesignProvision>
 	  <CodesignKey>Apple Distribution: Predrag Markovic (JX87ZR993H)</CodesignKey>
-	  <DeviceSpecificBuild>true</DeviceSpecificBuild>
 	  <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
 	</PropertyGroup>
 	<ItemGroup>
@@ -62,6 +61,7 @@
 	  <MauiImage Include="Resources\Images\matches.svg" BaseSize="20,20" />
 	  <MauiImage Include="Resources\Images\results.svg" BaseSize="20,20" />
 	  <MauiImage Include="Resources\Images\fixtures.svg" BaseSize="20,20" />
+	  <MauiImage Include="Resources\Images\standings.svg" BaseSize="20,20" />
 	  <MauiImage Include="Resources\Images\football_pitch.svg" BaseSize="300,200" />
 	  <MauiImage Include="Resources\Images\substitution.svg" BaseSize="20,20" />
 	  <MauiImage Include="Resources\Images\user.svg" BaseSize="20,20" TintColor="#FFFFFF" />
@@ -91,7 +91,7 @@
 	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.2" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 	  <PackageReference Include="Microsoft.AppCenter.Analytics" Version="5.0.1" />
-	  <PackageReference Include="CommunityToolkit.Maui" Version="3.1.0" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="4.0.0" />
 	</ItemGroup>
 	<ItemGroup>
 	  <EmbeddedResource Update="Resources\Localization\Resources.resx">
@@ -116,6 +116,9 @@
 	    <SubType></SubType>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\MatchesPopupView.xaml">
+	    <SubType></SubType>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\StandingsPage.xaml">
 	    <SubType></SubType>
 	  </MauiXaml>
 	</ItemGroup>

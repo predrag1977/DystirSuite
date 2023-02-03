@@ -204,4 +204,7 @@
   <data name="Sunday" xml:space="preserve">
     <value>Sunnudagur</value>
   </data>
+  <data name="PlayerOfTheMatch" xml:space="preserve">
+    <value>Dagsins leikari</value>
+  </data>
 </root>

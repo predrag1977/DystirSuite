@@ -1,28 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using Dystir.Models;
-using Dystir.ViewModels;
 using Newtonsoft.Json;
 
 namespace Dystir.Services
 {
     public class DataLoadService
     {
+        private readonly HttpClient httpClient;
+
         //private const string Url = "http://localhost:51346/api/";
         private const string Url = "https://www.dystir.fo/api/";
+
+        //**************************//
+        //        CONSTRUCTOR       //
+        //**************************//
+        public DataLoadService()
+        {
+            httpClient = new HttpClient();
+            httpClient.Timeout = new TimeSpan(0, 0, 10);
+        }
 
         public async Task<ObservableCollection<Match>> GetMatchesAsync()
         {
             ObservableCollection<Match> matches = new ObservableCollection<Match>();
-            HttpClient client = new HttpClient();
-            client.Timeout = new TimeSpan(0, 0, 10);
-            var responseMatches = await client.GetAsync(Url + "Matches");
+            var responseMatches = await httpClient.GetAsync(Url + "Matches");
             if (responseMatches.IsSuccessStatusCode)
             {
                 var resultMatches = await responseMatches.Content.ReadAsStringAsync();
@@ -40,9 +41,7 @@ namespace Dystir.Services
         public async Task<Match> GetMatchAsync(string matchID)
         {
             Match match = null; 
-            HttpClient client = new HttpClient();
-            client.Timeout = new TimeSpan(0, 0, 10);
-            HttpResponseMessage responseMatch = await client.GetAsync(Url + "Matches/" + matchID);
+            HttpResponseMessage responseMatch = await httpClient.GetAsync(Url + "Matches/" + matchID);
 
             if (responseMatch.IsSuccessStatusCode)
             {
@@ -55,10 +54,8 @@ namespace Dystir.Services
         public async Task<ObservableCollection<Standing>> GetStandingsAsync()
         {
             ObservableCollection<Models.Standing> standings = new ObservableCollection<Standing>();
-            HttpClient client = new HttpClient();
-            client.Timeout = new TimeSpan(0, 0, 10);
             List<Standing> standingsList = new List<Standing>();
-            var responseStanding = await client.GetAsync(Url + "Standings");
+            var responseStanding = await httpClient.GetAsync(Url + "Standings");
             if (responseStanding.IsSuccessStatusCode)
             {
                 var resultStanding = await responseStanding.Content.ReadAsStringAsync();
@@ -74,10 +71,8 @@ namespace Dystir.Services
         public async Task<ObservableCollection<CompetitionStatistic>> GetStatisticsAsync()
         {
             ObservableCollection<CompetitionStatistic> competitionStatistics = new ObservableCollection<CompetitionStatistic>();
-            HttpClient client = new HttpClient();
-            client.Timeout = new TimeSpan(0, 0, 10);
             List<CompetitionStatistic> competitionStatisticList = new List<CompetitionStatistic>();
-            var responseCompetitionStatistics = await client.GetAsync(Url + "Statistics");
+            var responseCompetitionStatistics = await httpClient.GetAsync(Url + "Statistics");
             if (responseCompetitionStatistics.IsSuccessStatusCode)
             {
                 var resultCompetitionStatistics = await responseCompetitionStatistics.Content.ReadAsStringAsync();
@@ -90,12 +85,10 @@ namespace Dystir.Services
             return await Task.FromResult(competitionStatistics);
         }
 
-        public static async Task<MatchDetails> GetMatchDetailsAsync(int? matchID)
+        public async Task<MatchDetails> GetMatchDetailsAsync(int? matchID)
         {
             MatchDetails matchDetails = new MatchDetails();
-            HttpClient client = new HttpClient();
-            client.Timeout = new TimeSpan(0, 0, 30);
-            HttpResponseMessage responseMatchDetails = await client.GetAsync(Url + "MatchDetails/" + matchID?.ToString() ?? "0");
+            HttpResponseMessage responseMatchDetails = await httpClient.GetAsync(Url + "MatchDetails/" + matchID?.ToString() ?? "0");
 
             if (responseMatchDetails.IsSuccessStatusCode)
             {
@@ -108,13 +101,11 @@ namespace Dystir.Services
         public async Task<ObservableCollection<Sponsor>> GetSponsorsAsync()
         {
             ObservableCollection<Sponsor> sponsors = new ObservableCollection<Sponsor>();
-            HttpClient client = new HttpClient();
-            client.Timeout = new TimeSpan(0, 0, 10);
             List<Sponsor> sponsorsList = new List<Sponsor>();
-            var responseStanding = await client.GetAsync(Url + "Sponsors");
-            if (responseStanding.IsSuccessStatusCode)
+            var responseSponsors = await httpClient.GetAsync(Url + "Sponsors");
+            if (responseSponsors.IsSuccessStatusCode)
             {
-                var resultSponsors = await responseStanding.Content.ReadAsStringAsync();
+                var resultSponsors = await responseSponsors.Content.ReadAsStringAsync();
                 sponsorsList = JsonConvert.DeserializeObject<List<Sponsor>>(resultSponsors);
             }
             foreach (Sponsor sponsor in sponsorsList)
@@ -123,6 +114,22 @@ namespace Dystir.Services
             }
 
             return await Task.FromResult(sponsors);
+        }
+
+        public async Task<ObservableCollection<MatchCompetition>> GetCompetitionsAsync()
+        {
+            ObservableCollection<MatchCompetition> competitions = new ObservableCollection<MatchCompetition>();
+            var responseCompetitions = await httpClient.GetAsync(Url + "MatchTypes");
+            if (responseCompetitions.IsSuccessStatusCode)
+            {
+                var resultCompetitions = await responseCompetitions.Content.ReadAsStringAsync();
+                var competitionsList = JsonConvert.DeserializeObject<List<MatchCompetition>>(resultCompetitions);
+                foreach (MatchCompetition competition in competitionsList)
+                {
+                    competitions.Add(competition);
+                }
+            }
+            return await Task.FromResult(competitions);
         }
     }
 }

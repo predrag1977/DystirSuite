@@ -19,7 +19,7 @@ namespace Dystir.Resources.Localization {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Build.Tasks.StronglyTypedResourceBuilder", "15.1.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -33,7 +33,7 @@ namespace Dystir.Resources.Localization {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Dystir.Resources.Localization.Resources", typeof(Resources).Assembly);
@@ -48,7 +48,7 @@ namespace Dystir.Resources.Localization {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -60,7 +60,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Assist.
         /// </summary>
-        internal static string Assist {
+        public static string Assist {
             get {
                 return ResourceManager.GetString("Assist", resourceCulture);
             }
@@ -69,7 +69,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Assists.
         /// </summary>
-        internal static string Assists {
+        public static string Assists {
             get {
                 return ResourceManager.GetString("Assists", resourceCulture);
             }
@@ -78,7 +78,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to ATT.
         /// </summary>
-        internal static string ATT {
+        public static string ATT {
             get {
                 return ResourceManager.GetString("ATT", resourceCulture);
             }
@@ -87,7 +87,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to ❮ Back.
         /// </summary>
-        internal static string BackButtonText {
+        public static string BackButtonText {
             get {
                 return ResourceManager.GetString("BackButtonText", resourceCulture);
             }
@@ -96,7 +96,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Big chance.
         /// </summary>
-        internal static string BigChance {
+        public static string BigChance {
             get {
                 return ResourceManager.GetString("BigChance", resourceCulture);
             }
@@ -105,7 +105,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to BIG CHANCE.
         /// </summary>
-        internal static string BigChanceStatistic {
+        public static string BigChanceStatistic {
             get {
                 return ResourceManager.GetString("BigChanceStatistic", resourceCulture);
             }
@@ -114,7 +114,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Blocked shot.
         /// </summary>
-        internal static string BlockedShot {
+        public static string BlockedShot {
             get {
                 return ResourceManager.GetString("BlockedShot", resourceCulture);
             }
@@ -123,7 +123,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to BLOCKED SHOT.
         /// </summary>
-        internal static string BlockedShotStatistic {
+        public static string BlockedShotStatistic {
             get {
                 return ResourceManager.GetString("BlockedShotStatistic", resourceCulture);
             }
@@ -132,7 +132,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Commentary.
         /// </summary>
-        internal static string Commentary {
+        public static string Commentary {
             get {
                 return ResourceManager.GetString("Commentary", resourceCulture);
             }
@@ -141,7 +141,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Connection lost.
         /// </summary>
-        internal static string ConnectionLost {
+        public static string ConnectionLost {
             get {
                 return ResourceManager.GetString("ConnectionLost", resourceCulture);
             }
@@ -150,7 +150,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Corner.
         /// </summary>
-        internal static string Corner {
+        public static string Corner {
             get {
                 return ResourceManager.GetString("Corner", resourceCulture);
             }
@@ -159,7 +159,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to CORNER.
         /// </summary>
-        internal static string CornerStatistic {
+        public static string CornerStatistic {
             get {
                 return ResourceManager.GetString("CornerStatistic", resourceCulture);
             }
@@ -168,7 +168,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to DEF.
         /// </summary>
-        internal static string DEF {
+        public static string DEF {
             get {
                 return ResourceManager.GetString("DEF", resourceCulture);
             }
@@ -177,7 +177,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to D.
         /// </summary>
-        internal static string DrawShort {
+        public static string DrawShort {
             get {
                 return ResourceManager.GetString("DrawShort", resourceCulture);
             }
@@ -186,7 +186,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to extra time finished.
         /// </summary>
-        internal static string ExtraTimeFinished {
+        public static string ExtraTimeFinished {
             get {
                 return ResourceManager.GetString("ExtraTimeFinished", resourceCulture);
             }
@@ -195,7 +195,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to extra time pause.
         /// </summary>
-        internal static string ExtraTimePause {
+        public static string ExtraTimePause {
             get {
                 return ResourceManager.GetString("ExtraTimePause", resourceCulture);
             }
@@ -204,7 +204,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to finished.
         /// </summary>
-        internal static string Finished {
+        public static string Finished {
             get {
                 return ResourceManager.GetString("Finished", resourceCulture);
             }
@@ -213,7 +213,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to First 11.
         /// </summary>
-        internal static string FirstEleven {
+        public static string FirstEleven {
             get {
                 return ResourceManager.GetString("FirstEleven", resourceCulture);
             }
@@ -222,7 +222,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to FIXTURES.
         /// </summary>
-        internal static string Fixtures {
+        public static string Fixtures {
             get {
                 return ResourceManager.GetString("Fixtures", resourceCulture);
             }
@@ -231,7 +231,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Friday.
         /// </summary>
-        internal static string Friday {
+        public static string Friday {
             get {
                 return ResourceManager.GetString("Friday", resourceCulture);
             }
@@ -240,7 +240,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to full time.
         /// </summary>
-        internal static string FullTime {
+        public static string FullTime {
             get {
                 return ResourceManager.GetString("FullTime", resourceCulture);
             }
@@ -249,7 +249,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to GK.
         /// </summary>
-        internal static string GK {
+        public static string GK {
             get {
                 return ResourceManager.GetString("GK", resourceCulture);
             }
@@ -258,7 +258,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Goal.
         /// </summary>
-        internal static string Goal {
+        public static string Goal {
             get {
                 return ResourceManager.GetString("Goal", resourceCulture);
             }
@@ -267,7 +267,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to GA.
         /// </summary>
-        internal static string GoalsAgainst {
+        public static string GoalsAgainst {
             get {
                 return ResourceManager.GetString("GoalsAgainst", resourceCulture);
             }
@@ -276,7 +276,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to GD.
         /// </summary>
-        internal static string GoalsDiffrent {
+        public static string GoalsDiffrent {
             get {
                 return ResourceManager.GetString("GoalsDiffrent", resourceCulture);
             }
@@ -285,7 +285,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to GF.
         /// </summary>
-        internal static string GoalsScored {
+        public static string GoalsScored {
             get {
                 return ResourceManager.GetString("GoalsScored", resourceCulture);
             }
@@ -294,7 +294,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to GOAL.
         /// </summary>
-        internal static string GoalStatistic {
+        public static string GoalStatistic {
             get {
                 return ResourceManager.GetString("GoalStatistic", resourceCulture);
             }
@@ -303,7 +303,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to half time.
         /// </summary>
-        internal static string HalfTime {
+        public static string HalfTime {
             get {
                 return ResourceManager.GetString("HalfTime", resourceCulture);
             }
@@ -312,7 +312,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to h..
         /// </summary>
-        internal static string HoursShort {
+        public static string HoursShort {
             get {
                 return ResourceManager.GetString("HoursShort", resourceCulture);
             }
@@ -321,7 +321,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to L.
         /// </summary>
-        internal static string LosesShort {
+        public static string LosesShort {
             get {
                 return ResourceManager.GetString("LosesShort", resourceCulture);
             }
@@ -330,7 +330,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to MATCHES.
         /// </summary>
-        internal static string Matches {
+        public static string Matches {
             get {
                 return ResourceManager.GetString("Matches", resourceCulture);
             }
@@ -339,7 +339,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to MP.
         /// </summary>
-        internal static string MatchPlayedShort {
+        public static string MatchPlayedShort {
             get {
                 return ResourceManager.GetString("MatchPlayedShort", resourceCulture);
             }
@@ -348,7 +348,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to MID.
         /// </summary>
-        internal static string MID {
+        public static string MID {
             get {
                 return ResourceManager.GetString("MID", resourceCulture);
             }
@@ -357,7 +357,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Monday.
         /// </summary>
-        internal static string Monday {
+        public static string Monday {
             get {
                 return ResourceManager.GetString("Monday", resourceCulture);
             }
@@ -366,7 +366,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to No matches.
         /// </summary>
-        internal static string NoMatches {
+        public static string NoMatches {
             get {
                 return ResourceManager.GetString("NoMatches", resourceCulture);
             }
@@ -375,7 +375,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Off target.
         /// </summary>
-        internal static string OffTarget {
+        public static string OffTarget {
             get {
                 return ResourceManager.GetString("OffTarget", resourceCulture);
             }
@@ -384,7 +384,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to OFF TARGET.
         /// </summary>
-        internal static string OffTargetStatistic {
+        public static string OffTargetStatistic {
             get {
                 return ResourceManager.GetString("OffTargetStatistic", resourceCulture);
             }
@@ -393,7 +393,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to On target.
         /// </summary>
-        internal static string OnTarget {
+        public static string OnTarget {
             get {
                 return ResourceManager.GetString("OnTarget", resourceCulture);
             }
@@ -402,7 +402,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to ON TARGET.
         /// </summary>
-        internal static string OnTargetStatistic {
+        public static string OnTargetStatistic {
             get {
                 return ResourceManager.GetString("OnTargetStatistic", resourceCulture);
             }
@@ -411,7 +411,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Own goal.
         /// </summary>
-        internal static string OwnGoal {
+        public static string OwnGoal {
             get {
                 return ResourceManager.GetString("OwnGoal", resourceCulture);
             }
@@ -420,7 +420,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to penalties.
         /// </summary>
-        internal static string Penalties {
+        public static string Penalties {
             get {
                 return ResourceManager.GetString("Penalties", resourceCulture);
             }
@@ -429,7 +429,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Penalty.
         /// </summary>
-        internal static string Penalty {
+        public static string Penalty {
             get {
                 return ResourceManager.GetString("Penalty", resourceCulture);
             }
@@ -438,7 +438,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Penalty missed.
         /// </summary>
-        internal static string PenaltyMissed {
+        public static string PenaltyMissed {
             get {
                 return ResourceManager.GetString("PenaltyMissed", resourceCulture);
             }
@@ -447,16 +447,25 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Penalty scored.
         /// </summary>
-        internal static string PenaltyScored {
+        public static string PenaltyScored {
             get {
                 return ResourceManager.GetString("PenaltyScored", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Player of the match.
+        /// </summary>
+        public static string PlayerOfTheMatch {
+            get {
+                return ResourceManager.GetString("PlayerOfTheMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pts.
         /// </summary>
-        internal static string Points {
+        public static string Points {
             get {
                 return ResourceManager.GetString("Points", resourceCulture);
             }
@@ -465,7 +474,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to RED CARD.
         /// </summary>
-        internal static string RedCardStatistic {
+        public static string RedCardStatistic {
             get {
                 return ResourceManager.GetString("RedCardStatistic", resourceCulture);
             }
@@ -474,7 +483,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to RESULTS.
         /// </summary>
-        internal static string Results {
+        public static string Results {
             get {
                 return ResourceManager.GetString("Results", resourceCulture);
             }
@@ -483,7 +492,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Saturday.
         /// </summary>
-        internal static string Saturday {
+        public static string Saturday {
             get {
                 return ResourceManager.GetString("Saturday", resourceCulture);
             }
@@ -492,7 +501,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to See more ❯.
         /// </summary>
-        internal static string SeeMore {
+        public static string SeeMore {
             get {
                 return ResourceManager.GetString("SeeMore", resourceCulture);
             }
@@ -501,7 +510,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to STANDINGS.
         /// </summary>
-        internal static string Standings {
+        public static string Standings {
             get {
                 return ResourceManager.GetString("Standings", resourceCulture);
             }
@@ -510,7 +519,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Standings.
         /// </summary>
-        internal static string StandingsTab {
+        public static string StandingsTab {
             get {
                 return ResourceManager.GetString("StandingsTab", resourceCulture);
             }
@@ -519,7 +528,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Statistics.
         /// </summary>
-        internal static string Statistics {
+        public static string Statistics {
             get {
                 return ResourceManager.GetString("Statistics", resourceCulture);
             }
@@ -528,7 +537,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to STATISTICS.
         /// </summary>
-        internal static string StatisticsTab {
+        public static string StatisticsTab {
             get {
                 return ResourceManager.GetString("StatisticsTab", resourceCulture);
             }
@@ -537,7 +546,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Substitution.
         /// </summary>
-        internal static string Substitution {
+        public static string Substitution {
             get {
                 return ResourceManager.GetString("Substitution", resourceCulture);
             }
@@ -546,7 +555,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Summary.
         /// </summary>
-        internal static string Summary {
+        public static string Summary {
             get {
                 return ResourceManager.GetString("Summary", resourceCulture);
             }
@@ -555,7 +564,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Sunday.
         /// </summary>
-        internal static string Sunday {
+        public static string Sunday {
             get {
                 return ResourceManager.GetString("Sunday", resourceCulture);
             }
@@ -564,7 +573,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Team.
         /// </summary>
-        internal static string Team {
+        public static string Team {
             get {
                 return ResourceManager.GetString("Team", resourceCulture);
             }
@@ -573,7 +582,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Thursday.
         /// </summary>
-        internal static string Thursday {
+        public static string Thursday {
             get {
                 return ResourceManager.GetString("Thursday", resourceCulture);
             }
@@ -582,7 +591,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Today.
         /// </summary>
-        internal static string Today {
+        public static string Today {
             get {
                 return ResourceManager.GetString("Today", resourceCulture);
             }
@@ -591,7 +600,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Top Scorers.
         /// </summary>
-        internal static string TopScorers {
+        public static string TopScorers {
             get {
                 return ResourceManager.GetString("TopScorers", resourceCulture);
             }
@@ -600,7 +609,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Tuesday.
         /// </summary>
-        internal static string Tuesday {
+        public static string Tuesday {
             get {
                 return ResourceManager.GetString("Tuesday", resourceCulture);
             }
@@ -609,7 +618,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to W.
         /// </summary>
-        internal static string VictoriesShort {
+        public static string VictoriesShort {
             get {
                 return ResourceManager.GetString("VictoriesShort", resourceCulture);
             }
@@ -618,7 +627,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Wednesday.
         /// </summary>
-        internal static string Wednesday {
+        public static string Wednesday {
             get {
                 return ResourceManager.GetString("Wednesday", resourceCulture);
             }
@@ -627,7 +636,7 @@ namespace Dystir.Resources.Localization {
         /// <summary>
         ///   Looks up a localized string similar to YELLOW CARD.
         /// </summary>
-        internal static string YellowCardStatistic {
+        public static string YellowCardStatistic {
             get {
                 return ResourceManager.GetString("YellowCardStatistic", resourceCulture);
             }

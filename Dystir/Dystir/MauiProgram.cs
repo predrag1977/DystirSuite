@@ -30,6 +30,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<MatchesPage>();
         builder.Services.AddSingleton<ResultsPage>();
         builder.Services.AddSingleton<FixturesPage>();
+        builder.Services.AddSingleton<StandingsPage>();
         builder.Services.AddSingleton<MatchDetailsPage>();
         return builder.Build();
     }

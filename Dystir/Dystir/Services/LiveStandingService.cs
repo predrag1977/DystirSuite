@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Dystir.Models;
 
@@ -23,11 +24,9 @@ namespace Dystir.Services
         //**********************//
         //    PUBLIC METHODS    //
         //**********************//
-        public Standing GetStanding(Match match)
+        public Standing GetStanding(string competititionName)
         {
             var matchesList = _dystirService.AllMatches.Select(x => x.Match);
-
-            string competititionName = match?.MatchTypeName;
             Standing standing = new Standing()
             {
                 StandingCompetitionName = competititionName,
@@ -41,7 +40,7 @@ namespace Dystir.Services
             return standing;
         }
 
-        public static List<TeamStanding> GetStandings(string competitionName, IEnumerable<Match> matchesList)
+        public static ObservableCollection<TeamStanding> GetStandings(string competitionName, IEnumerable<Match> matchesList)
         {
             List<TeamStanding> teamStandings = new List<TeamStanding>();
             try
@@ -96,10 +95,10 @@ namespace Dystir.Services
             //ReducePenaltiesPoint(teamStandings);
 
             teamStandings.RemoveAll(x => x.TeamID == 0);
-            return teamStandings.OrderByDescending(x => x.Points)
+            return new ObservableCollection<TeamStanding>(teamStandings.OrderByDescending(x => x.Points)
                 .ThenByDescending(x => x.GoalDifference)
                 .ThenByDescending(x => x.GoalScored)
-                .ThenBy(x => x.GoalAgainst).ThenBy(x => x.Team).ToList();
+                .ThenBy(x => x.GoalAgainst).ThenBy(x => x.Team));
         }
 
         //**************************//
