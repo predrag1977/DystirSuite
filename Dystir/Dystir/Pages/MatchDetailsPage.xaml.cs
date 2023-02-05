@@ -37,6 +37,7 @@ public partial class MatchDetailsPage : ContentPage
     {
         if(!_matchDetails.IsLoadingSelectedMatch)
         {
+            _matchDetails.IsDataLoaded = false;
             _ = _matchDetails.Startup();
         }
         return;
