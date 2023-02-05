@@ -1,7 +1,7 @@
 ﻿<div id="header" class="navbar">
     <table>
         <tr>
-            @if (page.Equals("dimma", StringComparison.CurrentCultureIgnoreCase))
+            @if (page == "dimma")
             {
                 <td style="text-align:left;width:600px">
                     <a style="text-decoration:none;" href="https://www.dimma.fo" target="_blank">
@@ -9,7 +9,7 @@
                     </a>
                 </td>
             }
-            else if (page.Equals("info", StringComparison.CurrentCultureIgnoreCase))
+            else if (page == "info")
             {
                 <td style="text-align:left;width:600px">
                     <a style="text-decoration:none;" href="https://www.in.fo" target="_blank">
@@ -17,7 +17,7 @@
                     </a>
                 </td>
             }
-            else if (page.Equals("portal", StringComparison.CurrentCultureIgnoreCase))
+            else if (page == "portal")
             {
                 <td style="text-align:left;width:600px">
                     <a style="text-decoration:none;" href="https://portal.fo" target="_blank">

@@ -3,11 +3,9 @@
 @layout PagesWebSiteShareLayout
 @implements IDisposable
 
-<link href="css/@(page)_style.css?v=105" rel="stylesheet" />
+<link href="css/@(page)_style.css?v=200" rel="stylesheet" />
 
-@if (page.Equals("dimma", StringComparison.CurrentCultureIgnoreCase)
-    || page.Equals("info", StringComparison.CurrentCultureIgnoreCase)
-    || page.Equals("portal", StringComparison.CurrentCultureIgnoreCase))
+@if (page == "dimma" || page == "info" || page == "portal")
 {
     <div id="main_share">
         <div id="background_share">
@@ -36,6 +34,7 @@
                                             <PagesWebSiteShareMatch MatchItem="@match"
                                                                     TimeZoneOffset="@timeZoneOffset"
                                                                     IsMatchForSameDayList="@true"
+                                                                    IsMatchInDetails="@true"
                                                                     NumberOfMatches="@numberOfMatches"
                                                                     Page="@(page)"/>
                                         </NavLink>
@@ -106,7 +105,7 @@
     private string SelectedCompetition { get; set; }
     private List<string> CompetitionsList { get; set; }
     private List<IGrouping<string, Matches>> SelectedMatchListGroup = new List<IGrouping<string, Matches>>();
-    private Matches SelectedMatch = new Matches();
+    private Matches SelectedMatch;
     private FullMatchDetailsModelView fullMatchDetails;
     private Standing standing = new Standing();
     private int timeZoneOffset = 0;
@@ -240,9 +239,10 @@
 
     private bool ShowLiveStandings(Matches match)
     {
+        match = new Matches();
         var competititionNamesArray = DystirWebClientService?.AllCompetitions?
             .Where(x => x.CompetitionID > 0)?
             .Select(x => x.MatchTypeName);
-        return competititionNamesArray?.Any(x => x == match?.MatchTypeName) == true;
+        return competititionNamesArray?.Any(x => x == SelectedMatch?.MatchTypeName) == true;
     }
 }

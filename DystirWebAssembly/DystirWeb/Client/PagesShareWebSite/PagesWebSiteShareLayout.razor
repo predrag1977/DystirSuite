@@ -19,15 +19,15 @@
         _ = JSRuntime.InvokeVoidAsync("setTitle", String.Format("{0} - Dystir", System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Page.ToLower())));
 
         string favicon = "favicon.ico";
-        if (Page.Equals("dimma", StringComparison.CurrentCultureIgnoreCase))
+        if (Page == "dimma")
         {
             favicon = "https://www.dimma.fo/assets/favicon.png";
         }
-        else if (Page.Equals("info", StringComparison.CurrentCultureIgnoreCase))
+        else if (Page == "info")
         {
             favicon = "https://www.in.fo/favicon.ico";
         }
-        else if (Page.Equals("portal", StringComparison.CurrentCultureIgnoreCase))
+        else if (Page == "portal")
         {
             favicon = "https://e02e3c2e19a06eec1e84-9a0707245afee0d6f567aa2987845a0f.ssl.cf1.rackcdn.com/myfiles/1385390388_portal_favicon.ico";
         }

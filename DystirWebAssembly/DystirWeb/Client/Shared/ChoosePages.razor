@@ -3,10 +3,10 @@
 </div>
 <div id="horizontal_menu">
     <div id="horizontal_menu_wrapper">
-        @foreach (var page in PagesList ?? new List<string>())
+        @foreach (var tab in TabList ?? new List<string>())
         {
-            <div class="tab @(SelectedPage == page ? "selected_tab" : "")" @onclick="(() => SelectPage(page))">
-                <span>@(page)</span>
+            <div class="tab @(SelectedTab == tab ? "selected_tab" : "")" @onclick="(() => SetSelectedTab(tab))">
+                <span>@(tab)</span>
             </div>
         }
     </div>
@@ -17,17 +17,17 @@
 
 @code {
     [Parameter]
-    public EventCallback<string> PagesOnClick { get; set; }
+    public EventCallback<string> TabOnClick { get; set; }
 
     [Parameter]
-    public List<string> PagesList { get; set; }
+    public List<string> TabList { get; set; }
 
     [Parameter]
-    public string SelectedPage { get; set; }
+    public string SelectedTab{ get; set; }
 
-    private void SelectPage(string page)
+    private void SetSelectedTab(string tab)
     {
-        SelectedPage= page;
-        PagesOnClick.InvokeAsync(page);
+        SelectedTab = tab;
+        TabOnClick.InvokeAsync(tab);
     }
 }

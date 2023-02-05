@@ -3,9 +3,9 @@
 @layout PagesWebSiteShareLayout
 @implements IDisposable
 
-<link href="css/@(page)_style.css?v=105" rel="stylesheet" />
+<link href="css/@(page)_style.css?v=200" rel="stylesheet" />
 
-@if (page.Equals("dimma", StringComparison.CurrentCultureIgnoreCase) || page.Equals("info", StringComparison.CurrentCultureIgnoreCase))
+@if (page == "dimma" || page == "info")
 {
     <div class="matches_and_competition_selection">
         @if (CompetitionsList?.Count > 0)
@@ -47,78 +47,76 @@
         }
     </div>
 }
-else if (page.Equals("portal", StringComparison.CurrentCultureIgnoreCase))
+else if (page == "portal")
 {
-<div class="matches_and_competition_selection">
-    @if (CompetitionsList?.Count > 0)
-    {
-
-        if (SelectedPage == "DYSTIR Í DAG")
+    <div class="matches_and_competition_selection">
+        @if (CompetitionsList?.Count > 0)
         {
-            <div id="competitions_selection">
-                <ChooseCompetitions CompetitionsList="@(CompetitionsList)"
-                                    SelectedCompetition="@(SelectedCompetition)"
-                                    CompetitionsOnClick="@(CompetitionsOnClick)" />
-            </div>
+            if (SelectedTab == "DYSTIR Í DAG")
+            {
+                <div id="competitions_selection">
+                    <ChooseCompetitions CompetitionsList="@(CompetitionsList)"
+                                        SelectedCompetition="@(SelectedCompetition)"
+                                        CompetitionsOnClick="@(CompetitionsOnClick)" />
+                </div>
 
-            <div id="main_container_vertical_list">
-                <div id="matches_same_day_share">
-                    @foreach (var matchesGroup in SelectedMatchListGroup ?? new List<IGrouping<string, Matches>>())
-                    {
-                        if (SelectedCompetition == matchesGroup.Key)
+                <div id="main_container_vertical_list">
+                    <div id="matches_same_day_share">
+                        @foreach (var matchesGroup in SelectedMatchListGroup ?? new List<IGrouping<string, Matches>>())
                         {
-                            var matches = matchesGroup.Select(x => x);
-                            @foreach (Matches match in matches)
+                            if (SelectedCompetition == matchesGroup.Key)
                             {
-                                <div>
-                                    <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
-                                        <PagesWebSiteShareMatch MatchItem="@match"
-                                                                TimeZoneOffset="@timeZoneOffset"
-                                                                IsMatchForSameDayList="@true"
-                                                                NumberOfMatches="@numberOfMatches"
-                                                                Page="@(page)">
-                                        </PagesWebSiteShareMatch>
-                                    </NavLink>
-                                </div>
+                                var matches = matchesGroup.Select(x => x);
+                                @foreach (Matches match in matches)
+                                {
+                                    <div>
+                                        <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
+                                            <PagesWebSiteShareMatch MatchItem="@match"
+                                                                    TimeZoneOffset="@timeZoneOffset"
+                                                                    IsMatchForSameDayList="@true"
+                                                                    NumberOfMatches="@numberOfMatches"
+                                                                    Page="@(page)">
+                                            </PagesWebSiteShareMatch>
+                                        </NavLink>
+                                    </div>
+                                }
                             }
                         }
-                    }
+                    </div>
                 </div>
-            </div>
-        }
-        else if (SelectedPage == "STØÐAN")
-        {
+            }
+            else if (SelectedTab == "STØÐAN")
+            {
+                <div id="competitions_selection">
+                    <ChooseCompetitions CompetitionsList="@(CompetitionsList)"
+                                        SelectedCompetition="@(SelectedStandingsCompetition)"
+                                        CompetitionsOnClick="@(CompetitionsOnClick)" />
+                </div>
+                <div id="main_container_vertical_list">
+                    <LiveStandingView Standing="@(standing)" />
+                </div>
+            }
+
             <div id="competitions_selection">
-                <ChooseCompetitions CompetitionsList="@(StandingsCompetitionsList)"
-                                    SelectedCompetition="@(SelectedStandingsCompetition)"
-                                    CompetitionsOnClick="@(CompetitionsOnClick)" />
+                <ChoosePages TabList="@(TabList)"
+                             SelectedTab="@(SelectedTab)"
+                             TabOnClick="@(TabOnClick)" />
             </div>
-            <div id="main_container_vertical_list">
-                <LiveStandingView Standing="@(standing)" />
-            </div>
+
+        }
+        else if (CompetitionsList?.Count == 0)
+        {
+            <div class="no-matches">Eingin dystur í dag</div>
         }
 
-        <div id="competitions_selection">
-            <ChoosePages PagesList="@(PagesList)"
-                         SelectedPage="@(SelectedPage)"
-                         PagesOnClick="@(PagesOnClick)" />
-        </div>
-
-    }
-    else if (CompetitionsList?.Count == 0)
-    {
-        <div class="no-matches">Eingin dystur í dag</div>
-    }
-
-    @if (isLoading)
-    {
-        <div class="loading-spinner-parent">
-            <i class="fas fa-spin fa-spinner fa-2x" style="color: darkgrey"></i>
-        </div>
-    }
-</div>
-}
-    
+        @if (isLoading)
+        {
+            <div class="loading-spinner-parent">
+                <i class="fas fa-spin fa-spinner fa-2x" style="color: darkgrey"></i>
+            </div>
+        }
+    </div>
+}  
 
 @code {
     [Parameter]
@@ -127,14 +125,14 @@ else if (page.Equals("portal", StringComparison.CurrentCultureIgnoreCase))
     private string SelectedCompetition { get; set; }
     private List<string> CompetitionsList { get; set; }
     private string SelectedStandingsCompetition { get; set; }
-    private List<string> StandingsCompetitionsList { get; set; }
-    private string SelectedPage { get; set; }
-    private List<string> PagesList { get; set; }
+    private string SelectedTab { get; set; }
+    private List<string> TabList { get; set; }
     private List<IGrouping<string, Matches>> SelectedMatchListGroup;
     private int timeZoneOffset = 0;
     private bool isLoading = true;
     private int numberOfMatches = 0;
     private Standing standing;
+    private bool isTabClicked = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -144,6 +142,16 @@ else if (page.Equals("portal", StringComparison.CurrentCultureIgnoreCase))
         TimeService.OnTimerElapsed += TimerElapsed;
         timeZoneOffset = int.Parse(await JSRuntime.InvokeAsync<String>("getTimeZoneOffset"));
         await GetSelectedMatchListGroup();
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(isTabClicked)
+        {
+            await JSRuntime.InvokeVoidAsync("onPageResize", "");
+            isTabClicked = false;
+        }
+
     }
 
     void IDisposable.Dispose()
@@ -184,13 +192,14 @@ else if (page.Equals("portal", StringComparison.CurrentCultureIgnoreCase))
 
     private void CompetitionsOnClick(string competition)
     {
-        if(SelectedPage == "DYSTIR Í DAG")
-        {
-            SelectedCompetition = competition;
-        }
-        else if (SelectedPage == "STØÐAN")
+
+        if (page == "portal" && SelectedTab == "STØÐAN")
         {
             SelectedStandingsCompetition = competition;
+        }
+        else
+        {
+            SelectedCompetition = competition;
         }
 
         numberOfMatches = SelectedMatchListGroup.FirstOrDefault(x => x.Key == SelectedCompetition)?.Select(x => x)?.Count() ?? 0;
@@ -198,10 +207,11 @@ else if (page.Equals("portal", StringComparison.CurrentCultureIgnoreCase))
         Refresh();
     }
 
-    private void PagesOnClick(string page)
+    private void TabOnClick(string page)
     {
-        SelectedPage = page;
-        Refresh();
+        isTabClicked = true;
+        SelectedTab = page;
+        _ = GetSelectedMatchListGroup();
     }
 
     public async Task GetSelectedMatchListGroup()
@@ -220,15 +230,20 @@ else if (page.Equals("portal", StringComparison.CurrentCultureIgnoreCase))
         {
             CompetitionsList.Add(matchGroup.Key);
         }
-        StandingsCompetitionsList = DystirWebClientService.AllCompetitions
-                .Where(x => x.CompetitionID > 0)
-                .OrderBy(x => x.OrderID)?
-                .Select(x => x.MatchTypeName)?
-                .ToList() ?? new List<string>();
 
-        SetPagesMenu();
+        var standingsCompetitionsList = DystirWebClientService.AllCompetitions
+            .Where(x => x.CompetitionID > 0)
+            .OrderBy(x => x.OrderID)?
+            .Select(x => x.MatchTypeName)?
+            .ToList() ?? new List<string>();
+
+        if (page == "portal" && SelectedTab == "STØÐAN") {
+            CompetitionsList = standingsCompetitionsList;
+        }
+
+        SetTabMenu();
         SelectedCompetition = string.IsNullOrWhiteSpace(SelectedCompetition) ? CompetitionsList?.FirstOrDefault() ?? "" : SelectedCompetition;
-        SelectedStandingsCompetition = string.IsNullOrWhiteSpace(SelectedStandingsCompetition) ? StandingsCompetitionsList?.FirstOrDefault() ?? "" : SelectedStandingsCompetition;
+        SelectedStandingsCompetition = string.IsNullOrWhiteSpace(SelectedStandingsCompetition) ? CompetitionsList?.FirstOrDefault() ?? "" : SelectedStandingsCompetition;
 
         numberOfMatches = SelectedMatchListGroup?.FirstOrDefault(x => x.Key == SelectedCompetition)?.Select(x => x)?.Count() ?? 0;
         standing = LiveStandingService.GetStanding(SelectedCompetition);
@@ -238,14 +253,14 @@ else if (page.Equals("portal", StringComparison.CurrentCultureIgnoreCase))
     }
 
 
-    private void SetPagesMenu()
+    private void SetTabMenu()
     {
-        PagesList = new List<string>();
+        TabList = new List<string>();
         if (CompetitionsList.Count != 0)
         {
-            PagesList.Add("DYSTIR Í DAG");
+            TabList.Add("DYSTIR Í DAG");
         }
-        PagesList.Add("STØÐAN");
-        SelectedPage = string.IsNullOrWhiteSpace(SelectedPage) ? PagesList?.FirstOrDefault() ?? "" : SelectedPage;
+        TabList.Add("STØÐAN");
+        SelectedTab = string.IsNullOrWhiteSpace(SelectedTab) ? TabList?.FirstOrDefault() ?? "" : SelectedTab;
     }
 }
