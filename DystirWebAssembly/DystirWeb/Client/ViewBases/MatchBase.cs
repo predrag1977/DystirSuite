@@ -182,11 +182,7 @@ namespace DystirWeb.ViewBases
 
         public string MatchItemWidth()
         {
-            if (Page?.Equals("portal", StringComparison.CurrentCultureIgnoreCase) == true)
-            {
-                return "calc(" + 100 + "% - " + 1.2 + "px)";
-            }
-            else if (NumberOfMatches > 0)
+            if (NumberOfMatches > 0)
             {
                 return "calc(" + 100 / NumberOfMatches + "% - " + NumberOfMatches * 1.2 + "px)";
             }

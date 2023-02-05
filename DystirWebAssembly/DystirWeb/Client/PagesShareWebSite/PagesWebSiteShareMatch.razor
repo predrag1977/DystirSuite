@@ -19,7 +19,7 @@
 
             <table>
                 <tr>
-                    @if (Page.Equals("portal", StringComparison.CurrentCultureIgnoreCase))
+                    @if (Page == "portal" && IsMatchInDetails == false)
                     {
                         <td class="text-center" style="width:30px">
                             <img src="team_logos/@(MatchItem.HomeTeamLogo)"
@@ -61,7 +61,7 @@
 
             <table>
                 <tr>
-                    @if (Page.Equals("portal", StringComparison.CurrentCultureIgnoreCase)) {
+                    @if (Page == "portal" && IsMatchInDetails == false) {
                         <td class="text-center" style="width:30px">
                             <img src="team_logos/@(MatchItem.AwayTeamLogo)"
                                  onerror="this.src='team_logos/empty.png'" width="20" height="20" />
