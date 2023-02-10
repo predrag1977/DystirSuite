@@ -4,7 +4,7 @@
 {
     @if (IsMatchForSameDayList)
     {
-        <div class="match_item_same_day_share" style="width:@(MatchItemWidth())">
+        <div class="match_item_same_day_share" style="width:@(MatchItemWidth(Page, NumberOfMatches, IsMatchInDetails))">
             <table>
                 <tr>
                     <td class="match_info pl-1">
