@@ -180,9 +180,23 @@ namespace DystirWeb.ViewBases
             return TimeSpan.FromTicks(ticks).TotalMinutes.ToString();
         }
 
-        public string MatchItemWidth()
+        public string MatchItemWidth(string page, int numberOfMatches, bool isMatchInDetails)
         {
-            if (NumberOfMatches > 0)
+            if (page == "portal")
+            {
+                if (isMatchInDetails == true)
+                {
+                    if (NumberOfMatches > 0)
+                    {
+                        return "calc(" + 100 / NumberOfMatches + "% - " + NumberOfMatches * 1.2 + "px)";
+                    }
+                }
+                else
+                {
+                    return "calc(100% - 2px)";
+                }
+            }
+            else if (NumberOfMatches > 0)
             {
                 return "calc(" + 100 / NumberOfMatches + "% - " + NumberOfMatches * 1.2 + "px)";
             }
