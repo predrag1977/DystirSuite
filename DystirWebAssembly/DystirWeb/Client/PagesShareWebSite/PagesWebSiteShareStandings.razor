@@ -1,0 +1,109 @@
+﻿@page "/{page}/standings"
+
+@layout PagesWebSiteShareLayout
+@implements IDisposable
+
+<link href="css/@(page)_style_v1.css?v=1" rel="stylesheet" />
+
+@if (page?.ToLower() == "dimma" || page?.ToLower() == "info" || page?.ToLower() == "portal")
+{
+    <div class="matches_and_competition_selection">
+
+        @if (StandingsCompetitionsList?.Count > 0)
+        {
+            <div id="competitions_selection">
+                <ChooseCompetitions CompetitionsList="@(StandingsCompetitionsList)"
+                                    SelectedCompetition="@(SelectedStandingsCompetition)"
+                                    CompetitionsOnClick="@(CompetitionsOnClick)" />
+            </div>
+            <div id="main_container_vertical_list_standings">
+                <LiveStandingView Standing="@(standing)" />
+            </div>
+        }
+
+        @if (isLoading)
+        {
+            <div class="loading-spinner-parent">
+                <i class="fas fa-spin fa-spinner fa-2x" style="color: darkgrey"></i>
+            </div>
+        }
+    </div>
+}  
+
+@code {
+    [Parameter]
+    public string page { get; set; }
+
+    private string SelectedStandingsCompetition { get; set; }
+    private List<string> StandingsCompetitionsList { get; set; }
+    private bool isLoading = true;
+    private Standing standing;
+
+    protected override async Task OnInitializedAsync()
+    {
+        DystirWebClientService.OnFullDataLoaded += DystirWebClientService_FullDataLoaded;
+        DystirWebClientService.OnConnected += HubConnection_OnConnected;
+        DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
+        TimeService.OnTimerElapsed += TimerElapsed;
+        await GetSelectedMatchListGroup();
+    }
+
+    void IDisposable.Dispose()
+    {
+        DystirWebClientService.OnFullDataLoaded -= DystirWebClientService_FullDataLoaded;
+        DystirWebClientService.OnConnected -= HubConnection_OnConnected;
+        DystirWebClientService.OnRefreshMatchDetails -= DystirWebClientService_OnRefreshMatchDetails;
+        TimeService.OnTimerElapsed -= TimerElapsed;
+    }
+
+    private async void DystirWebClientService_FullDataLoaded()
+    {
+        await GetSelectedMatchListGroup();
+    }
+
+    private async void HubConnection_OnConnected()
+    {
+        await GetSelectedMatchListGroup();
+    }
+
+    private async void DystirWebClientService_OnRefreshMatchDetails(MatchDetails matchDetails)
+    {
+        await GetSelectedMatchListGroup();
+    }
+
+    private void TimerElapsed(object sender, EventArgs e)
+    {
+        if (HubConnection.State == HubConnectionState.Connected)
+        {
+            Refresh();
+        }
+    }
+
+    private void Refresh()
+    {
+        InvokeAsync(() => StateHasChanged());
+    }
+
+    private void CompetitionsOnClick(string competition)
+    {
+        SelectedStandingsCompetition = competition;
+        standing = LiveStandingService.GetStanding(SelectedStandingsCompetition);
+        Refresh();
+    }
+
+    public async Task GetSelectedMatchListGroup()
+    {
+        StandingsCompetitionsList = DystirWebClientService.AllCompetitions?
+            .Where(x => x.CompetitionID > 0)
+            .OrderBy(x => x.OrderID)?
+            .Select(x => x.MatchTypeName)?
+            .ToList() ?? new List<string>();
+
+        SelectedStandingsCompetition = string.IsNullOrWhiteSpace(SelectedStandingsCompetition) ? StandingsCompetitionsList?.FirstOrDefault() ?? "" : SelectedStandingsCompetition;
+
+        standing = LiveStandingService.GetStanding(SelectedStandingsCompetition);
+        isLoading = false;
+        Refresh();
+        await JSRuntime.InvokeVoidAsync("onPageResize", "");
+    }
+}

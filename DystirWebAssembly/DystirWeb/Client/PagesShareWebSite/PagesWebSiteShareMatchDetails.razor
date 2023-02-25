@@ -3,19 +3,19 @@
 @layout PagesWebSiteShareLayout
 @implements IDisposable
 
-<link href="css/@(page)_style.css?v=201" rel="stylesheet" />
+<link href="css/@(page)_style_v1.css?v=1" rel="stylesheet" />
 
-@if (page == "dimma" || page == "info" || page == "portal")
+@if (page?.ToLower() == "dimma" || page?.ToLower() == "info" || page?.ToLower() == "portal")
 {
     <div id="main_share">
         <div id="background_share">
             <div id="header_container_share">
-                <PageWebSiteShareHeader Page="@(page)" />
+                <PageWebSiteShareHeader Page="@(page?.ToLower())" />
             </div>
 
             <div id="container_share">
                 <div id="match-details_static_part">
-                    @if (SelectedMatchListGroup?.Count() > 0)
+                    @if (SelectedMatchListGroup?.Count() > 0 && IsTodayMatch())
                     {
                         <div id="competitions_selection">
                             <ChooseCompetitions CompetitionsList="@(CompetitionsList)"
@@ -48,7 +48,7 @@
                         <PagesWebSiteShareMatch MatchItem="@SelectedMatch"
                                                 TimeZoneOffset="@timeZoneOffset"
                                                 ShowMatchType="@true"
-                                                Page="@(page)" />
+                                                Page="@(page?.ToLower())" />
                     </div>
 
                     @if (SelectedMatch != null)
@@ -244,5 +244,11 @@
             .Where(x => x.CompetitionID > 0)?
             .Select(x => x.MatchTypeName);
         return competititionNamesArray?.Any(x => x == SelectedMatch?.MatchTypeName) == true;
+    }
+
+    private bool IsTodayMatch() {
+        var fromDate = DateTime.UtcNow.AddMinutes(-timeZoneOffset).Date.AddDays(0);
+        var toDate = fromDate.AddDays(0);
+        return SelectedMatch.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate && SelectedMatch.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate;
     }
 }

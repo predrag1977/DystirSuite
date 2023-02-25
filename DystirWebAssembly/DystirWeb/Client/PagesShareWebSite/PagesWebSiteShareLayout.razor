@@ -13,7 +13,7 @@
         object page = null;
         if ((this.Body.Target as RouteView)?.RouteData.RouteValues?.TryGetValue("page", out page) == true)
         {
-            Page = page?.ToString();
+            Page = page?.ToString().ToLower();
         }
 
         _ = JSRuntime.InvokeVoidAsync("setTitle", String.Format("{0} - Dystir", System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Page.ToLower())));
