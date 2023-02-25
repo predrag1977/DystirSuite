@@ -1,7 +1,7 @@
 ﻿<div id="header" class="navbar">
     <table>
         <tr>
-            @if (page == "dimma")
+            @if (page?.ToLower() == "dimma")
             {
                 <td style="text-align:left;width:600px">
                     <a style="text-decoration:none;" href="https://www.dimma.fo" target="_blank">
@@ -9,7 +9,7 @@
                     </a>
                 </td>
             }
-            else if (page == "info")
+            else if (page?.ToLower() == "info")
             {
                 <td style="text-align:left;width:600px">
                     <a style="text-decoration:none;" href="https://www.in.fo" target="_blank">
@@ -17,11 +17,11 @@
                     </a>
                 </td>
             }
-            else if (page == "portal")
+            else if (page?.ToLower() == "portal")
             {
                 <td style="text-align:left;width:600px">
                     <a style="text-decoration:none;" href="https://portal.fo" target="_blank">
-                        <img src="https://e02e3c2e19a06eec1e84-9a0707245afee0d6f567aa2987845a0f.ssl.cf1.rackcdn.com/myfiles/1385390388_portal_favicon.ico" style="height: 45px;margin:auto 20px;" />
+                        <img src="https://www.dystir.fo/images/icons/portal_icon.png" style="height: 45px;margin:auto 20px;" />
                     </a>
                 </td>
             }

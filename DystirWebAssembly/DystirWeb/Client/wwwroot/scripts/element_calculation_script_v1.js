@@ -39,11 +39,15 @@ function scrollButtonVisibility() {
 function setMainContainerHeight() {
     var mainContainer = document.getElementById('main_container');
     var mainContainerVerticalList = document.getElementById('main_container_vertical_list');
+    var mainContainerVerticalListStandings = document.getElementById('main_container_vertical_list_standings');
     if (mainContainer != null) {
         mainContainer.style.height = (window.innerHeight - 140) + "px";
     }
     if (mainContainerVerticalList != null) {
         mainContainerVerticalList.style.height = (window.innerHeight - 100) + "px";
+    }
+    if (mainContainerVerticalListStandings != null) {
+        mainContainerVerticalListStandings.style.height = (window.innerHeight - 50) + "px";
     }
 }
 

@@ -128,8 +128,8 @@ body {
 }
 
 .score_match_view, .score_match_same_day {
-    background-color: #999999;
-    color: white;
+    background-color: lightgray;
+    color: black;
 }
 
 .match_info, .standings_cell {
