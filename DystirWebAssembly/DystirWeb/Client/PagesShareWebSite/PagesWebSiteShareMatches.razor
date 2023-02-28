@@ -51,7 +51,7 @@ else if (page?.ToLower() == "portal")
 {
     <div class="matches_and_competition_selection">
         
-        @if (SelectedTab == "DYSTIR Í DAG")
+        @if (SelectedTab == "DYSTIR")
         {
             <div id="competitions_selection">
                 <ChooseCompetitions CompetitionsList="@(MatchesCompetitionList)"
@@ -259,7 +259,7 @@ else if (page?.ToLower() == "portal")
     {
         if (page == "portal")
         {
-            if (SelectedTab == "DYSTIR Í DAG")
+            if (SelectedTab == "DYSTIR")
             {
                 SelectedMatchesCompetition = competition;
                 MatchesNumber = MatchesListGroup.FirstOrDefault(x => x.Key == SelectedMatchesCompetition)?.Select(x => x)?.Count() ?? 0;
@@ -312,7 +312,7 @@ else if (page?.ToLower() == "portal")
     private void SetMatches()
     {
         var fromDate = DateTime.UtcNow.AddMinutes(-timeZoneOffset).Date.AddDays(0);
-        var toDate = fromDate.AddDays(0);
+        var toDate = fromDate.AddDays(7);
         MatchesListGroup = DystirWebClientService.AllMatches?
             .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
             .Where(x => x.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate && x.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate)
@@ -395,15 +395,15 @@ else if (page?.ToLower() == "portal")
     private void SetTabMenu()
     {
         TabList = new List<string>();
-        if (MatchesCompetitionList?.Count != 0)
+        if (MatchesCompetitionList?.Count > 0)
         {
-            TabList.Add("DYSTIR Í DAG");
+            TabList.Add("DYSTIR");
         }
-        if (ResultsCompetitionList?.Count != 0)
+        if (ResultsCompetitionList?.Count > 0)
         {
             TabList.Add("ÚRSLIT");
         }
-        if (FixturesCompetitionList?.Count != 0)
+        if (FixturesCompetitionList?.Count > 0)
         {
             TabList.Add("KOMANDI");
         }
