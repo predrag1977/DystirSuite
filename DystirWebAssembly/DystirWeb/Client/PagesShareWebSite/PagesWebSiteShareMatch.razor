@@ -7,9 +7,20 @@
         <div class="match_item_same_day_share" style="width:@(MatchItemWidth(Page, NumberOfMatches, IsMatchInDetails))">
             <table>
                 <tr>
-                    <td class="match_info pl-1">
-                        <span>@MatchItem.Location</span>
-                    </td>
+                    @if (Page == "portal")
+                    {
+                        <td class="match_info pl-1">
+                            <span>@GetMatchDayName()</span>
+                            <span>@MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString("dd.MM.", new CultureInfo("fo-FO"))</span>
+                            <span>@MatchItem.Location</span>
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="match_info pl-1">
+                            <span>@MatchItem.Location</span>
+                        </td>
+                    }
 
                     <td class="match_time" style="white-space:nowrap;width:0">
                         <span style="color:@(GetStatusColor(MatchItem.StatusID) == "khaki" ? "darkkhaki" : GetStatusColor(MatchItem.StatusID))">@GetMatchTime(MatchItem.StatusTime, MatchItem.Time, MatchItem.StatusID)</span>
