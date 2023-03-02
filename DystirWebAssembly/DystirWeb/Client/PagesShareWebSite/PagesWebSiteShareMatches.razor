@@ -59,7 +59,7 @@ else if (page?.ToLower() == "portal")
                                     CompetitionsOnClick="@(CompetitionsOnClick)" />
             </div>
 
-            <div id="main_container_vertical_list">
+            <div id="main_container_vertical_list" style="border-inline: 1px solid rgba(17,24,39,.05)">
                 <div id="matches_same_day_share">
                     @foreach (var matchesGroup in MatchesListGroup ?? new List<IGrouping<string, Matches>>())
                     {
@@ -92,7 +92,7 @@ else if (page?.ToLower() == "portal")
                                     CompetitionsOnClick="@(CompetitionsOnClick)" />
             </div>
 
-            <div id="main_container_vertical_list">
+            <div id="main_container_vertical_list" style="border-inline: 1px solid rgba(17,24,39,.05)">
                 <div id="matches_same_day_share">
                     @foreach (var matchesGroup in ResultsListGroup ?? new List<IGrouping<string, Matches>>())
                     {
@@ -121,7 +121,7 @@ else if (page?.ToLower() == "portal")
                                     CompetitionsOnClick="@(CompetitionsOnClick)" />
             </div>
 
-            <div id="main_container_vertical_list">
+            <div id="main_container_vertical_list" style="border-inline: 1px solid rgba(17,24,39,.05)">
                 <div id="matches_same_day_share">
                     @foreach (var matchesGroup in FixturesListGroup ?? new List<IGrouping<string, Matches>>())
                     {
@@ -151,7 +151,7 @@ else if (page?.ToLower() == "portal")
                                         SelectedCompetition="@(SelectedStandingsCompetition)"
                                         CompetitionsOnClick="@(CompetitionsOnClick)" />
                 </div>
-                <div id="main_container_vertical_list">
+                <div id="main_container_vertical_list" style="border-inline: 1px solid rgba(17,24,39,.05)">
                     <LiveStandingView Standing="@(LiveStanding)" />
                 </div>
             }
@@ -312,7 +312,7 @@ else if (page?.ToLower() == "portal")
     private void SetMatches()
     {
         var fromDate = DateTime.UtcNow.AddMinutes(-timeZoneOffset).Date.AddDays(0);
-        var toDate = fromDate.AddDays(7);
+        var toDate = fromDate.AddDays(3);
         MatchesListGroup = DystirWebClientService.AllMatches?
             .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
             .Where(x => x.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate && x.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate)
