@@ -12,6 +12,7 @@
                         <td class="match_info pl-1">
                             <span>@GetMatchDayName()</span>
                             <span>@MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString("dd.MM.", new CultureInfo("fo-FO"))</span>
+                            <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "" : MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString(" HH:mm"))</span>
                             <span>@MatchItem.Location</span>
                         </td>
                     }
