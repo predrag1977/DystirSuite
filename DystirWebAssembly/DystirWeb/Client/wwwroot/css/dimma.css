@@ -1,9 +1,11 @@
-﻿@import "dystir_main_style.css";
+﻿html, body {
+    font-family: Montserrat, sans-serif;
+    background-color: white;
+}
 
 body {
-    background-color: #fff;
-    font-family: Helvetica, Arial, sans-serif;
-    user-select: none;
+    background-color: #f9fafb;
+    user-select: text;
     color: black;
 }
 
@@ -36,20 +38,6 @@ body {
     margin: 0 auto;
 }
 
-#main_container_vertical_list, #main_container_vertical_list_standings {
-    overflow-x: hidden;
-    overflow-y: auto;
-    height: calc(100vh - 100px);
-    margin: auto 0;
-    font-size: 1rem;
-    padding: 0 5px;
-    width: 100%;
-}
-
-#main_container_vertical_list_standings {
-    height: calc(100vh - 50px);
-}
-
 #horizontal_menu_days {
     height: 50px;
     border-top: 0px solid lightgray;
@@ -65,7 +53,7 @@ body {
 #competitions_selection {
     background-color: rgba(17,24,39,.05);
     border-top: 0px solid lightgray;
-    border-bottom: 0px solid lightgray !important;
+    border-bottom: 0px solid lightgray;
     margin: 0;
     height: 50px;
 }
@@ -96,7 +84,6 @@ body {
 
 #matches_same_day {
     border-bottom: 1px solid lightgray;
-
 }
 
 #matches_same_day_share {
@@ -108,16 +95,18 @@ body {
     #matches_same_day_share a {
         text-decoration: none;
     }
-    
+
 .match_item_same_day_share {
     padding: 2px;
     border-radius: 3px;
     margin: 0;
-    font-size: 14px !important;
+    font-size: 0.8rem;
+    width: calc(20% - 4px);
     display: inline-block;
-    box-shadow: rgba(0, 0, 0, 0.22) 0 0 6px 0;
-    background-color: #fff;
+    border: 1px solid #999999;
+    background-color: white;
     color: black;
+    max-width:400px;
 }
 
     .match_item_same_day_share:hover {
@@ -167,6 +156,7 @@ body {
 
 .tab {
     color: #999999;
+    margin: 15px 8px 0 8px;
     font-weight:700;
 }
 
@@ -218,16 +208,4 @@ body {
     line-height: 130px;
     height: 130px;
     background-color: white;
-}
-
-.matches_and_competition_selection {
-    height: auto;
-}
-
-#main_container {
-    height: calc(100vh - 140px);
-}
-
-.standings_cell_number {
-    padding: 7px 0;
 }

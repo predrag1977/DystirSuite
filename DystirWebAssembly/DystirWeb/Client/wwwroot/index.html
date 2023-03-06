@@ -7,31 +7,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <base href="/" />
-    <link rel="icon" href="favicon.ico?v=200" type="image/x-icon">
+    <link rel="icon" href="favicon.ico?300" type="image/x-icon">
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/fontawesome/css/fontawesome.min.css" rel="stylesheet" />
     <link href="css/fontawesome/css/brands.min.css" rel="stylesheet" />
     <link href="css/fontawesome/css/regular.min.css" rel="stylesheet" />
     <link href="css/fontawesome/css/solid.min.css" rel="stylesheet" />
     <link href="css/fontawesome/css/v4-shims.min.css" rel="stylesheet" />
-    <link href="css/dystir_main_style.css?v=200" rel="stylesheet" />
 
     <title>Dystir.fo - Live scores, results, fixtures and standings of football matches in the Faroe Islands</title>
 
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
-    <script src="scripts/element_calculation_script_v1.js?v=1"></script>
+    <script src="scripts/page_resize_script.js?300"></script>
+    <script src="scripts/change_url_script.js?300"></script>
+    <script src="scripts/timezone_script.js?300"></script>
+    <script src="scripts/dynamic_title_and_icon.js?300"></script>
+    <script src="scripts/google_analytics.js?300"></script>
+    <script src="_framework/blazor.webassembly.js?300"></script>
+    <script src="scripts/startup_script.js?300"></script>
 
 </head>
 
-<body onresize="onPageResize()">
-
-    <script src="scripts/background_script.js?v=200"></script>
-    <script src="scripts/change_url_script.js?v=200"></script>
-    <script src="scripts/timezone_script.js?v=200"></script>
-    <script src="scripts/dynamic_title_and_icon.js?v=200"></script>
-    <script src="scripts/google_analytics.js"></script>
-    <script src="_framework/blazor.webassembly.js"></script>
-
+<body id="app" onresize="onPageResize()">
+    <div class="loading-spinner-parent" style="position: fixed; top: calc(50% - 1.3rem); left: calc(50% - 1.3rem);">
+        <i class="fas fa-spin fa-spinner fa-2x" style="color:darkgrey"></i>
+    </div>
 </body>
 
 </html>

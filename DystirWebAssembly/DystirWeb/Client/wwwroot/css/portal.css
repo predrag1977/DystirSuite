@@ -1,9 +1,11 @@
-﻿@import "dystir_main_style.css";
+﻿html, body {
+    font-family: Arial,sans-serif;
+    background-color: white;
+}
 
 body {
-    background-color: #f9fafb;
-    font-family: Montserrat,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,Helvetica Neue,Arial,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
-    user-select: none;
+    background-color: #fff;
+    user-select: text;
     color: black;
 }
 
@@ -36,6 +38,20 @@ body {
     margin: 0 auto;
 }
 
+#main_container_vertical_list, #main_container_vertical_list_standings {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: calc(100vh - 100px);
+    margin: auto 0;
+    font-size: 1rem;
+    padding: 0 5px;
+    width: 100%;
+}
+
+#main_container_vertical_list_standings {
+    height: calc(100vh - 50px);
+}
+
 #horizontal_menu_days {
     height: 50px;
     border-top: 0px solid lightgray;
@@ -51,13 +67,52 @@ body {
 #competitions_selection {
     background-color: rgba(17,24,39,.05);
     border-top: 0px solid lightgray;
-    border-bottom: 0px solid lightgray;
+    border-bottom: 0px solid lightgray !important;
     margin: 0;
     height: 50px;
 }
 
 #horizontal_menu_wrapper {
     height: 50px;
+}
+
+#horizontal_menu_bottom {
+    white-space: nowrap;
+    overflow: auto;
+    float: left;
+    width: calc(100% - 80px);
+    text-align: center;
+}
+
+    #horizontal_menu_bottom div {
+        display: inline-block;
+    }
+
+#horizontal_menu_wrapper_bottom {
+    height: 50px;
+}
+
+#scroll_button_left_bottom, #scroll_button_right_bottom {
+    height: 40px;
+    cursor: pointer;
+    background-color: lightgray;
+    color: gray;
+    white-space: nowrap;
+    float: left;
+    text-align: center;
+    width: 40px;
+    visibility: hidden;
+    border-radius: 20px;
+    line-height: 40px;
+    margin-top: 5px;
+}
+
+#scroll_button_left_bottom:hover, #scroll_button_right_bottom:hover {
+    background-color: rgba(211,211,211,0.7);
+}
+
+#scroll_button_right_bottom {
+    float: right;
 }
 
 #scroll_button_left, #scroll_button_right, #back_button {
@@ -82,6 +137,7 @@ body {
 
 #matches_same_day {
     border-bottom: 1px solid lightgray;
+
 }
 
 #matches_same_day_share {
@@ -93,18 +149,16 @@ body {
     #matches_same_day_share a {
         text-decoration: none;
     }
-
+    
 .match_item_same_day_share {
     padding: 2px;
     border-radius: 3px;
     margin: 0;
-    font-size: 0.8rem;
-    width: calc(20% - 4px);
+    font-size: 14px !important;
     display: inline-block;
-    border: 1px solid #999999;
-    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.22) 0 0 6px 0;
+    background-color: #fff;
     color: black;
-    max-width:400px;
 }
 
     .match_item_same_day_share:hover {
@@ -154,7 +208,6 @@ body {
 
 .tab {
     color: #999999;
-    margin: 15px 8px 0 8px;
     font-weight:700;
 }
 
@@ -206,4 +259,16 @@ body {
     line-height: 130px;
     height: 130px;
     background-color: white;
+}
+
+.matches_and_competition_selection {
+    height: auto;
+}
+
+#main_container {
+    height: calc(100vh - 140px);
+}
+
+.standings_cell_number {
+    padding: 7px 0;
 }

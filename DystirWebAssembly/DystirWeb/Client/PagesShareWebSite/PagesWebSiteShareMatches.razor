@@ -3,8 +3,6 @@
 @layout PagesWebSiteShareLayout
 @implements IDisposable
 
-<link href="css/@(page)_style_v1.css?v=1" rel="stylesheet" />
-
 @if (page?.ToLower() == "dimma" || page?.ToLower() == "info")
 {
     <div class="matches_and_competition_selection">
@@ -89,7 +87,7 @@ else if (page?.ToLower() == "portal")
             <div id="competitions_selection">
                 <ChooseCompetitions CompetitionsList="@(ResultsCompetitionList)"
                                     SelectedCompetition="@(SelectedResultsCompetition)"
-                                    CompetitionsOnClick="@(CompetitionsOnClick)" />
+                                    CompetitionsOnClick="@(CompetitionsOnClick)"/>
             </div>
 
             <div id="main_container_vertical_list" style="border-inline: 1px solid rgba(17,24,39,.05)">
@@ -173,8 +171,8 @@ else if (page?.ToLower() == "portal")
 }  
 
 @code {
-    [Parameter]
-    public string page { get; set; }
+        [Parameter]
+        public string page { get; set; }
 
     private string SelectedMatchesCompetition { get; set; }
     private List<string> MatchesCompetitionList { get; set; }
@@ -206,6 +204,7 @@ else if (page?.ToLower() == "portal")
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed += TimerElapsed;
+        await JSRuntime.InvokeAsync<object>("includeCssShareMatches", page);
         timeZoneOffset = int.Parse(await JSRuntime.InvokeAsync<String>("getTimeZoneOffset"));
         await GetSelectedMatchListGroup();
     }
@@ -301,7 +300,7 @@ else if (page?.ToLower() == "portal")
         SetMatches();
         SetResults();
         SetFixtures();
-        //SetStandings();
+        SetStandings();
         SetTabMenu();
 
         isLoading = false;
@@ -311,8 +310,9 @@ else if (page?.ToLower() == "portal")
 
     private void SetMatches()
     {
+        var toNumber = page?.ToLower() == "portal" ? 7 : 0;
         var fromDate = DateTime.UtcNow.AddMinutes(-timeZoneOffset).Date.AddDays(0);
-        var toDate = fromDate.AddDays(3);
+        var toDate = fromDate.AddDays(toNumber);
         MatchesListGroup = DystirWebClientService.AllMatches?
             .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
             .Where(x => x.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate && x.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate)
@@ -407,7 +407,10 @@ else if (page?.ToLower() == "portal")
         {
             TabList.Add("KOMANDI");
         }
-        //TabList.Add("STØÐAN");
+        if(StandingsCompetitionsList?.Count > 0)
+        {
+            TabList.Add("STØÐAN");
+        }
         SelectedTab = string.IsNullOrWhiteSpace(SelectedTab) ? TabList?.FirstOrDefault() ?? "" : SelectedTab;
     }
 

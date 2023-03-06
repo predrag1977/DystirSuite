@@ -1,9 +1,11 @@
-﻿@import "dystir_main_style.css";
+﻿html, body {
+    font-family: 'Source Sans Pro', sans-serif;
+    background-color: white;
+}
 
 body {
     background-color: #f5f5f5;
-    font-family: 'Source Sans Pro', sans-serif;
-    user-select: none;
+    user-select: text;
     color: black;
 }
 
