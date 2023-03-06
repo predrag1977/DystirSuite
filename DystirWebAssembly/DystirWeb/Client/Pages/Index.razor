@@ -4,6 +4,10 @@
 @layout DystirLayout
 @implements IDisposable
 
+<head>
+    <link href="css/dystir.css?@(DateTime.Now.Ticks)" rel="stylesheet" />
+</head>
+
 <div id="days_selection">
     <ChooseDays DaysOnClick="@DaysOnClick" TimeZoneOffset="@timeZoneOffset" DaysRange="@daysRange" />
 </div>

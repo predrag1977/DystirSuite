@@ -3,8 +3,6 @@
 @layout PagesWebSiteShareLayout
 @implements IDisposable
 
-<link href="css/@(page)_style_v1.css?v=1" rel="stylesheet" />
-
 @if (page?.ToLower() == "dimma" || page?.ToLower() == "info" || page?.ToLower() == "portal")
 {
     <div id="main_share">
@@ -15,7 +13,7 @@
 
             <div id="container_share">
                 <div id="match-details_static_part">
-                    @if (SelectedMatchListGroup?.Count() > 0 && IsTodayMatch())
+                    @if (SelectedMatchListGroup?.Count() > 0)
                     {
                         <div id="competitions_selection">
                             <ChooseCompetitions CompetitionsList="@(CompetitionsList)"
@@ -213,7 +211,8 @@
 
     public async Task GetSelectedMatchListGroup()
     {
-        var fromDate = DateTime.UtcNow.AddMinutes(-timeZoneOffset).Date.AddDays(0);
+        var date = SelectedMatch.Time ?? DateTime.UtcNow;
+        var fromDate = date.AddMinutes(-timeZoneOffset).Date.AddDays(0);
         var toDate = fromDate.AddDays(0);
         SelectedMatchListGroup = DystirWebClientService.AllMatches?
             .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)

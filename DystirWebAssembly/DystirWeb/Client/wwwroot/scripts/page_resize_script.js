@@ -1,5 +1,10 @@
-﻿var scrollInterval;
-var matchesSameDay = 0;
+﻿function onPageResize() {
+    scrollButtonVisibility("");
+    scrollButtonVisibility("_bottom");
+
+    setMainContainerHeight();
+    setMatchDetailsHeight();
+}
 
 function scrollOnMouseOver(direction) {
     var horizontalMenu = document.getElementById('horizontal_menu');
@@ -10,21 +15,23 @@ function scrollOnMouseOver(direction) {
     }
 }
 
-function onPageResize() {
-    scrollButtonVisibility();
-
-    setMainContainerHeight();
-    setMatchDetailsHeight();
+function scrollOnMouseOverBottom(direction) {
+    var horizontalMenu = document.getElementById('horizontal_menu_bottom');
+    if (direction == 'left') {
+        horizontalMenu.scrollLeft -= horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
+    } else {
+        horizontalMenu.scrollLeft += horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
+    }
 }
 
-function scrollButtonVisibility() {
-    var horizontalMenu = document.getElementById('horizontal_menu');
-    var horizontalMenuScroll = document.getElementById('horizontal_menu_wrapper');
+function scrollButtonVisibility(position) {
+    var horizontalMenu = document.getElementById('horizontal_menu' + position);
+    var horizontalMenuScroll = document.getElementById('horizontal_menu_wrapper' + position);
     if (horizontalMenu == null) {
         return;
     }
-    var scrollButtonLeft = document.getElementById('scroll_button_left');
-    var scrollButtonRight = document.getElementById('scroll_button_right');
+    var scrollButtonLeft = document.getElementById('scroll_button_left' + position);
+    var scrollButtonRight = document.getElementById('scroll_button_right' + position);
 
     if (horizontalMenu.offsetWidth >= horizontalMenuScroll.offsetWidth) {
         scrollButtonLeft.style.visibility = "hidden";

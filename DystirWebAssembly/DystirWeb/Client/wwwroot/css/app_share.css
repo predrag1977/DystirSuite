@@ -49,10 +49,8 @@ a, .btn-link {
         top: 0.5rem;
     }*/
 
-
-html, body
-{
-    background-color: #181818;
+html, body {
+    background-color: white;
 }
 
 .loading-spinner-parent {

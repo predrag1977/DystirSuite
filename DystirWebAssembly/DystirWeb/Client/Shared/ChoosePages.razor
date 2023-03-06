@@ -1,8 +1,8 @@
-﻿<div id="scroll_button_left" onclick="scrollOnMouseOver('left')">
+﻿<div id="scroll_button_left_bottom" onclick="scrollOnMouseOverBottom('left')">
     &#10094;
 </div>
-<div id="horizontal_menu">
-    <div id="horizontal_menu_wrapper">
+<div id="horizontal_menu_bottom">
+    <div id="horizontal_menu_wrapper_bottom">
         @foreach (var tab in TabList ?? new List<string>())
         {
             <div class="tab @(SelectedTab == tab ? "selected_tab" : "")" @onclick="(() => SetSelectedTab(tab))">
@@ -11,7 +11,7 @@
         }
     </div>
 </div>
-<div id="scroll_button_right" onclick="scrollOnMouseOver('right')">
+<div id="scroll_button_right_bottom" onclick="scrollOnMouseOverBottom('right')">
     &#10095;
 </div>
 
