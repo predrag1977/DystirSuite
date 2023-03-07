@@ -13,7 +13,7 @@
 
             <div id="container_share">
                 <div id="match-details_static_part">
-                    @if (SelectedMatchListGroup?.Count() > 0)
+                    @if (SelectedMatchListGroup?.Count() > 1)
                     {
                         <div id="competitions_selection">
                             <ChooseCompetitions CompetitionsList="@(CompetitionsList)"
@@ -28,13 +28,10 @@
                                     var matches = matchesGroup.Select(x => x);
                                     @foreach (Matches match in matches)
                                     {
-                                        <NavLink style="cursor:pointer;" @onclick="@(() => isLoading = SelectedMatch?.MatchID != match.MatchID)" href="@(page + "/matchdetails/" + match.MatchID)">
-                                            <PagesWebSiteShareMatch MatchItem="@match"
-                                                                    TimeZoneOffset="@timeZoneOffset"
-                                                                    IsMatchForSameDayList="@true"
-                                                                    IsMatchInDetails="@true"
-                                                                    NumberOfMatches="@numberOfMatches"
-                                                                    Page="@(page)"/>
+                                        <NavLink style="cursor:pointer;" @onclick="@(() => isLoading = SelectedMatch?.MatchID != match.MatchID)" href="@(page + "/matchdetails/" + match.MatchID + string.Format("?{0}", GetTimestamp(DateTime.Now)))">
+                                            <div class="match_item_same_day_share_details" style="width:@(GetMatchItemWidth(NumberOfMatches)) !important">
+                                                <PagesWebSiteShareMatchForSameDayList MatchItem="@match" TimeZoneOffset="@timeZoneOffset"/>
+                                            </div>
                                         </NavLink>
                                     }
                                 }
@@ -102,6 +99,7 @@
 
     private string SelectedCompetition { get; set; }
     private List<string> CompetitionsList { get; set; }
+    private int? NumberOfMatches { get; set; }
     private List<IGrouping<string, Matches>> SelectedMatchListGroup = new List<IGrouping<string, Matches>>();
     private Matches SelectedMatch;
     private FullMatchDetailsModelView fullMatchDetails;
@@ -109,7 +107,7 @@
     private int timeZoneOffset = 0;
     private bool isLoading = true;
     private string selectedTab = "0";
-    private int numberOfMatches = 0;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -190,7 +188,7 @@
     private void CompetitionsOnClick(string competition)
     {
         SelectedCompetition = competition;
-        numberOfMatches = SelectedMatchListGroup.FirstOrDefault(x => x.Key == SelectedCompetition).Select(x => x)?.Count() ?? 0;
+        NumberOfMatches = SelectedMatchListGroup.FirstOrDefault(x => x.Key == SelectedCompetition).Select(x => x)?.Count() ?? 0;
         Refresh();
     }
 
@@ -226,7 +224,7 @@
         }
         SelectedCompetition = string.IsNullOrWhiteSpace(SelectedMatch?.MatchTypeName) ? CompetitionsList?.FirstOrDefault() ?? "" : SelectedMatch?.MatchTypeName;
 
-        numberOfMatches = SelectedMatchListGroup?.FirstOrDefault(x => x.Key == SelectedCompetition)?.Select(x => x)?.Count() ?? 0;
+        NumberOfMatches = SelectedMatchListGroup?.FirstOrDefault(x => x.Key == SelectedCompetition)?.Select(x => x)?.Count() ?? 0;
         await Task.CompletedTask;
     }
 
@@ -249,5 +247,19 @@
         var fromDate = DateTime.UtcNow.AddMinutes(-timeZoneOffset).Date.AddDays(0);
         var toDate = fromDate.AddDays(0);
         return SelectedMatch.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate && SelectedMatch.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate;
+    }
+
+    private string GetTimestamp(DateTime value)
+    {
+        return value.ToString("yyyyMMddHHmm");
+    }
+
+    private string GetMatchItemWidth(int? numberOfMatches)
+    {
+        if (numberOfMatches != null && numberOfMatches > 0)
+        {
+            return 100 / numberOfMatches - numberOfMatches * 0.1 + "%";
+        }
+        return "0px";
     }
 }

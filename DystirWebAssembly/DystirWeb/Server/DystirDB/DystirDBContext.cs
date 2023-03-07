@@ -23,6 +23,7 @@ namespace DystirWeb.Server.DystirDB
         public virtual DbSet<HandballMatches> HandballMatches { get; set; }
         public virtual DbSet<Players> Players { get; set; }
         public virtual DbSet<PlayersOfMatches> PlayersOfMatches { get; set; }
+        public virtual DbSet<Requestor> Requestor { get; set; }
         public virtual DbSet<Round> Round { get; set; }
         public virtual DbSet<Sponsors> Sponsors { get; set; }
         public virtual DbSet<Squad> Squad { get; set; }
@@ -305,6 +306,25 @@ namespace DystirWeb.Server.DystirDB
                 entity.Property(e => e.RedCard).HasColumnName("RedCard");
 
                 entity.Property(e => e.TeamName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Requestor>(entity =>
+            {
+                entity.HasKey(e => e.ID);
+
+                entity.ToTable("Requestor", "dbo");
+
+                entity.Property(e => e.ID).HasColumnName("ID");
+
+                entity.Property(e => e.Name).HasColumnType("Name");
+
+                entity.Property(e => e.Username).HasColumnType("Username");
+
+                entity.Property(e => e.Password).HasColumnType("Password");
+
+                entity.Property(e => e.Token).HasColumnType("Token");
+
+                entity.Property(e => e.Active).HasColumnType("Active");
             });
 
             modelBuilder.Entity<Round>(entity =>

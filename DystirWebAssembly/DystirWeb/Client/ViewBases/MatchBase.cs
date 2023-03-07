@@ -186,19 +186,19 @@ namespace DystirWeb.ViewBases
             {
                 if (isMatchInDetails == true)
                 {
-                    if (NumberOfMatches > 0)
+                    if (numberOfMatches > 0)
                     {
-                        return "calc(" + 100 / NumberOfMatches + "% - " + NumberOfMatches * 1.2 + "px)";
+                        return 100 / numberOfMatches - numberOfMatches * 0.1 + "%";
                     }
                 }
                 else
                 {
-                    return "calc(100% - 2px)";
+                    return "99.9%";
                 }
             }
-            else if (NumberOfMatches > 0)
+            else if (numberOfMatches > 0)
             {
-                return "calc(" + 100 / NumberOfMatches + "% - " + NumberOfMatches * 1.2 + "px)";
+                return 100 / numberOfMatches - numberOfMatches * 0.1 + "%";
             }
             return "0px";
         }

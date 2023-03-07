@@ -1,0 +1,88 @@
+﻿@inherits MatchBase
+
+@if (MatchItem != null)
+{
+    <table>
+        <tr>
+            <td class="match_info pl-1">
+                <span>@MatchItem.Location</span>
+            </td>
+
+            <td class="match_time" style="white-space:nowrap;width:0">
+                <span style="color:@(GetStatusColor(MatchItem.StatusID) == "khaki" ? "darkkhaki" : GetStatusColor(MatchItem.StatusID))">@GetMatchTime(MatchItem.StatusTime, MatchItem.Time, MatchItem.StatusID)</span>
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <td class="match_item_same_day_team_name">
+                <span style="padding: 3px;">@((MatchItem.HomeTeam + " " + MatchItem.HomeSquadName + " " + MatchItem.HomeCategoriesName).Trim())</span>
+            </td>
+            @if (MatchItem.StatusID < 14 && MatchItem.StatusID > 1)
+            {
+                <td style="white-space:nowrap;width:0;">
+                    <div style="padding:0 1px">
+                        @if ((MatchItem.HomeTeamPenaltiesScore ?? 0) > 0 || (MatchItem.AwayTeamPenaltiesScore ?? 0) > 0)
+                        {
+                            @(string.Format("({0})", MatchItem.HomeTeamPenaltiesScore))
+                        }
+                        else if (MatchItem.StatusID == 10)
+                        {
+                            @("(0)")
+                        }
+                    </div>
+                </td>
+            }
+            <td style="white-space:nowrap;width:0;">
+                <div class="score_match_view">
+                    @if (MatchItem.StatusID < 14 && MatchItem.StatusID > 1)
+                    {
+                        @((MatchItem.HomeTeamScore ?? 0) - (MatchItem.HomeTeamPenaltiesScore ?? 0))
+                    }
+                    else
+                    {
+                        @("-")
+                    }
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <td class="match_item_same_day_team_name">
+                <span style="padding: 3px;">@((MatchItem.AwayTeam + " " + MatchItem.AwaySquadName + " " + MatchItem.AwayCategoriesName).Trim())</span>
+            </td>
+            @if (MatchItem.StatusID < 14 && MatchItem.StatusID > 1)
+            {
+                <td style="white-space:nowrap;width:0;">
+                    <div style="padding:0 1px">
+                        @if ((MatchItem.HomeTeamPenaltiesScore ?? 0) > 0 || (MatchItem.AwayTeamPenaltiesScore ?? 0) > 0)
+                        {
+                            @(string.Format("({0})", MatchItem.AwayTeamPenaltiesScore))
+                        }
+                        else if (MatchItem.StatusID == 10)
+                        {
+                            @("(0)")
+                        }
+                    </div>
+                </td>
+            }
+            <td style="white-space:nowrap;width:0">
+                <div class="score_match_view">
+                    @if (MatchItem.StatusID < 14 && MatchItem.StatusID > 1)
+                    {
+                        @((MatchItem.AwayTeamScore ?? 0) - (MatchItem.AwayTeamPenaltiesScore ?? 0))
+                    }
+                    else
+                    {
+                        @("-")
+                    }
+                </div>
+            </td>
+        </tr>
+    </table>
+}
+
+

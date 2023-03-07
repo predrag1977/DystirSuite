@@ -23,6 +23,7 @@ namespace DystirWeb.Services
         public ObservableCollection<MatchTypes> AllCompetitions;
         public ObservableCollection<Sponsors> AllSponsors;
         public ObservableCollection<PlayersOfMatches> AllPlayersOfMatches;
+        public ObservableCollection<Requestor> AllRequestor;
 
         public DystirService(DbContextOptions<DystirDBContext> dbContextOptions)
         {
@@ -49,7 +50,8 @@ namespace DystirWeb.Services
             AllMatchesDetails = new ObservableCollection<MatchDetails>();
             var allMatchesTask = GetAllMatchesAsync();
             var allSponsorsTask = GetAllSponsorsAsync();
-            await Task.WhenAll(allMatchesTask, allSponsorsTask);
+            var allRequestorTask = GetAllRequestorsAsync();
+            await Task.WhenAll(allMatchesTask, allSponsorsTask, allRequestorTask);
         }
 
         public async Task GetAllMatchesAsync()
@@ -84,6 +86,12 @@ namespace DystirWeb.Services
         private async Task GetAllSponsorsAsync()
         {
             AllSponsors = new ObservableCollection<Sponsors>(DystirDBContext.Sponsors);
+            await Task.CompletedTask;
+        }
+
+        private async Task GetAllRequestorsAsync()
+        {
+            AllRequestor = new ObservableCollection<Requestor>(DystirDBContext.Requestor);
             await Task.CompletedTask;
         }
 
