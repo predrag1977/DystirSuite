@@ -19,5 +19,15 @@ namespace DystirWeb.Services
             }
             return _dystirService.DystirDBContext.Administrators.Any(x => x.AdministratorToken == token);
         }
+
+        public bool IsAuthorizedRequestor(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return false;
+            }
+            var requestor = _dystirService.AllRequestor.FirstOrDefault(x => x.Name.Equals(name, System.StringComparison.CurrentCultureIgnoreCase));
+            return requestor != null && requestor.Active == 1;
+        }
     }
 }

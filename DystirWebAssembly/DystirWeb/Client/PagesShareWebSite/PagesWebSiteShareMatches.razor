@@ -21,7 +21,7 @@
                         var matches = matchesGroup.Select(x => x);
                         @foreach (Matches match in matches)
                         {
-                            <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
+                            <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID + string.Format("?{0}", GetTimestamp(DateTime.Now)))">
                                 <PagesWebSiteShareMatch MatchItem="@match"
                                                         TimeZoneOffset="@timeZoneOffset"
                                                         IsMatchForSameDayList="@true"
@@ -57,7 +57,7 @@ else if (page?.ToLower() == "portal")
                                     CompetitionsOnClick="@(CompetitionsOnClick)" />
             </div>
 
-            <div id="main_container_vertical_list" style="border-inline: 1px solid rgba(17,24,39,.05)">
+            <div id="main_container_vertical_list" style="border: 1px solid rgba(17,24,39,.05)">
                 <div id="matches_same_day_share">
                     @foreach (var matchesGroup in MatchesListGroup ?? new List<IGrouping<string, Matches>>())
                     {
@@ -67,7 +67,7 @@ else if (page?.ToLower() == "portal")
                             @foreach (Matches match in matches)
                             {
                                 <div>
-                                    <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
+                                    <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID + string.Format("?{0}", GetTimestamp(DateTime.Now)))">
                                         <PagesWebSiteShareMatch MatchItem="@match"
                                                                 TimeZoneOffset="@timeZoneOffset"
                                                                 IsMatchForSameDayList="@true"
@@ -98,7 +98,7 @@ else if (page?.ToLower() == "portal")
                         @foreach (var match in matchesGroup)
                         {
                             <div>
-                                <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
+                                <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID + string.Format("?{0}", GetTimestamp(DateTime.Now)))">
                                     <PagesWebSiteShareMatch MatchItem="@match"
                                                             TimeZoneOffset="@timeZoneOffset"
                                                             IsMatchForSameDayList="@true"
@@ -127,7 +127,7 @@ else if (page?.ToLower() == "portal")
                         @foreach (var match in matchesGroup)
                         {
                             <div>
-                                <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
+                                <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID + string.Format("?{0}", GetTimestamp(DateTime.Now)))">
                                     <PagesWebSiteShareMatch MatchItem="@match"
                                                             TimeZoneOffset="@timeZoneOffset"
                                                             IsMatchForSameDayList="@true"
@@ -155,11 +155,11 @@ else if (page?.ToLower() == "portal")
             }
         }
 
-        <div id="competitions_selection">
+        @*<div id="competitions_selection">
             <ChoosePages TabList="@(TabList)"
                          SelectedTab="@(SelectedTab)"
                          TabOnClick="@(TabOnClick)" />
-        </div>
+        </div>*@
 
         @if (isLoading)
         {
@@ -171,8 +171,8 @@ else if (page?.ToLower() == "portal")
 }  
 
 @code {
-        [Parameter]
-        public string page { get; set; }
+    [Parameter]
+    public string page { get; set; }
 
     private string SelectedMatchesCompetition { get; set; }
     private List<string> MatchesCompetitionList { get; set; }
@@ -258,27 +258,30 @@ else if (page?.ToLower() == "portal")
     {
         if (page == "portal")
         {
-            if (SelectedTab == "DYSTIR")
-            {
-                SelectedMatchesCompetition = competition;
-                MatchesNumber = MatchesListGroup.FirstOrDefault(x => x.Key == SelectedMatchesCompetition)?.Select(x => x)?.Count() ?? 0;
-                SetMatches();
-            }
-            else if (SelectedTab == "ÚRSLIT")
-            {
-                SelectedResultsCompetition = competition;
-                SetResults();
-            }
-            else if (SelectedTab == "KOMANDI")
-            {
-                SelectedFixturesCompetition = competition;
-                SetFixtures();
-            }
-            else if (SelectedTab == "STØÐAN")
-            {
-                SelectedStandingsCompetition = competition;
-                LiveStanding = LiveStandingService.GetStanding(SelectedStandingsCompetition);
-            }
+            SelectedMatchesCompetition = competition;
+            MatchesNumber = MatchesListGroup.FirstOrDefault(x => x.Key == SelectedMatchesCompetition)?.Select(x => x)?.Count() ?? 0;
+            SetMatches();
+            //if (SelectedTab == "DYSTIR")
+            //{
+            //    SelectedMatchesCompetition = competition;
+            //    MatchesNumber = MatchesListGroup.FirstOrDefault(x => x.Key == SelectedMatchesCompetition)?.Select(x => x)?.Count() ?? 0;
+            //    SetMatches();
+            //}
+            //else if (SelectedTab == "ÚRSLIT")
+            //{
+            //    SelectedResultsCompetition = competition;
+            //    SetResults();
+            //}
+            //else if (SelectedTab == "KOMANDI")
+            //{
+            //    SelectedFixturesCompetition = competition;
+            //    SetFixtures();
+            //}
+            //else if (SelectedTab == "STØÐAN")
+            //{
+            //    SelectedStandingsCompetition = competition;
+            //    LiveStanding = LiveStandingService.GetStanding(SelectedStandingsCompetition);
+            //}
         }
         else
         {
@@ -298,9 +301,9 @@ else if (page?.ToLower() == "portal")
     public async Task GetSelectedMatchListGroup()
     {
         SetMatches();
-        SetResults();
-        SetFixtures();
-        SetStandings();
+        //SetResults();
+        //SetFixtures();
+        //SetStandings();
         SetTabMenu();
 
         isLoading = false;
@@ -310,7 +313,7 @@ else if (page?.ToLower() == "portal")
 
     private void SetMatches()
     {
-        var toNumber = page?.ToLower() == "portal" ? 7 : 0;
+        var toNumber = page?.ToLower() == "portal" ? 5 : 0;
         var fromDate = DateTime.UtcNow.AddMinutes(-timeZoneOffset).Date.AddDays(0);
         var toDate = fromDate.AddDays(toNumber);
         MatchesListGroup = DystirWebClientService.AllMatches?
@@ -425,5 +428,10 @@ else if (page?.ToLower() == "portal")
             default:
                 return matchTypeId;
         }
+    }
+
+    public string GetTimestamp(DateTime value)
+    {
+        return value.ToString("yyyyMMddHHmm");
     }
 }

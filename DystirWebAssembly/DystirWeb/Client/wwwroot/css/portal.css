@@ -177,6 +177,22 @@ body {
         color: black;
     }
 
+.match_item_same_day_share_details {
+    padding: 2px;
+    border-radius: 3px;
+    margin: 0;
+    font-size: 14px !important;
+    display: inline-block;
+    box-shadow: rgba(0, 0, 0, 0.22) 0 0 6px 0;
+    background-color: #fff;
+    color: black;
+}
+
+    .match_item_same_day_share_details:hover {
+        background-color: white;
+        color: black;
+    }
+
 .score {
     color: white;
 }

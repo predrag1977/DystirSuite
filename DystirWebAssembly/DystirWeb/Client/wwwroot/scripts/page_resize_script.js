@@ -51,7 +51,7 @@ function setMainContainerHeight() {
         mainContainer.style.height = (window.innerHeight - 140) + "px";
     }
     if (mainContainerVerticalList != null) {
-        mainContainerVerticalList.style.height = (window.innerHeight - 100) + "px";
+        mainContainerVerticalList.style.height = (window.innerHeight - 50) + "px";
     }
     if (mainContainerVerticalListStandings != null) {
         mainContainerVerticalListStandings.style.height = (window.innerHeight - 50) + "px";
