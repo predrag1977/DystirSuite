@@ -100,7 +100,7 @@ body {
     padding: 2px;
     border-radius: 3px;
     margin: 0;
-    font-size: 0.8rem;
+    font-size: 12px;
     width: calc(20% - 4px);
     display: inline-block;
     border: 1px solid #999999;
@@ -129,7 +129,7 @@ body {
     padding: 2px;
     border-radius: 3px;
     margin: 0;
-    font-size: 14px !important;
+    font-size: 12px !important;
     display: inline-block;
     box-shadow: rgba(0, 0, 0, 0.22) 0 0 6px 0;
     background-color: #fff;
@@ -224,4 +224,8 @@ body {
     line-height: 130px;
     height: 130px;
     background-color: white;
+}
+
+.match_item_same_day_team_name {
+    text-overflow: clip;
 }

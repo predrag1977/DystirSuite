@@ -1,4 +1,6 @@
-﻿html, body {
+﻿/*@import "dystir.css";*/
+
+html, body {
     font-family: Arial,sans-serif;
     background-color: white;
 }
@@ -21,6 +23,16 @@ body {
     background-color: #f9fafb;
     height: 100%;
     width: 100%;
+}
+
+.loading-spinner-parent {
+    position: fixed;
+    top: calc(50% - 1.3rem);
+    left: calc(50% - 1.3rem);
+}
+
+.loading-spinner {
+    width: 2.6rem;
 }
 
 #header_container_share {
@@ -60,7 +72,17 @@ body {
     margin: 0;
 }
 
+    #horizontal_menu_days .tab {
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 20%;
+        margin: 20px 0 0 0;
+    }
+
 #match-details_static_part #horizontal_menu_days {
+    height: 50px;
     border-bottom: 1px solid transparent;
 }
 
@@ -71,6 +93,18 @@ body {
     margin: 0;
     height: 50px;
 }
+
+#horizontal_menu {
+    white-space: nowrap;
+    overflow: auto;
+    float: left;
+    width: calc(100% - 80px);
+    text-align: center;
+}
+
+    #horizontal_menu div {
+        display: inline-block;
+    }
 
 #horizontal_menu_wrapper {
     height: 50px;
@@ -107,21 +141,35 @@ body {
     margin-top: 5px;
 }
 
-#scroll_button_left_bottom:hover, #scroll_button_right_bottom:hover {
-    background-color: rgba(211,211,211,0.7);
-}
-
 #scroll_button_right_bottom {
     float: right;
 }
 
-#scroll_button_left, #scroll_button_right, #back_button {
+    #scroll_button_left_bottom:hover, #scroll_button_right_bottom:hover {
+        background-color: rgba(211,211,211,0.7);
+    }
+
+    
+
+#scroll_button_left, #scroll_button_right {
+    height: 40px;
+    cursor: pointer;
+    white-space: nowrap;
+    float: left;
+    text-align: center;
+    width: 40px;
+    visibility: hidden;
+    border-radius: 20px;
+    line-height: 40px;
     background-color: lightgray;
     color: gray;
     margin-top: 5px;
 }
 
-    #scroll_button_left:hover, #scroll_button_right:hover, #back_button:hover {
+#scroll_button_right {
+    float: right;
+}
+    #scroll_button_left:hover, #scroll_button_right:hover {
         background-color: rgba(211,211,211,0.7);
     }
 
@@ -130,9 +178,41 @@ body {
 }
 
 .match_details_item {
+    padding: 5px 10px;
+    border-radius: 10px;
     background-color: white;
     margin: 0 5px;
     color: black;
+}
+
+.content_table {
+    table-layout: fixed;
+    white-space: nowrap;
+    height: 100%;
+    width: 100%;
+}
+
+.content_table td {
+    border-top: 0;
+    vertical-align: middle;
+}
+
+.match_item_team_name, .match_item_same_day_team_name {
+    font-weight: bold;
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 1px;
+    text-align: left;
+}
+
+.match_item_team_name {
+    width: calc(50% - 40px)
+}
+
+.match_item_text_color {
+    text-align: center;
 }
 
 #matches_same_day {
@@ -154,7 +234,7 @@ body {
     padding: 2px;
     border-radius: 3px;
     margin: 0;
-    font-size: 13px !important;
+    font-size: 14px !important;
     display: inline-block;
     box-shadow: rgba(0, 0, 0, 0.22) 0 0 6px 0;
     background-color: #fff;
@@ -181,7 +261,7 @@ body {
     padding: 2px;
     border-radius: 3px;
     margin: 0;
-    font-size: 12px !important;
+    font-size: 14px !important;
     display: inline-block;
     box-shadow: rgba(0, 0, 0, 0.22) 0 0 6px 0;
     background-color: #fff;
@@ -193,16 +273,42 @@ body {
         color: black;
     }
 
-.score {
-    color: white;
+.score_match_same_day {
+    width: 23px;
 }
 
-.score_match_view, .score_match_same_day {
+.match_item_same_day .score_match_view {
+    width: 25px;
+    border-radius: 3px;
+}
+
+.score, .score_match_view, .score_match_same_day {
+    width: 30px;
+    border-radius: 5px;
+    text-align: center;
     background-color: lightgray;
     color: black;
 }
 
-.match_info, .standings_cell {
+.score {
+    color: white;
+}
+
+.score_match_same_day {
+    width: 23px;
+}
+
+.match_info {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: gray;
+    width: 100%;
+    max-width: 1px;
+    text-align: left;
+}
+
+.standings_cell {
     color: gray;
 }
 
@@ -223,9 +329,18 @@ body {
 }
 
 .tab {
+    font-size: 0.8rem;
     color: #999999;
-    font-weight:700;
+    font-weight: 700;
+    height: 30px;
+    margin: 20px 8px 0 8px;
+    text-align: center;
 }
+
+    .tab span {
+        padding: 5px;
+        cursor: pointer;
+    }
 
 .selected_tab {
     color: black;
@@ -287,8 +402,4 @@ body {
 
 .standings_cell_number {
     padding: 7px 0;
-}
-
-.match_item_same_day_team_name {
-    text-overflow: clip;
 }
