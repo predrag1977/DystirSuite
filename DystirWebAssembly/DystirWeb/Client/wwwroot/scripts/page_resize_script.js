@@ -61,11 +61,22 @@ function setMainContainerHeight() {
 function setMatchDetailsHeight() {
     var matchDetailsContainer = document.getElementById('match_details_container');
     if (matchDetailsContainer != null) {
+        var matchDetailsStaticPartHeight = 0;
         var matchDetailsStaticPart = document.getElementById('match-details_static_part');
-        matchDetailsContainer.style.height = (window.innerHeight - 80 - matchDetailsStaticPart.offsetHeight) + "px";
+        if (matchDetailsStaticPart != null) {
+            matchDetailsStaticPartHeight = matchDetailsStaticPart.offsetHeight;
+        }
+        matchDetailsContainer.style.height = (window.innerHeight - 80 - matchDetailsStaticPartHeight) + "px";
     }
 }
 
 function goBack() {
     history.back();
+}
+
+function getMatchItemWidth(numberOfMatches) {
+    var items = document.getElementsByClassName("match_item_same_day_share_details");
+    for (var i = 0; i < items.length; i++) {
+        items[i].style.width = "" + 100 / numberOfMatches - numberOfMatches * 0.1 + "%";
+    }
 }
