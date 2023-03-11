@@ -25,7 +25,6 @@ else {
         includeCss("app");
         includeCss("dystir");
     }
-    console.log(url);
 }
 
 function includeCss(page) {

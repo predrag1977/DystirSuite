@@ -313,7 +313,7 @@ else if (page?.ToLower() == "portal")
 
     private void SetMatches()
     {
-        var toNumber = page?.ToLower() == "portal" ? 5 : 3;
+        var toNumber = page?.ToLower() == "portal" ? 3 : 3;
         var fromDate = DateTime.UtcNow.AddMinutes(-timeZoneOffset).Date.AddDays(0);
         var toDate = fromDate.AddDays(toNumber);
         MatchesListGroup = DystirWebClientService.AllMatches?
