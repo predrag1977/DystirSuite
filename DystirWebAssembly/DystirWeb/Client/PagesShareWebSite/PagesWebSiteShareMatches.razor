@@ -21,7 +21,7 @@
                         var matches = matchesGroup.Select(x => x);
                         @foreach (Matches match in matches)
                         {
-                            <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID + string.Format("?{0}", GetTimestamp(DateTime.Now)))">
+                            <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
                                 <PagesWebSiteShareMatch MatchItem="@match"
                                                         TimeZoneOffset="@timeZoneOffset"
                                                         IsMatchForSameDayList="@true"
@@ -67,7 +67,7 @@ else if (page?.ToLower() == "portal")
                             @foreach (Matches match in matches)
                             {
                                 <div>
-                                    <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID + string.Format("?{0}", GetTimestamp(DateTime.Now)))">
+                                    <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
                                         <PagesWebSiteShareMatch MatchItem="@match"
                                                                 TimeZoneOffset="@timeZoneOffset"
                                                                 IsMatchForSameDayList="@true"
@@ -98,7 +98,7 @@ else if (page?.ToLower() == "portal")
                         @foreach (var match in matchesGroup)
                         {
                             <div>
-                                <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID + string.Format("?{0}", GetTimestamp(DateTime.Now)))">
+                                <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
                                     <PagesWebSiteShareMatch MatchItem="@match"
                                                             TimeZoneOffset="@timeZoneOffset"
                                                             IsMatchForSameDayList="@true"
@@ -127,7 +127,7 @@ else if (page?.ToLower() == "portal")
                         @foreach (var match in matchesGroup)
                         {
                             <div>
-                                <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID + string.Format("?{0}", GetTimestamp(DateTime.Now)))">
+                                <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
                                     <PagesWebSiteShareMatch MatchItem="@match"
                                                             TimeZoneOffset="@timeZoneOffset"
                                                             IsMatchForSameDayList="@true"
@@ -430,8 +430,8 @@ else if (page?.ToLower() == "portal")
         }
     }
 
-    public string GetTimestamp(DateTime value)
-    {
-        return value.ToString("yyyyMMddHHmm");
-    }
+    //public string GetTimestamp(DateTime value)
+    //{
+    //    return value.ToString("yyyyMMddHHmm");
+    //}
 }
