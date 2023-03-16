@@ -57,7 +57,7 @@
                         </td>
                     }
                     <td style="white-space:nowrap;width:0;">
-                        <div class="score_match_view">
+                        <div class="score_match_view_for_list">
                             @if (MatchItem.StatusID < 14 && MatchItem.StatusID > 1)
                             {
                                 @((MatchItem.HomeTeamScore ?? 0) - (MatchItem.HomeTeamPenaltiesScore ?? 0))
@@ -98,7 +98,7 @@
                         </td>
                     }
                     <td style="white-space:nowrap;width:0">
-                        <div class="score_match_view">
+                        <div class="score_match_view_for_list">
                             @if (MatchItem.StatusID < 14 && MatchItem.StatusID > 1)
                             {
                                 @((MatchItem.AwayTeamScore ?? 0) - (MatchItem.AwayTeamPenaltiesScore ?? 0))
