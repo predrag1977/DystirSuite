@@ -130,10 +130,9 @@ namespace DystirWeb.ViewBases
                 var days = Math.Floor(minutesToStart / 1440);
                 var hours = Math.Floor((minutesToStart - days * 1440) / 60);
                 var minutes = minutesToStart - days * 1440 - hours * 60;
-
                 if (days > 0)
                 {
-                    return days + " dag.";
+                    return string.Format("{0} d. {1} t.", days, hours);
                 }
                 else
                 {
