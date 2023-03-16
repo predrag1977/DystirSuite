@@ -150,6 +150,15 @@ body {
     color: black;
 }
 
+.score_match_view_for_list, .score_match_view_for_list_details {
+    color: black;
+    width: 25px;
+    background-color: lightgray;
+    color: black;
+    border-radius: 4px;
+    text-align: center;
+}
+
 .match_info, .standings_cell {
     color: gray;
 }
