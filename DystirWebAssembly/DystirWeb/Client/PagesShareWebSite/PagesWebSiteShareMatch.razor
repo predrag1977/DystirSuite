@@ -10,9 +10,12 @@
                     @if (Page == "portal")
                     {
                         <td class="match_info pl-1">
-                            <span>@GetMatchDayName()</span>
-                            <span>@MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString("dd.MM.", new CultureInfo("fo-FO"))</span>
+                            @*<span>@GetMatchDayName()</span>
+                            <span>@MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString("dd.MM.", new CultureInfo("fo-FO"))</span>*@
                             <span>@(MatchItem.Time?.ToString("HH:mm") == "00:00" ? "" : MatchItem.Time?.AddMinutes(-TimeZoneOffset).ToString(" HH:mm"))</span>
+                            <span> - </span>
+                            <span style="font-weight:bold">@MatchItem.MatchTypeName</span>
+                            <span> - </span>
                             <span>@MatchItem.Location</span>
                         </td>
                     }
