@@ -16,6 +16,11 @@ else {
         includeCss("dystir");
         includeCss("info");
     }
+    else if (url.indexOf("roysni") > -1) {
+        includeCss("app_share");
+        includeCss("dystir");
+        includeCss("portal");
+    }
     else if (url.indexOf("dimma") > -1) {
         includeCss("app_share");
         includeCss("dystir");

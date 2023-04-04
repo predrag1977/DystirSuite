@@ -43,6 +43,7 @@
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnRefreshMatchDetails += DystirWebClientService_OnRefreshMatchDetails;
         TimeService.OnTimerElapsed += TimerElapsed;
+        await JSRuntime.InvokeAsync<object>("includeCssShareMatches", page);
         await GetSelectedMatchListGroup();
     }
 
@@ -92,7 +93,7 @@
     public async Task GetSelectedMatchListGroup()
     {
         StandingsCompetitionsList = DystirWebClientService.AllCompetitions?
-            .Where(x => x.CompetitionID > 0)
+            .Where(x => x.CompetitionID > 1)
             .OrderBy(x => x.OrderID)?
             .Select(x => x.MatchTypeName)?
             .ToList() ?? new List<string>();
