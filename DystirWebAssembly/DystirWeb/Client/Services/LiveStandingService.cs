@@ -168,6 +168,15 @@ namespace DystirWeb.Services
             {
                 return "dimgray";
             }
+            else if (teamStanding.CompetitionName == "2. deild")
+            {
+                return teamStanding.Position switch
+                {
+                    2 => "green",
+                    10 => "darkred",
+                    _ => "dimgray",
+                };
+            }
             else
             {
                 return teamStanding.Position switch
