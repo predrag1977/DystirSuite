@@ -38,7 +38,7 @@ namespace DystirWeb.Controllers
                 //    value = "Competition:0";
                 //}
                 var matchesCount = (GetMatchesList() ?? new List<Matches>()).Count;
-                matchesCount = matchesCount > 5 ? 5 : matchesCount;
+                //matchesCount = matchesCount > 5 ? 5 : matchesCount;
                 value = String.Format("{0}:{1}", GetMatchesList().FirstOrDefault()?.MatchTypeName ?? "Competition", matchesCount.ToString());
             }
             return Ok(value);
@@ -46,7 +46,7 @@ namespace DystirWeb.Controllers
 
         private List<Matches> GetMatchesList()
         {
-            var fromDate = DateTime.Now.Date.AddDays(0);
+            var fromDate = DateTime.Now.AddHours(1).Date.AddDays(0);
             var toDate = fromDate.AddDays(0);
             var matchesList = _dystirService.AllMatches?
                 .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
