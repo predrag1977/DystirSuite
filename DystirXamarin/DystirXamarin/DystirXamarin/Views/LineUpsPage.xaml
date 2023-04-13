@@ -80,7 +80,7 @@
 
     </ContentPage.Resources>
     <ContentPage.ToolbarItems >
-        <ToolbarItem Name="OK" Order="Primary" Text="OK" Clicked="OK_Tapped" />
+        <ToolbarItem Order="Primary" Text="OK" Clicked="OK_Tapped" />
     </ContentPage.ToolbarItems>
     <Grid x:Name="PlayersLayout" RowSpacing="0" BindingContext="{Binding}">
         <Grid.RowDefinitions>

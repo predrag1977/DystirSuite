@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              BackgroundColor="{StaticResource LightBackgroundColor}"
@@ -14,10 +14,20 @@
         </Style>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems >
-        <ToolbarItem Name="OK" Order="Primary" Text="OK" Clicked="OK_Tapped" />
+        <ToolbarItem Order="Primary" Text="OK" Clicked="OK_Tapped" />
     </ContentPage.ToolbarItems>
     <StackLayout Padding="20,0">
-        <Entry x:Name="ValueEntry" FontSize="20" FontAttributes="Bold" Margin="0,15,0,10" Text="{Binding SelectedValue}" />
+        <SearchBar x:Name="ValueEntry"
+                   HeightRequest="50"
+                    FontSize="Medium"
+                    VerticalOptions="CenterAndExpand"
+                    Margin="0,10"
+                    BackgroundColor="White"
+                    CancelButtonColor="Black"
+                    PlaceholderColor="Black"
+                    TextColor="Black"
+                    Text="{Binding SelectedValue}"
+                    TextChanged="ValueEntry_TextChanged"/>
         <ListView x:Name="DetailsMatchListView"
 			      ItemsSource="{Binding DetailList}"
                   VerticalOptions="FillAndExpand"

@@ -1,18 +1,20 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using DystirXamarin.Models;
 using System.Linq;
 using System.Collections.Generic;
-using DystirXamarin.ViewModels;
+using Match = DystirXamarin.Models.Match;
+using System.Text.RegularExpressions;
 
 namespace DystirXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DetailPickerPage : ContentPage
     {
-        public List<String> DetailList { get; private set; }
+        private bool _isFirstLoad;
+
+        public List<string> DetailList { get; private set; }
         private Match _match { get; set; }
         private TypeDetails _typeDetails { get; set; }
         public Label ValueLabel { get; set; }
@@ -21,17 +23,19 @@ namespace DystirXamarin.Views
         public DetailPickerPage(Match match, TypeDetails typeDetails, Label valueLabel)
         {
             InitializeComponent();
+            _isFirstLoad = true;
             _match = match;
             _typeDetails = typeDetails;
             ValueLabel = valueLabel;
             SelectedValue = ValueLabel.Text;
             Populate(match, typeDetails);
             BindingContext = this;
+            _isFirstLoad = false;
         }
 
         private void Populate(Match match, TypeDetails typeDetails)
         {
-            DetailList = new List<String>();
+            DetailList = new List<string>();
             switch (typeDetails)
             {
                 case TypeDetails.MatchType:
@@ -84,6 +88,37 @@ namespace DystirXamarin.Views
         {
             ListView listView = (ListView)sender;
             listView.SelectedItem = null;
+        }
+
+        void ValueEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(!_isFirstLoad)
+            {
+                if (_typeDetails == TypeDetails.Team)
+                {
+                    DetailList = _match.Teams
+                        .Where(x => (x.TeamName ?? "").ToLower().Contains((e.NewTextValue ?? "").ToLower()))
+                        .OrderBy(x => x.TeamName)
+                        .Select(x => x.TeamName).ToList();
+                    DetailsMatchListView.ItemsSource = DetailList;
+                }
+                else if (_typeDetails == TypeDetails.Location)
+                {
+                    DetailList = _match.Teams
+                        .Where(x => (x.TeamLocation ?? "").ToLower().Contains((e.NewTextValue ?? "").ToLower()))
+                        .OrderBy(x => x.TeamLocation)
+                        .Select(x => x.TeamLocation).Distinct().ToList();
+                    DetailsMatchListView.ItemsSource = DetailList;
+                }
+                else if (_typeDetails == TypeDetails.MatchType)
+                {
+                    DetailList = _match.MatchTypes
+                        .Where(x => (x.MatchTypeName ?? "").ToLower().Contains((e.NewTextValue ?? "").ToLower()))
+                        .OrderBy(x => x.MatchTypeID)
+                        .Select(x => x.MatchTypeName).ToList();
+                    DetailsMatchListView.ItemsSource = DetailList;
+                }
+            }
         }
     }
 }
