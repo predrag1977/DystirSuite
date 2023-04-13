@@ -80,8 +80,10 @@ namespace DystirXamarin.Views
 
         private void LogIn_Tapped(object sender, EventArgs e)
         {
-            TryToLogIn(UserNameEntry.Text.Trim(), PasswordEntry.Text, true);
-            Analytics.TrackEvent("TryToLoggedIn", new Dictionary<string, string> { { "UserName", UserNameEntry.Text } });
+            if(!string.IsNullOrWhiteSpace(UserNameEntry.Text)) {
+                TryToLogIn(UserNameEntry.Text?.Trim(), PasswordEntry.Text, true);
+                Analytics.TrackEvent("TryToLoggedIn", new Dictionary<string, string> { { "UserName", UserNameEntry.Text } });
+            }
         }
     }
 }

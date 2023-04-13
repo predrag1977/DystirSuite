@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converter="clr-namespace:DystirXamarin.Converter"
@@ -26,7 +26,7 @@
     </ContentPage.Resources>
     
     <ContentPage.ToolbarItems >
-        <ToolbarItem Name="Save" Order="Primary" Text="SAVE" Clicked="Save_Tapped" />
+        <ToolbarItem Order="Primary" Text="SAVE" Clicked="Save_Tapped" />
     </ContentPage.ToolbarItems>
     <Grid>
         <Grid.RowDefinitions>
@@ -39,7 +39,13 @@
         <ScrollView x:Name="MainScrollView"  Grid.Row="1" Margin="0,0,10,0" Padding="0,0,0,50">
             <StackLayout>
                 <StackLayout Margin="10,10,10,0" >
-                    <Label Text="Teams" TextColor="DarkGreen" FontSize="16" FontAttributes="Italic" Margin="3" HorizontalOptions="Center" VerticalOptions="End"/>
+                    <Label Text="Teams"
+                           TextColor="DarkGreen"
+                           FontSize="16"
+                           FontAttributes="Italic"
+                           Margin="3"
+                           HorizontalOptions="Center"
+                           VerticalOptions="End"/>
                     <BoxView HeightRequest="1" BackgroundColor="DarkGreen"/>
                 </StackLayout>
 

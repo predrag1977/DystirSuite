@@ -14,6 +14,7 @@ namespace DystirXamarin.Views
     public partial class MatchesPage : ContentPage
     {
         private MatchesViewModel _viewModel;
+        private Match _newMatch;
 
         public MatchesPage(MatchesViewModel viewModel)
         {
@@ -47,7 +48,7 @@ namespace DystirXamarin.Views
                 NewMatchButton.IsVisible = false;
             }
             //TODO Change this
-            VersionLabel.Text = "4.0.0.53";
+            VersionLabel.Text = "4.0.0.55";
         }
 
         private void PopulateMatchList()
@@ -78,14 +79,24 @@ namespace DystirXamarin.Views
 
         private async void NewMatch_Tapped(object sender, EventArgs e)
         {
-            Match match = new Match
+            if(_newMatch == null)
             {
-                Time = DateTime.Now.Date.AddHours(12),
-                StatusID = 14,
-                HomeTeamScore = 0,
-                AwayTeamScore = 0
-            };
-            await Navigation.PushAsync(new UpdateAndNewMatchPage(match, _viewModel, TypePages.NewPage), false);
+                _newMatch = new Match
+                {
+                    Time = DateTime.UtcNow.Date,
+                    StatusID = 14,
+                    HomeTeamScore = 0,
+                    AwayTeamScore = 0
+                };
+            }
+            _newMatch.HomeTeam = "";
+            _newMatch.AwayTeam = "";
+            _newMatch.Location = "";
+            _newMatch.HomeSquadName = "";
+            _newMatch.AwaySquadName = "";
+            _newMatch.HomeCategoriesName = "";
+            _newMatch.AwayCategoriesName = "";
+            await Navigation.PushAsync(new UpdateAndNewMatchPage(_newMatch, _viewModel, TypePages.NewPage), false);
         }
 
         private void _viewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
