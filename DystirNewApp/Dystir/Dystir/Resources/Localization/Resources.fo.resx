@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="Assist" xml:space="preserve">
+    <value>Upplegg</value>
+  </data>
+  <data name="Assists" xml:space="preserve">
+    <value>Upplegg</value>
+  </data>
+  <data name="ATT" xml:space="preserve">
+    <value>AL</value>
+  </data>
+  <data name="BackButtonText" xml:space="preserve">
+    <value>❮ Aftur</value>
+  </data>
+  <data name="BigChance" xml:space="preserve">
+    <value>Stórur møguleiki</value>
+  </data>
+  <data name="BigChanceStatistic" xml:space="preserve">
+    <value>STÓRUR MØGULEIKI</value>
+  </data>
+  <data name="BlockedShot" xml:space="preserve">
+    <value>Blokera skot</value>
+  </data>
+  <data name="BlockedShotStatistic" xml:space="preserve">
+    <value>BLOKERA SKOT</value>
+  </data>
+  <data name="Commentary" xml:space="preserve">
+    <value>Hendingar</value>
+  </data>
+  <data name="ConnectionLost" xml:space="preserve">
+    <value>Einki samband</value>
+  </data>
+  <data name="Corner" xml:space="preserve">
+    <value>Hornaspark</value>
+  </data>
+  <data name="CornerStatistic" xml:space="preserve">
+    <value>HORNA</value>
+  </data>
+  <data name="DEF" xml:space="preserve">
+    <value>VL</value>
+  </data>
+  <data name="DrawShort" xml:space="preserve">
+    <value>JD</value>
+  </data>
+  <data name="ExtraTimeFinished" xml:space="preserve">
+    <value>longd leiktíð liðugt</value>
+  </data>
+  <data name="ExtraTimePause" xml:space="preserve">
+    <value>longd leiktíð hálvleikur</value>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>liðugt</value>
+  </data>
+  <data name="FirstEleven" xml:space="preserve">
+    <value>Fyrstu 11</value>
+  </data>
+  <data name="Fixtures" xml:space="preserve">
+    <value>KOMANDI</value>
+  </data>
+  <data name="FullTime" xml:space="preserve">
+    <value>liðugt</value>
+  </data>
+  <data name="GK" xml:space="preserve">
+    <value>MM</value>
+  </data>
+  <data name="Goal" xml:space="preserve">
+    <value>Mál</value>
+  </data>
+  <data name="GoalsAgainst" xml:space="preserve">
+    <value>MÍ</value>
+  </data>
+  <data name="GoalsDiffrent" xml:space="preserve">
+    <value>MM</value>
+  </data>
+  <data name="GoalsScored" xml:space="preserve">
+    <value>MF</value>
+  </data>
+  <data name="GoalStatistic" xml:space="preserve">
+    <value>MÁL</value>
+  </data>
+  <data name="HalfTime" xml:space="preserve">
+    <value>hálvleikur</value>
+  </data>
+  <data name="HoursShort" xml:space="preserve">
+    <value>t.</value>
+  </data>
+  <data name="LosesShort" xml:space="preserve">
+    <value>TD</value>
+  </data>
+  <data name="Matches" xml:space="preserve">
+    <value>DYSTIR</value>
+  </data>
+  <data name="MatchPlayedShort" xml:space="preserve">
+    <value>DS</value>
+  </data>
+  <data name="MID" xml:space="preserve">
+    <value>MV</value>
+  </data>
+  <data name="NoMatches" xml:space="preserve">
+    <value>Eingin dystur</value>
+  </data>
+  <data name="OffTarget" xml:space="preserve">
+    <value>Roynd frammvið mál</value>
+  </data>
+  <data name="OffTargetStatistic" xml:space="preserve">
+    <value>ROYNDIR FRAMMVIÐ MÁL</value>
+  </data>
+  <data name="OnTarget" xml:space="preserve">
+    <value>Roynd á mál</value>
+  </data>
+  <data name="OnTargetStatistic" xml:space="preserve">
+    <value>ROYNDIR Á MÁL</value>
+  </data>
+  <data name="OwnGoal" xml:space="preserve">
+    <value>Sjálvmál</value>
+  </data>
+  <data name="Penalties" xml:space="preserve">
+    <value>brotsspark</value>
+  </data>
+  <data name="Penalty" xml:space="preserve">
+    <value>Brotsspark</value>
+  </data>
+  <data name="PenaltyMissed" xml:space="preserve">
+    <value>Brotsspark brent</value>
+  </data>
+  <data name="PenaltyScored" xml:space="preserve">
+    <value>Brotsspark skora</value>
+  </data>
+  <data name="Points" xml:space="preserve">
+    <value>St.</value>
+  </data>
+  <data name="RedCardStatistic" xml:space="preserve">
+    <value>REYÐ KORT</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>ÚRSLIT</value>
+  </data>
+  <data name="SeeMore" xml:space="preserve">
+    <value>Vís meira ❯</value>
+  </data>
+  <data name="Standings" xml:space="preserve">
+    <value>STØÐAN</value>
+  </data>
+  <data name="StandingsTab" xml:space="preserve">
+    <value>Støðan</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Hagtøl</value>
+  </data>
+  <data name="StatisticsTab" xml:space="preserve">
+    <value>HAGTØL</value>
+  </data>
+  <data name="Substitution" xml:space="preserve">
+    <value>Eyka</value>
+  </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Úrtak</value>
+  </data>
+  <data name="Team" xml:space="preserve">
+    <value>LIÐ</value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>Í dag</value>
+  </data>
+  <data name="TopScorers" xml:space="preserve">
+    <value>Málskjúttar</value>
+  </data>
+  <data name="VictoriesShort" xml:space="preserve">
+    <value>VD</value>
+  </data>
+  <data name="YellowCardStatistic" xml:space="preserve">
+    <value>GUL KORT</value>
+  </data>
+  <data name="Monday" xml:space="preserve">
+    <value>Mánadagur</value>
+  </data>
+  <data name="Tuesday" xml:space="preserve">
+    <value>Týsdagur</value>
+  </data>
+  <data name="Wednesday" xml:space="preserve">
+    <value>Mikudagur</value>
+  </data>
+  <data name="Thursday" xml:space="preserve">
+    <value>Hósdagur</value>
+  </data>
+  <data name="Friday" xml:space="preserve">
+    <value>Fríggjadagur</value>
+  </data>
+  <data name="Saturday" xml:space="preserve">
+    <value>Leygardagur</value>
+  </data>
+  <data name="Sunday" xml:space="preserve">
+    <value>Sunnudagur</value>
+  </data>
+  <data name="PlayerOfTheMatch" xml:space="preserve">
+    <value>Dagsins leikari</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>dagar</value>
+  </data>
+</root>

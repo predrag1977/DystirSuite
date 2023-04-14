@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Dystir.ViewModels"
+             xmlns:localization="clr-namespace:Dystir.Resources.Localization"
+             xmlns:ffsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:fftransformation="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:views="clr-namespace:Dystir.Views"
+             xmlns:models="clr-namespace:Dystir.Models"
+             x:DataType="viewModels:MatchesViewModel"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="True"
+             x:Class="Dystir.Pages.MatchesPage" >
+
+    <Grid RowDefinitions="50,55,5,*,Auto">
+        <Frame BackgroundColor="#181818"
+               CornerRadius="10"
+               Padding="5" >
+            <Grid ColumnDefinitions="50,*,50">
+                <ffsvg:SvgCachedImage Grid.Column="0"
+                                      IsVisible="False"
+                                      WidthRequest="22"
+                                      HeightRequest="22"
+                                      VerticalOptions="Center"
+                                      HorizontalOptions="Center"
+                                      Source="resource://Dystir.Resources.Images.refresh_button.svg">
+                    <ffsvg:SvgCachedImage.Transformations>
+                        <fftransformation:TintTransformation HexColor="#A9A9A9" EnableSolidColor="true"/>
+                    </ffsvg:SvgCachedImage.Transformations>
+                    <ffsvg:SvgCachedImage.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="RefreshButton_Clicked" />
+                    </ffsvg:SvgCachedImage.GestureRecognizers>
+                </ffsvg:SvgCachedImage>
+
+                <Label Grid.Column="1"
+                       TextColor="#A9A9A9"
+                       Text="{x:Static localization:Resources.Matches}"
+                       FontSize="14"/>
+
+                <ffsvg:SvgCachedImage Grid.Column="2"
+                                      WidthRequest="22"
+                                      HeightRequest="22"
+                                      VerticalOptions="Center"
+                                      HorizontalOptions="Center"
+                                      Source="resource://Dystir.Resources.Images.refresh_button.svg">
+                    <ffsvg:SvgCachedImage.Transformations>
+                        <fftransformation:TintTransformation HexColor="#A9A9A9" EnableSolidColor="true"/>
+                    </ffsvg:SvgCachedImage.Transformations>
+                    <ffsvg:SvgCachedImage.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="RefreshButton_Clicked" />
+                    </ffsvg:SvgCachedImage.GestureRecognizers>
+                </ffsvg:SvgCachedImage>
+            </Grid> 
+        </Frame>
+
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding MatchesDays}"
+                        SelectionMode="None"
+                        HorizontalOptions="FillAndExpand"
+                        BackgroundColor="Black"
+                        Margin="0,5,0,0">
+            <CollectionView.ItemsLayout>
+               <GridItemsLayout Orientation="Vertical"
+                                Span="5"
+                                HorizontalItemSpacing="10" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame CornerRadius="10" 
+                            Padding="0"
+                            BackgroundColor="#181818"
+                            HeightRequest="50"
+                            x:DataType="models:DayOfMatch"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center">
+                        <StackLayout Spacing="0"
+                                     HorizontalOptions="Center"
+                                     VerticalOptions="Center">
+                            <Label VerticalOptions="End"
+                                    FontSize="12"
+                                    FontAttributes="Bold"
+                                    FontFamily="NunitoSemiBold"
+                                    TextColor="{Binding TextColor}"
+                                    Text="{Binding DateText}">
+                            </Label>
+                            <Label VerticalOptions="Start"
+                                    FontSize="11"
+                                    FontAttributes="Bold"
+                                    FontFamily="NunitoSemiBold"
+                                    TextColor="{Binding TextColor}"
+                                    Text="{Binding DayText}" />
+                        </StackLayout>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="1"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:MatchesViewModel}}, Path=DayTapped}"		
+                                CommandParameter="{Binding .}">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <CollectionView Grid.Row="3"
+                        SelectionMode="None"
+                        BackgroundColor="Black"
+                        IsGrouped="True"
+                        VerticalOptions="FillAndExpand"
+                        ItemsSource="{Binding MatchesGroupList}" >
+            <CollectionView.EmptyView>
+                <Grid>
+                    <Label Text="{x:Static localization:Resources.NoMatches}"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center" />
+                    <StackLayout IsVisible="{Binding IsLoading}"
+                                    HeightRequest="100"
+                                    BackgroundColor="Black"
+                                    HorizontalOptions="FillAndExpand"/>
+                </Grid>
+            </CollectionView.EmptyView>
+            <CollectionView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <Grid BackgroundColor="Black"
+                            x:DataType="models:MatchGroup"
+                            Padding="20,15,10,4"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand" >
+                        <Label Text="{Binding HeaderTitle}" FontSize="15"
+                                TextColor="White"
+                                FontFamily="NunitoSemiBold"
+                                VerticalOptions="Center"
+                                HorizontalOptions="FillAndExpand"
+                                HorizontalTextAlignment="Start" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.GroupHeaderTemplate>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <views:MatchView x:DataType="models:Match" >
+                        <views:MatchView.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="1"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:DystirViewModel}}, Path=MatchTapped}"		
+                                CommandParameter="{Binding .}">
+                            </TapGestureRecognizer>
+                        </views:MatchView.GestureRecognizers>
+                    </views:MatchView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <ActivityIndicator Grid.Row="3"
+                           IsVisible="{Binding IsLoading}"
+                           IsRunning="True"
+                            WidthRequest="30"
+                            HeightRequest="30" />
+
+        <StackLayout Grid.Row="4"
+                     HeightRequest="2"
+                     Margin="0,0,0,3"
+                     Orientation="Horizontal"
+                     BackgroundColor="#181818"
+                     HorizontalOptions="FillAndExpand"/>
+    </Grid>
+
+</ContentPage>

@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:models="clr-namespace:Dystir.Models"
+             x:DataType="models:PlayerOfMatch"
+             x:Class="Dystir.Views.PlayerView">
+
+    <Grid.Resources>
+        <Style TargetType="Image">
+            <Setter Property="HeightRequest" Value="14" />
+            <Setter Property="WidthRequest" Value="14" />
+            <Setter Property="Margin" Value="2,0" />
+        </Style>
+    </Grid.Resources>
+
+    <Frame CornerRadius="10"
+           Margin="2"
+           Padding="0"
+           HeightRequest="56"
+           BackgroundColor="#181818">
+        <Grid VerticalOptions="CenterAndExpand"
+              HorizontalOptions="FillAndExpand"
+              Padding="2"
+              ColumnDefinitions="40,*">
+
+            <Grid Grid.Column="0"
+                  RowDefinitions="Auto,Auto"
+                  VerticalOptions="Center">
+
+                <Label Grid.Row="0"
+                       FontSize="12"
+                       Text="{Binding Number}"
+                       TextColor="Khaki"/>
+
+                <Label Grid.Row="1"
+                       FontSize="10"
+                       Text="{Binding Position}"
+                       TextColor="DarkGray"/>
+            </Grid>
+
+            <Grid Grid.Column="1"
+                  RowDefinitions="Auto,Auto"
+                  VerticalOptions="Center">
+                <Label Grid.Row="0"
+                       Text="{Binding FirstName}"
+                       Margin="0,2"
+                       HorizontalTextAlignment="Start"
+                       HorizontalOptions="StartAndExpand"
+                       LineBreakMode="WordWrap"
+                       FontSize="13"
+                       MaxLines="2"/>
+
+                <Grid Grid.Row="1"
+                      HorizontalOptions="Fill"
+                      ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,*">
+
+                    <Grid Grid.Column="0"
+                          ColumnDefinitions="Auto,Auto"
+                          IsVisible="{Binding GoalVisible}">
+                        <ffsvg:SvgCachedImage WidthRequest="12"
+                                              HeightRequest="12"
+                                              Source="resource://Dystir.Resources.Images.goal.svg"/>
+                        <Label Grid.Column="1"
+                               Margin="1,0,5,0"
+                               Text="{Binding Goal}"
+                               TextColor="White"/>
+                    </Grid>
+
+                    <Grid Grid.Column="1"
+                          ColumnDefinitions="Auto,Auto"
+                          IsVisible="{Binding OwnGoalVisible}">
+                        <ffsvg:SvgCachedImage WidthRequest="12"
+                                              HeightRequest="12"
+                                              Source="resource://Dystir.Resources.Images.owngoal.svg"/>
+                        <Label Grid.Column="1"
+                               Margin="1,0,5,0"
+                               Text="{Binding OwnGoal}"
+                               TextColor="DarkGray"/>
+                    </Grid>
+
+                    <Grid Grid.Column="2"
+                          ColumnDefinitions="Auto"
+                          IsVisible="{Binding YellowCardVisible}">
+                        <ffsvg:SvgCachedImage WidthRequest="8"
+                                              HeightRequest="12"
+                                              Margin="0,0,5,0"
+                                              Source="resource://Dystir.Resources.Images.yellow.svg"/>
+                    </Grid>
+
+                    <StackLayout Grid.Column="3"
+                                 Orientation="Horizontal"
+                                 IsVisible="{Binding SecondYellowCardVisible}">
+                        <ffsvg:SvgCachedImage WidthRequest="8"
+                                              HeightRequest="12"
+                                              Margin="0,0,5,0"
+                                              Source="resource://Dystir.Resources.Images.yellow.svg"/>
+                    </StackLayout>
+
+                    <StackLayout Grid.Column="4"
+                                 Orientation="Horizontal"
+                                 IsVisible="{Binding RedCardVisible}">
+                        <ffsvg:SvgCachedImage WidthRequest="8"
+                                              HeightRequest="12"
+                                              Margin="0,0,5,0"
+                                              Source="resource://Dystir.Resources.Images.red.svg"/>
+                    </StackLayout>
+
+                    <StackLayout Grid.Column="5"
+                                 Orientation="Horizontal"
+                                 IsVisible="{Binding SubInVisible}">
+                        <ffsvg:SvgCachedImage WidthRequest="8"
+                                              HeightRequest="12"
+                                              Source="resource://Dystir.Resources.Images.sub_in.svg"/>
+                        <Label Text="{Binding SubIn, StringFormat='{0}´'}"
+                               Margin="1,0,5,0"
+                               TextColor="DarkGray"/>
+                    </StackLayout>
+
+                    <StackLayout Grid.Column="6"
+                                 Orientation="Horizontal"
+                                 IsVisible="{Binding SubOutVisible}">
+                        <ffsvg:SvgCachedImage WidthRequest="8"
+                                              HeightRequest="12"
+                                              Source="resource://Dystir.Resources.Images.sub_out.svg"/>
+                        <Label Text="{Binding SubOut, StringFormat='{0}´'}"
+                               Margin="1,0,5,0"
+                               TextColor="DarkGray"/>
+                    </StackLayout>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Frame>
+</Grid>
+

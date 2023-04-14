@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:Dystir.Views"
+             xmlns:models="clr-namespace:Dystir.Models"
+             xmlns:viewModels="clr-namespace:Dystir.ViewModels"
+             x:DataType="viewModels:MatchDetailViewModel"
+             x:Class="Dystir.Views.LineupsView">
+    
+    <ListView SelectionMode="None"
+              BackgroundColor="Black"
+              SeparatorVisibility="None"
+              Margin="5,0"
+              VerticalScrollBarVisibility="Never"
+              CachingStrategy="RecycleElementAndDataTemplate"
+              VerticalOptions="FillAndExpand"
+              HasUnevenRows="True"
+              ItemsSource="{Binding Lineups}">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell x:DataType="models:PlayersInLineups">
+                    <Grid ColumnDefinitions="*,*"
+                          RowDefinitions="Auto,Auto">
+                        <Grid Grid.ColumnSpan="2"
+                              IsVisible="{Binding IsFirstSub}">
+                            <StackLayout HeightRequest="1"
+                                         Margin="0,8"
+                                         VerticalOptions="Center"
+                                         HorizontalOptions="FillAndExpand"
+                                         BackgroundColor="Khaki" />
+                        </Grid>
+                        <Grid Grid.Column="0"
+                              Grid.Row="1"
+                              BindingContext="{Binding}">
+                            <views:PlayerView BindingContext="{Binding HomePlayer}" />
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer CommandParameter="{Binding HomePlayer}"
+                                                      Tapped="TapGestureRecognizer_Tapped"
+                                                      NumberOfTapsRequired="1" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+
+                        <Grid Grid.Column="1"
+                              Grid.Row="1"
+                              BindingContext="{Binding}">
+                            <views:PlayerView BindingContext="{Binding AwayPlayer}" />
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer CommandParameter="{Binding AwayPlayer}"
+                                                      Tapped="TapGestureRecognizer_Tapped"
+                                                      NumberOfTapsRequired="1" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+    
+</ContentView>
+

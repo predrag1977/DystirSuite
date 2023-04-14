@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://xamarin.com/schemas/2014/forms"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="clr-namespace:Xamarin.CommunityToolkit.UI.Views;assembly=Xamarin.CommunityToolkit"
+               xmlns:ffsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+               xmlns:fftransformation="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+               xmlns:model="clr-namespace:Dystir.Models"
+               x:DataType="model:PlayerOfMatch"
+               Size="300,400"
+               x:Class="Dystir.Views.PlayerInfoPopupView">
+
+    <ContentView BackgroundColor="#181818">
+        <ContentView.Resources>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="FontFamily" Value="NunitoSemiBold" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="TextColor" Value="White" />
+            </Style>
+        </ContentView.Resources>
+        <Frame CornerRadius="15"
+               BackgroundColor="#181818"
+               BorderColor="#181818"
+               Padding="0">
+
+            <Grid Padding="7">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0"
+                       Text="{Binding Number}"
+                       FontSize="20"
+                       Padding="15,0,0,0"
+                       TextColor="Khaki"
+                       HorizontalOptions="Fill"
+                       HorizontalTextAlignment="Start"/>
+
+                <Label Grid.Column="1"
+                       Text="{Binding Position}"
+                       FontSize="16"
+                       Padding="5,0"
+                       TextColor="DarkGray"
+                       HorizontalOptions="Fill"
+                       HorizontalTextAlignment="Center"/>
+
+                <ffsvg:SvgCachedImage Grid.Column="2"
+                                      HeightRequest="18"
+                                      WidthRequest="18"
+                                      Margin="15,0"
+                                      HorizontalOptions="End"
+                                      BackgroundColor="#181818"
+                                      Source="resource://Dystir.Resources.Images.cancel.svg">
+                    <ffsvg:SvgCachedImage.Transformations>
+                        <fftransformation:TintTransformation HexColor="#A9A9A9" EnableSolidColor="true"/>
+                    </ffsvg:SvgCachedImage.Transformations>
+                    <ffsvg:SvgCachedImage.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="Close_Button_Tapped" NumberOfTapsRequired="1" />
+                    </ffsvg:SvgCachedImage.GestureRecognizers>
+                </ffsvg:SvgCachedImage>
+
+                <StackLayout Grid.Row="1"
+                             Orientation="Vertical"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="3"
+                             VerticalOptions="Center">
+
+                    <ffsvg:SvgCachedImage HeightRequest="160"
+                                          WidthRequest="160"
+                                          Source="resource://Dystir.Resources.Images.unknown_player.svg">
+                            <ffsvg:SvgCachedImage.Transformations>
+                                <fftransformation:TintTransformation HexColor="#A9A9A9" EnableSolidColor="true"/>
+                            </ffsvg:SvgCachedImage.Transformations>
+                    </ffsvg:SvgCachedImage>
+
+                    <Label Text="{Binding FirstName}"
+                           FontSize="20"
+                           LineBreakMode="WordWrap"
+                           MaxLines="2"
+                           TextColor="White"
+                           Margin="3,10,3,15"
+                           HorizontalTextAlignment="Center"
+                           HorizontalOptions="Fill"/>
+
+                    <StackLayout HorizontalOptions="CenterAndExpand"
+                                 Orientation="Horizontal">
+                        <AbsoluteLayout Margin="8,0">
+                            <Image Source="playerofthematch.png"
+                                   HeightRequest="50"
+                                   WidthRequest="50" />
+                            <Label Text="N/A"
+                                   TextColor="White"
+                                   HeightRequest="50"
+                                   WidthRequest="50"/>
+                        </AbsoluteLayout>
+                        <AbsoluteLayout Margin="8,0">
+                            <Image Source="playerofthematch.png"
+                                    HeightRequest="50"
+                                    WidthRequest="50" />
+                            <Label Text="N/A"
+                                    TextColor="White"
+                                    HeightRequest="50"
+                                    WidthRequest="50"/>
+                        </AbsoluteLayout>
+                        <AbsoluteLayout Margin="8,0">
+                            <Image Source="playerofthematch.png"
+                                    HeightRequest="50"
+                                    WidthRequest="50" />
+                            <Label Text="N/A"
+                                    TextColor="White"
+                                    HeightRequest="50"
+                                    WidthRequest="50"/>
+                        </AbsoluteLayout>
+                    </StackLayout>
+
+                </StackLayout>
+            </Grid>
+        </Frame>
+
+    </ContentView>
+    
+</toolkit:Popup>
+

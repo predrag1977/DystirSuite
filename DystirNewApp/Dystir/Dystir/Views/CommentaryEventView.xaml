@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Dystir.Models"
+             xmlns:ffsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             x:DataType="models:SummaryEventOfMatch"
+             x:Class="Dystir.Views.CommentaryEventView">
+
+    <ContentView.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="13" />
+        </Style>
+    </ContentView.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <StackLayout Grid.Column="0"
+                     Orientation="Horizontal"
+                     IsVisible="{Binding IsHomeTeamEvent}"
+                     HorizontalOptions="End">
+            <Label Text="{Binding HomeTeamScore}"
+                    IsVisible="{Binding IsGoal}"
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    FontFamily="NunitoSemiBold"/>
+            <Label Text=":"
+                    IsVisible="{Binding IsGoal}"
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    FontFamily="NunitoSemiBold"/>
+            <Label Text="{Binding AwayTeamScore}"
+                    IsVisible="{Binding IsGoal}"
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    FontFamily="NunitoSemiBold"/>
+
+            <ffsvg:SvgCachedImage Margin="10,0"
+                                  HeightRequest="20"
+                                  CacheDuration="50"
+                                  Source="{Binding EventIconSource, StringFormat=resource://Dystir.Resources.Images.\{0\}}"/>
+
+        </StackLayout>
+
+        <Label Grid.Column="1"
+                Text="{Binding EventMinute}"
+                IsVisible="{Binding ShowMinutes}"
+                TextColor="{Binding TextColorOfEventMinute}"
+                Margin="10,0"
+                VerticalOptions="Center"
+                FontAttributes="Bold"
+                FontFamily="NunitoSemiBold"/>
+
+        <StackLayout Grid.Column="2"
+                     Orientation="Horizontal"
+                                IsVisible="{Binding IsAwayTeamEvent}">
+            
+            <ffsvg:SvgCachedImage Margin="10,0"
+                                  HeightRequest="20"
+                                  CacheDuration="50"
+                                  Source="{Binding EventIconSource, StringFormat=resource://Dystir.Resources.Images.\{0\}}"/>
+
+            <Label Text="{Binding HomeTeamScore}"
+                    IsVisible="{Binding IsGoal}"
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    FontFamily="NunitoSemiBold"/>
+            <Label Text=":"
+                    IsVisible="{Binding IsGoal}"
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    FontFamily="NunitoSemiBold"/>
+            <Label Text="{Binding AwayTeamScore}"
+                    IsVisible="{Binding IsGoal}"
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    FontFamily="NunitoSemiBold"/>
+        </StackLayout>
+
+        <Label Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                MinimumHeightRequest="10"
+                Text="{Binding EventOfMatch.EventText}"
+                TextColor="DarkGray"
+                Margin="5,0,5,8"
+                MaxLines="5"
+                FontSize="14"
+                LineBreakMode="WordWrap"
+                HorizontalOptions="Fill"
+                HorizontalTextAlignment="Center"/>
+    </Grid>     
+
+</ContentView>
+

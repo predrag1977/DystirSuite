@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Dystir.Views.MatchView"
+             xmlns:models="clr-namespace:Dystir.Models"
+             x:DataType="models:Match">
+
+    <ContentView.Content>
+        <StackLayout Spacing="0">
+            <BoxView HeightRequest="4" BackgroundColor="Black" />
+            <Grid Padding="10,5"
+                  BackgroundColor="#181818"
+                  ColumnDefinitions="50,*,*,Auto,34" 
+                  RowDefinitions="Auto,30,30,Auto">
+
+                <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="3"
+                       Text="{Binding MatchInfo}"
+                       LineBreakMode="TailTruncation"
+                       HorizontalOptions="Fill"
+                       HorizontalTextAlignment="Start"
+                       TextColor="DarkGray"
+                       FontSize="12"/>
+
+                <Label Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2"
+                        Text="{Binding MatchTime}"
+                        VerticalTextAlignment="End"
+                        LineBreakMode="NoWrap"
+                        TextColor="{Binding StatusColor}"
+                        FontSize="12" />
+
+                <Image Grid.Column="0" Grid.Row="1" Margin="5,0,10,0"
+                        WidthRequest="30" HeightRequest="28"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="CenterAndExpand"  >
+                    <Image.Source>
+                        <UriImageSource Uri="{Binding HomeTeamLogo}" />
+                    </Image.Source>
+                </Image>
+
+                <Image Grid.Column="0"
+                       Grid.Row="2"
+                       Margin="5,0,10,0"
+                       WidthRequest="30"
+                       HeightRequest="28"
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalOptions="CenterAndExpand">
+                    <Image.Source>
+                        <UriImageSource Uri="{Binding AwayTeamLogo}" />
+                    </Image.Source>
+                </Image>
+
+                <Label Grid.Column="1"
+                       Grid.Row="1"
+                       Grid.ColumnSpan="3"
+                       Text="{Binding HomeTeamFullName}"
+                       LineBreakMode="TailTruncation"
+                       FontAttributes="Bold"
+                       FontFamily="NunitoSemiBold"
+                       HorizontalOptions="Start"
+                       FontSize="16" />
+
+                <Label Grid.Column="1"
+                       Grid.Row="2"
+                       Grid.ColumnSpan="3"
+                       Text="{Binding AwayTeamFullName}"
+                       FontAttributes="Bold"
+                       FontFamily="NunitoSemiBold"
+                       LineBreakMode="TailTruncation"
+                       HorizontalOptions="Start"
+                       FontSize="16" />
+
+                <Label Text="{Binding HomeTeamScore}"
+                        Grid.Column="4"
+                        Grid.Row="1"
+                        Margin="4" 
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        FontFamily="NunitoSemiBold"
+                        LineBreakMode="NoWrap"
+                        HorizontalOptions="Center"
+                        FontSize="15" />
+
+                <Label Text="{Binding AwayTeamScore}"
+                        Grid.Column="4"
+                        Grid.Row="2"
+                        Margin="4"
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        FontFamily="NunitoSemiBold"
+                        LineBreakMode="NoWrap"
+                        HorizontalOptions="Center"
+                        FontSize="15" />
+            </Grid>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

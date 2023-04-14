@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:pages="clr-namespace:Dystir.Pages"
+       x:Class="Dystir.AppShell"
+       xmlns:localization="clr-namespace:Dystir.Resources.Localization"
+       xmlns:viewmodels="clr-namespace:Dystir.ViewModels"
+       x:DataType="viewmodels:DystirViewModel"
+       BackgroundColor="Black">
+
+    <TabBar>
+        <ShellContent Title="{x:Static localization:Resources.Matches}"
+                      Icon="matches.png" 
+                      Route="MatchesPage"
+                      ContentTemplate="{DataTemplate pages:MatchesPage}" />
+
+        <ShellContent Title="{x:Static localization:Resources.Results}"
+                      Icon="results.png"
+                      Route="ResultsPage"
+                      ContentTemplate="{DataTemplate pages:ResultsPage}" />
+
+        <ShellContent Title="{x:Static localization:Resources.Fixtures}"
+                      Icon="fixtures.png"
+                      Route="FixturesPage"
+                      ContentTemplate="{DataTemplate pages:FixturesPage}" />
+
+        <ShellContent Title="{x:Static localization:Resources.Standings}"
+                      Icon="standings.png"
+                      Route="StandingsPage"
+                      ContentTemplate="{DataTemplate pages:StandingsPage}" />
+    </TabBar>
+
+</Shell>
+

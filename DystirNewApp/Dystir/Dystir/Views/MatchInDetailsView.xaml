@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Dystir.Views.MatchInDetailsView"
+    xmlns:models="clr-namespace:Dystir.Models"
+    x:DataType="models:Match"
+    BackgroundColor="Black">
+
+    
+    <Grid Padding="10,5"
+            BackgroundColor="Black"
+            ColumnDefinitions="*,35,30,35,*"
+            RowDefinitions="Auto,30,30">
+
+        <Label Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="5"
+                Text="{Binding MatchInfo}"
+                MaxLines="2"
+                Margin="0,0,0,4"
+                HorizontalOptions="Fill"
+                HorizontalTextAlignment="Start"
+                LineBreakMode="CharacterWrap"
+                TextColor="DarkGray" />
+
+        <Label Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Text="{Binding HomeTeamFullName}"
+                FontAttributes="Bold"
+                FontFamily="NunitoSemiBold"
+                HorizontalOptions="EndAndExpand"
+                FontSize="18" />
+
+        <Label Grid.Row="1"
+                Grid.Column="2"
+                Text="-"
+                FontSize="18" />
+
+        <Label Grid.Row="1"
+                Grid.Column="3"
+                Grid.ColumnSpan="2"
+                Text="{Binding AwayTeamFullName}"
+                FontAttributes="Bold"
+                FontFamily="NunitoSemiBold"
+                HorizontalOptions="StartAndExpand"
+                FontSize="18" />
+
+        <Label Grid.Row="2"
+                Grid.Column="1"
+                Text="{Binding HomeTeamScore}"
+                FontAttributes="Bold"
+                FontFamily="NunitoSemiBold"
+                LineBreakMode="NoWrap"
+                HorizontalOptions="End"
+                FontSize="18" />
+
+        <Label Grid.Row="2"
+                Grid.Column="2"
+                FontSize="18"
+                Text=":" />
+
+        <Label Grid.Row="2"
+                Grid.Column="3"
+                Text="{Binding AwayTeamScore}"
+                FontAttributes="Bold"
+                FontFamily="NunitoSemiBold"
+                LineBreakMode="NoWrap"
+                HorizontalOptions="Start"
+                FontSize="18" />
+
+        <Label Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Text="{Binding MatchTime}"
+                HorizontalOptions="Fill"
+                HorizontalTextAlignment="Start"
+                LineBreakMode="NoWrap"
+                TextColor="{Binding StatusColor}"/>
+
+    </Grid>
+</ContentView>
+

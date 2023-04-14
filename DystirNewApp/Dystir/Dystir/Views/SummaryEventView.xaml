@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ffsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:fftransformation="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:models="clr-namespace:Dystir.Models"
+             x:DataType="models:SummaryEventOfMatch"
+             x:Class="Dystir.Views.SummaryEventView">
+
+    <ContentView.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="13" />
+        </Style>
+    </ContentView.Resources>
+
+    <StackLayout Padding="0,0,0,5"
+                 Orientation="Vertical">
+        <Frame CornerRadius="15"
+               BackgroundColor="#181818"
+               HorizontalOptions="StartAndExpand"
+               VerticalOptions="CenterAndExpand"
+               HeightRequest="70"
+               BorderColor="#181818"
+               Padding="5,0,10,0"
+               IsVisible="{Binding IsHomeTeamEvent}" >
+            <StackLayout HorizontalOptions="Start"
+                         Orientation="Horizontal"
+                         HeightRequest="70"
+                         VerticalOptions="CenterAndExpand">
+                <Label Text="{Binding EventMinute}"
+                       IsVisible="{Binding ShowMinutes}"
+                       TextColor="{Binding TextColorOfEventMinute}"
+                       Margin="4,0"
+                       FontAttributes="Bold"
+                       FontFamily="NunitoSemiBold" />
+                
+                 <ffsvg:SvgCachedImage Margin="4,0"
+                                       HeightRequest="20"
+                                       Source="{Binding EventIconSource, StringFormat=resource://Dystir.Resources.Images.\{0\}}"/>
+                <StackLayout VerticalOptions="CenterAndExpand"
+                             Orientation="Vertical"
+                             Margin="4,0">
+                    <Label Text="{Binding HomeMainPlayer}"
+                           HorizontalOptions="Start"/>
+                    <Label Text="{Binding HomeSecondPlayer}"
+                           TextColor="DarkGray"
+                           HorizontalOptions="Start"/>
+                </StackLayout>
+                <StackLayout IsVisible="{Binding IsGoal}"
+                             Orientation="Horizontal"
+                             Margin="4,0">
+                    <Label Text="{Binding HomeTeamScore}"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           FontFamily="NunitoSemiBold"/>
+                    <Label Text=":" FontSize="14"
+                           FontAttributes="Bold"
+                           FontFamily="NunitoSemiBold"/>
+                    <Label Text="{Binding AwayTeamScore}"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           FontFamily="NunitoSemiBold"/>
+                </StackLayout>
+                <ffsvg:SvgCachedImage Margin="4,0"
+                                      IsVisible="{Binding IsGoal}"
+                                      WidthRequest="45"
+                                      HeightRequest="45"
+                                      VerticalOptions="Center"
+                                      HorizontalOptions="Center"
+                                      Source="resource://Dystir.Resources.Images.unknown_player.svg">
+                        <ffsvg:SvgCachedImage.Transformations>
+                            <fftransformation:TintTransformation HexColor="#A9A9A9" EnableSolidColor="true"/>
+                        </ffsvg:SvgCachedImage.Transformations>
+                </ffsvg:SvgCachedImage>
+            </StackLayout>
+        </Frame>
+
+        <Frame CornerRadius="15"
+                BackgroundColor="#181818"
+                HorizontalOptions="EndAndExpand"
+                VerticalOptions="CenterAndExpand"
+                HeightRequest="70"
+                BorderColor="#181818"
+                Padding="10,0,5,0"
+                IsVisible="{Binding IsAwayTeamEvent}">
+            <StackLayout HorizontalOptions="End"
+                         Orientation="Horizontal"
+                         HeightRequest="70"
+                         VerticalOptions="CenterAndExpand">
+                <ffsvg:SvgCachedImage Margin="4,0"
+                                      IsVisible="{Binding IsGoal}"
+                                      WidthRequest="45"
+                                        HeightRequest="45"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Center"
+                                        Source="resource://Dystir.Resources.Images.unknown_player.svg">
+                        <ffsvg:SvgCachedImage.Transformations>
+                            <fftransformation:TintTransformation HexColor="#A9A9A9" EnableSolidColor="true"/>
+                        </ffsvg:SvgCachedImage.Transformations>
+                </ffsvg:SvgCachedImage>
+                <StackLayout IsVisible="{Binding IsGoal}"
+                             Orientation="Horizontal"
+                             Margin="4,0">
+                    <Label Text="{Binding HomeTeamScore}"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           FontFamily="NunitoSemiBold"/>
+                    <Label Text=":" FontSize="14"
+                           FontAttributes="Bold"
+                           FontFamily="NunitoSemiBold"/>
+                    <Label Text="{Binding AwayTeamScore}"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           FontFamily="NunitoSemiBold"/>
+                </StackLayout>
+                <StackLayout VerticalOptions="CenterAndExpand"
+                             Orientation="Vertical"
+                             Margin="4,0">
+                    <Label Text="{Binding AwayMainPlayer}"
+                           HorizontalOptions="End"/>
+                    <Label Text="{Binding AwaySecondPlayer}"
+                           TextColor="DarkGray"
+                           HorizontalOptions="End"/>
+                </StackLayout>
+                <ffsvg:SvgCachedImage Margin="4,0"
+                                      HeightRequest="20"
+                                      Source="{Binding EventIconSource, StringFormat=resource://Dystir.Resources.Images.\{0\}}"/>
+                <Label Text="{Binding EventMinute}"
+                       IsVisible="{Binding ShowMinutes}"
+                       TextColor="{Binding TextColorOfEventMinute}"
+                       Margin="4,0"
+                       VerticalOptions="Center"
+                       FontAttributes="Bold"
+                       FontFamily="NunitoSemiBold"/>
+            </StackLayout>
+        </Frame>
+    </StackLayout>
+
+</ContentView>
+
