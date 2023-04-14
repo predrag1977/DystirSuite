@@ -1,0 +1,83 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2578" />  
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.5" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.5" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.11.982" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="CarouselView.FormsPlugin" Version="6.0.0" />
+    <PackageReference Include="Xamarin.CommunityToolkit" Version="2.0.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Newtonsoft.Json" />
+    <None Remove="Microsoft.AspNet.SignalR" />
+    <None Remove="Microsoft.AspNet.SignalR.Client" />
+    <None Remove="Microsoft.AspNetCore.SignalR.Client" />
+    <None Remove="Pages\" />
+    <None Remove="Xamarin.FFImageLoading" />
+    <None Remove="Xamarin.FFImageLoading.Forms" />
+    <None Remove="Xamarin.FFImageLoading.Svg.Forms" />
+    <None Remove="Resources\Images\icon_about.png" />
+    <None Remove="Resources\Images\refresh_button.svg" />
+    <None Remove="Resources\Images\" />
+    <None Remove="Xamarin.FFImageLoading.Transformations" />
+    <None Remove="Resources\Images\back_button.svg" />
+    <None Remove="System.Text.Json" />
+    <None Remove="Resources\Images\football_pitch_3d.svg" />
+    <None Remove="CardsView" />
+    <None Remove="CarouselView.FormsPlugin" />
+    <None Remove="Resources\Images\unknown_player.svg" />
+    <None Remove="Resources\Images\bigchance.svg" />
+    <None Remove="Resources\Images\blockedshot.svg" />
+    <None Remove="Resources\Images\corner.svg" />
+    <None Remove="Resources\Images\goal.svg" />
+    <None Remove="Resources\Images\offtarget.svg" />
+    <None Remove="Resources\Images\ontarget.svg" />
+    <None Remove="Resources\Images\owngoal.svg" />
+    <None Remove="Resources\Images\penaltyscored.svg" />
+    <None Remove="Resources\Images\playerofthematch.svg" />
+    <None Remove="Resources\Images\red.svg" />
+    <None Remove="Resources\Images\sub_in.svg" />
+    <None Remove="Resources\Images\sub_out.svg" />
+    <None Remove="Resources\Images\substitution.svg" />
+    <None Remove="Resources\Images\user.svg" />
+    <None Remove="Resources\Images\yellow.svg" />
+    <None Remove="Xamarin.CommunityToolkit" />
+    <None Remove="Resources\Images\cancel.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Pages\" />
+    <Folder Include="Resources\Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Images\icon_about.png" />
+    <EmbeddedResource Include="Resources\Images\refresh_button.svg" />
+    <EmbeddedResource Include="Resources\Images\back_button.svg" />
+    <EmbeddedResource Include="Resources\Images\football_pitch_3d.svg" />
+    <EmbeddedResource Include="Resources\Images\unknown_player.svg" />
+    <EmbeddedResource Include="Resources\Images\bigchance.svg" />
+    <EmbeddedResource Include="Resources\Images\blockedshot.svg" />
+    <EmbeddedResource Include="Resources\Images\corner.svg" />
+    <EmbeddedResource Include="Resources\Images\goal.svg" />
+    <EmbeddedResource Include="Resources\Images\offtarget.svg" />
+    <EmbeddedResource Include="Resources\Images\ontarget.svg" />
+    <EmbeddedResource Include="Resources\Images\owngoal.svg" />
+    <EmbeddedResource Include="Resources\Images\penaltyscored.svg" />
+    <EmbeddedResource Include="Resources\Images\playerofthematch.svg" />
+    <EmbeddedResource Include="Resources\Images\red.svg" />
+    <EmbeddedResource Include="Resources\Images\sub_in.svg" />
+    <EmbeddedResource Include="Resources\Images\sub_out.svg" />
+    <EmbeddedResource Include="Resources\Images\substitution.svg" />
+    <EmbeddedResource Include="Resources\Images\user.svg" />
+    <EmbeddedResource Include="Resources\Images\yellow.svg" />
+    <EmbeddedResource Include="Resources\Images\cancel.svg" />
+  </ItemGroup>
+</Project>

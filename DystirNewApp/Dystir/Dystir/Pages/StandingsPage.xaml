@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Dystir.ViewModels"
+             xmlns:localization="clr-namespace:Dystir.Resources.Localization"
+             xmlns:ffsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:fftransformation="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             x:DataType="viewModels:StandingsViewModel"
+             xmlns:models="clr-namespace:Dystir.Models"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="True"
+             x:Class="Dystir.Pages.StandingsPage">
+    
+    <Grid RowDefinitions="50,55,5,*,Auto">
+        <Frame BackgroundColor="#181818"
+               CornerRadius="10"
+               Padding="5" >
+            <Grid ColumnDefinitions="50,*,50">
+                <ffsvg:SvgCachedImage Grid.Column="0"
+                                      IsVisible="False"
+                                      WidthRequest="22"
+                                      HeightRequest="22"
+                                      VerticalOptions="Center"
+                                      HorizontalOptions="Center"
+                                      Source="resource://Dystir.Resources.Images.refresh_button.svg">
+                    <ffsvg:SvgCachedImage.Transformations>
+                        <fftransformation:TintTransformation HexColor="#A9A9A9" EnableSolidColor="true"/>
+                    </ffsvg:SvgCachedImage.Transformations>
+                    <ffsvg:SvgCachedImage.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="RefreshButton_Clicked" />
+                    </ffsvg:SvgCachedImage.GestureRecognizers>
+                </ffsvg:SvgCachedImage>
+
+                <Label Grid.Column="1"
+                       TextColor="#A9A9A9"
+                       Text="{x:Static localization:Resources.Standings}"
+                       FontSize="14"/>
+
+                <ffsvg:SvgCachedImage Grid.Column="2"
+                                      WidthRequest="22"
+                                      HeightRequest="22"
+                                      VerticalOptions="Center"
+                                      HorizontalOptions="Center"
+                                      Source="resource://Dystir.Resources.Images.refresh_button.svg">
+                    <ffsvg:SvgCachedImage.Transformations>
+                        <fftransformation:TintTransformation HexColor="#A9A9A9" EnableSolidColor="true"/>
+                    </ffsvg:SvgCachedImage.Transformations>
+                    <ffsvg:SvgCachedImage.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="RefreshButton_Clicked" />
+                    </ffsvg:SvgCachedImage.GestureRecognizers>
+                </ffsvg:SvgCachedImage>
+            </Grid> 
+        </Frame>
+
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding StandingCompetitions}"
+                        SelectionMode="None"
+                        HorizontalOptions="FillAndExpand"
+                        BackgroundColor="Black"
+                        Margin="0,5,0,0">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Horizontal" HorizontalItemSpacing="10" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Competition">
+                    <Frame CornerRadius="10" 
+                            Padding="15,5"
+                            BackgroundColor="#181818"
+                            HeightRequest="50"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center">
+                        <Label VerticalOptions="Center"
+                                FontSize="12"
+                                TextColor="{Binding TextColor}"
+                                FontAttributes="Bold"
+                                FontFamily="NunitoSemiBold"
+                                Text="{Binding CompetitionName}">
+                        </Label>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="1"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:StandingsViewModel}}, Path=CompetitionTapped}"		
+                                CommandParameter="{Binding .}">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <ListView Grid.Row="3"
+                    SelectionMode="None"
+                    BackgroundColor="Black"
+                    SeparatorVisibility="None"
+                    Margin="0"
+                    VerticalScrollBarVisibility="Never"
+                    VerticalOptions="FillAndExpand"
+                    HasUnevenRows="True"
+                    ItemsSource="{Binding Standing.TeamStandings}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:TeamStanding" >
+                    <ViewCell IsEnabled="False" >
+                        <StackLayout BindingContext="{Binding}"
+                                        BackgroundColor="#181818"
+                                        HeightRequest="50"
+                                        Margin="0,0,0,4">
+                            <Grid ColumnDefinitions="40,120,*,*,*,*,*,*,*,*,5"
+                                    VerticalOptions="CenterAndExpand">
+                                <Frame Grid.Column="0"
+                                        Padding="0"
+                                        BorderColor="{Binding LiveColor}"
+                                        HeightRequest="32"
+                                        WidthRequest="32"
+                                        CornerRadius="16"
+                                        BackgroundColor="#181818" >
+                                    <Label Padding="2,1,1,1"
+                                            TextColor="Khaki"
+                                            FontAttributes="Bold"
+                                            FontFamily="NunitoSemiBold"
+                                            Text="{Binding Position, StringFormat='{0}.'}" />
+                                </Frame>
+                                <Label Grid.Column="1"
+                                        FontAttributes="Bold"
+                                        FontFamily="NunitoSemiBold"
+                                        HorizontalOptions="Fill"
+                                        HorizontalTextAlignment="Start"
+                                        TextColor="White"
+                                        Text="{Binding Team}"  />
+                                <Label Grid.Column="2"
+                                        Text="{Binding MatchesNo}" />
+                                <Label Grid.Column="3"
+                                        Text="{Binding Victories}"  />
+                                <Label Grid.Column="4"
+                                        Text="{Binding Draws}" />
+                                <Label Grid.Column="5"
+                                        Text="{Binding Losses}"  />
+                                <Label Grid.Column="6"
+                                        Text="{Binding GoalScored}"  />
+                                <Label Grid.Column="7"
+                                        Text="{Binding GoalAgainst}" />
+                                <Label Grid.Column="8"
+                                        Text="{Binding GoalDifference}"  />
+                                <Label Grid.Column="9"
+                                        FontAttributes="Bold"
+                                        FontFamily="NunitoSemiBold"
+                                        TextColor="White"
+                                        Text="{Binding Points}" />
+                            </Grid>
+                            <StackLayout HeightRequest="1"
+                                         BackgroundColor="{Binding PositionColor}" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <ActivityIndicator Grid.Row="3"
+                           IsVisible="{Binding IsLoading}"
+                           IsRunning="True"
+                           WidthRequest="30"
+                           HeightRequest="30" />
+
+        <StackLayout Grid.Row="4"
+                        HeightRequest="2"
+                        Orientation="Horizontal"
+                        BackgroundColor="#181818"
+                        HorizontalOptions="FillAndExpand"/>
+    </Grid>
+</ContentPage>

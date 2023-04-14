@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Dystir.Models"
+             xmlns:views="clr-namespace:Dystir.Views"
+             xmlns:viewModels="clr-namespace:Dystir.ViewModels"
+             xmlns:ffsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             x:DataType="viewModels:MatchDetailViewModel"
+             x:Class="Dystir.Views.SummaryView">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <StackLayout BindingContext="{Binding SelectedMatch}"
+                             HorizontalOptions="FillAndExpand"
+                             Margin="5,5,5,0">
+
+            <AbsoluteLayout HorizontalOptions="CenterAndExpand"
+                            x:DataType="models:Match">
+                <ffsvg:SvgCachedImage Grid.Column="0"
+                                      WidthRequest="300"
+                                      VerticalOptions="Center"
+                                      HorizontalOptions="Center"
+                                      Source="resource://Dystir.Resources.Images.football_pitch_3d.svg">
+                </ffsvg:SvgCachedImage>
+
+                <StackLayout WidthRequest="300"
+                             HeightRequest="50"
+                             Orientation="Horizontal"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center">
+                    <StackLayout HorizontalOptions="CenterAndExpand"
+                                 Orientation="Horizontal">
+                        <Label Text="{Binding HomeTeamScore}"
+                            FontSize="32"
+                            WidthRequest="80"
+                            FontAttributes="Bold"
+                            FontFamily="NunitoSemiBold"/>
+                        <Label Text="{Binding AwayTeamScore}"
+                               WidthRequest="80"
+                               FontSize="32"
+                               FontAttributes="Bold"
+                               FontFamily="NunitoSemiBold"/>
+                    </StackLayout>
+                </StackLayout>
+            </AbsoluteLayout>
+            <StackLayout HeightRequest="2"
+                         Margin="0,10,0,0"
+                         Orientation="Horizontal"
+                         BackgroundColor="#181818"
+                         HorizontalOptions="FillAndExpand"/>
+        </StackLayout>
+        
+        <CollectionView Grid.Row="1"
+                        SelectionMode="None"
+                        Margin="5,0"
+                        BackgroundColor="Transparent"
+                        VerticalScrollBarVisibility="Never"
+                        ItemsSource="{Binding Summary}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <views:SummaryEventView BindingContext="{Binding}" />
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <ListView Grid.Row="1"
+                  Margin="0"
+                  SelectionMode="None"
+                  BackgroundColor="Black"
+                  SeparatorVisibility="None"
+                  VerticalScrollBarVisibility="Never"
+                  CachingStrategy="RecycleElement"
+                  VerticalOptions="FillAndExpand"
+                  HasUnevenRows="True"
+                  ItemsSource="{Binding Summary}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                     <ViewCell BindingContext="{Binding}">
+                         <views:SummaryEventView />
+                     </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</ContentView>
+

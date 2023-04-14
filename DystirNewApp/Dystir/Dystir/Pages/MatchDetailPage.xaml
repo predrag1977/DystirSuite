@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Dystir.Pages.MatchDetailPage"
+             xmlns:controls="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+             xmlns:ffsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:fftransformation="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true"
+             xmlns:viewmodels="clr-namespace:Dystir.ViewModels"
+             xmlns:models="clr-namespace:Dystir.Models"
+             xmlns:views="clr-namespace:Dystir.Views"
+             Shell.TabBarIsVisible="False"
+             BackgroundColor="Black"
+             x:DataType="viewmodels:MatchDetailViewModel">
+
+    <Grid RowDefinitions="50,Auto,50,*,Auto" VerticalOptions="Start" >
+
+        <Frame Grid.Row="0"
+               BackgroundColor="#181818"
+               CornerRadius="10"
+               Padding="5"
+               BindingContext="{Binding SelectedMatch}">
+            <Grid x:DataType="models:Match"
+                  ColumnDefinitions="50,*,20,*,50">
+
+                <ffsvg:SvgCachedImage Grid.Column="0"
+                                      WidthRequest="25"
+                                        HeightRequest="25"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Center"
+                                        Source="resource://Dystir.Resources.Images.back_button.svg">
+                        <ffsvg:SvgCachedImage.Transformations>
+                            <fftransformation:TintTransformation HexColor="#A9A9A9" EnableSolidColor="true"/>
+                        </ffsvg:SvgCachedImage.Transformations>
+                        <ffsvg:SvgCachedImage.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="BackButton_Clicked" />
+                        </ffsvg:SvgCachedImage.GestureRecognizers>
+                </ffsvg:SvgCachedImage>
+
+                <Image Grid.Column="1"
+                        x:DataType="models:Match"
+                        HeightRequest="30"
+                        WidthRequest="60"
+                        Aspect="AspectFit"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center">
+                    <Image.Source>
+                        <UriImageSource Uri="{Binding HomeTeamLogo}" />
+                    </Image.Source>
+                </Image>
+
+                <Grid Grid.Column="2" >
+                    <Label FontSize="20"
+                           FontFamily="NunitoSemiBold"
+                           WidthRequest="20"
+                           HorizontalTextAlignment="Center"
+                           FontAttributes="Bold"
+                           Text="-" />
+                </Grid>
+
+                <Image Grid.Column="3"
+                        x:DataType="models:Match"
+                        HeightRequest="30"
+                        WidthRequest="60"
+                        Aspect="AspectFit"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Center" >
+                    <Image.Source>
+                        <UriImageSource Uri="{Binding AwayTeamLogo}" />
+                    </Image.Source>
+                </Image>
+
+                <ffsvg:SvgCachedImage Grid.Column="4"
+                                        WidthRequest="25"
+                                        HeightRequest="25"
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="Center"
+                                        Source="resource://Dystir.Resources.Images.refresh_button.svg">
+                        <ffsvg:SvgCachedImage.Transformations>
+                            <fftransformation:TintTransformation HexColor="#A9A9A9" EnableSolidColor="true"/>
+                        </ffsvg:SvgCachedImage.Transformations>
+                        <ffsvg:SvgCachedImage.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="RefreshButton_Clicked" />
+                        </ffsvg:SvgCachedImage.GestureRecognizers>
+                </ffsvg:SvgCachedImage>
+            </Grid>
+        </Frame>
+
+        <views:MatchInDetailsView Grid.Row="1" BindingContext="{Binding SelectedMatch}" />
+
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding MatchDetailsTabs}"
+                        SelectionMode="None"
+                        HorizontalOptions="FillAndExpand">
+            <CollectionView.ItemsLayout>
+               <GridItemsLayout Orientation="Vertical"
+                                Span="{Binding MatchDetailsTabs.Count}"
+                                HorizontalItemSpacing="5" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame CornerRadius="10"
+                           x:DataType="models:MatchDetailsTab"
+                            Padding="3,15"
+                            BackgroundColor="#181818"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center">
+                        <Label VerticalOptions="Center"
+                                FontSize="12"
+                                TextColor="{Binding TextColor}"
+                                FontAttributes="Bold"
+                                FontFamily="NunitoSemiBold"
+                                Text="{Binding TabName}">
+                        </Label>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="1"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MatchDetailViewModel}}, Path=MatchDetailsTabTapped}"		
+                                CommandParameter="{Binding .}">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <views:SummaryView Grid.Row="3" IsVisible="{Binding SummaryIsVisible}" />
+        <views:LineupsView Grid.Row="3" IsVisible="{Binding LineupsIsVisible}" />
+        <views:CommentaryView Grid.Row="3" IsVisible="{Binding CommentaryIsVisible}" />
+        <views:StatisticView Grid.Row="3" IsVisible="{Binding StatisticsIsVisible}" />
+
+        <ActivityIndicator Grid.Row="3"
+                           IsVisible="{Binding IsLoading}"
+                           IsRunning="True"
+                           WidthRequest="30"
+                           HeightRequest="30" />
+
+        <StackLayout Grid.Row="4"
+                     HeightRequest="2"
+                     Margin="0,0,0,3"
+                     Orientation="Horizontal"
+                     BackgroundColor="#181818"
+                     HorizontalOptions="FillAndExpand"/>
+
+        <!--<controls:CarouselViewControl x:Name="MatchDetailsContentsCarouselView"
+                                      Grid.Row="3"
+                                      SelectedItem="{Binding SelectedMatchDetailsContentView}"
+                                      PositionSelected="MatchDetailsContentsCarouselView_PositionSelected"
+                                      IndicatorsTintColor="#A9A9A9"
+                                      IsSwipeEnabled="True"
+                                      CurrentPageIndicatorTintColor="LimeGreen"
+                                      ShowArrows="True"
+                                      ArrowsBackgroundColor="Black"
+                                      ArrowsSize="20"
+                                      ArrowsTintColor="White"
+                                      ItemsSource="{Binding MatchDetailsContentViews}"> 
+		    <controls:CarouselViewControl.ItemTemplate>
+			    <DataTemplate>
+                    <ContentView Content="{Binding}" />
+			    </DataTemplate>
+		    </controls:CarouselViewControl.ItemTemplate>
+	    </controls:CarouselViewControl>-->
+    </Grid>
+</ContentPage>

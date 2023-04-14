@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="Assist" xml:space="preserve">
+    <value>Assist</value>
+  </data>
+  <data name="Assists" xml:space="preserve">
+    <value>Assists</value>
+  </data>
+  <data name="ATT" xml:space="preserve">
+    <value>ATT</value>
+  </data>
+  <data name="BackButtonText" xml:space="preserve">
+    <value>❮ Back</value>
+  </data>
+  <data name="BigChance" xml:space="preserve">
+    <value>Big chance</value>
+  </data>
+  <data name="BigChanceStatistic" xml:space="preserve">
+    <value>BIG CHANCE</value>
+  </data>
+  <data name="BlockedShot" xml:space="preserve">
+    <value>Blocked shot</value>
+  </data>
+  <data name="BlockedShotStatistic" xml:space="preserve">
+    <value>BLOCKED SHOT</value>
+  </data>
+  <data name="Commentary" xml:space="preserve">
+    <value>Commentary</value>
+  </data>
+  <data name="ConnectionLost" xml:space="preserve">
+    <value>Connection lost</value>
+  </data>
+  <data name="Corner" xml:space="preserve">
+    <value>Corner</value>
+  </data>
+  <data name="CornerStatistic" xml:space="preserve">
+    <value>CORNER</value>
+  </data>
+  <data name="DEF" xml:space="preserve">
+    <value>DEF</value>
+  </data>
+  <data name="DrawShort" xml:space="preserve">
+    <value>D</value>
+  </data>
+  <data name="ExtraTimeFinished" xml:space="preserve">
+    <value>extra time finished</value>
+  </data>
+  <data name="ExtraTimePause" xml:space="preserve">
+    <value>extra time pause</value>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>finished</value>
+  </data>
+  <data name="FirstEleven" xml:space="preserve">
+    <value>First 11</value>
+  </data>
+  <data name="Fixtures" xml:space="preserve">
+    <value>FIXTURES</value>
+  </data>
+  <data name="FullTime" xml:space="preserve">
+    <value>full time</value>
+  </data>
+  <data name="GK" xml:space="preserve">
+    <value>GK</value>
+  </data>
+  <data name="Goal" xml:space="preserve">
+    <value>Goal</value>
+  </data>
+  <data name="GoalsAgainst" xml:space="preserve">
+    <value>GA</value>
+  </data>
+  <data name="GoalsDiffrent" xml:space="preserve">
+    <value>GD</value>
+  </data>
+  <data name="GoalsScored" xml:space="preserve">
+    <value>GF</value>
+  </data>
+  <data name="GoalStatistic" xml:space="preserve">
+    <value>GOAL</value>
+  </data>
+  <data name="HalfTime" xml:space="preserve">
+    <value>half time</value>
+  </data>
+  <data name="HoursShort" xml:space="preserve">
+    <value>h.</value>
+  </data>
+  <data name="LosesShort" xml:space="preserve">
+    <value>L</value>
+  </data>
+  <data name="Matches" xml:space="preserve">
+    <value>MATCHES</value>
+  </data>
+  <data name="MatchPlayedShort" xml:space="preserve">
+    <value>MP</value>
+  </data>
+  <data name="MID" xml:space="preserve">
+    <value>MID</value>
+  </data>
+  <data name="NoMatches" xml:space="preserve">
+    <value>No matches</value>
+  </data>
+  <data name="OffTarget" xml:space="preserve">
+    <value>Off target</value>
+  </data>
+  <data name="OffTargetStatistic" xml:space="preserve">
+    <value>OFF TARGET</value>
+  </data>
+  <data name="OnTarget" xml:space="preserve">
+    <value>On target</value>
+  </data>
+  <data name="OnTargetStatistic" xml:space="preserve">
+    <value>ON TARGET</value>
+  </data>
+  <data name="OwnGoal" xml:space="preserve">
+    <value>Own goal</value>
+  </data>
+  <data name="Penalties" xml:space="preserve">
+    <value>penalties</value>
+  </data>
+  <data name="Penalty" xml:space="preserve">
+    <value>Penalty</value>
+  </data>
+  <data name="PenaltyMissed" xml:space="preserve">
+    <value>Penalty missed</value>
+  </data>
+  <data name="PenaltyScored" xml:space="preserve">
+    <value>Penalty scored</value>
+  </data>
+  <data name="Points" xml:space="preserve">
+    <value>Pts</value>
+  </data>
+  <data name="RedCardStatistic" xml:space="preserve">
+    <value>RED CARD</value>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>RESULTS</value>
+  </data>
+  <data name="SeeMore" xml:space="preserve">
+    <value>See more ❯</value>
+  </data>
+  <data name="Standings" xml:space="preserve">
+    <value>STANDINGS</value>
+  </data>
+  <data name="StandingsTab" xml:space="preserve">
+    <value>Standings</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistics</value>
+  </data>
+  <data name="StatisticsTab" xml:space="preserve">
+    <value>STATISTICS</value>
+  </data>
+  <data name="Substitution" xml:space="preserve">
+    <value>Substitution</value>
+  </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="Team" xml:space="preserve">
+    <value>Team</value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="TopScorers" xml:space="preserve">
+    <value>Top Scorers</value>
+  </data>
+  <data name="VictoriesShort" xml:space="preserve">
+    <value>W</value>
+  </data>
+  <data name="YellowCardStatistic" xml:space="preserve">
+    <value>YELLOW CARD</value>
+  </data>
+  <data name="Monday" xml:space="preserve">
+    <value>Monday</value>
+  </data>
+  <data name="Tuesday" xml:space="preserve">
+    <value>Tuesday</value>
+  </data>
+  <data name="Wednesday" xml:space="preserve">
+    <value>Wednesday</value>
+  </data>
+  <data name="Thursday" xml:space="preserve">
+    <value>Thursday</value>
+  </data>
+  <data name="Friday" xml:space="preserve">
+    <value>Friday</value>
+  </data>
+  <data name="Saturday" xml:space="preserve">
+    <value>Saturday</value>
+  </data>
+  <data name="Sunday" xml:space="preserve">
+    <value>Sunday</value>
+  </data>
+  <data name="PlayerOfTheMatch" xml:space="preserve">
+    <value>Player of the match</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>days</value>
+  </data>
+</root>
