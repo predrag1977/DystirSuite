@@ -26,7 +26,7 @@
                                                         TimeZoneOffset="@timeZoneOffset"
                                                         IsMatchForSameDayList="@true"
                                                         NumberOfMatches="@MatchesNumber"
-                                                        Page="@(page?.ToLower())"/>
+                                                        Page="@(page?.ToLower())" />
                             </NavLink>
                         }
                     }
@@ -35,7 +35,10 @@
         }
         else if (MatchesCompetitionList?.Count == 0)
         {
-            <div class="no-matches">Eingin dystur í dag</div>
+            @if (page?.ToLower() == "dimma")
+            {
+                <div class="no-matches">Eingin dystur í dag</div>
+            }
         }
         @if (isLoading)
         {
