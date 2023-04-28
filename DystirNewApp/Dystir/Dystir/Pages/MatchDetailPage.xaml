@@ -14,7 +14,7 @@
              BackgroundColor="Black"
              x:DataType="viewmodels:MatchDetailViewModel">
 
-    <Grid RowDefinitions="50,Auto,50,*,Auto" VerticalOptions="Start" >
+    <Grid RowDefinitions="50,Auto,Auto,Auto,50,*,Auto" >
 
         <Frame Grid.Row="0"
                BackgroundColor="#181818"
@@ -22,63 +22,51 @@
                Padding="5"
                BindingContext="{Binding SelectedMatch}">
             <Grid x:DataType="models:Match"
-                  ColumnDefinitions="50,*,20,*,50">
+                  ColumnDefinitions="50,*,Auto,*,50">
 
                 <ffsvg:SvgCachedImage Grid.Column="0"
-                                      WidthRequest="25"
-                                        HeightRequest="25"
-                                        VerticalOptions="Center"
-                                        HorizontalOptions="Center"
-                                        Source="resource://Dystir.Resources.Images.back_button.svg">
+                                      WidthRequest="30"
+                                      HeightRequest="30"
+                                      VerticalOptions="Center"
+                                      HorizontalOptions="Center"
+                                      Source="resource://Dystir.Resources.Images.back_button.svg">
                         <ffsvg:SvgCachedImage.Transformations>
-                            <fftransformation:TintTransformation HexColor="#A9A9A9" EnableSolidColor="true"/>
+                            <fftransformation:TintTransformation HexColor="#A9A9A9"
+                                                                 EnableSolidColor="true"/>
                         </ffsvg:SvgCachedImage.Transformations>
                         <ffsvg:SvgCachedImage.GestureRecognizers>
                             <TapGestureRecognizer Tapped="BackButton_Clicked" />
                         </ffsvg:SvgCachedImage.GestureRecognizers>
                 </ffsvg:SvgCachedImage>
 
-                <Image Grid.Column="1"
-                        x:DataType="models:Match"
-                        HeightRequest="30"
-                        WidthRequest="60"
-                        Aspect="AspectFit"
-                        HorizontalOptions="End"
-                        VerticalOptions="Center">
-                    <Image.Source>
-                        <UriImageSource Uri="{Binding HomeTeamLogo}" />
-                    </Image.Source>
-                </Image>
+                <Label Grid.Column="1"
+                        Text="{Binding HomeTeamFullName}"
+                        FontAttributes="Bold"
+                        FontFamily="NunitoSemiBold"
+                        HorizontalOptions="EndAndExpand"
+                        FontSize="16" />
 
-                <Grid Grid.Column="2" >
-                    <Label FontSize="20"
-                           FontFamily="NunitoSemiBold"
-                           WidthRequest="20"
-                           HorizontalTextAlignment="Center"
-                           FontAttributes="Bold"
-                           Text="-" />
-                </Grid>
+                <Label Grid.Column="2"
+                       Text="-"
+                       FontSize="16"
+                       Margin="10,0" />
 
-                <Image Grid.Column="3"
-                        x:DataType="models:Match"
-                        HeightRequest="30"
-                        WidthRequest="60"
-                        Aspect="AspectFit"
-                        HorizontalOptions="Start"
-                        VerticalOptions="Center" >
-                    <Image.Source>
-                        <UriImageSource Uri="{Binding AwayTeamLogo}" />
-                    </Image.Source>
-                </Image>
+                <Label Grid.Column="3"
+                        Text="{Binding AwayTeamFullName}"
+                        FontAttributes="Bold"
+                        FontFamily="NunitoSemiBold"
+                        HorizontalOptions="StartAndExpand"
+                        FontSize="16" />
 
                 <ffsvg:SvgCachedImage Grid.Column="4"
-                                        WidthRequest="25"
-                                        HeightRequest="25"
-                                        VerticalOptions="Center"
-                                        HorizontalOptions="Center"
-                                        Source="resource://Dystir.Resources.Images.refresh_button.svg">
+                                      WidthRequest="25"
+                                      HeightRequest="25"
+                                      VerticalOptions="Center"
+                                      HorizontalOptions="Center"
+                                      Source="resource://Dystir.Resources.Images.refresh_button.svg">
                         <ffsvg:SvgCachedImage.Transformations>
-                            <fftransformation:TintTransformation HexColor="#A9A9A9" EnableSolidColor="true"/>
+                            <fftransformation:TintTransformation HexColor="#A9A9A9"
+                                                                 EnableSolidColor="true"/>
                         </ffsvg:SvgCachedImage.Transformations>
                         <ffsvg:SvgCachedImage.GestureRecognizers>
                             <TapGestureRecognizer Tapped="RefreshButton_Clicked" />
@@ -87,9 +75,100 @@
             </Grid>
         </Frame>
 
-        <views:MatchInDetailsView Grid.Row="1" BindingContext="{Binding SelectedMatch}" />
+        <Grid Grid.Row="1"
+              Margin="0"
+              RowDefinitions="Auto,Auto"
+              HorizontalOptions="FillAndExpand"
+              BindingContext="{Binding SelectedMatch}">
 
-        <CollectionView Grid.Row="2"
+            <Grid Grid.Row="0"
+                  Margin="5"
+                  x:DataType="models:Match">
+                <Frame HorizontalOptions="Center"
+                       BorderColor="#181818"
+                       BackgroundColor="#181818"
+                       CornerRadius="8"
+                       Padding="0">
+                    <Label Text="{Binding MatchTime}"
+                           Padding="15,8"
+                           HorizontalTextAlignment="Center"
+                           LineBreakMode="NoWrap"
+                           FontSize="14"
+                           TextColor="{Binding StatusColor}" />
+                </Frame>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="2"
+              Margin="0"
+              ColumnDefinitions="50,*,50"
+              BindingContext="{Binding SelectedMatch}"
+              HorizontalOptions="CenterAndExpand">
+
+            <Image Grid.Column="0"
+                    x:DataType="models:Match"
+                    HeightRequest="50"
+                    WidthRequest="50"
+                    HorizontalOptions="End"
+                    VerticalOptions="Start"
+                    Margin="0">
+                <Image.Source>
+                    <UriImageSource Uri="{Binding HomeTeamLogo}" />
+                </Image.Source>
+            </Image>
+
+            <ffsvg:SvgCachedImage Grid.Column="1"
+                                  Aspect="AspectFill"
+                                  WidthRequest="300"
+                                  VerticalOptions="Center"
+                                  HorizontalOptions="Center"
+                                  Source="resource://Dystir.Resources.Images.football_pitch_3d.svg"/>
+
+            <Image Grid.Column="2"
+                    x:DataType="models:Match"
+                    HeightRequest="50"
+                    WidthRequest="50"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Start"
+                    Margin="0">
+                <Image.Source>
+                    <UriImageSource Uri="{Binding AwayTeamLogo}" />
+                </Image.Source>
+            </Image>
+
+            <StackLayout Grid.Column="1"
+                         HeightRequest="50"
+                        x:DataType="models:Match"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Start"
+                        Orientation="Horizontal">
+                <Label Text="{Binding HomeTeamScore}"
+                        FontSize="30"
+                        WidthRequest="80"
+                        FontAttributes="Bold"
+                        FontFamily="NunitoSemiBold"/>
+                <Label Text="{Binding AwayTeamScore}"
+                        WidthRequest="80"
+                        FontSize="30"
+                        FontAttributes="Bold"
+                        FontFamily="NunitoSemiBold"/>
+            </StackLayout>
+        </Grid>
+
+        <Grid Grid.Row="3"
+              BindingContext="{Binding SelectedMatch}">
+            <Label x:DataType="models:Match"
+                    Text="{Binding MatchInfo}"
+                    MaxLines="2"
+                    Margin="0,7"
+                    FontSize="13"
+                    HorizontalOptions="Fill"
+                    HorizontalTextAlignment="Center"
+                    LineBreakMode="CharacterWrap"
+                    TextColor="DarkGray" />
+        </Grid>
+
+        <CollectionView Grid.Row="4"
                         ItemsSource="{Binding MatchDetailsTabs}"
                         SelectionMode="None"
                         HorizontalOptions="FillAndExpand">
@@ -125,41 +204,23 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <views:SummaryView Grid.Row="3" IsVisible="{Binding SummaryIsVisible}" />
-        <views:LineupsView Grid.Row="3" IsVisible="{Binding LineupsIsVisible}" />
-        <views:CommentaryView Grid.Row="3" IsVisible="{Binding CommentaryIsVisible}" />
-        <views:StatisticView Grid.Row="3" IsVisible="{Binding StatisticsIsVisible}" />
+        <views:SummaryView Grid.Row="5" IsVisible="{Binding SummaryIsVisible}" />
+        <views:LineupsView Grid.Row="5" IsVisible="{Binding LineupsIsVisible}" />
+        <views:CommentaryView Grid.Row="5" IsVisible="{Binding CommentaryIsVisible}" />
+        <views:StatisticView Grid.Row="5" IsVisible="{Binding StatisticsIsVisible}" />
+        <views:LiveStandingsView Grid.Row="5" IsVisible="{Binding LiveStandingsIsVisible}" />
 
-        <ActivityIndicator Grid.Row="3"
+        <ActivityIndicator Grid.Row="5"
                            IsVisible="{Binding IsLoading}"
                            IsRunning="True"
                            WidthRequest="30"
                            HeightRequest="30" />
 
-        <StackLayout Grid.Row="4"
+        <StackLayout Grid.Row="6"
                      HeightRequest="2"
                      Margin="0,0,0,3"
                      Orientation="Horizontal"
                      BackgroundColor="#181818"
                      HorizontalOptions="FillAndExpand"/>
-
-        <!--<controls:CarouselViewControl x:Name="MatchDetailsContentsCarouselView"
-                                      Grid.Row="3"
-                                      SelectedItem="{Binding SelectedMatchDetailsContentView}"
-                                      PositionSelected="MatchDetailsContentsCarouselView_PositionSelected"
-                                      IndicatorsTintColor="#A9A9A9"
-                                      IsSwipeEnabled="True"
-                                      CurrentPageIndicatorTintColor="LimeGreen"
-                                      ShowArrows="True"
-                                      ArrowsBackgroundColor="Black"
-                                      ArrowsSize="20"
-                                      ArrowsTintColor="White"
-                                      ItemsSource="{Binding MatchDetailsContentViews}"> 
-		    <controls:CarouselViewControl.ItemTemplate>
-			    <DataTemplate>
-                    <ContentView Content="{Binding}" />
-			    </DataTemplate>
-		    </controls:CarouselViewControl.ItemTemplate>
-	    </controls:CarouselViewControl>-->
     </Grid>
 </ContentPage>

@@ -83,7 +83,7 @@ namespace Dystir.Models
         public DateTime? StatusTime
         {
             get { return statusTime; }
-            set { statusTime  = value; SetMatchTime(); }
+            set { statusTime  = value; SetMatchTime();}
         }
 
         private string roundName;
@@ -132,41 +132,6 @@ namespace Dystir.Models
         {
             get { return matchInfo; }
             set { matchInfo = value; OnPropertyChanged();}
-        }
-
-        bool _summarySelected = true;
-        public bool SummarySelected
-        {
-            get { return _summarySelected; }
-            set { _summarySelected = value; OnPropertyChanged();}
-        }
-
-        bool _firstElevenSelected = false;
-        public bool FirstElevenSelected
-        {
-            get { return _firstElevenSelected; }
-            set { _firstElevenSelected = value; OnPropertyChanged();}
-        }
-
-        bool _statisticSelected = false;
-        public bool StatisticSelected
-        {
-            get { return _statisticSelected; }
-            set { _statisticSelected = value; OnPropertyChanged();}
-        }
-
-        bool _commentarySelected = false;
-        public bool CommentarySelected
-        {
-            get { return _commentarySelected; }
-            set { _commentarySelected = value; OnPropertyChanged();}
-        }
-
-        bool liveStandingsSelected = false;
-        public bool LiveStandingsSelected
-        {
-            get { return liveStandingsSelected; }
-            set { liveStandingsSelected = value; OnPropertyChanged();}
         }
 
         //**********************//

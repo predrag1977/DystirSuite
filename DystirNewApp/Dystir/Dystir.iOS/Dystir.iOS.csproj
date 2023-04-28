@@ -36,6 +36,8 @@
     <WarningLevel>4</WarningLevel>
     <MtouchLink>None</MtouchLink>
     <MtouchArch>x86_64</MtouchArch>
+    <CodesignProvision>Dystir Aplication</CodesignProvision>
+    <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -90,8 +92,6 @@
     <ImageAsset Include="Assets.xcassets\DystirImage.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\DystirImage.imageset\dystir_icon.png" />
     <ImageAsset Include="Assets.xcassets\.DS_Store" />
-    <ImageAsset Include="Assets.xcassets\DystirIcon.appiconset\Icon-76.png" />
-    <ImageAsset Include="Assets.xcassets\DystirIcon.appiconset\Icon-167.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

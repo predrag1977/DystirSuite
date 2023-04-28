@@ -11,19 +11,9 @@ namespace Dystir.Views
 {
     public partial class LineupsView : ContentView
     {
-        private MatchDetailViewModel matchDetailViewModel;
-
         public LineupsView()
         {
            InitializeComponent();
-        }
-
-        private async Task LoadData()
-        {
-            matchDetailViewModel.IsLoading = true;
-            await Task.Delay(1000);
-            BindingContext = matchDetailViewModel;
-            matchDetailViewModel.IsLoading = false;
         }
 
         async void TapGestureRecognizer_Tapped(object sender, EventArgs e)

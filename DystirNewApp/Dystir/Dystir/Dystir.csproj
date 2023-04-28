@@ -52,6 +52,9 @@
     <None Remove="Resources\Images\yellow.svg" />
     <None Remove="Xamarin.CommunityToolkit" />
     <None Remove="Resources\Images\cancel.svg" />
+    <None Remove="Resources\Images\assist.svg" />
+    <None Remove="Resources\Images\penalty.svg" />
+    <None Remove="Resources\Images\penaltymissed.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pages\" />
@@ -79,5 +82,8 @@
     <EmbeddedResource Include="Resources\Images\user.svg" />
     <EmbeddedResource Include="Resources\Images\yellow.svg" />
     <EmbeddedResource Include="Resources\Images\cancel.svg" />
+    <EmbeddedResource Include="Resources\Images\assist.svg" />
+    <EmbeddedResource Include="Resources\Images\penalty.svg" />
+    <EmbeddedResource Include="Resources\Images\penaltymissed.svg" />
   </ItemGroup>
 </Project>
