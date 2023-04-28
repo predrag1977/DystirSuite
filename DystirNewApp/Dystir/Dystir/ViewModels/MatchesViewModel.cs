@@ -77,12 +77,13 @@ namespace Dystir.ViewModels
         //**********************//
         //   PRIVATE METHODS    //
         //**********************//
-        private void OnDaySelected(DayOfMatch dayOfMatch)
+        private async void OnDaySelected(DayOfMatch dayOfMatch)
         {
-            if (dayOfMatch == null)
-                return;
-
-            MatchesDaySelected = dayOfMatch;
+            if (dayOfMatch != null)
+            {
+                MatchesDaySelected = dayOfMatch;
+            }
+            await Task.CompletedTask;
         }
 
         private void DystirService_OnShowLoading()
@@ -107,14 +108,16 @@ namespace Dystir.ViewModels
 
         private async Task SetMatches()
         {
-            await SetMatchesDays();
+            _ = SetMatchesDays();
+            IsLoading = true;
             var matches = DystirService.AllMatches?
-                .Select(x=>x.Match)
+                .Where(x => IsDaysRange(x.Match.Time?.Date, MatchesDaySelected.Date))
+                .Select(x => x.Match)
                 .OrderBy(x => x.MatchTypeID)
                 .ThenBy(x => x.Time)
-                .ThenBy(x => x.MatchID)
-                .Where(x => IsDaysRange(x.Time?.Date, MatchesDaySelected.Date));
+                .ThenBy(x => x.MatchID);
             MatchesGroupList = new ObservableCollection<MatchGroup>(matches.GroupBy(x => x.MatchTypeName).Select(group => new MatchGroup(group.Key, new ObservableCollection<Match>(group))));
+            IsLoading = false;
             await Task.CompletedTask;
         }
 

@@ -44,9 +44,14 @@ namespace Dystir.Models
 
         [JsonProperty("Location")]
         public string Location { get; set; }
-
+        
+        private int? statusID;
         [JsonProperty("StatusID")]
-        public int? StatusID { get; set; }
+        public int? StatusID
+        {
+            get { return statusID; }
+            set { statusID = value; SetGoalVisibility(); }
+        }
 
         [JsonProperty("HomeTeamScore")]
         public int? HomeTeamScore { get; set; }
@@ -134,6 +139,13 @@ namespace Dystir.Models
             set { matchInfo = value; OnPropertyChanged();}
         }
 
+        bool goalVisible;
+        public bool GoalVisible
+        {
+            get { return goalVisible; }
+            set { goalVisible = value; OnPropertyChanged(); }
+        }
+
         //**********************//
         //      CONSTRUCTOR     //
         //**********************//
@@ -157,6 +169,11 @@ namespace Dystir.Models
         private void LanguageServiceOnLanguageChanged()
         {
            
+        }
+
+        private void SetGoalVisibility()
+        {
+            GoalVisible = (StatusID ?? 0) > 1 && (StatusID ?? 0) < 14;
         }
 
         private void SetMatchTime()

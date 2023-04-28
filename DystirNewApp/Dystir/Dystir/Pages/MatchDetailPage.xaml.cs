@@ -36,6 +36,7 @@ namespace Dystir.Pages
 
         protected override void OnAppearing()
         {
+            Shell.SetTabBarIsVisible(this, false);
             matchDetailViewModel.MatchID = int.Parse(MatchID);
             matchDetailViewModel.SelectedMatch = dystirService.AllMatches.FirstOrDefault(x => x.Match?.MatchID.ToString() == MatchID).Match;
             _ = LoadDataAsync();
@@ -50,6 +51,7 @@ namespace Dystir.Pages
 
         private async void BackButton_Clicked(object sender, EventArgs e)
         {
+            Shell.SetTabBarIsVisible(this, true);
             await Shell.Current.GoToAsync("..", true);
         }
 
