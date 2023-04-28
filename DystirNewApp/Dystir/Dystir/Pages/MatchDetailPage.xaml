@@ -10,7 +10,6 @@
              xmlns:viewmodels="clr-namespace:Dystir.ViewModels"
              xmlns:models="clr-namespace:Dystir.Models"
              xmlns:views="clr-namespace:Dystir.Views"
-             Shell.TabBarIsVisible="False"
              BackgroundColor="Black"
              x:DataType="viewmodels:MatchDetailViewModel">
 

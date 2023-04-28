@@ -82,6 +82,7 @@
                         FontSize="16" />
 
                 <Label Text="{Binding HomeTeamScore}"
+                       IsVisible="{Binding GoalVisible}"
                         Grid.Column="4"
                         Grid.Row="2"
                         Margin="4,0"
@@ -94,6 +95,7 @@
                         FontSize="16" />
 
                 <Label Text="{Binding AwayTeamScore}"
+                       IsVisible="{Binding GoalVisible}"
                         Grid.Column="4"
                         Grid.Row="4"
                         Margin="4,0"
