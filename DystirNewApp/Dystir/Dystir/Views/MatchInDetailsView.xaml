@@ -8,10 +8,10 @@
     BackgroundColor="Black">
 
     
-    <Grid Padding="10,5"
-            BackgroundColor="Black"
-            ColumnDefinitions="*,35,30,35,*"
-            RowDefinitions="Auto,30,30">
+    <Grid Margin="10,5"
+          BackgroundColor="Black"
+          ColumnDefinitions="*,35,30,35,*"
+          RowDefinitions="Auto,30,30">
 
         <Label Grid.Row="0"
                 Grid.Column="0"

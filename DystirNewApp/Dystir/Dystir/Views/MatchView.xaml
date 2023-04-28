@@ -5,94 +5,107 @@
              xmlns:models="clr-namespace:Dystir.Models"
              x:DataType="models:Match">
 
-    <ContentView.Content>
-        <StackLayout Spacing="0">
-            <BoxView HeightRequest="4" BackgroundColor="Black" />
-            <Grid Padding="10,5"
-                  BackgroundColor="#181818"
-                  ColumnDefinitions="50,*,*,Auto,34" 
-                  RowDefinitions="Auto,30,30,Auto">
+    <StackLayout Spacing="0">
+        <Frame CornerRadius="15"
+                BackgroundColor="#181818"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                MinimumHeightRequest="70"
+                BorderColor="#181818"
+                Padding="0">
+            
+            <Grid Padding="10"
+                  ColumnDefinitions="30,*,*,2,Auto" 
+                  RowDefinitions="Auto,2,30,5,30,Auto">
 
-                <Label Grid.Row="0"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="3"
-                       Text="{Binding MatchInfo}"
-                       LineBreakMode="TailTruncation"
-                       HorizontalOptions="Fill"
-                       HorizontalTextAlignment="Start"
-                       TextColor="DarkGray"
-                       FontSize="12"/>
+                <Grid Grid.ColumnSpan="5"
+                      ColumnDefinitions="*,Auto">
+                    <Label Grid.Column="0"
+                           Text="{Binding MatchInfo}"
+                           LineBreakMode="TailTruncation"
+                           HorizontalOptions="Fill"
+                           HorizontalTextAlignment="Start"
+                           TextColor="DarkGray"
+                           FontSize="12" />
 
-                <Label Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2"
-                        Text="{Binding MatchTime}"
-                        VerticalTextAlignment="End"
-                        LineBreakMode="NoWrap"
-                        TextColor="{Binding StatusColor}"
-                        FontSize="12" />
+                    <Label Grid.Column="1"
+                           Text="{Binding MatchTime}"
+                           VerticalTextAlignment="End"
+                           LineBreakMode="NoWrap"
+                           TextColor="{Binding StatusColor}"
+                           FontSize="12" />
+                </Grid>
 
-                <Image Grid.Column="0" Grid.Row="1" Margin="5,0,10,0"
+                <Image Grid.Column="0"
+                        Grid.Row="2"
                         WidthRequest="30" HeightRequest="28"
                         HorizontalOptions="CenterAndExpand"
                         VerticalOptions="CenterAndExpand"  >
                     <Image.Source>
-                        <UriImageSource Uri="{Binding HomeTeamLogo}" />
+                        <UriImageSource Uri="{Binding HomeTeamLogo}"
+                                        CacheValidity="10:00:00:00" />
                     </Image.Source>
                 </Image>
 
                 <Image Grid.Column="0"
-                       Grid.Row="2"
-                       Margin="5,0,10,0"
-                       WidthRequest="30"
-                       HeightRequest="28"
-                       HorizontalOptions="CenterAndExpand"
-                       VerticalOptions="CenterAndExpand">
+                        Grid.Row="4"
+                        WidthRequest="30"
+                        HeightRequest="28"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="CenterAndExpand">
                     <Image.Source>
-                        <UriImageSource Uri="{Binding AwayTeamLogo}" />
+                        <UriImageSource Uri="{Binding AwayTeamLogo}"
+                                        CacheValidity="10:00:00:00" />
                     </Image.Source>
                 </Image>
 
                 <Label Grid.Column="1"
-                       Grid.Row="1"
-                       Grid.ColumnSpan="3"
-                       Text="{Binding HomeTeamFullName}"
-                       LineBreakMode="TailTruncation"
-                       FontAttributes="Bold"
-                       FontFamily="NunitoSemiBold"
-                       HorizontalOptions="Start"
-                       FontSize="16" />
+                        Grid.Row="2"
+                        Grid.ColumnSpan="3"
+                        Margin="10,0,0,0"
+                        Text="{Binding HomeTeamFullName}"
+                        LineBreakMode="TailTruncation"
+                        FontAttributes="Bold"
+                        FontFamily="NunitoSemiBold"
+                        HorizontalOptions="Start"
+                        FontSize="16" />
 
                 <Label Grid.Column="1"
-                       Grid.Row="2"
-                       Grid.ColumnSpan="3"
-                       Text="{Binding AwayTeamFullName}"
-                       FontAttributes="Bold"
-                       FontFamily="NunitoSemiBold"
-                       LineBreakMode="TailTruncation"
-                       HorizontalOptions="Start"
-                       FontSize="16" />
+                        Grid.Row="4"
+                        Grid.ColumnSpan="3"
+                        Margin="10,0,0,0"
+                        Text="{Binding AwayTeamFullName}"
+                        FontAttributes="Bold"
+                        FontFamily="NunitoSemiBold"
+                        LineBreakMode="TailTruncation"
+                        HorizontalOptions="Start"
+                        FontSize="16" />
 
                 <Label Text="{Binding HomeTeamScore}"
                         Grid.Column="4"
-                        Grid.Row="1"
-                        Margin="4" 
+                        Grid.Row="2"
+                        Margin="4,0"
+                        WidthRequest="30"
                         FontAttributes="Bold"
                         TextColor="White"
                         FontFamily="NunitoSemiBold"
                         LineBreakMode="NoWrap"
                         HorizontalOptions="Center"
-                        FontSize="15" />
+                        FontSize="16" />
 
                 <Label Text="{Binding AwayTeamScore}"
                         Grid.Column="4"
-                        Grid.Row="2"
-                        Margin="4"
+                        Grid.Row="4"
+                        Margin="4,0"
+                        WidthRequest="30"
                         FontAttributes="Bold"
                         TextColor="White"
                         FontFamily="NunitoSemiBold"
                         LineBreakMode="NoWrap"
                         HorizontalOptions="Center"
-                        FontSize="15" />
+                        FontSize="16" />
             </Grid>
-        </StackLayout>
-    </ContentView.Content>
+        </Frame>
+        <BoxView HeightRequest="7" BackgroundColor="Black" />
+    </StackLayout>
 </ContentView>

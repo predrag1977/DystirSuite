@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:localization="clr-namespace:Dystir.Resources.Localization"
+    xmlns:models="clr-namespace:Dystir.Models"
+    xmlns:viewModels="clr-namespace:Dystir.ViewModels"
+    x:DataType="viewModels:MatchDetailViewModel"
+    x:Class="Dystir.Views.LiveStandingsView">
+
+    <ContentView.Content>
+        <ListView Grid.Row="3"
+                  SelectionMode="None"
+                  BackgroundColor="Black"
+                  SeparatorVisibility="None"
+                  Margin="0"
+                  VerticalScrollBarVisibility="Never"
+                    VerticalOptions="FillAndExpand"
+                    HasUnevenRows="True"
+                    ItemsSource="{Binding LiveStanding.TeamStandings}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:TeamStanding" >
+                    <ViewCell IsEnabled="False" >
+                        <StackLayout BindingContext="{Binding}"
+                                        BackgroundColor="#181818"
+                                        HeightRequest="50"
+                                        Margin="0,0,0,4">
+                            <Grid ColumnDefinitions="40,120,*,*,*,*,*,*,*,*,5"
+                                    VerticalOptions="CenterAndExpand">
+                                <Frame Grid.Column="0"
+                                        Padding="0"
+                                        BorderColor="{Binding LiveColor}"
+                                        HeightRequest="32"
+                                        WidthRequest="32"
+                                        CornerRadius="16"
+                                        BackgroundColor="#181818" >
+                                    <Label Padding="2,1,1,1"
+                                            TextColor="Khaki"
+                                            FontAttributes="Bold"
+                                            FontFamily="NunitoSemiBold"
+                                            Text="{Binding Position, StringFormat='{0}.'}" />
+                                </Frame>
+                                <Label Grid.Column="1"
+                                        FontAttributes="Bold"
+                                        FontFamily="NunitoSemiBold"
+                                        HorizontalOptions="Fill"
+                                        HorizontalTextAlignment="Start"
+                                        TextColor="White"
+                                        Text="{Binding Team}"  />
+                                <Label Grid.Column="2"
+                                        Text="{Binding MatchesNo}" />
+                                <Label Grid.Column="3"
+                                        Text="{Binding Victories}"  />
+                                <Label Grid.Column="4"
+                                        Text="{Binding Draws}" />
+                                <Label Grid.Column="5"
+                                        Text="{Binding Losses}"  />
+                                <Label Grid.Column="6"
+                                        Text="{Binding GoalScored}"  />
+                                <Label Grid.Column="7"
+                                        Text="{Binding GoalAgainst}" />
+                                <Label Grid.Column="8"
+                                        Text="{Binding GoalDifference}"  />
+                                <Label Grid.Column="9"
+                                        FontAttributes="Bold"
+                                        FontFamily="NunitoSemiBold"
+                                        TextColor="White"
+                                        Text="{Binding Points}" />
+                            </Grid>
+                            <StackLayout HeightRequest="1"
+                                         BackgroundColor="{Binding PositionColor}" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentView.Content>
+</ContentView>
+
