@@ -19,12 +19,17 @@ else {
     else if (url.indexOf("roysni") > -1) {
         includeCss("app_share");
         includeCss("dystir");
-        includeCss("portal");
+        includeCss("roysni");
     }
     else if (url.indexOf("dimma") > -1) {
         includeCss("app_share");
         includeCss("dystir");
         includeCss("dimma");
+    }
+    else if (url.indexOf("midlar") > -1) {
+        includeCss("app_share");
+        includeCss("dystir");
+        includeCss("midlar");
     }
     else {
         includeCss("app");

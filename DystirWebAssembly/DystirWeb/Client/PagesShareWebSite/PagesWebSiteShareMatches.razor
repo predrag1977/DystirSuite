@@ -21,7 +21,7 @@
                         var matches = matchesGroup.Select(x => x);
                         @foreach (Matches match in matches)
                         {
-                            <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
+                            <NavLink style="cursor:pointer;" target="_parent" href="@(page + "/matchdetails/" + match.MatchID)">
                                 <PagesWebSiteShareMatch MatchItem="@match"
                                                         TimeZoneOffset="@timeZoneOffset"
                                                         IsMatchForSameDayList="@true"
@@ -48,7 +48,7 @@
         }
     </div>
 }
-else if (page?.ToLower() == "portal")
+else if (page?.ToLower() == "portal" || page?.ToLower() == "midlar" || page?.ToLower() == "roysni")
 {
 <div class="matches_and_competition_selection">
 
@@ -60,8 +60,8 @@ else if (page?.ToLower() == "portal")
                                 CompetitionsOnClick="@(CompetitionsOnClick)" />
         </div>
 
-        <div id="main_container_vertical_list" style="border: 2px solid rgba(17,24,39,.05)">
-            <div id="matches_same_day_share" style="background-color: rgba(17,24,39,.05);">
+        <div id="main_container_vertical_list">
+            <div id="matches_same_day_share" >
                 @if (MatchesListGroup?.Count > 0)
                 {
                     foreach (var matchgroup in MatchesListGroup ?? new List<IGrouping<string, Matches>>())
@@ -70,7 +70,7 @@ else if (page?.ToLower() == "portal")
 
                         @foreach (var match in matchgroup)
                         {
-                            <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
+                            <NavLink style="cursor:pointer;" target="_parent" href="@(page + "/matchdetails/" + match.MatchID)">
                                 <PagesWebSiteShareMatch MatchItem="@match"
                                                         TimeZoneOffset="@timeZoneOffset"
                                                         IsMatchForSameDayList="@true"
@@ -92,7 +92,7 @@ else if (page?.ToLower() == "portal")
                                 CompetitionsOnClick="@(CompetitionsOnClick)" />
         </div>
 
-        <div id="main_container_vertical_list" style="border-inline: 1px solid rgba(17,24,39,.05)">
+        <div id="main_container_vertical_list">
             <div id="matches_same_day_share">
                 @foreach (var matchesGroup in ResultsListGroup ?? new List<IGrouping<string, Matches>>())
                 {
@@ -100,7 +100,7 @@ else if (page?.ToLower() == "portal")
                     @foreach (var match in matchesGroup)
                     {
                         <div>
-                            <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
+                            <NavLink style="cursor:pointer;" target="_parent" href="@(page + "/matchdetails/" + match.MatchID)">
                                 <PagesWebSiteShareMatch MatchItem="@match"
                                                         TimeZoneOffset="@timeZoneOffset"
                                                         IsMatchForSameDayList="@true"
@@ -121,7 +121,7 @@ else if (page?.ToLower() == "portal")
                                 CompetitionsOnClick="@(CompetitionsOnClick)" />
         </div>
 
-        <div id="main_container_vertical_list" style="border-inline: 1px solid rgba(17,24,39,.05)">
+        <div id="main_container_vertical_list">
             <div id="matches_same_day_share">
                 @foreach (var matchesGroup in FixturesListGroup ?? new List<IGrouping<string, Matches>>())
                 {
@@ -129,7 +129,7 @@ else if (page?.ToLower() == "portal")
                     @foreach (var match in matchesGroup)
                     {
                         <div>
-                            <NavLink style="cursor:pointer;" target="_new" href="@(page + "/matchdetails/" + match.MatchID)">
+                            <NavLink style="cursor:pointer;" target="_parent" href="@(page + "/matchdetails/" + match.MatchID)">
                                 <PagesWebSiteShareMatch MatchItem="@match"
                                                         TimeZoneOffset="@timeZoneOffset"
                                                         IsMatchForSameDayList="@true"
@@ -151,7 +151,7 @@ else if (page?.ToLower() == "portal")
                                     SelectedCompetition="@(SelectedStandingsCompetition)"
                                     CompetitionsOnClick="@(CompetitionsOnClick)" />
             </div>
-            <div id="main_container_vertical_list" style="border-inline: 1px solid rgba(17,24,39,.05)">
+            <div id="main_container_vertical_list">
                 <LiveStandingView Standing="@(LiveStanding)" />
             </div>
         }
@@ -258,7 +258,7 @@ else if (page?.ToLower() == "portal")
 
     private void CompetitionsOnClick(string competition)
     {
-        if (page?.ToLower() == "portal")
+        if (page?.ToLower() == "portal" || page?.ToLower() == "midlar" || page?.ToLower() == "roysni")
         {
             SelectedMatchesCompetition = competition;
             SetMatchesVerticalList();
@@ -301,7 +301,7 @@ else if (page?.ToLower() == "portal")
 
     public async Task GetSelectedMatchListGroup()
     {
-        if(page?.ToLower() == "portal")
+        if(page?.ToLower() == "portal" || page?.ToLower() == "midlar" || page?.ToLower() == "roysni")
         {
             SetMatchesVerticalList();
         }
@@ -324,13 +324,21 @@ else if (page?.ToLower() == "portal")
     {
         var fromDate = DateTime.Now.Date.AddDays(0);
         var toDate = fromDate.AddDays(0);
-        MatchesListGroup = DystirWebClientService.AllMatches?
-            .OrderBy(x => GetOrder(x.MatchTypeID))
-            .ThenBy(x => x.Time)
-            .ThenBy(x => x.MatchID)
+
+        var matchesList = DystirWebClientService.AllMatches?
             .Where(x => x.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate
             && x.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate)
-            .GroupBy(x => x.MatchTypeName)?.ToList();
+            .OrderBy(x => GetOrder(x.MatchTypeID))
+            .ThenBy(x => x.Time)
+            .ThenBy(x => x.MatchID);
+        if (page?.ToLower() == "portal")
+        {
+            MatchesListGroup = matchesList?.Where(x => x.MatchTypeID != 5 && x.MatchTypeID != 6)?.GroupBy(x => x.MatchTypeName)?.ToList();
+        }
+        else
+        {
+            MatchesListGroup = matchesList?.GroupBy(x => x.MatchTypeName)?.ToList();
+        }
 
         if (MatchesListGroup == null) return;
 
@@ -461,9 +469,4 @@ else if (page?.ToLower() == "portal")
                 return matchTypeId;
         }
     }
-
-    //public string GetTimestamp(DateTime value)
-    //{
-    //    return value.ToString("yyyyMMddHHmm");
-    //}
 }

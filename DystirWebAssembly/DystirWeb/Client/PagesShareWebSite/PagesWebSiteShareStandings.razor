@@ -3,14 +3,18 @@
 @layout PagesWebSiteShareLayout
 @implements IDisposable
 
-@if (page?.ToLower() == "dimma" || page?.ToLower() == "info" || page?.ToLower() == "portal")
+@if (page?.ToLower() == "dimma"
+        || page?.ToLower() == "info"
+        || page?.ToLower() == "portal"
+        || page?.ToLower() == "roysni"
+        || page?.ToLower() == "midlar")
 {
     <div class="matches_and_competition_selection">
 
         @if (StandingsCompetitionsList?.Count > 0)
         {
             <div id="competitions_selection">
-                <ChooseCompetitions CompetitionsList="@(StandingsCompetitionsList)"
+                <PagesWebSiteShareLayoutStandingsCompetitions CompetitionsList="@(StandingsCompetitionsList)"
                                     SelectedCompetition="@(SelectedStandingsCompetition)"
                                     CompetitionsOnClick="@(CompetitionsOnClick)" />
             </div>
@@ -103,6 +107,6 @@
         standing = LiveStandingService.GetStanding(SelectedStandingsCompetition);
         isLoading = false;
         Refresh();
-        await JSRuntime.InvokeVoidAsync("onPageResize", "");
+        //await JSRuntime.InvokeVoidAsync("onPageResize", "");
     }
 }

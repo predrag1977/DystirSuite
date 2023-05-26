@@ -1,10 +1,10 @@
 ﻿html, body {
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: Arial,sans-serif;
     background-color: white;
 }
 
 body {
-    background-color: #f5f5f5;
+    background-color: #fff;
     user-select: text;
     color: black;
 }
@@ -38,11 +38,28 @@ body {
     margin: 0 auto;
 }
 
+#main_container_vertical_list, #main_container_vertical_list_standings {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: calc(100vh - 100px);
+    margin: auto 0;
+    font-size: 1rem;
+    padding: 0 5px;
+    width: 100%;
+    border: 5px solid #fceeec;
+    border-top: 1px solid #f04e37;
+}
+
+#main_container_vertical_list_standings {
+    height: calc(100vh - 50px);
+    background-color: white;
+}
+
 #horizontal_menu_days {
-    height:50px;
+    height: 50px;
     border-top: 0px solid lightgray;
     border-bottom: 0px solid lightgray;
-    background-color: rgb(223, 240, 216);
+    background-color: #fceeec;
     margin: 0;
 }
 
@@ -51,9 +68,9 @@ body {
 }
 
 #competitions_selection {
-    background-color: rgb(223, 240, 216);
+    background-color: #fceeec;
     border-top: 0px solid lightgray;
-    border-bottom: 0px solid lightgray;
+    border-bottom: 0px solid lightgray !important;
     margin: 0;
     height: 50px;
 }
@@ -62,10 +79,49 @@ body {
     height: 50px;
 }
 
+#horizontal_menu_bottom {
+    white-space: nowrap;
+    overflow: auto;
+    float: left;
+    width: calc(100% - 80px);
+    text-align: center;
+}
+
+    #horizontal_menu_bottom div {
+        display: inline-block;
+    }
+
+#horizontal_menu_wrapper_bottom {
+    height: 50px;
+}
+
+#scroll_button_left_bottom, #scroll_button_right_bottom {
+    height: 40px;
+    cursor: pointer;
+    background-color: lightgray;
+    color: gray;
+    white-space: nowrap;
+    float: left;
+    text-align: center;
+    width: 40px;
+    visibility: hidden;
+    border-radius: 20px;
+    line-height: 40px;
+    margin-top: 5px;
+}
+
+#scroll_button_left_bottom:hover, #scroll_button_right_bottom:hover {
+    background-color: rgba(211,211,211,0.7);
+}
+
+#scroll_button_right_bottom {
+    float: right;
+}
+
 #scroll_button_left, #scroll_button_right, #back_button {
     background-color: lightgray;
     color: gray;
-    margin-top:5px;
+    margin-top: 5px;
 }
 
     #scroll_button_left:hover, #scroll_button_right:hover, #back_button:hover {
@@ -84,11 +140,12 @@ body {
 
 #matches_same_day {
     border-bottom: 1px solid lightgray;
+
 }
 
 #matches_same_day_share {
     text-align: center;
-    background-color:white;
+    background-color: #fceeec;
 }
 
     #matches_same_day_share a {
@@ -96,16 +153,16 @@ body {
     }
 
 .match_item_same_day_share {
-    padding: 2px;
+    padding: 5px;
     border-radius: 3px;
     margin: 0;
-    font-size: 12px;
-    width: calc(20% - 4px);
+    font-size: 13px !important;
     display: inline-block;
-    border: 1px solid #999999;
-    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.22) 0 0 0 0;
+    background-color: #fff;
     color: black;
-    max-width: 400px;
+    border: 5px solid white;
+    border-top:0px;
 }
 
     .match_item_same_day_share:hover {
@@ -126,7 +183,7 @@ body {
 
 .match_item_same_day_share_details {
     padding: 2px;
-    border-radius: 3px;
+    border-radius: 0px;
     margin: 0;
     font-size: 12px !important;
     display: inline-block;
@@ -158,12 +215,28 @@ body {
     text-align: center;
 }
 
+.score_match_view_for_list {
+    width: 30px;
+    border-radius: 5px;
+}
+
 .match_info, .standings_cell {
     color: gray;
 }
 
-.standings_cell_team_name, .text-white {
+.text-white {
     color: black !important;
+}
+
+.standings_cell_team_name {
+    color: black !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    width: 25%;
+    padding-left: 5px;
+    font-weight: 600 !important;
 }
 
 .minutes_summary {
@@ -171,7 +244,7 @@ body {
 }
 
 .statistic-home {
-    background-color: yellowgreen;
+    background-color: #f14d33;
 }
 
 .statistic-away {
@@ -179,9 +252,8 @@ body {
 }
 
 .tab {
-    color: gray;
-    margin: 15px 8px 0 8px;
-    font-weight: 700;
+    color: #999999;
+    font-weight:700;
 }
 
 .selected_tab {
@@ -234,6 +306,36 @@ body {
     background-color: white;
 }
 
+.matches_and_competition_selection {
+    height: auto;
+    background-color: #fceeec;
+}
+
+#main_container {
+    height: calc(100vh - 140px);
+}
+
+.standings_cell_number {
+    padding: 7px 0;
+}
+
 .match_item_same_day_team_name {
     text-overflow: clip;
+}
+
+#horizontal_menu_standings {
+    white-space: nowrap;
+    overflow: auto;
+    float: left;
+    width: 100%;
+    text-align: center;
+    background-color: #fceeec;
+}
+
+    #horizontal_menu_standings div {
+        display: inline-block;
+    }
+
+#horizontal_menu_standings {
+    height: 60px;
 }

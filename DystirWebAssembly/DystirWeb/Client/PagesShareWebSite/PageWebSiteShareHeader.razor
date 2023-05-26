@@ -4,7 +4,7 @@
             @if (page?.ToLower() == "dimma")
             {
                 <td style="text-align:left;width:600px">
-                    <a style="text-decoration:none;" href="https://www.dimma.fo" target="_blank">
+                    <a style="text-decoration:none;" href="https://www.dimma.fo" target="_parent">
                         <img src="https://www.dimma.fo/assets/dimmalaetting.png" style="height: 45px;margin:auto 20px;" />
                     </a>
                 </td>
@@ -12,7 +12,7 @@
             else if (page?.ToLower() == "info")
             {
                 <td style="text-align:left;width:600px">
-                    <a style="text-decoration:none;" href="https://www.in.fo" target="_blank">
+                    <a style="text-decoration:none;" href="https://www.in.fo" target="_parent">
                         <img src="https://in.fo/fileadmin/templates/ext/bootstrap_package/Resources/Public/Images/logo/info-logo.svg" style="height: 45px;margin:auto 20px;" />
                     </a>
                 </td>
@@ -20,13 +20,29 @@
             else if (page?.ToLower() == "portal")
             {
                 <td style="text-align:left;width:600px">
-                    <a style="text-decoration:none;" href="https://portal.fo" target="_blank">
+                    <a style="text-decoration:none;" href="https://portal.fo" target="_parent">
                         <img src="https://www.dystir.fo/images/icons/portal_icon.png" style="height: 45px;margin:auto 20px;" />
                     </a>
                 </td>
             }
+            else if (page?.ToLower() == "midlar")
+            {
+                <td style="text-align:left;width:600px">
+                    <a style="text-decoration:none;" href="https://midlar.fo" target="_parent">
+                        <img src="https://www.dystir.fo/images/icons/midlar_icon.svg" style="height: 45px;margin:auto 20px;" />
+                    </a>
+                </td>
+            }
+            else if (page?.ToLower() == "roysni")
+            {
+                <td style="text-align:left;width:600px">
+                    <a style="text-decoration:none;" href="https://roysni.fo" target="_parent">
+                        <img src="https://www.dystir.fo/images/icons/roysni_icon.png" style="height: 45px;margin:auto 20px;" />
+                    </a>
+                </td>
+            }
             <td style="text-align:right;width:600px">
-                <a style="text-decoration:none;" href="https://www.dystir.fo" target="_blank">
+                <a style="text-decoration:none;" href="https://www.dystir.fo" target="_parent">
                     <img src="https://www.dystir.fo/images/icons/dystir_icon.png" style="height:50px;margin:auto 20px; border-radius:10px;" />
                 </a>
             </td>

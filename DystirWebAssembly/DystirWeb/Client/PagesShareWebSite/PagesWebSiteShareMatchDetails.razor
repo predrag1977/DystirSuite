@@ -3,7 +3,11 @@
 @layout PagesWebSiteShareLayout
 @implements IDisposable
 
-@if (page?.ToLower() == "dimma" || page?.ToLower() == "info" || page?.ToLower() == "portal")
+@if (page?.ToLower() == "dimma"
+        || page?.ToLower() == "info"
+        || page?.ToLower() == "portal"
+        || page?.ToLower() == "roysni"
+        || page?.ToLower() == "midlar")
 {
     <div id="main_share">
         <div id="background_share">
@@ -215,15 +219,26 @@
     {
         var fromDate = DateTime.UtcNow.AddMinutes(-timeZoneOffset).Date.AddDays(0);
         var toDate = fromDate.AddDays(0);
-        SelectedMatchListGroup = DystirWebClientService.AllMatches?
-            .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
-            .Where(x => x.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate && x.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate)
-            .GroupBy(x => x.MatchTypeName)?.ToList() ?? new List<IGrouping<string, Matches>>();
+
+        var matchesList = DystirWebClientService.AllMatches?
+            .Where(x => x.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate
+            && x.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate)
+            .OrderBy(x => GetOrder(x.MatchTypeID))
+            .ThenBy(x => x.Time)
+            .ThenBy(x => x.MatchID);
+        if (page?.ToLower() == "portal")
+        {
+            SelectedMatchListGroup = matchesList.Where(x => x.MatchTypeID != 5 && x.MatchTypeID != 6).GroupBy(x => x.MatchTypeName)?.ToList() ?? new List<IGrouping<string, Matches>>();
+        }
+        else
+        {
+            SelectedMatchListGroup = matchesList.GroupBy(x => x.MatchTypeName)?.ToList() ?? new List<IGrouping<string, Matches>>();
+        }
 
         ShowMatchList = SelectedMatchListGroup?.Count() > 0;
         if(ShowMatchList)
         {
-            if (SelectedMatchListGroup?.Count() == 1 && SelectedMatchListGroup?[0].Select(x => x).Count() == 1)
+            if (SelectedMatchListGroup?.Count() == 1 && SelectedMatchListGroup?[0].Select(x => x).Count() == 1) 
             {
                 ShowMatchList = false;
             }
@@ -269,5 +284,18 @@
     private string GetNumberOfMatches() {
         int numberOfMatches = SelectedMatchListGroup?.FirstOrDefault(x => x.Key == SelectedCompetition)?.Select(x => x)?.Count() ?? 0;
         return numberOfMatches.ToString();
+    }
+
+    private object GetOrder(int? matchTypeId)
+    {
+        switch (matchTypeId)
+        {
+            case 101:
+                return 6;
+            case 6:
+                return 101;
+            default:
+                return matchTypeId;
+        }
     }
 }

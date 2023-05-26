@@ -181,7 +181,7 @@ namespace DystirWeb.ViewBases
 
         public string MatchItemWidth(string page, int numberOfMatches, bool isMatchInDetails)
         {
-            if (page == "portal")
+            if (page == "portal" || page == "midlar" || page == "roysni")
             {
                 if (isMatchInDetails == true)
                 {

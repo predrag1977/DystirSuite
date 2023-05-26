@@ -7,7 +7,7 @@
         <div class="match_item_same_day_share" style="width:@(MatchItemWidth(Page, NumberOfMatches, IsMatchInDetails))">
             <table>
                 <tr>
-                    @if (Page == "portal")
+                    @if (Page == "portal" || Page == "midlar" || Page == "roysni")
                     {
                         <td class="match_info pl-1">
                             @*<span>@GetMatchDayName()</span>
@@ -34,7 +34,7 @@
 
             <table>
                 <tr>
-                    @if (Page == "portal" && IsMatchInDetails == false)
+                    @if ((Page == "portal" || Page == "midlar" || Page == "roysni") && IsMatchInDetails == false)
                     {
                         <td class="text-center" style="width:30px">
                             <img src="team_logos/@(MatchItem.HomeTeamLogo)"
@@ -76,7 +76,7 @@
 
             <table>
                 <tr>
-                    @if (Page == "portal" && IsMatchInDetails == false) {
+                    @if ((Page == "portal" || Page == "midlar" || Page == "roysni") && IsMatchInDetails == false) {
                         <td class="text-center" style="width:30px">
                             <img src="team_logos/@(MatchItem.AwayTeamLogo)"
                                  onerror="this.src='team_logos/empty.png'" width="20" height="20" />
