@@ -50,6 +50,7 @@ body {
 
 #main_container_vertical_list_standings {
     height: calc(100vh - 50px);
+    background-color: white;
 }
 
 #horizontal_menu_days {
@@ -126,7 +127,7 @@ body {
     }
 
 #selected_match_details {
-    border-top: 1px solid lightgray;
+    border-top: 0px solid lightgray;
 }
 
 .match_details_item {
@@ -142,16 +143,15 @@ body {
 
 #matches_same_day_share {
     text-align: center;
-    padding-top: 5px;
     background-color: white;
 }
 
     #matches_same_day_share a {
         text-decoration: none;
     }
-    
+
 .match_item_same_day_share {
-    padding: 2px;
+    padding: 5px;
     border-radius: 3px;
     margin: 0;
     font-size: 13px !important;
@@ -159,6 +159,7 @@ body {
     box-shadow: rgba(0, 0, 0, 0.22) 0 0 0 0;
     background-color: #fff;
     color: black;
+    border-bottom: 5px solid rgba(17,24,39,.05);
 }
 
     .match_item_same_day_share:hover {
@@ -179,11 +180,11 @@ body {
 
 .match_item_same_day_share_details {
     padding: 2px;
-    border-radius: 3px;
+    border-radius: 0px;
     margin: 0;
     font-size: 12px !important;
     display: inline-block;
-    box-shadow: rgba(0, 0, 0, 0.22) 0 0 6px 0;
+    box-shadow: rgba(0, 0, 0, 0.22) 0 0 2px 0;
     background-color: #fff;
     color: black;
 }
@@ -220,8 +221,19 @@ body {
     color: gray;
 }
 
-.standings_cell_team_name, .text-white {
+.text-white {
     color: black !important;
+}
+
+.standings_cell_team_name {
+    color: black !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    width: 25%;
+    padding-left: 5px;
+    font-weight: 600 !important;
 }
 
 .minutes_summary {
@@ -305,4 +317,20 @@ body {
 
 .match_item_same_day_team_name {
     text-overflow: clip;
+}
+
+#horizontal_menu_standings {
+    white-space: nowrap;
+    overflow: auto;
+    float: left;
+    width: 100%;
+    text-align: center;
+}
+
+    #horizontal_menu_standings div {
+        display: inline-block;
+    }
+
+#horizontal_menu_standings {
+    height: 60px;
 }

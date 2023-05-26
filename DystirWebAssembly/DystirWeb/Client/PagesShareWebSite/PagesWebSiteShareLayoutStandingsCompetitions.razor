@@ -1,0 +1,28 @@
+﻿<div id="horizontal_menu_standings">
+    <div id="horizontal_menu_standings_wrapper">
+        @foreach (var competition in CompetitionsList ?? new List<string>())
+        {
+            <div class="tab @(SelectedCompetition == competition ? "selected_tab" : "")" @onclick="(() => SelectCompetition(competition))">
+                <span>@competition</span>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<string> CompetitionsOnClick { get; set; }
+
+    [Parameter]
+    public List<string> CompetitionsList { get; set; }
+
+    [Parameter]
+    public string SelectedCompetition { get; set; }
+
+
+    private void SelectCompetition(string competition)
+    {
+        SelectedCompetition = competition;
+        CompetitionsOnClick.InvokeAsync(competition);
+    }
+}
