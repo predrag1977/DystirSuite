@@ -68,7 +68,7 @@ body {
 }
 
 #competitions_selection {
-    background-color: #fceeec;
+    background-color: #f04e37;
     border-top: 0px solid lightgray;
     border-bottom: 0px solid lightgray !important;
     margin: 0;
@@ -252,12 +252,12 @@ body {
 }
 
 .tab {
-    color: #999999;
-    font-weight:700;
+    color: lightgray;
+    font-weight: 700;
 }
 
 .selected_tab {
-    color: black;
+    color: white;
 }
 
 .big_chance {
@@ -329,7 +329,7 @@ body {
     float: left;
     width: 100%;
     text-align: center;
-    background-color: #fceeec;
+    background-color: #f04e37;
 }
 
     #horizontal_menu_standings div {
@@ -337,5 +337,5 @@ body {
     }
 
 #horizontal_menu_standings {
-    height: 60px;
+    height: 50px;
 }
