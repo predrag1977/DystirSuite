@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using DystirXamarin.ViewModels;
 using DystirXamarin.Converter;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace DystirXamarin.Views
 {
@@ -75,17 +76,24 @@ namespace DystirXamarin.Views
             StatusList = match.Statuses?.Where(x => x.StatusID > 0 && x.StatusID < 13).ToList();
         }
 
-        private void StatusItem_Tapped(object sender, EventArgs e)
+        private async void StatusItem_Tapped(object sender, EventArgs e)
         {
+            var status = (Status)(e as TappedEventArgs).Parameter;
             if (_isMatchTime)
             {
-                _match.StatusID = (int?)(e as TappedEventArgs).Parameter;
-                _match.StatusTime = DateTime.UtcNow;
-                SetTime(0, 0);
+                //var additionalText = status?.StatusID == 5 ? "If match is finished,\npress FINISHED instead of FULL TIME,\nto confirm end of the match\nand to set player of the match" : "";
+                var answer = await DisplayAlert(string.Format("Is it {0}?", status?.StatusName), "", "yes", "no");
+                if (answer)
+                {
+                    _match.StatusID = status?.StatusID ?? 0;
+                    _match.StatusTime = DateTime.UtcNow;
+                    SetTime(0, 0);
+                    await ChangeMatchTimeAsync();
+                }
             }
             else
             {
-                _periodID = (int)(e as TappedEventArgs).Parameter;
+                _periodID = status?.StatusID ?? 0;
                 SetTime(0, 0);
             }
         }
@@ -290,6 +298,12 @@ namespace DystirXamarin.Views
 
         private async void OK_Tapped(object sender, EventArgs e)
         {
+            await ChangeMatchTimeAsync();
+            await Navigation.PopAsync(false);
+        }
+
+        private async Task ChangeMatchTimeAsync()
+        {
             if (_isMatchTime)
             {
                 string[] timeTextArray = _totalMatchTime.Split(':') ?? new string[2];
@@ -306,7 +320,7 @@ namespace DystirXamarin.Views
                 EventOfMatch.EventTotalTime = _totalEventMinutesAndSeconds;
                 EventOfMatch.EventPeriodID = _periodID;
             }
-            await Navigation.PopAsync(false);
+            await Task.CompletedTask;
         }
 
         private void StatusListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
