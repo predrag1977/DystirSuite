@@ -17,7 +17,7 @@
                   VerticalScrollBarVisibility="Never"
                     VerticalOptions="FillAndExpand"
                     HasUnevenRows="True"
-                    ItemsSource="{Binding LiveStanding.TeamStandings}">
+                    ItemsSource="{Binding MatchDetails.LiveStanding.TeamStandings}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:TeamStanding" >
                     <ViewCell IsEnabled="False" >

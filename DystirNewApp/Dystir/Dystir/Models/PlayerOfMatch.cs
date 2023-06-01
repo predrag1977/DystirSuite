@@ -80,6 +80,7 @@ namespace Dystir.Models
             {
                 goal = value;
                 GoalVisible = value != null && value > 0;
+                GoalImageSource = GoalVisible ? "resource://Dystir.Resources.Images.goal.svg" : "";
             }
         }
 
@@ -88,7 +89,11 @@ namespace Dystir.Models
         public int? OwnGoal
         {
             get { return ownGoal; }
-            set { ownGoal = value; OwnGoalVisible = value != null && value > 0; }
+            set {
+                ownGoal = value;
+                OwnGoalVisible = value != null && value > 0;
+                OwnGoalImageSource = OwnGoalVisible ? "resource://Dystir.Resources.Images.owngoal.svg" : "";
+            }
         }
 
         int? yellowCard;
@@ -99,7 +104,10 @@ namespace Dystir.Models
             set {
                 yellowCard = value;
                 YellowCardVisible = value != null && value > 0;
+                YellowCardImageSource = YellowCardVisible ? "resource://Dystir.Resources.Images.yellow.svg" : "";
                 SecondYellowCardVisible = value != null && value > 1;
+                SecondYellowCardImageSource = SecondYellowCardVisible ? "resource://Dystir.Resources.Images.yellow.svg" : "";
+
             }
         }
 
@@ -112,6 +120,7 @@ namespace Dystir.Models
             {
                 redCard = value;
                 RedCardVisible = (value != null && value > 0) || SecondYellowCardVisible == true;
+                RedCardImageSource = RedCardVisible ? "resource://Dystir.Resources.Images.red.svg" : "";
             }
         }
 
@@ -124,6 +133,7 @@ namespace Dystir.Models
             {
                 subIn = value;
                 SubInVisible = (value != null && value >= 0);
+                SubInImageSource = SubInVisible ? "resource://Dystir.Resources.Images.sub_in.svg" : "";
             }
         }
 
@@ -136,6 +146,7 @@ namespace Dystir.Models
             {
                 subOut = value;
                 SubOutVisible = (value != null && value >= 0);
+                SubOutImageSource = SubOutVisible ? "resource://Dystir.Resources.Images.sub_out.svg" : "";
             }
         }
 
@@ -154,5 +165,19 @@ namespace Dystir.Models
         public bool SubOutVisible { get; set; } = false;
 
         public string NumberOrder { get; set; } = string.Empty;
+
+        public string GoalImageSource { get; set; } = string.Empty;
+
+        public string OwnGoalImageSource { get; set; } = string.Empty;
+
+        public string YellowCardImageSource { get; set; } = string.Empty;
+
+        public string SecondYellowCardImageSource { get; set; } = string.Empty;
+
+        public string RedCardImageSource { get; set; } = string.Empty;
+
+        public string SubInImageSource { get; set; } = string.Empty;
+
+        public string SubOutImageSource { get; set; } = string.Empty;
     }
 }

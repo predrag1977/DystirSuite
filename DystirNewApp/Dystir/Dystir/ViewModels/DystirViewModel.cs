@@ -24,7 +24,7 @@ namespace Dystir.ViewModels
         public DystirService DystirService;
         public LiveStandingService LiveStandingService;
         public Command<Match> MatchTapped { get; }
-
+        
         ObservableCollection<Sponsor> sponsors = new ObservableCollection<Sponsor>();
         public ObservableCollection<Sponsor> Sponsors
         {
@@ -36,14 +36,14 @@ namespace Dystir.ViewModels
         public ObservableCollection<Sponsor> PrimarySponsors
         {
             get { return primarySponsors; }
-            set { primarySponsors = value; OnPropertyChanged(); }
+            set { primarySponsors = value;  }
         }
 
         ObservableCollection<Sponsor> secondarySponsors = new ObservableCollection<Sponsor>();
         public ObservableCollection<Sponsor> SecondarySponsors
         {
             get { return secondarySponsors; }
-            set { secondarySponsors = value; OnPropertyChanged(); }
+            set { secondarySponsors = value;  }
         }
 
         Match selectedMatch;
@@ -96,27 +96,40 @@ namespace Dystir.ViewModels
                 return;
 
             SelectedMatch = match;
-            // This will push the MatchDetailPage onto the navigation stack
-            //await Shell.Current.GoToAsync($"{nameof(MatchDetailPage)}?{nameof(MatchDetailViewModel.MatchID)}={match.MatchID}");
             await Shell.Current.GoToAsync($"{nameof(MatchDetailPage)}?MatchID={match.MatchID}");
+            //await Shell.Current.Navigation.PushAsync(new MatchDetailPage(match.MatchID));
             //await Shell.Current.Navigation.PushModalAsync(new MatchDetailPage());
+            //SelectedMatch = match;
+            //var matchDetailPage = ListMatchDetailPages.FirstOrDefault(x => x.MatchID == match.MatchID);
+            //if (matchDetailPage == null)
+            //{
+            //    matchDetailPage = new MatchDetailPage(match.MatchID);
+            //    ListMatchDetailPages.Add(matchDetailPage);
+            //}
+
+            //// This will push the MatchDetailPage onto the navigation stack
+            ////await Shell.Current.GoToAsync($"{nameof(MatchDetailPage)}?MatchID={match.MatchID}");
+            //await Shell.Current.Navigation.PushAsync(matchDetailPage);
         }
 
         //**************************//
         //  INOTIFYPROPERTYCHANGED  //
         //**************************//
         public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            var changed = PropertyChanged;
+            if (changed == null)
+                return;
+
+            changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
 
 
 
 
-        
+
 
         ObservableCollection<TeamStanding> competitionTeamStandings = new ObservableCollection<TeamStanding>();
         public ObservableCollection<TeamStanding> CompetitionTeamStandings
@@ -191,6 +204,7 @@ namespace Dystir.ViewModels
         }
 
         Exception mainException = null;
+
         public Exception MainException
         {
             get { return mainException; }

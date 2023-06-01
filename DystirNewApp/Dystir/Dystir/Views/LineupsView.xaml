@@ -8,12 +8,21 @@
              x:Class="Dystir.Views.LineupsView">
 
     <ScrollView BackgroundColor="Black">
-        <StackLayout BindableLayout.ItemsSource="{Binding Lineups}"
+        <StackLayout BindableLayout.ItemsSource="{Binding MatchDetails.Lineups}"
                      Orientation="Vertical"
                      HorizontalOptions="FillAndExpand">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate x:DataType="models:PlayersInLineups">
-                        <Grid ColumnDefinitions="*,*"
+                        
+                            <Label Grid.Row="0"
+                                   Text="{Binding HomePlayer.FirstName}"
+                                   Margin="0,2"
+                                   HorizontalTextAlignment="Start"
+                                   HorizontalOptions="StartAndExpand"
+                                   LineBreakMode="WordWrap"
+                                   FontSize="13"
+                                   MaxLines="2"/>
+                        <!--<Grid ColumnDefinitions="*,*"
                               RowDefinitions="Auto,Auto">
                             <Grid Grid.ColumnSpan="2"
                                   IsVisible="{Binding IsFirstSub}">
@@ -44,7 +53,7 @@
                                                           NumberOfTapsRequired="1" />
                                 </Grid.GestureRecognizers>
                             </Grid>
-                        </Grid>
+                        </Grid>-->
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
         </StackLayout>

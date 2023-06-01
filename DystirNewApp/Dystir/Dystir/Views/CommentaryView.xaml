@@ -8,7 +8,7 @@
              x:Class="Dystir.Views.CommentaryView">
 
     <ScrollView BackgroundColor="Black">
-        <StackLayout BindableLayout.ItemsSource="{Binding Commentary}"
+        <StackLayout BindableLayout.ItemsSource="{Binding MatchDetails.Commentary}"
                      Orientation="Vertical"
                      HorizontalOptions="FillAndExpand">
                 <BindableLayout.ItemTemplate>

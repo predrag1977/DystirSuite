@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Dystir.Models;
 using Dystir.Services;
@@ -19,9 +22,11 @@ namespace Dystir.ViewModels
         //**********************//
         //      PROPERTIES      //
         //**********************//
-        public Command<MatchDetailsTab> MatchDetailsTabTapped { get; }
-        public int MatchID { get; set; }
 
+        public int MatchID { get; internal set; }
+        public Command<MatchDetailsTab> MatchDetailsTabTapped { get; }
+
+        //private readonly BackgroundWorker backgroundWorker;
         MatchDetails matchDetails;
         public MatchDetails MatchDetails
         {
@@ -41,41 +46,6 @@ namespace Dystir.ViewModels
         {
             get { return matchDetailsTabs; }
             set { matchDetailsTabs = value; OnPropertyChanged(); }
-        }
-
-        ObservableCollection<SummaryEventOfMatch> summary;
-        public ObservableCollection<SummaryEventOfMatch> Summary
-        {
-            get { return summary; }
-            set { summary = value; OnPropertyChanged(); }
-        }
-
-        ObservableCollection<PlayersInLineups> lineups;
-        public ObservableCollection<PlayersInLineups> Lineups
-        {
-            get { return lineups; }
-            set { lineups = value; OnPropertyChanged(); }
-        }
-
-        ObservableCollection<SummaryEventOfMatch> commentary;
-        public ObservableCollection<SummaryEventOfMatch> Commentary
-        {
-            get { return commentary; }
-            set { commentary = value; OnPropertyChanged(); }
-        }
-
-        MatchStatistics matchStatistics;
-        public MatchStatistics MatchStatistics
-        {
-            get { return matchStatistics; }
-            set { matchStatistics = value; OnPropertyChanged(); }
-        }
-
-        Standing liveStanding;
-        public Standing LiveStanding
-        {
-            get { return liveStanding; }
-            set { liveStanding = value; OnPropertyChanged(); }
         }
 
         ObservableCollection<Match> matchesBySelectedDate = new ObservableCollection<Match>();
@@ -135,6 +105,10 @@ namespace Dystir.ViewModels
             timeService.StartSponsorsTime();
 
             MatchDetailsTabTapped = new Command<MatchDetailsTab>(OnMatchDetailsTabTapped);
+
+            //backgroundWorker = new BackgroundWorker();
+            //backgroundWorker.DoWork += DoWork;
+            
         }
 
         //**********************//
@@ -145,14 +119,26 @@ namespace Dystir.ViewModels
             try
             {
                 IsLoading = true;
-                MatchDetails = DystirService.AllMatches.FirstOrDefault(x => x.MatchDetailsID == MatchID);
-                if (MatchDetails?.IsDataLoaded == false)
+                var reverse = DystirService.AllMatches.Reverse();
+                foreach (var matchDetails in reverse)
                 {
-                    MatchDetails = await DystirService.GetMatchDetailsAsync(MatchID);
+                    if(matchDetails.MatchDetailsID == MatchID)
+                    {
+                        if (matchDetails?.IsDataLoaded == false)
+                        {
+                            MatchDetails = await DystirService.GetMatchDetailsAsync(MatchID);
+                        }
+                        else
+                        {
+                            MatchDetails = matchDetails;
+                        }
+                        break;
+                    }
                 }
+                
                 SelectedMatch = MatchDetails.Match;
                 await PopulateMatchDetailsTabs();
-                await LoadMatchDetailsData();
+                //await LoadMatchDetailsData();
                 IsLoading = false;
             }
             catch (Exception ex)
@@ -218,220 +204,33 @@ namespace Dystir.ViewModels
 
         public async Task LoadMatchDetailsData()
         {
-            await Task.WhenAll(LoadSummaryAsync(), LoadLineupsAsync(), LoadCommentaryAsync(), LoadMatchStatisticsAsync(), LoadLiveStandingAsync());
+            //await Task.WhenAll(
+            //    LoadSummaryAsync(),
+            //    LoadLineupsAsync(),
+            //    LoadCommentaryAsync(),
+            //    LoadMatchStatisticsAsync(),
+            //    LoadLiveStandingAsync());
         }
 
-        private async Task LoadSummaryAsync()
-        {
-            Summary = new ObservableCollection<SummaryEventOfMatch>(GetSummary(MatchDetails));
-            await Task.CompletedTask;
-        }
-
-        private async Task LoadLineupsAsync()
-        {
-            var starterPlayers = MatchDetails.PlayersOfMatch.Where(x => x.PlayingStatus == 1)
-                .OrderByDescending(x => x.Position == "GK")
-                .ThenBy(x => x.Number);
-            var substitutionPlayers = MatchDetails.PlayersOfMatch.Where(x => x.PlayingStatus == 2)
-                .OrderByDescending(x => x.Position == "GK")
-                .ThenBy(x => x.Number);
-
-            var homeTeamLineups = new ObservableCollection<PlayerOfMatch>(starterPlayers.Where(x => x.TeamName == MatchDetails?.Match.HomeTeam));
-            var awayTeamLineups = new ObservableCollection<PlayerOfMatch>(starterPlayers.Where(x => x.TeamName == MatchDetails?.Match.AwayTeam));
-            var homeTeamSubtitutions = new ObservableCollection<PlayerOfMatch>(substitutionPlayers.Where(x => x.TeamName == MatchDetails?.Match.HomeTeam));
-            var awayTeamSubtitutions = new ObservableCollection<PlayerOfMatch>(substitutionPlayers.Where(x => x.TeamName == MatchDetails?.Match.AwayTeam));
-
-            var lineups = new ObservableCollection<PlayersInLineups>();
-
-            var biggerLineups = homeTeamLineups.Count >= awayTeamLineups.Count ? homeTeamLineups : awayTeamLineups;
-            for (int i = 0; i < biggerLineups.Count; i++)
-            {
-                var playerInLineups = new PlayersInLineups()
-                {
-                    HomePlayer = homeTeamLineups.Count > i ? homeTeamLineups[i] : new PlayerOfMatch(),
-                    AwayPlayer = awayTeamLineups.Count > i ? awayTeamLineups[i] : new PlayerOfMatch()
-                };
-                lineups.Add(playerInLineups);
-            }
-
-            var biggerSubstitution = homeTeamSubtitutions.Count >= awayTeamLineups.Count ? homeTeamSubtitutions : awayTeamSubtitutions;
-            for (int i = 0; i < biggerSubstitution.Count; i++)
-            {
-                var playerInLineups = new PlayersInLineups()
-                {
-                    HomePlayer = homeTeamSubtitutions.Count > i ? homeTeamSubtitutions[i] : new PlayerOfMatch(),
-                    AwayPlayer = awayTeamSubtitutions.Count > i ? awayTeamSubtitutions[i] : new PlayerOfMatch(),
-                    IsFirstSub = i == 0
-                };
-                lineups.Add(playerInLineups);
-            }
-
-            Lineups = new ObservableCollection<PlayersInLineups>(lineups);
-            await Task.CompletedTask;
-        }
-
-        private async Task LoadCommentaryAsync()
-        {
-            Commentary = new ObservableCollection<SummaryEventOfMatch>(GetCommentary(MatchDetails));
-            await Task.CompletedTask;
-        }
-
-        private async Task LoadMatchStatisticsAsync()
-        {
-            MatchStatistics = new MatchStatistics(MatchDetails.EventsOfMatch, MatchDetails.Match);
-            await Task.CompletedTask;
-        }
-
-        private async Task LoadLiveStandingAsync()
-        {
-            LiveStanding = DependencyService.Get<LiveStandingService>().GetStanding(MatchDetails?.Match?.MatchTypeName);
-            await Task.CompletedTask;
-        }
+        //private void DoWork(object sender, DoWorkEventArgs e)
+        //{
+        //    Application.Current.Dispatcher.BeginInvokeOnMainThread(new Action(async delegate
+        //    {
+        //        await Task.WhenAll(
+        //            LoadSummaryAsync(),
+        //            LoadLineupsAsync(),
+        //            LoadCommentaryAsync(),
+        //            LoadMatchStatisticsAsync(),
+        //            LoadLiveStandingAsync());
+        //    }));
+        //}
 
         private static ObservableCollection<PlayerOfMatch> GetLineups(MatchDetails matchDetails, string Team, int playingStatus)
         {
             var lineUps = matchDetails.PlayersOfMatch.Where(x => x.TeamName == Team && x.PlayingStatus == playingStatus).OrderBy(x => x.Number);
             return new ObservableCollection<PlayerOfMatch>(lineUps);
         }
-
-        private static ObservableCollection<SummaryEventOfMatch> GetSummary(MatchDetails matchDetails)
-        {
-            List<SummaryEventOfMatch> listSummaryEvents = GetEventOfMatchList(matchDetails, true);
-            if (matchDetails.Match?.StatusID < 12)
-            {
-                listSummaryEvents.Reverse();
-            }
-            return new ObservableCollection<SummaryEventOfMatch>(listSummaryEvents);
-        }
-
-        private static ObservableCollection<SummaryEventOfMatch> GetCommentary(MatchDetails matchDetails)
-        {
-            List<SummaryEventOfMatch> listCommentaryEvents = GetEventOfMatchList(matchDetails, false);
-            listCommentaryEvents.Reverse();
-            return new ObservableCollection<SummaryEventOfMatch>(listCommentaryEvents);
-        }
-
-        private static List<SummaryEventOfMatch> GetEventOfMatchList(MatchDetails matchDetails, bool isSummaryList)
-        {
-            List<SummaryEventOfMatch> eventOfMatchesList = new List<SummaryEventOfMatch>();
-            Match selectedMatch = matchDetails.Match;
-            var homeTeamPlayers = matchDetails.PlayersOfMatch?.Where(x => x.TeamName.Trim() == selectedMatch.HomeTeam.Trim());
-            var awayTeamPlayers = matchDetails.PlayersOfMatch?.Where(x => x.TeamName.Trim() == selectedMatch.AwayTeam.Trim());
-            var eventsList = isSummaryList ? matchDetails.EventsOfMatch?
-                .Where(x => x.EventName == "GOAL"
-                || x.EventName == "OWNGOAL"
-                || x.EventName == "PENALTYSCORED"
-                || x.EventName == "PENALTYMISSED"
-                || x.EventName == "YELLOW"
-                || x.EventName == "RED"
-                || x.EventName == "SUBSTITUTION"
-                || x.EventName == "PLAYEROFTHEMATCH"
-                || x.EventName == "ASSIST").ToList() : matchDetails.EventsOfMatch.ToList();
-
-            int homeScore = 0;
-            int awayScore = 0;
-            int homeTeamPenaltiesScore = 0;
-            int awayTeamPenaltiesScore = 0;
-            foreach (var eventOfMatch in eventsList ?? new List<EventOfMatch>())
-            {
-                SummaryEventOfMatch summaryEventOfMatch = new SummaryEventOfMatch(eventOfMatch, selectedMatch); ;
-                PlayerOfMatch mainPlayerOfMatch = matchDetails.PlayersOfMatch.FirstOrDefault(x => x.PlayerOfMatchID == eventOfMatch.MainPlayerOfMatchID);
-                string mainPlayerFullName = (mainPlayerOfMatch?.FirstName?.Trim() + " " + mainPlayerOfMatch?.LastName?.Trim())?.Trim();
-                PlayerOfMatch secondPlayerOfMatch = matchDetails.PlayersOfMatch.FirstOrDefault(x => x.PlayerOfMatchID == eventOfMatch.SecondPlayerOfMatchID);
-                string secondPlayerFullName = (secondPlayerOfMatch?.FirstName?.Trim() + " " + secondPlayerOfMatch?.LastName?.Trim())?.Trim();
-                if (eventOfMatch.EventTeam.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())
-                {
-                    summaryEventOfMatch.IsHomeTeamEvent = true;
-                    summaryEventOfMatch.HomeMainPlayer = mainPlayerFullName;
-                    summaryEventOfMatch.HomeSecondPlayer = secondPlayerFullName;
-                }
-                else
-                {
-                    summaryEventOfMatch.IsAwayTeamEvent = true;
-                    summaryEventOfMatch.AwayMainPlayer = mainPlayerFullName;
-                    summaryEventOfMatch.AwaySecondPlayer = secondPlayerFullName;
-                }
-                summaryEventOfMatch.HomeTeamVisible = !string.IsNullOrEmpty(summaryEventOfMatch.HomeTeam);
-                summaryEventOfMatch.AwayTeamVisible = !string.IsNullOrEmpty(summaryEventOfMatch.AwayTeam);
-                summaryEventOfMatch.IsGoal = eventOfMatch.EventName == "GOAL"
-                    || eventOfMatch.EventName == "OWNGOAL"
-                    || eventOfMatch.EventName == "PENALTYSCORED";
-                if (summaryEventOfMatch.IsGoal)
-                {
-                    if (eventOfMatch.EventTeam.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())
-                    {
-                        if (eventOfMatch.EventPeriodID != 10)
-                        {
-                            homeScore += 1;
-                        }
-                        else
-                        {
-                            homeTeamPenaltiesScore += 1;
-                        }
-                    }
-                    if (eventOfMatch.EventTeam.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())
-                    {
-                        if (eventOfMatch.EventPeriodID != 10)
-                        {
-                            awayScore += 1;
-                        }
-                        else
-                        {
-                            awayTeamPenaltiesScore += 1;
-                        }
-                    }
-                }
-                summaryEventOfMatch.HomeTeamScore = homeScore;
-                summaryEventOfMatch.AwayTeamScore = awayScore;
-                summaryEventOfMatch.HomeTeamPenaltiesScore = homeTeamPenaltiesScore;
-                summaryEventOfMatch.AwayTeamPenaltiesScore = awayTeamPenaltiesScore;
-
-                if (eventOfMatch.EventName == "GOAL")
-                {
-                    int eventIndex = eventsList.IndexOf(eventOfMatch);
-                    if (eventIndex + 1 < eventsList.Count)
-                    {
-                        EventOfMatch nextEvent = eventsList[eventIndex + 1];
-                        if (nextEvent.EventName == "ASSIST")
-                        {
-                            PlayerOfMatch assistPlayerOfMatch = matchDetails.PlayersOfMatch?.FirstOrDefault(x => x.PlayerOfMatchID == nextEvent.MainPlayerOfMatchID);
-                            string assistPlayerFullName = (assistPlayerOfMatch?.FirstName?.Trim() + " " + assistPlayerOfMatch?.LastName?.Trim())?.Trim();
-                            if (eventOfMatch.EventTeam.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())
-                            {
-                                summaryEventOfMatch.HomeSecondPlayer = assistPlayerFullName;
-                            }
-                            if (eventOfMatch.EventTeam.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())
-                            {
-                                summaryEventOfMatch.AwaySecondPlayer = assistPlayerFullName;
-                            }
-
-                        }
-                    }
-                }
-                else if (eventOfMatch.EventName == "ASSIST" && isSummaryList)
-                {
-                    continue;
-                }
-                else if (eventOfMatch.EventName == "PLAYEROFTHEMATCH")
-                {
-                    summaryEventOfMatch.TextColorOfEventMinute = Color.DarkOrange;
-                    summaryEventOfMatch.EventMinute = Resources.Localization.Resources.PlayerOfTheMatch;
-                }
-                else if (eventOfMatch.EventName == "SUBSTITUTION")
-                {
-                    var homeMainPlayer = summaryEventOfMatch.HomeMainPlayer;
-                    var awayMainPlayer = summaryEventOfMatch.AwayMainPlayer;
-                    summaryEventOfMatch.HomeMainPlayer = summaryEventOfMatch.HomeSecondPlayer;
-                    summaryEventOfMatch.AwayMainPlayer = summaryEventOfMatch.AwaySecondPlayer;
-                    summaryEventOfMatch.HomeSecondPlayer = homeMainPlayer;
-                    summaryEventOfMatch.AwaySecondPlayer = awayMainPlayer;
-                }
-                eventOfMatchesList.Add(summaryEventOfMatch);
-            }
-
-            return eventOfMatchesList.ToList();
-        }
-
+        
         private async Task SetMatchesBySelectedDate()
         {
             var matches = DystirService.AllMatches?.Where(x => x.Match.Time?.Date == SelectedMatch?.Time?.AddSeconds(1).Date)
@@ -503,7 +302,7 @@ namespace Dystir.ViewModels
             {
                 SelectedMatch = matchDetails.Match;
                 MatchDetails = matchDetails;
-                await LoadMatchDetailsData();
+                _ = LoadMatchDetailsData();
             }
             await SetMatchesBySelectedDate();
         }
