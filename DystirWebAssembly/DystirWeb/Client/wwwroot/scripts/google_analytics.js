@@ -1,19 +1,21 @@
 ﻿/*Global site tag(gtag.js) - Google Analytics*/
-function loadGoogleAnalytics(ua_number) {
+function loadGoogleAnalytics(g_number_from_layout) {
+    var g_number = "DWCGT486L9";
     var ga = document.createElement('script');
     ga.type = 'text/javascript';
     ga.async = true;
-    ga.src = 'https://www.googletagmanager.com/gtag/js?id=UA-170595956-1'+ ua_number;
+    ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-'+ g_number;
 
     var s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(ga, s);
-    sendTrack(ua_number);
+    sendTrack(g_number);
 }
 
-function sendTrack(ua_number) {
+function sendTrack(g_number) {
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-    gtag('config', 'UA-' + ua_number, { cookie_flags: 'SameSite=None;Secure' });
+    gtag('config', 'G-' + g_number);
+    //gtag('config', 'G-' + , { cookie_flags: 'SameSite=None;Secure' });
 }
 /*End Google Analytics*/
