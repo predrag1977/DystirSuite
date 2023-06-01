@@ -45,7 +45,6 @@
 
             <ffsvg:SvgCachedImage Margin="10,0"
                                   HeightRequest="20"
-                                  CacheDuration="50"
                                   Source="{Binding EventIconSource, StringFormat=resource://Dystir.Resources.Images.\{0\}}"/>
 
         </StackLayout>
@@ -65,7 +64,6 @@
             
             <ffsvg:SvgCachedImage Margin="10,0"
                                   HeightRequest="20"
-                                  CacheDuration="50"
                                   Source="{Binding EventIconSource, StringFormat=resource://Dystir.Resources.Images.\{0\}}"/>
 
             <Label Text="{Binding HomeTeamScore}"

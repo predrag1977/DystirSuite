@@ -61,7 +61,7 @@
                            FontAttributes="Bold"
                            FontFamily="NunitoSemiBold"/>
                 </StackLayout>
-                <ffsvg:SvgCachedImage Margin="4,0"
+                <!--<ffsvg:SvgCachedImage Margin="4,0"
                                       IsVisible="{Binding IsGoal}"
                                       WidthRequest="45"
                                       HeightRequest="45"
@@ -71,7 +71,7 @@
                         <ffsvg:SvgCachedImage.Transformations>
                             <fftransformation:TintTransformation HexColor="#A9A9A9" EnableSolidColor="true"/>
                         </ffsvg:SvgCachedImage.Transformations>
-                </ffsvg:SvgCachedImage>
+                </ffsvg:SvgCachedImage>-->
             </StackLayout>
         </Frame>
 
@@ -87,7 +87,7 @@
                          Orientation="Horizontal"
                          HeightRequest="70"
                          VerticalOptions="CenterAndExpand">
-                <ffsvg:SvgCachedImage Margin="4,0"
+                <!--<ffsvg:SvgCachedImage Margin="4,0"
                                       IsVisible="{Binding IsGoal}"
                                       WidthRequest="45"
                                         HeightRequest="45"
@@ -97,7 +97,7 @@
                         <ffsvg:SvgCachedImage.Transformations>
                             <fftransformation:TintTransformation HexColor="#A9A9A9" EnableSolidColor="true"/>
                         </ffsvg:SvgCachedImage.Transformations>
-                </ffsvg:SvgCachedImage>
+                </ffsvg:SvgCachedImage>-->
                 <StackLayout IsVisible="{Binding IsGoal}"
                              Orientation="Horizontal"
                              Margin="4,0">

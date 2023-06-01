@@ -32,6 +32,8 @@ namespace Dystir.Services
         public ObservableCollection<MatchCompetition> AllCompetitions = new ObservableCollection<MatchCompetition>();
         public ObservableCollection<Standing> Standings;
         public ObservableCollection<CompetitionStatistic> CompetitionStatistics;
+        public ObservableCollection<MatchDetailPage> ListMatchDetailPages = new ObservableCollection<MatchDetailPage>();
+
 
         public object AllMatchesDetailsPages { get; internal set; }
 
@@ -109,6 +111,7 @@ namespace Dystir.Services
             try
             {
                 matchDetails = await _dataLoadService.GetMatchDetailsAsync(matchID);
+                await matchDetails.SetFullData();
                 UpdateDataAsync(matchDetails);
             }
             catch (Exception ex)

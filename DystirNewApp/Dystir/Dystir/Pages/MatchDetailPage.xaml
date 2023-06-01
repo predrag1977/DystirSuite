@@ -205,9 +205,7 @@
 
         <views:SummaryView Grid.Row="5" IsVisible="{Binding SummaryIsVisible}" />
         <views:LineupsView Grid.Row="5" IsVisible="{Binding LineupsIsVisible}" />
-        <views:CommentaryView Grid.Row="5" IsVisible="{Binding CommentaryIsVisible}" />
-        <views:StatisticView Grid.Row="5" IsVisible="{Binding StatisticsIsVisible}" />
-        <views:LiveStandingsView Grid.Row="5" IsVisible="{Binding LiveStandingsIsVisible}" />
+        
 
         <ActivityIndicator Grid.Row="5"
                            IsVisible="{Binding IsLoading}"

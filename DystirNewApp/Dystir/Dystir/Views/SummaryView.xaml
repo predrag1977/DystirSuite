@@ -9,12 +9,38 @@
              x:Class="Dystir.Views.SummaryView">
 
     <ScrollView BackgroundColor="Black">
-        <StackLayout BindableLayout.ItemsSource="{Binding Summary}"
+        <StackLayout BindableLayout.ItemsSource="{Binding MatchDetails.Summary}"
                      Orientation="Vertical"
                      HorizontalOptions="FillAndExpand">
                 <BindableLayout.ItemTemplate>
-                    <DataTemplate>
-                        <views:SummaryEventView BindingContext="{Binding}" />
+                    <DataTemplate x:DataType="models:SummaryEventOfMatch">
+                        <StackLayout>
+                            <StackLayout VerticalOptions="CenterAndExpand"
+                                 Orientation="Vertical"
+                                 Margin="4,0">
+                                <Label Text="{Binding HomeMainPlayer}"
+                                       HorizontalOptions="Start"/>
+                                <Label Text="{Binding HomeSecondPlayer}"
+                                       TextColor="DarkGray"
+                                       HorizontalOptions="Start"/>
+                            </StackLayout>
+                            <StackLayout VerticalOptions="CenterAndExpand"
+                                 Orientation="Vertical"
+                                 Margin="4,0">
+                                <Label Text="{Binding AwayMainPlayer}"
+                                       HorizontalOptions="End"/>
+                                <Label Text="{Binding AwaySecondPlayer}"
+                                       TextColor="DarkGray"
+                                       HorizontalOptions="End"/>
+                            </StackLayout>
+                            <Image Source="Resources/fixtures.png" />
+                            <ffsvg:SvgCachedImage Margin="4,0"
+                                      HeightRequest="20"
+                                      Source="{Binding EventIconSource, StringFormat=resource://Dystir.Resources.Images.\{0\}}"/>
+                
+                        </StackLayout>
+                        
+                        <!--<views:SummaryEventView BindingContext="{Binding}" />-->
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
         </StackLayout>

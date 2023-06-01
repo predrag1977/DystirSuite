@@ -15,7 +15,7 @@
     </ContentView.Resources>
 
     <ScrollView>
-        <Grid BindingContext="{Binding MatchStatistics}">
+        <Grid BindingContext="{Binding MatchDetails.MatchStatistics}">
             <Grid x:DataType="models:MatchStatistics"
                   Padding="30,0"
                   RowDefinitions="30,Auto,30,Auto,30,Auto,30,Auto,30,Auto,30,Auto,30,Auto,30,Auto">
