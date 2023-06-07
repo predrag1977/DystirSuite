@@ -44,14 +44,15 @@ body {
     height: calc(100vh - 100px);
     margin: auto 0;
     font-size: 1rem;
-    padding: 0 5px;
+    padding: 0;
     width: 100%;
-    border: 5px solid #e7f2f3;
-    border-top: 1px solid #30c0da;
+    border: 0px solid #e7f2f3;
+    border-top: 0px solid #30c0da;
 }
 
 #main_container_vertical_list_standings {
     height: calc(100vh - 50px);
+    background-color: white;
 }
 
 #horizontal_menu_days {
@@ -67,15 +68,15 @@ body {
 }
 
 #competitions_selection {
-    background-color: #e7f2f3;
+    background-color: white;
     border-top: 0px solid lightgray;
-    border-bottom: 0px solid lightgray !important;
+    border-bottom: 7px solid #e7f2f3 !important;
     margin: 0;
-    height: 50px;
+    height: 60px;
 }
 
 #horizontal_menu_wrapper {
-    height: 50px;
+    height: 60px;
 }
 
 #horizontal_menu_bottom {
@@ -109,9 +110,9 @@ body {
     margin-top: 5px;
 }
 
-#scroll_button_left_bottom:hover, #scroll_button_right_bottom:hover {
-    background-color: rgba(211,211,211,0.7);
-}
+    #scroll_button_left_bottom:hover, #scroll_button_right_bottom:hover {
+        background-color: rgba(211,211,211,0.7);
+    }
 
 #scroll_button_right_bottom {
     float: right;
@@ -139,7 +140,6 @@ body {
 
 #matches_same_day {
     border-bottom: 1px solid lightgray;
-
 }
 
 #matches_same_day_share {
@@ -153,7 +153,7 @@ body {
 
 .match_item_same_day_share {
     padding: 5px;
-    border-radius: 3px;
+    border-radius: 0px;
     margin: 0;
     font-size: 13px !important;
     display: inline-block;
@@ -223,8 +223,19 @@ body {
     color: gray;
 }
 
-.standings_cell_team_name, .text-white {
+.text-white {
     color: black !important;
+}
+
+.standings_cell_team_name {
+    color: black !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+    width: 25%;
+    padding-left: 5px;
+    font-weight: 600 !important;
 }
 
 .minutes_summary {
@@ -241,7 +252,7 @@ body {
 
 .tab {
     color: #999999;
-    font-weight:700;
+    font-weight: 700;
 }
 
 .selected_tab {
@@ -296,7 +307,7 @@ body {
 
 .matches_and_competition_selection {
     height: auto;
-    background-color: #e7f2f3;
+    background-color: #fff;
 }
 
 #main_container {
@@ -309,4 +320,30 @@ body {
 
 .match_item_same_day_team_name {
     text-overflow: clip;
+}
+
+#horizontal_menu_standings {
+    white-space: nowrap;
+    overflow: auto;
+    float: left;
+    width: 100%;
+    text-align: center;
+    background-color: white;
+    border-bottom: 5px solid #e7f2f3 !important;
+}
+
+    #horizontal_menu_standings div {
+        display: inline-block;
+    }
+
+#horizontal_menu_standings {
+    height: 60px;
+}
+
+#match_details_container {
+    padding:0;
+}
+
+#match-details_static_part .tab {
+    margin: 20px 8px 0 8px;
 }
