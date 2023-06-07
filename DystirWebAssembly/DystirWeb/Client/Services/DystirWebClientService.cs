@@ -69,12 +69,12 @@ namespace DystirWeb.Services
 
         public async Task LoadDataAsync()
         {
-            _ = StartDystirHubAsync();
             var loadAllMatchesTask = LoadAllMatchesAsync();
             var loadSponsorsTask = LoadSponsorsAsync();
             var loadAllCompetitionTask = LoadAllCompetitionAsync();
             await Task.WhenAll(loadAllMatchesTask, loadSponsorsTask, loadAllCompetitionTask);
             FullDataLoaded();
+            _ = StartDystirHubAsync();
         }
 
         public async Task LoadAllMatchesAsync()
