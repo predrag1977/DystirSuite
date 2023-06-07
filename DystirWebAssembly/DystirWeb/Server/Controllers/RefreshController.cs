@@ -14,7 +14,7 @@ namespace DystirWeb.Controllers
         private readonly IHubContext<DystirHub> _hubContext;
         private readonly DystirService _dystirService;
 
-        public RefreshController(IHubContext<DystirHub> hubContext, DystirService dystirService)
+        public RefreshController(DystirService dystirService, IHubContext<DystirHub> hubContext)
         {
             _hubContext = hubContext;
             _dystirService = dystirService;
@@ -64,7 +64,7 @@ namespace DystirWeb.Controllers
         private void HubSend()
         {
             HubSender hubSender = new HubSender();
-            hubSender.SendRefreshData(_hubContext);
+            HubSender.SendRefreshData(_hubContext);
         }
     }
 }

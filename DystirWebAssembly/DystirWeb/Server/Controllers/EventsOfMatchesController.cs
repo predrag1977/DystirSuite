@@ -21,11 +21,11 @@ namespace DystirWeb.Controllers
         private readonly DystirService _dystirService;
         private readonly MatchDetailsService _matchDetailsService;
 
-        public EventsOfMatchesController(IHubContext<DystirHub> hubContext,
+        public EventsOfMatchesController(DystirService dystirService,
             AuthService authService,
             DystirDBContext dystirDBContext,
-            DystirService dystirService,
-            MatchDetailsService matchDetailsService)
+            MatchDetailsService matchDetailsService,
+            IHubContext<DystirHub> hubContext)
         {
             _hubContext = hubContext;
             _authService = authService;
@@ -271,7 +271,7 @@ namespace DystirWeb.Controllers
             return Ok(eventsOfMatches.EventOfMatchId);
         }
 
-        private string GetEventMinute(EventsOfMatches eventsOfMatches)
+        private static string GetEventMinute(EventsOfMatches eventsOfMatches)
         {
             string liveMatchTime = string.Empty;
             if (eventsOfMatches?.MatchId != null)
@@ -374,7 +374,7 @@ namespace DystirWeb.Controllers
                     eventsOfMatches.EventText = "REYTTKORT " + eventsOfMatches.EventTeam + (string.IsNullOrWhiteSpace(mainPlayerFullName) ? "." : " leikari " + mainPlayerFullName + ".");
                     break;
                 case "CORNER":
-                    (eventsOfMatches.EventText = "HORNASPARK til " + eventsOfMatches.EventTeam + ".").Replace("..", ".");
+                    eventsOfMatches.EventText = ("HORNASPARK til " + eventsOfMatches.EventTeam + ".").Replace("..", ".");
                     break;
                 case "ONTARGET":
                     eventsOfMatches.EventText = "ROYND Á MÁL. " + eventsOfMatches.EventTeam + " leikari" + (string.IsNullOrWhiteSpace(mainPlayerFullName) ? "" : " " + mainPlayerFullName) + " roynd á mál.";
@@ -397,7 +397,7 @@ namespace DystirWeb.Controllers
                     eventsOfMatches.EventText = "UPPLEGG " + eventsOfMatches.EventTeam + (string.IsNullOrWhiteSpace(mainPlayerFullName) ? "." : " leikari " + mainPlayerFullName + ".");
                     break;
                 case "PENALTY":
-                    (eventsOfMatches.EventText = "BROTSSPARK til " + eventsOfMatches.EventTeam + ".").Replace("..", ".");
+                    eventsOfMatches.EventText = ("BROTSSPARK til " + eventsOfMatches.EventTeam + ".").Replace("..", ".");
                     break;
                 case "PENALTYSCORED":
                     eventsOfMatches.EventText = "BROTSSPARK SKORA " + eventsOfMatches.EventTeam + (string.IsNullOrWhiteSpace(mainPlayerFullName) ? "." : " leikari " + mainPlayerFullName + ".");
@@ -427,7 +427,7 @@ namespace DystirWeb.Controllers
 
         private bool EventsOfMatchesExists(int id)
         {
-            return _dystirDBContext.EventsOfMatches.Count(e => e.EventOfMatchId == id) > 0;
+            return _dystirDBContext.EventsOfMatches.Any(e => e.EventOfMatchId == id);
         }
 
         private void AddSecondEvent(string sendingText, EventsOfMatches eventsOfMatches)
@@ -475,7 +475,7 @@ namespace DystirWeb.Controllers
         private void HubSend(Matches match)
         {
             HubSender hubSender = new HubSender();
-            hubSender.SendMatch(_hubContext, match);
+            HubSender.SendMatch(_hubContext, match);
             HubSendMatchDetails(hubSender, match);
         }
 
@@ -484,7 +484,7 @@ namespace DystirWeb.Controllers
             MatchDetails matchDetails = _matchDetailsService.GetMatchDetails(match.MatchID, true);
             matchDetails.Match = match;
             _dystirService.UpdateDataAsync(matchDetails);
-            hubSender.SendMatchDetails(_hubContext, matchDetails);
+            HubSender.SendMatchDetails(_hubContext, matchDetails);
         }
     }
 }

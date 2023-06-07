@@ -1,5 +1,4 @@
 ﻿@inherits LayoutComponentBase
-@implements IDisposable
 
 @Body
 
@@ -16,16 +15,18 @@
 
     protected override async Task OnInitializedAsync()
     {
+        DystirWebClientService.OnFullDataLoaded += DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnDisconnected += HubConnection_OnDisconnected;
         _ = DystirWebClientService.StartUpAsync();
         await Task.CompletedTask;
     }
 
-    void IDisposable.Dispose()
+    private async void DystirWebClientService_FullDataLoaded()
     {
-        DystirWebClientService.OnConnected -= HubConnection_OnConnected;
-        DystirWebClientService.OnDisconnected -= HubConnection_OnDisconnected;
+        IsDystirHubConnected = false;
+        Refresh();
+        await Task.CompletedTask;
     }
 
     private async void HubConnection_OnConnected()

@@ -4,6 +4,7 @@ using DystirWeb.Shared;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
+using DystirWeb.Server.DystirDB;
 
 namespace DystirWeb.Controllers
 {
@@ -11,12 +12,12 @@ namespace DystirWeb.Controllers
     [ApiController]
     public class LoginController : Controller
     {
-        private readonly DystirService _dystirService;
+        private readonly DystirDBContext _dystirDBContext;
         private readonly AuthService _authService;
 
-        public LoginController(DystirService dystirService, AuthService authService)
+        public LoginController(DystirDBContext dystirDBContext, AuthService authService)
         {
-            _dystirService = dystirService;
+            _dystirDBContext = dystirDBContext;
             _authService = authService;
         }
 
@@ -26,7 +27,7 @@ namespace DystirWeb.Controllers
         {
             if (_authService.IsAuthorized(token ?? ""))
             {
-                Administrators administartor = _dystirService.DystirDBContext.Administrators.FirstOrDefault(x => x.AdministratorToken == token);
+                Administrators administartor = _dystirDBContext.Administrators.FirstOrDefault(x => x.AdministratorToken == token);
                 return Ok(administartor);
             }
             else

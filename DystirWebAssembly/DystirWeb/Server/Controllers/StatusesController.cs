@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
 using DystirWeb.Server.DystirDB;
+using DystirWeb.Services;
 using DystirWeb.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -107,7 +108,7 @@ namespace DystirWeb.Controllers
 
         private bool StatusesExists(int id)
         {
-            return _dystirDBContext.Statuses.Count(e => e.Id == id) > 0;
+            return _dystirDBContext.Statuses.Any(e => e.Id == id);
         }
     }
 }

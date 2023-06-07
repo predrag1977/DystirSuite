@@ -7,6 +7,8 @@ using DystirWeb.Shared;
 using DystirWeb.Server.DystirDB;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using DystirWeb.Server.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace DystirWeb.Services
 {
@@ -15,7 +17,6 @@ namespace DystirWeb.Services
         static readonly object lockUpdateAllMatches = new object();
         static readonly object lockUpdateAllMatchesDetails = new object();
         static readonly object lockUpdateAllPlayersOfMatches = new object();
-        private readonly DbContextOptions<DystirDBContext> _dbContextOptions;
         public DystirDBContext DystirDBContext;
         public ObservableCollection<Matches> AllMatches;
         public ObservableCollection<MatchDetails> AllMatchesDetails;
@@ -27,7 +28,7 @@ namespace DystirWeb.Services
 
         public DystirService(DbContextOptions<DystirDBContext> dbContextOptions)
         {
-            _dbContextOptions = dbContextOptions;
+            DystirDBContext = new DystirDBContext(dbContextOptions);
             _ = StartupAsync();
         }
 
@@ -46,7 +47,6 @@ namespace DystirWeb.Services
 
         public async Task LoadDataAsync()
         {
-            DystirDBContext = new DystirDBContext(_dbContextOptions);
             AllMatchesDetails = new ObservableCollection<MatchDetails>();
             var allMatchesTask = GetAllMatchesAsync();
             var allSponsorsTask = GetAllSponsorsAsync();

@@ -16,10 +16,12 @@ namespace DystirWeb.Controllers
     public class MatchTypesController : ControllerBase
     {
         private readonly DystirService _dystirService;
+        private readonly DystirDBContext _dystirDBContext;
 
-        public MatchTypesController(DystirService dystirService)
+        public MatchTypesController(DystirService dystirService ,DystirDBContext dystirDBContext)
         {
             _dystirService = dystirService;
+            _dystirDBContext = dystirDBContext;
         }
 
         // GET: api/MatchTypes
@@ -33,7 +35,7 @@ namespace DystirWeb.Controllers
         [HttpGet("{id}", Name = "GetMatchType")]
         public IActionResult GetMatchTypes(int id)
         {
-            MatchTypes matchTypes = _dystirService.DystirDBContext.MatchTypes.Find(id);
+            MatchTypes matchTypes = _dystirDBContext.MatchTypes.Find(id);
             if (matchTypes == null)
             {
                 return NotFound();
@@ -56,11 +58,11 @@ namespace DystirWeb.Controllers
                 return BadRequest();
             }
 
-            _dystirService.DystirDBContext.Entry(matchTypes).State = EntityState.Modified;
+            _dystirDBContext.Entry(matchTypes).State = EntityState.Modified;
 
             try
             {
-                _dystirService.DystirDBContext.SaveChanges();
+                _dystirDBContext.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -86,8 +88,8 @@ namespace DystirWeb.Controllers
                 return BadRequest(ModelState);
             }
 
-            _dystirService.DystirDBContext.MatchTypes.Add(matchTypes);
-            _dystirService.DystirDBContext.SaveChanges();
+            _dystirDBContext.MatchTypes.Add(matchTypes);
+            _dystirDBContext.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = matchTypes.Id }, matchTypes);
         }
@@ -96,21 +98,21 @@ namespace DystirWeb.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteMatchTypes(int id)
         {
-            MatchTypes matchTypes = _dystirService.DystirDBContext.MatchTypes.Find(id);
+            MatchTypes matchTypes = _dystirDBContext.MatchTypes.Find(id);
             if (matchTypes == null)
             {
                 return NotFound();
             }
 
-            _dystirService.DystirDBContext.MatchTypes.Remove(matchTypes);
-            _dystirService.DystirDBContext.SaveChanges();
+            _dystirDBContext.MatchTypes.Remove(matchTypes);
+            _dystirDBContext.SaveChanges();
 
             return Ok(matchTypes);
         }
 
         private bool MatchTypesExists(int id)
         {
-            return _dystirService.DystirDBContext.MatchTypes.Count(e => e.Id == id) > 0;
+            return _dystirDBContext.MatchTypes.Any(e => e.Id == id);
         }
     }
 }

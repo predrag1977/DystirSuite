@@ -15,10 +15,10 @@ namespace DystirXamarin.Services
 {
     public class DataLoaderService : IDataLoaderService<Match>
     {
-        private const string Url = "https://www.dystir.fo/api/";
+        //private const string Url = "https://www.dystir.fo/api/";
         //private const string Url = "http://localhost:51346/api/";
         //private const string Url = "http://localhost:64974/api/";
-        //private const string Url = "http://localhost:21166/api";
+        private const string Url = "https://localhost:44409/api/";
 
         private string _token;
 
@@ -28,7 +28,7 @@ namespace DystirXamarin.Services
         public async Task<Administrator> LoginAsync(string token)
         {
             Administrator administrator = null;
-            HttpClient client = new HttpClient();
+            HttpClient client = GetHttpClient();
             HttpResponseMessage response = await client.GetAsync(Url + "Login/" + token);
             if (response.IsSuccessStatusCode)
             {
@@ -43,13 +43,21 @@ namespace DystirXamarin.Services
             return await Task.FromResult(administrator);
         }
 
+        public static HttpClient GetHttpClient()
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback += (sender, cert, chain, sslPolicyErrors) => { return true; };
+            HttpClient client = new HttpClient(handler);
+            return client;
+        }
+
         //*****************************//
         //         GET METHODS         //
         //*****************************//
         public async Task<ObservableCollection<Match>> GetMatchesAsync(string typeOfMatches, MatchesViewModel viewModel)
         {
             ObservableCollection<Match> matches = new ObservableCollection<Match>();
-            HttpClient client = new HttpClient();
+            HttpClient client = GetHttpClient();
             List<Match> matchesList = new List<Match>();
             var responseMatches = await client.GetAsync(Url + "Matches?action=" + typeOfMatches);
             if (responseMatches.IsSuccessStatusCode)

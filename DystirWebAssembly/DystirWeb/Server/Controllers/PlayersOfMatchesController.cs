@@ -23,16 +23,17 @@ namespace DystirWeb.Controllers
         private readonly DystirService _dystirService;
         private readonly MatchDetailsService _matchDetailsService;
 
-        public PlayersOfMatchesController(IHubContext<DystirHub> hubContext,
+        public PlayersOfMatchesController (
+            DystirService dystirService,
             AuthService authService,
             DystirDBContext dystirDBContext,
-            DystirService dystirService,
-            MatchDetailsService matchDetailsService)
+            MatchDetailsService matchDetailsService,
+            IHubContext<DystirHub> hubContext)
         {
+            _dystirService = dystirService;
             _hubContext = hubContext;
             _authService = authService;
             _dystirDBContext = dystirDBContext;
-            _dystirService = dystirService;
             _matchDetailsService = matchDetailsService;
         }
 
@@ -243,10 +244,10 @@ namespace DystirWeb.Controllers
 
         private bool PlayersOfMatchesExists(int id)
         {
-            return _dystirDBContext.PlayersOfMatches.Count(e => e.PlayerOfMatchId == id) > 0;
+            return _dystirDBContext.PlayersOfMatches.Any(e => e.PlayerOfMatchId == id);
         }
 
-        private IEnumerable<PlayersOfMatches> SortedPlayersOfMatchList(IEnumerable<PlayersOfMatches> playersOfMatchList)
+        private static IEnumerable<PlayersOfMatches> SortedPlayersOfMatchList(IEnumerable<PlayersOfMatches> playersOfMatchList)
         {
             return playersOfMatchList?
                 .OrderBy(x => x.PlayingStatus == 3)
@@ -282,7 +283,7 @@ namespace DystirWeb.Controllers
         private void HubSend(Matches match)
         {
             HubSender hubSender = new HubSender();
-            hubSender.SendMatch(_hubContext, match);
+            HubSender.SendMatch(_hubContext, match);
             HubSendMatchDetails(hubSender, match);
         }
 
@@ -291,7 +292,7 @@ namespace DystirWeb.Controllers
             MatchDetails matchDetails = _matchDetailsService.GetMatchDetails(match.MatchID, true);
             matchDetails.Match = match;
             _dystirService.UpdateDataAsync(matchDetails);
-            hubSender.SendMatchDetails(_hubContext, matchDetails);
+            HubSender.SendMatchDetails(_hubContext, matchDetails);
         }
     }
 }

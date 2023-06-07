@@ -12,7 +12,7 @@ namespace DystirWeb.Controllers
     {
         private readonly StandingService _standingService;
 
-        public StandingsController(DystirDBContext dystirDBContext, StandingService standingService)
+        public StandingsController(StandingService standingService)
         {
             _standingService = standingService;
         }
