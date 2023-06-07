@@ -1,13 +1,16 @@
 ﻿using System.Linq;
+using DystirWeb.Server.DystirDB;
 
 namespace DystirWeb.Services
 {
     public class AuthService
     {
         private readonly DystirService _dystirService;
+        private readonly DystirDBContext _dystirDBContext;
 
         public AuthService(DystirService dystirService)
         {
+            _dystirDBContext = dystirService.DystirDBContext;
             _dystirService = dystirService;
         }
 
@@ -17,7 +20,7 @@ namespace DystirWeb.Services
             {
                 return false;
             }
-            return _dystirService.DystirDBContext.Administrators.Any(x => x.AdministratorToken == token);
+            return _dystirDBContext.Administrators.Any(x => x.AdministratorToken == token);
         }
 
         public bool IsAuthorizedRequestor(string name)

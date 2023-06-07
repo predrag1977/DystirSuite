@@ -107,6 +107,7 @@
         standing = LiveStandingService.GetStanding(SelectedStandingsCompetition);
         isLoading = false;
         Refresh();
+        await Task.CompletedTask;
         //await JSRuntime.InvokeVoidAsync("onPageResize", "");
     }
 }

@@ -69,12 +69,12 @@ namespace DystirWeb.Services
 
         public async Task LoadDataAsync()
         {
+            _ = StartDystirHubAsync();
             var loadAllMatchesTask = LoadAllMatchesAsync();
             var loadSponsorsTask = LoadSponsorsAsync();
             var loadAllCompetitionTask = LoadAllCompetitionAsync();
             await Task.WhenAll(loadAllMatchesTask, loadSponsorsTask, loadAllCompetitionTask);
             FullDataLoaded();
-            _ = StartDystirHubAsync();
         }
 
         public async Task LoadAllMatchesAsync()
@@ -165,7 +165,7 @@ namespace DystirWeb.Services
             return fullMatchDetails;
         }
 
-        public FullMatchDetailsModelView GetFullMatchDetails(MatchDetails matchDetails)
+        public static FullMatchDetailsModelView GetFullMatchDetails(MatchDetails matchDetails)
         {
             var fullMatchDetails = new FullMatchDetailsModelView();
             if (matchDetails != null)
@@ -193,7 +193,7 @@ namespace DystirWeb.Services
             return new List<Matches>();
         }
 
-        private List<SummaryEventOfMatch> GetSummary(MatchDetails matchDetails)
+        private static List<SummaryEventOfMatch> GetSummary(MatchDetails matchDetails)
         {
             List<SummaryEventOfMatch> listSummaryEvents = GetSummaryEventsList(matchDetails);
             if (matchDetails.Match?.StatusID < 12)
@@ -203,7 +203,7 @@ namespace DystirWeb.Services
             return listSummaryEvents;
         }
 
-        internal List<SummaryEventOfMatch> GetSummaryEventsList(MatchDetails matchDetails)
+        internal static List<SummaryEventOfMatch> GetSummaryEventsList(MatchDetails matchDetails)
         {
             List<SummaryEventOfMatch> summaryEventOfMatchesList = new List<SummaryEventOfMatch>();
             Matches selectedMatch = matchDetails.Match;
@@ -310,14 +310,14 @@ namespace DystirWeb.Services
             return summaryEventOfMatchesList.ToList();
         }
 
-        bool IsGoal(EventsOfMatches matchEvent)
+        static bool IsGoal(EventsOfMatches matchEvent)
         {
             return matchEvent.EventName == "GOAL"
                 || matchEvent.EventName == "OWNGOAL"
                 || matchEvent.EventName == "PENALTYSCORED";
         }
 
-        private List<SummaryEventOfMatch> GetCommentary(MatchDetails matchDetails)
+        private static List<SummaryEventOfMatch> GetCommentary(MatchDetails matchDetails)
         {
             List<SummaryEventOfMatch> summaryEventOfMatchesList = new List<SummaryEventOfMatch>();
             Matches selectedMatch = matchDetails.Match;
@@ -373,7 +373,7 @@ namespace DystirWeb.Services
             return summaryEventOfMatchesList;
         }
 
-        internal Statistic GetStatistics(List<EventsOfMatches> eventsDataList, Matches match)
+        internal static Statistic GetStatistics(List<EventsOfMatches> eventsDataList, Matches match)
         {
             Statistic statistic = new Statistic();
             foreach (EventsOfMatches matchEvent in eventsDataList)
@@ -432,7 +432,7 @@ namespace DystirWeb.Services
             return statistic;
         }
 
-        private void AddTeamStatistic(EventsOfMatches matchEvent, TeamStatistic teamStatistic)
+        private static void AddTeamStatistic(EventsOfMatches matchEvent, TeamStatistic teamStatistic)
         {
             switch (matchEvent?.EventName?.ToLower())
             {

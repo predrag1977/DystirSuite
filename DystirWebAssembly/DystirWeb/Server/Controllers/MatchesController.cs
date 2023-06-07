@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -24,16 +25,16 @@ namespace DystirWeb.Controllers
         private readonly MatchDetailsService _matchDetailsService;
         private DystirDBContext _dystirDBContext;
 
-        public MatchesController (IHubContext<DystirHub> hubContext,
-            AuthService authService,
-            DystirDBContext dystirDBContext,
+        public MatchesController (AuthService authService,
             DystirService dystirService,
-            MatchDetailsService matchDetailsService)
+            MatchDetailsService matchDetailsService,
+            DystirDBContext dystirDBContext,
+            IHubContext<DystirHub> hubContext)
         {
             _hubContext = hubContext;
             _authService = authService;
-            _dystirDBContext = dystirDBContext;
             _dystirService = dystirService;
+            _dystirDBContext = dystirDBContext;
             _matchDetailsService = matchDetailsService;
         }
 
@@ -41,14 +42,13 @@ namespace DystirWeb.Controllers
         [HttpGet]
         public async Task<IEnumerable<Matches>> GetMatches(string action)
         {
-            Debug.WriteLine("Start:" + DateTime.Now.ToString("hh:mm:ss:ff"));
-            IEnumerable<Matches> matches;
-            int year = DateTime.UtcNow.Year;
-            var fromDate = DateTime.UtcNow.Date.AddDays(-15);
-            var toDate = DateTime.UtcNow.Date.AddDays(15);
+            Debug.WriteLine(DateTime.Now.ToString("hh:mm:ss:ff") + " - Started");
+            IEnumerable<Matches> matches = new List<Matches>();
             switch (action?.ToLower())
             {
                 case "matches":
+                    var fromDate = DateTime.UtcNow.Date.AddDays(-15);
+                    var toDate = DateTime.UtcNow.Date.AddDays(15);
                     matches = _dystirService.AllMatches?.Where(x => x.Time > fromDate && x.Time < toDate && x.MatchActivation != 1 && x.MatchActivation != 2);
                     break;
                 case "results":
@@ -61,13 +61,10 @@ namespace DystirWeb.Controllers
                     matches = _dystirService.AllMatches?.Where(y => y.MatchActivation == 1);
                     break;
                 default:
-                    fromDate = new DateTime(year, 1, 1);
-                    matches = _dystirService.AllMatches?.Where(y => y.Time > fromDate
-                            && y.MatchActivation != 1
-                            && y.MatchActivation != 2);
+                    matches = _dystirService.AllMatches;
                     break;
             }
-            Debug.WriteLine("Finished:" + DateTime.Now.ToString("hh:mm:ss:ff"));
+            Debug.WriteLine(DateTime.Now.ToString("hh:mm:ss:ff") + " - Finished");
             return await Task.FromResult(matches);
         }
 
@@ -185,13 +182,13 @@ namespace DystirWeb.Controllers
 
         private bool MatchesExists(int id)
         {
-            return _dystirDBContext.Matches.Count(e => e.MatchID == id) > 0;
+            return _dystirDBContext.Matches.Any(e => e.MatchID == id);
         }
 
         private void HubSend(Matches match)
         {
             HubSender hubSender = new HubSender();
-            hubSender.SendMatch(_hubContext, match);
+            HubSender.SendMatch(_hubContext, match);
             HubSendMatchDetails(hubSender, match);
         }
 
@@ -200,7 +197,7 @@ namespace DystirWeb.Controllers
             MatchDetails matchDetails = _matchDetailsService.GetMatchDetails(match.MatchID, true);
             matchDetails.Match = match;
             _dystirService.UpdateDataAsync(matchDetails);
-            hubSender.SendMatchDetails(_hubContext, matchDetails);
+            HubSender.SendMatchDetails(_hubContext, matchDetails);
         }
     }
 }

@@ -106,7 +106,7 @@ namespace DystirWeb.Controllers
 
         private bool CategoriesExists(int id)
         {
-            return _dystirDBContext.Categories.Count(e => e.Id == id) > 0;
+            return _dystirDBContext.Categories.Any(e => e.Id == id);
         }
     }
 }

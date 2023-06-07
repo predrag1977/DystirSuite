@@ -132,7 +132,7 @@ namespace DystirWeb.Controllers
 
         private bool PlayersExists(int id)
         {
-            return _dystirDBContext.Players.Count(e => e.PlayerId == id) > 0;
+            return _dystirDBContext.Players.Any(e => e.PlayerId == id);
         }
     }
 }

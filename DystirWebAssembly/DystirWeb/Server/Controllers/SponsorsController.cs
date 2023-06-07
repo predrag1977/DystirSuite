@@ -14,10 +14,12 @@ namespace DystirWeb.Controllers
     [ApiController]
     public class SponsorsController : ControllerBase
     {
+        private readonly DystirDBContext _dystirDBContext;
         private readonly DystirService _dystirService;
 
-        public SponsorsController(DystirService dystirService)
+        public SponsorsController(DystirService dystirService, DystirDBContext dystirDBContext)
         {
+            _dystirDBContext = dystirDBContext;
             _dystirService = dystirService;
         }
 
@@ -32,7 +34,7 @@ namespace DystirWeb.Controllers
         [HttpGet("{id}", Name = "GetSponsor")]
         public IActionResult GetSponsors(int id)
         {
-            Sponsors sponsors = _dystirService.DystirDBContext.Sponsors.Find(id);
+            Sponsors sponsors = _dystirDBContext.Sponsors.Find(id);
             if (sponsors == null)
             {
                 return NotFound();
@@ -55,11 +57,11 @@ namespace DystirWeb.Controllers
                 return BadRequest();
             }
 
-            _dystirService.DystirDBContext.Entry(sponsors).State = EntityState.Modified;
+            _dystirDBContext.Entry(sponsors).State = EntityState.Modified;
 
             try
             {
-                _dystirService.DystirDBContext.SaveChanges();
+                _dystirDBContext.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -85,8 +87,8 @@ namespace DystirWeb.Controllers
                 return BadRequest(ModelState);
             }
 
-            _dystirService.DystirDBContext.Sponsors.Add(sponsors);
-            _dystirService.DystirDBContext.SaveChanges();
+            _dystirDBContext.Sponsors.Add(sponsors);
+            _dystirDBContext.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = sponsors.Id }, sponsors);
         }
@@ -95,21 +97,21 @@ namespace DystirWeb.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteSponsors(int id)
         {
-            Sponsors sponsors = _dystirService.DystirDBContext.Sponsors.Find(id);
+            Sponsors sponsors = _dystirDBContext.Sponsors.Find(id);
             if (sponsors == null)
             {
                 return NotFound();
             }
 
-            _dystirService.DystirDBContext.Sponsors.Remove(sponsors);
-            _dystirService.DystirDBContext.SaveChanges();
+            _dystirDBContext.Sponsors.Remove(sponsors);
+            _dystirDBContext.SaveChanges();
 
             return Ok(sponsors);
         }
 
         private bool SponsorsExists(int id)
         {
-            return _dystirService.DystirDBContext.Sponsors.Count(e => e.Id == id) > 0;
+            return _dystirDBContext.Sponsors.Any(e => e.Id == id);
         }
     }
 }

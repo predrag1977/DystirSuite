@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DystirWeb.Server.DystirDB;
 using DystirWeb.Services;
 using DystirWeb.Shared;
 using Microsoft.AspNetCore.Http;
@@ -14,10 +15,12 @@ namespace DystirWeb.Controllers
     public class TeamsController : ControllerBase
     {
         private readonly DystirService _dystirService;
+        private readonly DystirDBContext _dystirDBContext;
 
-        public TeamsController(DystirService dystirService)
+        public TeamsController(DystirService dystirService, DystirDBContext dystirDBContext)
         {
             _dystirService = dystirService;
+            _dystirDBContext = dystirDBContext;
         }
 
         // GET: api/Teams
@@ -54,11 +57,11 @@ namespace DystirWeb.Controllers
                 return BadRequest();
             }
 
-            _dystirService.DystirDBContext.Entry(teams).State = EntityState.Modified;
+            _dystirDBContext.Entry(teams).State = EntityState.Modified;
 
             try
             {
-                _dystirService.DystirDBContext.SaveChanges();
+                _dystirDBContext.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -84,8 +87,8 @@ namespace DystirWeb.Controllers
                 return BadRequest(ModelState);
             }
 
-            _dystirService.DystirDBContext.Teams.Add(teams);
-            _dystirService.DystirDBContext.SaveChanges();
+            _dystirDBContext.Teams.Add(teams);
+            _dystirDBContext.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = teams.TeamId }, teams);
         }
@@ -100,15 +103,15 @@ namespace DystirWeb.Controllers
                 return NotFound();
             }
 
-            _dystirService.DystirDBContext.Teams.Remove(teams);
-            _dystirService.DystirDBContext.SaveChanges();
+            _dystirDBContext.Teams.Remove(teams);
+            _dystirDBContext.SaveChanges();
 
             return Ok(teams);
         }
 
         private bool TeamsExists(int id)
         {
-            return _dystirService.AllTeams.Count(e => e.TeamId == id) > 0;
+            return _dystirService.AllTeams.Any(e => e.TeamId == id);
         }
     }
 }
