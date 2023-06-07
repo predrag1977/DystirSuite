@@ -44,10 +44,10 @@ body {
     height: calc(100vh - 100px);
     margin: auto 0;
     font-size: 1rem;
-    padding: 0 5px;
+    padding: 0;
     width: 100%;
-    border: 5px solid #fceeec;
-    border-top: 1px solid #f04e37;
+    border: 0px solid #fceeec;
+    border-top: 0px solid #f04e37;
 }
 
 #main_container_vertical_list_standings {
@@ -68,15 +68,15 @@ body {
 }
 
 #competitions_selection {
-    background-color: #f04e37;
+    background-color: white;
     border-top: 0px solid lightgray;
-    border-bottom: 0px solid lightgray !important;
+    border-bottom: 7px solid #fceeec !important;
     margin: 0;
-    height: 50px;
+    height: 60px;
 }
 
 #horizontal_menu_wrapper {
-    height: 50px;
+    height: 60px;
 }
 
 #horizontal_menu_bottom {
@@ -154,7 +154,7 @@ body {
 
 .match_item_same_day_share {
     padding: 5px;
-    border-radius: 3px;
+    border-radius: 0px;
     margin: 0;
     font-size: 13px !important;
     display: inline-block;
@@ -252,12 +252,12 @@ body {
 }
 
 .tab {
-    color: lightgray;
+    color: #999999;
     font-weight: 700;
 }
 
 .selected_tab {
-    color: white;
+    color: black;
 }
 
 .big_chance {
@@ -308,7 +308,7 @@ body {
 
 .matches_and_competition_selection {
     height: auto;
-    background-color: #fceeec;
+    background-color: #fff;
 }
 
 #main_container {
@@ -329,7 +329,8 @@ body {
     float: left;
     width: 100%;
     text-align: center;
-    background-color: #f04e37;
+    background-color: white;
+    border-bottom: 5px solid #fceeec !important;
 }
 
     #horizontal_menu_standings div {
@@ -337,5 +338,13 @@ body {
     }
 
 #horizontal_menu_standings {
-    height: 50px;
+    height: 60px;
+}
+
+#match_details_container {
+    padding: 0;
+}
+
+#match-details_static_part .tab {
+    margin: 20px 8px 0 8px;
 }
