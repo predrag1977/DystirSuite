@@ -7,7 +7,7 @@
              x:DataType="viewModels:MatchDetailViewModel"
              x:Class="Dystir.Views.CommentaryView">
 
-    <ScrollView BackgroundColor="Black">
+    <!--<ScrollView BackgroundColor="Black">
         <StackLayout BindableLayout.ItemsSource="{Binding MatchDetails.Commentary}"
                      Orientation="Vertical"
                      HorizontalOptions="FillAndExpand">
@@ -24,7 +24,24 @@
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
         </StackLayout>
-    </ScrollView>
+    </ScrollView>-->
+
+    <ListView SeparatorVisibility="None"
+                  HasUnevenRows="True"
+                  CachingStrategy="RecycleElement"
+                  SelectionMode="None"
+                  BackgroundColor="Black"
+                  VerticalOptions="FillAndExpand"
+                  Footer=""
+                  ItemsSource="{Binding MatchDetails.Commentary}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <views:CommentaryEventView />
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     
 </ContentView>
 

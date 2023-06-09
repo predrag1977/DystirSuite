@@ -7,22 +7,15 @@
              x:DataType="viewModels:MatchDetailViewModel"
              x:Class="Dystir.Views.LineupsView">
 
-    <ScrollView BackgroundColor="Black">
+    <!--<ScrollView BackgroundColor="Black">
         <StackLayout BindableLayout.ItemsSource="{Binding MatchDetails.Lineups}"
                      Orientation="Vertical"
                      HorizontalOptions="FillAndExpand">
                 <BindableLayout.ItemTemplate>
                     <DataTemplate x:DataType="models:PlayersInLineups">
                         
-                            <Label Grid.Row="0"
-                                   Text="{Binding HomePlayer.FirstName}"
-                                   Margin="0,2"
-                                   HorizontalTextAlignment="Start"
-                                   HorizontalOptions="StartAndExpand"
-                                   LineBreakMode="WordWrap"
-                                   FontSize="13"
-                                   MaxLines="2"/>
-                        <!--<Grid ColumnDefinitions="*,*"
+                            
+                        <Grid ColumnDefinitions="*,*"
                               RowDefinitions="Auto,Auto">
                             <Grid Grid.ColumnSpan="2"
                                   IsVisible="{Binding IsFirstSub}">
@@ -53,11 +46,58 @@
                                                           NumberOfTapsRequired="1" />
                                 </Grid.GestureRecognizers>
                             </Grid>
-                        </Grid>-->
+                        </Grid>
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
         </StackLayout>
-    </ScrollView>
-    
+    </ScrollView>-->
+
+    <ListView SeparatorVisibility="None"
+            HasUnevenRows="True"
+            CachingStrategy="RecycleElement"
+            SelectionMode="None"
+            BackgroundColor="Black"
+            VerticalOptions="FillAndExpand"
+            Footer=""
+            ItemsSource="{Binding MatchDetails.Lineups}">
+        <ListView.ItemTemplate>
+            <DataTemplate x:DataType="models:PlayersInLineups">
+                <ViewCell>
+                <Grid ColumnDefinitions="*,*"
+                            RowDefinitions="Auto,Auto">
+                        <Grid Grid.ColumnSpan="2"
+                                IsVisible="{Binding IsFirstSub}">
+                            <StackLayout HeightRequest="1"
+                                            Margin="0,8"
+                                            VerticalOptions="Center"
+                                            HorizontalOptions="FillAndExpand"
+                                            BackgroundColor="Khaki" />
+                        </Grid>
+                        <Grid Grid.Column="0"
+                                Grid.Row="1"
+                                BindingContext="{Binding}">
+                            <views:PlayerView BindingContext="{Binding HomePlayer}" />
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer CommandParameter="{Binding HomePlayer}"
+                                                        Tapped="TapGestureRecognizer_Tapped"
+                                                        NumberOfTapsRequired="1" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+
+                        <Grid Grid.Column="1"
+                                Grid.Row="1"
+                                BindingContext="{Binding}">
+                            <views:PlayerView BindingContext="{Binding AwayPlayer}" />
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer CommandParameter="{Binding AwayPlayer}"
+                                                        Tapped="TapGestureRecognizer_Tapped"
+                                                        NumberOfTapsRequired="1" />
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
 </ContentView>
 

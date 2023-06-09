@@ -102,55 +102,46 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <ScrollView Grid.Row="3">
-            <StackLayout BindableLayout.ItemsSource="{Binding MatchesGroupList}">
-                <BindableLayout.EmptyView>
-                    <Grid VerticalOptions="CenterAndExpand"
-                          HorizontalOptions="CenterAndExpand">
-                        <Label Text="{x:Static localization:Resources.NoMatches}"
-                                VerticalOptions="Center"
-                                HorizontalOptions="Center" />
-                        <StackLayout IsVisible="{Binding IsLoading}"
-                                        HeightRequest="100"
-                                        BackgroundColor="Black"
-                                        HorizontalOptions="FillAndExpand"/>
-                    </Grid>
-                </BindableLayout.EmptyView>
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate x:DataType="models:MatchGroup">
-                        <StackLayout >
-                            <Grid BackgroundColor="Black"
-                                  Padding="20,15,10,4"
-                                  VerticalOptions="FillAndExpand"
-                                  HorizontalOptions="FillAndExpand" >
-                                <Label Text="{Binding HeaderTitle}"
-                                       FontSize="15"
-                                       TextColor="White"
-                                       FontFamily="NunitoSemiBold"
-                                       VerticalOptions="Center"
-                                       HorizontalOptions="FillAndExpand"
-                                       HorizontalTextAlignment="Start" />
-                            </Grid>
-                            <StackLayout BindableLayout.ItemsSource="{Binding Matches}"
-                                         Margin="5" >
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate>
-                                        <views:MatchView x:DataType="models:Match" >
-                                            <views:MatchView.GestureRecognizers>
-                                                <TapGestureRecognizer NumberOfTapsRequired="1"
-                                                                      Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:DystirViewModel}}, Path=MatchTapped}"		
-                                                                      CommandParameter="{Binding}">
-                                                </TapGestureRecognizer>
-                                            </views:MatchView.GestureRecognizers>
-                                        </views:MatchView>
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
-                            </StackLayout>
-                        </StackLayout>
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
-            </StackLayout>
-        </ScrollView>
+        <ListView Grid.Row="3"
+                  SeparatorVisibility="None" HasUnevenRows="True"
+                  CachingStrategy="RecycleElement"
+                  SelectionMode="None"
+                  BackgroundColor="Black"
+                  IsGroupingEnabled="True"
+                  VerticalOptions="FillAndExpand"
+                  Footer=""
+                  ItemsSource="{Binding MatchesGroupList}">
+            <ListView.GroupHeaderTemplate>
+                <DataTemplate x:DataType="models:MatchGroup">
+                    <ViewCell>
+                        <Grid BackgroundColor="Black" Padding="10,10,5,10"
+                              VerticalOptions="FillAndExpand"
+                              HorizontalOptions="FillAndExpand" >
+                            <Label Text="{Binding HeaderTitle}" FontSize="15"
+                                   TextColor="White"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="FillAndExpand"
+                                   HorizontalTextAlignment="Start" />
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.GroupHeaderTemplate>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <views:MatchView x:DataType="models:Match" >
+                            <views:MatchView.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:DystirViewModel}}, Path=MatchTapped}"		
+                                                        CommandParameter="{Binding}">
+                                </TapGestureRecognizer>
+                            </views:MatchView.GestureRecognizers>
+                        </views:MatchView>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
         <Grid Grid.Row="3"
               IsVisible="{Binding IsLoading}"

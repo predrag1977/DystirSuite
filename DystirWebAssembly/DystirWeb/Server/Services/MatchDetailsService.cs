@@ -11,10 +11,10 @@ namespace DystirWeb.Services
         private readonly DystirDBContext _dystirDBContext;
         static readonly object lockGetMatchDetails = new object();
 
-        public MatchDetailsService(DystirService dystirService)
+        public MatchDetailsService(DystirService dystirService, DystirDBContext dystirDBContext)
         {
             _dystirService = dystirService;
-            _dystirDBContext = dystirService.DystirDBContext;
+            _dystirDBContext = dystirDBContext;
         }
 
         public MatchDetails GetMatchDetails(int matchID, bool isDatabaseUpdated)
