@@ -90,7 +90,7 @@ export class FetchData extends Component {
   }
 
   async populateMatchData() {
-    const response = await fetch('api/matches?action=test');
+    const response = await fetch('api/matches');
     const data = await response.json();
       this.setState({ matches: data, loading: false });
   }

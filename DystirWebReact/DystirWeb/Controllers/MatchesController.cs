@@ -39,8 +39,9 @@ namespace DystirWeb.Controllers
 
         // GET: api/Matches
         [HttpGet]
-        public async Task<IEnumerable<Matches>> GetMatches(string action)
+        public async Task<IEnumerable<Matches>> GetMatches()
         {
+            string action = "";
             Debug.WriteLine("Start:" + DateTime.Now.ToString("hh:mm:ss:ff"));
             IEnumerable<Matches> matches;
             int year = DateTime.UtcNow.Year;

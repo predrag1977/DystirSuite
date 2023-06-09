@@ -21,14 +21,16 @@ namespace Dystir.Services
         //**************************//
         public DataLoadService()
         {
-            httpClient = new HttpClient();
-            httpClient.Timeout = new TimeSpan(0, 0, 10);
+            httpClient = new HttpClient
+            {
+                Timeout = new TimeSpan(0, 0, 10)
+            };
         }
 
         public async Task<ObservableCollection<Match>> GetMatchesAsync()
         {
             ObservableCollection<Match> matches = new ObservableCollection<Match>();
-            var responseMatches = await httpClient.GetAsync(Url + "Matches");
+            var responseMatches = await httpClient.GetAsync(Url + "matches");
             if (responseMatches.IsSuccessStatusCode)
             {
                 var resultMatches = await responseMatches.Content.ReadAsStringAsync();
@@ -58,7 +60,7 @@ namespace Dystir.Services
 
         public async Task<ObservableCollection<Standing>> GetStandingsAsync()
         {
-            ObservableCollection<Models.Standing> standings = new ObservableCollection<Standing>();
+            ObservableCollection<Standing> standings = new ObservableCollection<Standing>();
             List<Standing> standingsList = new List<Standing>();
             var responseStanding = await httpClient.GetAsync(Url + "Standings");
             if (responseStanding.IsSuccessStatusCode)

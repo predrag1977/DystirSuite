@@ -39,16 +39,18 @@ namespace DystirWeb.Controllers
         }
 
         // GET: api/Matches
+        // GET: api/Matches
         [HttpGet]
         public async Task<IEnumerable<Matches>> GetMatches(string action)
         {
-            Debug.WriteLine(DateTime.Now.ToString("hh:mm:ss:ff") + " - Started");
-            IEnumerable<Matches> matches = new List<Matches>();
+            Debug.WriteLine("Start:" + DateTime.Now.ToString("hh:mm:ss:ff"));
+            IEnumerable<Matches> matches;
+            int year = DateTime.UtcNow.Year;
+            var fromDate = DateTime.UtcNow.Date.AddDays(-15);
+            var toDate = DateTime.UtcNow.Date.AddDays(15);
             switch (action?.ToLower())
             {
                 case "matches":
-                    var fromDate = DateTime.UtcNow.Date.AddDays(-15);
-                    var toDate = DateTime.UtcNow.Date.AddDays(15);
                     matches = _dystirService.AllMatches?.Where(x => x.Time > fromDate && x.Time < toDate && x.MatchActivation != 1 && x.MatchActivation != 2);
                     break;
                 case "results":
@@ -61,10 +63,13 @@ namespace DystirWeb.Controllers
                     matches = _dystirService.AllMatches?.Where(y => y.MatchActivation == 1);
                     break;
                 default:
-                    matches = _dystirService.AllMatches;
+                    fromDate = new DateTime(year, 1, 1);
+                    matches = _dystirService.AllMatches?.Where(y => y.Time > fromDate
+                            && y.MatchActivation != 1
+                            && y.MatchActivation != 2);
                     break;
             }
-            Debug.WriteLine(DateTime.Now.ToString("hh:mm:ss:ff") + " - Finished");
+            Debug.WriteLine("Finished:" + DateTime.Now.ToString("hh:mm:ss:ff"));
             return await Task.FromResult(matches);
         }
 
