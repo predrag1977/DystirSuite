@@ -33,9 +33,8 @@ namespace DystirWeb.Server
             services.AddSingleton<DystirService>();
             services.AddSingleton<StandingService>();
             services.AddSingleton<StatisticCompetitionsService>();
-            services.AddSingleton<MatchDetailsService>();
-            services.AddSingleton<AuthService>();
-            services.AddScoped<MatchesController>();
+            services.AddScoped<MatchDetailsService>();
+            services.AddScoped<AuthService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

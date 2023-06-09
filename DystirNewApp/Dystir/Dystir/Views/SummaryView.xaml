@@ -8,7 +8,7 @@
              x:DataType="viewModels:MatchDetailViewModel"
              x:Class="Dystir.Views.SummaryView">
 
-    <ScrollView BackgroundColor="Black">
+    <!--<ScrollView BackgroundColor="Black">
         <StackLayout BindableLayout.ItemsSource="{Binding MatchDetails.Summary}"
                      Orientation="Vertical"
                      HorizontalOptions="FillAndExpand">
@@ -40,10 +40,27 @@
                 
                         </StackLayout>
                         
-                        <!--<views:SummaryEventView BindingContext="{Binding}" />-->
+                        <views:SummaryEventView BindingContext="{Binding}" />
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
         </StackLayout>
-    </ScrollView>
+    </ScrollView>-->
+
+    <ListView SeparatorVisibility="None"
+                  HasUnevenRows="True"
+                  CachingStrategy="RecycleElement"
+                  SelectionMode="None"
+                  BackgroundColor="Black"
+                  VerticalOptions="FillAndExpand"
+                  Footer=""
+                  ItemsSource="{Binding MatchDetails.Summary}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <views:SummaryEventView />
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 </ContentView>
 
