@@ -10,7 +10,6 @@ using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 using Dystir.Views;
 using Dystir.Pages;
-using System.Collections.Generic;
 
 namespace Dystir.ViewModels
 {
@@ -20,7 +19,7 @@ namespace Dystir.ViewModels
         //      PROPERTIES      //
         //**********************//
         public Command<DayOfMatch> DayTapped { get; }
-        ObservableCollection<MatchGroup> matchesGroupList;
+        ObservableCollection<MatchGroup> matchesGroupList = new ObservableCollection<MatchGroup>();
         public ObservableCollection<MatchGroup> MatchesGroupList
         {
             get { return matchesGroupList; }
@@ -41,12 +40,8 @@ namespace Dystir.ViewModels
         public ObservableCollection<DayOfMatch> MatchesDays
         {
             get { return matchesDays; }
-            set { matchesDays = value; OnPropertyChanged();}
+            set { matchesDays = value; OnPropertyChanged(); }
         }
-
-        public IEnumerable<IGrouping<string, Match>> test { get; private set; }
-
-        public ObservableCollection<Match> Matches = new ObservableCollection<Match>();
 
         //**********************//
         //      CONSTRUCTOR     //
@@ -66,13 +61,6 @@ namespace Dystir.ViewModels
 
             IsLoading = true;
             _ = SetMatchesDays();
-            Matches = new ObservableCollection<Match>(DystirService.AllMatches?
-                .Where(x => x.Match.Time?.Date > MatchesDaySelected.Date.AddDays(-12)
-                && x.Match.Time?.Date < MatchesDaySelected.Date.AddDays(12))
-                .Select(x => x.Match)
-                .OrderBy(x => x.MatchTypeID)
-                .ThenBy(x => x.Time)
-                .ThenBy(x => x.MatchID));
         }
 
         //**********************//
@@ -81,13 +69,6 @@ namespace Dystir.ViewModels
         public async Task LoadDataAsync()
         {
             await Task.Delay(100);
-            Matches = new ObservableCollection<Match>(DystirService.AllMatches?
-                .Where(x => x.Match.Time?.Date > MatchesDaySelected.Date.AddDays(-12)
-                && x.Match.Time?.Date < MatchesDaySelected.Date.AddDays(12))
-                .Select(x => x.Match)
-                .OrderBy(x => x.MatchTypeID)
-                .ThenBy(x => x.Time)
-                .ThenBy(x => x.MatchID));
             await SetMatches();
             await SetSponsors();
             IsLoading = false;
@@ -129,12 +110,13 @@ namespace Dystir.ViewModels
         {
             _ = SetMatchesDays();
             IsLoading = true;
-            var matches = Matches
-                .Where(x => IsDaysRange(x.Time?.Date, MatchesDaySelected.Date))
+            var matches = DystirService.AllMatches?
+                .Where(x => IsDaysRange(x.Match.Time?.Date, MatchesDaySelected.Date))
+                .Select(x => x.Match)
                 .OrderBy(x => x.MatchTypeID)
                 .ThenBy(x => x.Time)
                 .ThenBy(x => x.MatchID);
-            test = matches.GroupBy(x => x.MatchTypeName);
+            MatchesGroupList = new ObservableCollection<MatchGroup>(matches.GroupBy(x => x.MatchTypeName).Select(group => new MatchGroup(group.Key, new ObservableCollection<Match>(group))));
             IsLoading = false;
             await Task.CompletedTask;
         }
@@ -166,7 +148,7 @@ namespace Dystir.ViewModels
             {
                 return dateNow == matchDate;
             }
-            else if(Math.Abs((dateNow - selectedDate).TotalDays) == 1)
+            else if (Math.Abs((dateNow - selectedDate).TotalDays) == 1)
             {
                 return matchDate == selectedDate;
             }
