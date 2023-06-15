@@ -66,5 +66,10 @@ namespace Dystir.Pages
                 await matchDetailViewModel.DystirService.LoadDataAsync(true);
             }
         }
+
+        async void News_Tapped(System.Object sender, System.EventArgs e)
+        {
+            await Shell.Current.GoToAsync($"{nameof(NewsPage)}");
+        }
     }
 }

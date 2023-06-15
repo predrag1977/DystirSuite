@@ -55,10 +55,12 @@ namespace Dystir.Models
         //**********************//
         public async Task SetFullData()
         {
-            var task1 = LoadSummaryAsync();
-            var task2 = LoadLineupsAsync();
-
-            await Task.WhenAll(task1, task2, LoadCommentaryAsync());
+            await Task.WhenAll(
+                LoadSummaryAsync(),
+                LoadLineupsAsync(),
+                LoadCommentaryAsync(),
+                LoadMatchStatisticsAsync(),
+                LoadLiveStandingAsync());
         }
 
         //**********************//

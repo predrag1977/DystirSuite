@@ -13,6 +13,9 @@ namespace DystirXamarin
 {
     public partial class App : Application
     {
+        public event Action OnResumeApplication;
+        public void ResumeApplication() => OnResumeApplication?.Invoke();
+
         public App()
         {
             InitializeComponent();
@@ -47,7 +50,7 @@ namespace DystirXamarin
 
         protected override void OnResume()
         {
-            // Handle when your app resumes
+            OnResumeApplication();
         }
     }
 }

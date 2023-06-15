@@ -24,7 +24,8 @@ namespace Dystir.ViewModels
         public DystirService DystirService;
         public LiveStandingService LiveStandingService;
         public Command<Match> MatchTapped { get; }
-        
+        public Command NewsTapped { get; }
+
         ObservableCollection<Sponsor> sponsors = new ObservableCollection<Sponsor>();
         public ObservableCollection<Sponsor> Sponsors
         {
@@ -73,6 +74,7 @@ namespace Dystir.ViewModels
         public DystirViewModel()
         {
             MatchTapped = new Command<Match>(OnMatchSelected);
+            NewsTapped = new Command(OnNewsTapped);
         }
 
         //**************************//
@@ -110,6 +112,11 @@ namespace Dystir.ViewModels
             //// This will push the MatchDetailPage onto the navigation stack
             ////await Shell.Current.GoToAsync($"{nameof(MatchDetailPage)}?MatchID={match.MatchID}");
             //await Shell.Current.Navigation.PushAsync(matchDetailPage);
+        }
+
+        async void OnNewsTapped()
+        {
+            await Shell.Current.GoToAsync($"{nameof(NewsPage)}");
         }
 
         //**************************//

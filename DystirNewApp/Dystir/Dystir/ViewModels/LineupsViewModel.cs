@@ -22,7 +22,6 @@ namespace Dystir.ViewModels
 
         private async Task LoadLineupsAsync(MatchDetails matchDetails)
         {
-            await Task.Delay(2000);
             if (Lineups == null)
             {
                 var starterPlayers = matchDetails.PlayersOfMatch.Where(x => x.PlayingStatus == 1)

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ffsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:fftransformation="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    ios:Page.UseSafeArea="true"
+    BackgroundColor="Black"
+    x:Class="Dystir.Pages.NewsPage">
+    <ContentPage.Content>
+        <Grid RowDefinitions="50,*">
+            <Frame Grid.Row="0"
+                   BackgroundColor="#181818"
+                   CornerRadius="10"
+                   Padding="5">
+                <Grid ColumnDefinitions="50,*,50">
+
+                    <ffsvg:SvgCachedImage Grid.Column="0"
+                                          WidthRequest="30"
+                                          HeightRequest="30"
+                                          VerticalOptions="Center"
+                                          HorizontalOptions="Center"
+                                          Source="resource://Dystir.Resources.Images.back_button.svg">
+                            <ffsvg:SvgCachedImage.Transformations>
+                                <fftransformation:TintTransformation HexColor="#A9A9A9"
+                                                                     EnableSolidColor="true"/>
+                            </ffsvg:SvgCachedImage.Transformations>
+                            <ffsvg:SvgCachedImage.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="BackButton_Clicked" />
+                            </ffsvg:SvgCachedImage.GestureRecognizers>
+                    </ffsvg:SvgCachedImage>
+
+                    <Label Grid.Column="1"
+                            Text="News"
+                            FontAttributes="Bold"
+                            FontFamily="NunitoSemiBold"
+                            HorizontalOptions="CenterAndExpand"
+                            FontSize="16" />
+
+                    <!--<ffsvg:SvgCachedImage Grid.Column="2"
+                                          WidthRequest="25"
+                                          HeightRequest="25"
+                                          VerticalOptions="Center"
+                                          HorizontalOptions="Center"
+                                          Source="resource://Dystir.Resources.Images.refresh_button.svg">
+                            <ffsvg:SvgCachedImage.Transformations>
+                                <fftransformation:TintTransformation HexColor="#A9A9A9"
+                                                                     EnableSolidColor="true"/>
+                            </ffsvg:SvgCachedImage.Transformations>
+                            <ffsvg:SvgCachedImage.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="RefreshButton_Clicked" />
+                            </ffsvg:SvgCachedImage.GestureRecognizers>
+                    </ffsvg:SvgCachedImage>-->
+                </Grid>
+            </Frame>
+            <StackLayout Grid.Row="1" BackgroundColor="Black">
+                <WebView VerticalOptions="FillAndExpand"
+                         HorizontalOptions="FillAndExpand"
+                         Source="https://roysni.fo/yvir-1000-askodarar-verda-til-u21-landsdystin" />
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
+

@@ -26,7 +26,6 @@ namespace Dystir.ViewModels
         public int MatchID { get; internal set; }
         public Command<MatchDetailsTab> MatchDetailsTabTapped { get; }
 
-        //private readonly BackgroundWorker backgroundWorker;
         MatchDetails matchDetails;
         public MatchDetails MatchDetails
         {
@@ -105,10 +104,6 @@ namespace Dystir.ViewModels
             timeService.StartSponsorsTime();
 
             MatchDetailsTabTapped = new Command<MatchDetailsTab>(OnMatchDetailsTabTapped);
-
-            //backgroundWorker = new BackgroundWorker();
-            //backgroundWorker.DoWork += DoWork;
-            
         }
 
         //**********************//
@@ -202,29 +197,6 @@ namespace Dystir.ViewModels
             await Task.CompletedTask;
         }
 
-        public async Task LoadMatchDetailsData()
-        {
-            //await Task.WhenAll(
-            //    LoadSummaryAsync(),
-            //    LoadLineupsAsync(),
-            //    LoadCommentaryAsync(),
-            //    LoadMatchStatisticsAsync(),
-            //    LoadLiveStandingAsync());
-        }
-
-        //private void DoWork(object sender, DoWorkEventArgs e)
-        //{
-        //    Application.Current.Dispatcher.BeginInvokeOnMainThread(new Action(async delegate
-        //    {
-        //        await Task.WhenAll(
-        //            LoadSummaryAsync(),
-        //            LoadLineupsAsync(),
-        //            LoadCommentaryAsync(),
-        //            LoadMatchStatisticsAsync(),
-        //            LoadLiveStandingAsync());
-        //    }));
-        //}
-
         private static ObservableCollection<PlayerOfMatch> GetLineups(MatchDetails matchDetails, string Team, int playingStatus)
         {
             var lineUps = matchDetails.PlayersOfMatch.Where(x => x.TeamName == Team && x.PlayingStatus == playingStatus).OrderBy(x => x.Number);
@@ -302,7 +274,8 @@ namespace Dystir.ViewModels
             {
                 SelectedMatch = matchDetails.Match;
                 MatchDetails = matchDetails;
-                _ = LoadMatchDetailsData();
+                await MatchDetails.SetFullData();
+                await PopulateMatchDetailsTabs();
             }
             await SetMatchesBySelectedDate();
         }

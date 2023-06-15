@@ -13,7 +13,7 @@
              BackgroundColor="Black"
              x:DataType="viewmodels:MatchDetailViewModel">
 
-    <Grid RowDefinitions="50,Auto,Auto,Auto,50,*,Auto" >
+    <Grid RowDefinitions="50,Auto,Auto,Auto,Auto,50,*,Auto" >
 
         <Frame Grid.Row="0"
                BackgroundColor="#181818"
@@ -167,7 +167,29 @@
                     TextColor="DarkGray" />
         </Grid>
 
-        <CollectionView Grid.Row="4"
+        <Grid Grid.Row="4"
+                Margin="5">
+            <Frame HorizontalOptions="Center"
+                    BorderColor="#181818"
+                    BackgroundColor="#181818"
+                    CornerRadius="8"
+                    Padding="0">
+
+                <Label TextColor="#A9A9A9"
+                       Padding="15,8"
+                       Text="Roysni - news"
+                        HorizontalTextAlignment="Center"
+                        LineBreakMode="NoWrap">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1"
+                                              Tapped="News_Tapped">
+                        </TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+            </Frame>
+        </Grid>
+
+        <CollectionView Grid.Row="5"
                         ItemsSource="{Binding MatchDetailsTabs}"
                         SelectionMode="None"
                         HorizontalOptions="FillAndExpand">
@@ -203,18 +225,19 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <views:SummaryView Grid.Row="5" IsVisible="{Binding SummaryIsVisible}" />
-        <views:LineupsView Grid.Row="5" IsVisible="{Binding LineupsIsVisible}" />
-        <views:CommentaryView Grid.Row="5" IsVisible="{Binding CommentaryIsVisible}" />
-        <views:StatisticView Grid.Row="5" IsVisible="{Binding StatisticsIsVisible}" />
+        <views:SummaryView Grid.Row="6" IsVisible="{Binding SummaryIsVisible}" />
+        <views:LineupsView Grid.Row="6" IsVisible="{Binding LineupsIsVisible}" />
+        <views:CommentaryView Grid.Row="6" IsVisible="{Binding CommentaryIsVisible}" />
+        <views:StatisticView Grid.Row="6" IsVisible="{Binding StatisticsIsVisible}" />
+        <views:LiveStandingsView Grid.Row="6" IsVisible="{Binding LiveStandingsIsVisible}" />
 
-        <ActivityIndicator Grid.Row="5"
+        <ActivityIndicator Grid.Row="6"
                            IsVisible="{Binding IsLoading}"
                            IsRunning="True"
                            WidthRequest="30"
                            HeightRequest="30" />
 
-        <StackLayout Grid.Row="6"
+        <StackLayout Grid.Row="7"
                      HeightRequest="2"
                      Margin="0,0,0,3"
                      Orientation="Horizontal"
