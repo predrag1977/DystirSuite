@@ -15,7 +15,7 @@ function sendTrack(g_number) {
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-    gtag('config', 'G-' + g_number);
+    gtag('config', 'G-' + g_number, { cookie_flags: 'max-age=7200;secure;samesite=none' });
     //gtag('config', 'G-' + , { cookie_flags: 'SameSite=None;Secure' });
 }
 /*End Google Analytics*/
