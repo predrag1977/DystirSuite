@@ -21,7 +21,13 @@ namespace DystirXamarin.Views
             InitializeComponent();
             _viewModel = viewModel;
             _viewModel.PropertyChanged += _viewModel_PropertyChanged;
+            (Application.Current as App).OnResumeApplication += OnResumeApplication;
             BindingContext = _viewModel;
+            
+        }
+
+        private void OnResumeApplication()
+        {
             _viewModel.IsLoading = true;
             Populate();
         }
@@ -29,8 +35,8 @@ namespace DystirXamarin.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            _viewModel.SetMatches();
-            PopulateMatchList();
+            _viewModel.IsLoading = true;
+            Populate();
         }
 
         private async void Populate()
@@ -38,6 +44,7 @@ namespace DystirXamarin.Views
             Administrator administratorLoggedIn = _viewModel.AdministratorLoggedIn;
             Title = administratorLoggedIn.AdministratorFirstName + " " + administratorLoggedIn.AdministratorLastName;
             await _viewModel.GetFullData();
+            _viewModel.SetMatches();
             PopulateMatchList();
             if (_viewModel.AdministratorLoggedIn?.AdministratorTeamID == 0)
             {

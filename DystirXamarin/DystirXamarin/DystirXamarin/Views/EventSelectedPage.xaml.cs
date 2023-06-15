@@ -356,7 +356,7 @@ namespace DystirXamarin.Views
             {
                 _isUpdateEvent = false;
                 var eventTotalTime = _eventOfMatch.EventTotalTime;
-                var eventPeriodID = (int)_selectedMatch.StatusID;
+                var eventPeriodID = (int)_eventOfMatch.EventPeriodID;
                 _eventOfMatch = new EventOfMatch()
                 {
                     EventTotalTime = eventTotalTime,

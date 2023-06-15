@@ -6,22 +6,22 @@ namespace DystirWeb.Shared
     public partial class Matches
     {
         [JsonProperty("HomeTeam")]
-        public string? HomeTeam { get; set; }
+        public string HomeTeam { get; set; }
 
         [JsonProperty("AwayTeam")]
-        public string? AwayTeam { get; set; }
+        public string AwayTeam { get; set; }
 
         [JsonProperty("HomeCategoriesName")]
-        public string? HomeCategoriesName { get; set; }
+        public string HomeCategoriesName { get; set; }
 
         [JsonProperty("AwayCategoriesName")]
-        public string? AwayCategoriesName { get; set; }
+        public string AwayCategoriesName { get; set; }
 
         [JsonProperty("HomeSquadName")]
-        public string? HomeSquadName { get; set; }
+        public string HomeSquadName { get; set; }
 
         [JsonProperty("AwaySquadName")]
-        public string? AwaySquadName { get; set; }
+        public string AwaySquadName { get; set; }
 
         [JsonProperty(nameof(MatchID))]
         public int MatchID { get; set; }
@@ -30,7 +30,7 @@ namespace DystirWeb.Shared
         public DateTime? Time { get; set; }
 
         [JsonProperty("Location")]
-        public string? Location { get; set; }
+        public string Location { get; set; }
 
         [JsonProperty("StatusID")]
         public int? StatusID { get; set; }
@@ -48,7 +48,7 @@ namespace DystirWeb.Shared
         public int? AwayTeamPenaltiesScore { get; set; }
 
         [JsonProperty("MatchTypeName")]
-        public string? MatchTypeName { get; set; }
+        public string MatchTypeName { get; set; }
 
         [JsonProperty("HomeTeamID")]
         public int? HomeTeamID { get; set; }
@@ -57,7 +57,7 @@ namespace DystirWeb.Shared
         public int? AwayTeamID { get; set; }
 
         [JsonProperty("StatusName")]
-        public string? StatusName { get; set; }
+        public string StatusName { get; set; }
 
         [JsonProperty("MatchActivation")]
         public int? MatchActivation { get; set; }
@@ -75,7 +75,7 @@ namespace DystirWeb.Shared
         public int? RoundID { get; set; }
 
         [JsonProperty("RoundName")]
-        public string? RoundName { get; set; }
+        public string RoundName { get; set; }
 
         [JsonProperty("ExtraMinutes")]
         public int ExtraMinutes { get; set; }
@@ -96,13 +96,13 @@ namespace DystirWeb.Shared
         public int? AwayTeamCorner { get; set; }
 
         [JsonProperty("HomeTeamLogo")]
-        public string? HomeTeamLogo { get; set; }
+        public string HomeTeamLogo { get; set; }
 
         [JsonProperty("AwayTeamLogo")]
-        public string? AwayTeamLogo { get; set; }
+        public string AwayTeamLogo { get; set; }
 
         [JsonProperty("FullMatchDetails")]
-        public FullMatchDetailsModelView? FullMatchDetails { get; set; }
+        public FullMatchDetailsModelView FullMatchDetails { get; set; }
         
     }
 }

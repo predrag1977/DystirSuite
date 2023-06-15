@@ -13,6 +13,7 @@ namespace Dystir
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(MatchDetailPage), typeof(MatchDetailPage));
+            Routing.RegisterRoute(nameof(NewsPage), typeof(NewsPage));
         }
     }
 }
