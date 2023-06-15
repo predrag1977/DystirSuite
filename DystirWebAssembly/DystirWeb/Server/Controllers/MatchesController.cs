@@ -25,7 +25,7 @@ namespace DystirWeb.Controllers
         private readonly MatchDetailsService _matchDetailsService;
         private DystirDBContext _dystirDBContext;
 
-        public MatchesController (AuthService authService,
+        public MatchesController(AuthService authService,
             DystirService dystirService,
             MatchDetailsService matchDetailsService,
             DystirDBContext dystirDBContext,
@@ -38,8 +38,7 @@ namespace DystirWeb.Controllers
             _matchDetailsService = matchDetailsService;
         }
 
-        // GET: api/Matches
-        // GET: api/Matches
+        //GET: api/Matches
         [HttpGet]
         public async Task<IEnumerable<Matches>> GetMatches(string action)
         {
@@ -113,7 +112,7 @@ namespace DystirWeb.Controllers
                 }
                 matches.HomeTeamPenaltiesScore = matchInDB.HomeTeamPenaltiesScore;
                 matches.AwayTeamPenaltiesScore = matchInDB.AwayTeamPenaltiesScore;
-                
+
                 _dystirDBContext.Entry(matchInDB).CurrentValues.SetValues(matches);
                 _dystirDBContext.Entry(matchInDB).State = EntityState.Modified;
                 _dystirDBContext.SaveChanges();
