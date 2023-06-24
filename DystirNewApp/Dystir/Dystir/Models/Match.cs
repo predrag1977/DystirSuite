@@ -1,14 +1,8 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Globalization;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Dystir.Services;
 using Newtonsoft.Json;
 using System;
-using System.Threading.Tasks;
-using Dystir.Models;
-using System.Linq;
-using System.Reflection;
 using Xamarin.Forms;
 
 namespace Dystir.Models
@@ -50,7 +44,7 @@ namespace Dystir.Models
         public int? StatusID
         {
             get { return statusID; }
-            set { statusID = value; SetGoalVisibility(); }
+            set { statusID = value; SetCorrectHomeTeamScore(); SetCorrectAwayTeamScore(); }
         }
 
         [JsonProperty("HomeTeamScore")]
@@ -58,6 +52,22 @@ namespace Dystir.Models
 
         [JsonProperty("AwayTeamScore")]
         public int? AwayTeamScore { get; set; }
+
+        private int? homeTeamPenaltiesScore;
+        [JsonProperty("HomeTeamPenaltiesScore")]
+        public int? HomeTeamPenaltiesScore
+        {
+            get { return homeTeamPenaltiesScore; }
+            set { homeTeamPenaltiesScore = value; SetCorrectHomeTeamScore(); }
+        }
+
+        private int? awayTeamPenaltiesScore;
+        [JsonProperty("AwayTeamPenaltiesScore")]
+        public int? AwayTeamPenaltiesScore
+        {
+            get { return awayTeamPenaltiesScore;  }
+            set { awayTeamPenaltiesScore = value; SetCorrectAwayTeamScore(); }
+        }
 
         [JsonProperty("MatchTypeName")]
         public string MatchTypeName { get; set; }
@@ -76,9 +86,6 @@ namespace Dystir.Models
 
         [JsonProperty("MatchTypeID")]
         public int? MatchTypeID { get; set;}
-
-        [JsonProperty("TeamAdminID")]
-        int? TeamAdminID { get; set; }
 
         [JsonProperty("RoundID")]
         public int? RoundID { get; set; }
@@ -118,6 +125,12 @@ namespace Dystir.Models
         public string HomeTeamFullName { get; internal set; }
         public string AwayTeamFullName { get; internal set; }
 
+        public string HomeTeamScoreText { get; set; }
+        public string AwayTeamScoreText { get; set; }
+
+        public string HomeTeamPenaltiesScoreText { get; set; }
+        public string AwayTeamPenaltiesScoreText { get; set; }
+
         string matchTime = string.Empty;
         public string MatchTime
         {
@@ -146,6 +159,13 @@ namespace Dystir.Models
             set { goalVisible = value; OnPropertyChanged(); }
         }
 
+        bool matchTimeVisible;
+        public bool MatchTimeVisible
+        {
+            get { return matchTimeVisible; }
+            set { matchTimeVisible = value; OnPropertyChanged(); }
+        }
+
         //**********************//
         //      CONSTRUCTOR     //
         //**********************//
@@ -171,15 +191,11 @@ namespace Dystir.Models
            
         }
 
-        private void SetGoalVisibility()
-        {
-            GoalVisible = (StatusID ?? 0) > 1 && (StatusID ?? 0) < 14;
-        }
-
         private void SetMatchTime()
         {
             MatchTime = GetMatchTime();
             StatusColor = GetTimeStatusColor();
+            MatchTimeVisible = StatusID > 0 && StatusID < 14;
         }
 
         private string GetMatchTime()
@@ -199,9 +215,9 @@ namespace Dystir.Models
                 switch (matchStatus)
                 {
                     case 0:
-                        return Match.GetTimeToStart(secondsToStart, "--:--");
+                        return GetTimeToStart(secondsToStart, "--:--");
                     case 1:
-                        return Match.GetTimeToStart(secondsToStart, "00:00");
+                        return GetTimeToStart(secondsToStart, "00:00");
                     case 2:
                         if (minutes > 45)
                         {
@@ -328,7 +344,6 @@ namespace Dystir.Models
 
         private void SetMatchInfo()
         {
-            string matchInfo = string.Empty;
             string matchTime = Time?.ToLocalTime().ToString("dd.MM. HH:mm - ");
             if (Time?.Hour == 0 && Time?.Minute == 0)
             {
@@ -337,8 +352,47 @@ namespace Dystir.Models
             string matchType = !string.IsNullOrWhiteSpace(MatchTypeName) ? MatchTypeName + " - " : string.Empty;
             string matchRound = !string.IsNullOrWhiteSpace(RoundName) ? RoundName + " - " : string.Empty;
             string matchLocation = Location;
-            matchInfo = matchTime + matchType + matchRound + matchLocation;
+            var matchInfo = matchTime + matchType + matchRound + matchLocation;
             MatchInfo = matchInfo.Trim();
+        }
+
+        private void SetCorrectHomeTeamScore()
+        {
+            if ((StatusID ?? 0) > 1 && (StatusID ?? 0) < 14)
+            {
+                var homeTeamScore = (HomeTeamScore ?? 0) - (HomeTeamPenaltiesScore ?? 0);
+                HomeTeamScoreText = (homeTeamScore < 0 ? 0 : homeTeamScore).ToString();
+                SetPenaltyScore();
+            }
+            else
+            {
+                HomeTeamScoreText = "-";
+            }
+        }
+
+        private void SetCorrectAwayTeamScore()
+        {
+            if ((StatusID ?? 0) > 1 && (StatusID ?? 0) < 14)
+            {
+                var awayTeamScore = (AwayTeamScore ?? 0) - (AwayTeamPenaltiesScore ?? 0);
+                AwayTeamScoreText = (awayTeamScore < 0 ? 0 : awayTeamScore).ToString();
+                SetPenaltyScore();
+            }
+            else
+            {
+                AwayTeamScoreText = "-";
+            }
+        }
+
+        private void SetPenaltyScore()
+        {
+            HomeTeamPenaltiesScoreText = string.Empty;
+            AwayTeamPenaltiesScoreText = string.Empty;
+            if ((HomeTeamPenaltiesScore ?? 0) > 0 || (AwayTeamPenaltiesScore ?? 0) > 0)
+            {
+                HomeTeamPenaltiesScoreText = string.Format("({0})", (HomeTeamPenaltiesScore ?? 0).ToString());
+                AwayTeamPenaltiesScoreText = string.Format("({0})", (AwayTeamPenaltiesScore ?? 0).ToString());
+            }
         }
 
         //**************************//

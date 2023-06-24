@@ -60,7 +60,6 @@ namespace Dystir.ViewModels
             DayTapped = new Command<DayOfMatch>(OnDaySelected);
 
             IsLoading = true;
-            _ = SetMatchesDays();
         }
 
         //**********************//
@@ -109,15 +108,14 @@ namespace Dystir.ViewModels
         private async Task SetMatches()
         {
             _ = SetMatchesDays();
-            IsLoading = true;
             var matches = DystirService.AllMatches?
                 .Where(x => IsDaysRange(x.Match.Time?.Date, MatchesDaySelected.Date))
                 .Select(x => x.Match)
                 .OrderBy(x => x.MatchTypeID)
                 .ThenBy(x => x.Time)
                 .ThenBy(x => x.MatchID);
-            MatchesGroupList = new ObservableCollection<MatchGroup>(matches.GroupBy(x => x.MatchTypeName).Select(group => new MatchGroup(group.Key, new ObservableCollection<Match>(group))));
-            IsLoading = false;
+            var matchGroups = matches.GroupBy(x => x.MatchTypeName).Select(group => new MatchGroup(group.Key, new ObservableCollection<Match>(group)));
+            MatchesGroupList = new ObservableCollection<MatchGroup>(matchGroups);
             await Task.CompletedTask;
         }
 
