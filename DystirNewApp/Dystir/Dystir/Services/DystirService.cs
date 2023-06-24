@@ -34,7 +34,6 @@ namespace Dystir.Services
         public ObservableCollection<CompetitionStatistic> CompetitionStatistics;
         public ObservableCollection<MatchDetailPage> ListMatchDetailPages = new ObservableCollection<MatchDetailPage>();
 
-
         public object AllMatchesDetailsPages { get; internal set; }
 
         //**************************//
@@ -59,7 +58,10 @@ namespace Dystir.Services
         {
             _dataLoadService = DependencyService.Get<DataLoadService>();
 
-            _hubConnection = new HubConnectionBuilder().WithUrl("https://www.dystir.fo/DystirHub").Build();
+            _hubConnection = new HubConnectionBuilder()
+                .WithUrl("https://www.dystir.fo/DystirHub")
+                //.WithAutomaticReconnect()
+                .Build();
 
             _hubConnection.On<string, string>("ReceiveMatchDetails", (matchID, matchDetailsJson) =>
             {
@@ -92,7 +94,11 @@ namespace Dystir.Services
                 var loadAllMatchesTask = LoadAllMatchesAsync();
                 var loadSponsorsTask = loadFullData ? LoadSponsorsAsync() : Task.CompletedTask;
                 var loadCompetitionsTask = loadFullData ? LoadCompetitionsAsync() : Task.CompletedTask;
-                await Task.WhenAll(loadAllMatchesTask, loadSponsorsTask, loadCompetitionsTask);
+                await Task.WhenAll(
+                    loadAllMatchesTask,
+                    loadSponsorsTask,
+                    loadCompetitionsTask
+                    );
                 FullDataLoaded();
                 _ = StartDystirHubAsync();
             }
@@ -183,8 +189,9 @@ namespace Dystir.Services
             }
             catch (Exception)
             {
-                await Task.Delay(500);
-                _ = StartDystirHubAsync();
+                await Task.Delay(2000);
+                ShowLoading();
+                await StartDystirHubAsync();
             }
             await Task.CompletedTask;
         }
@@ -192,8 +199,7 @@ namespace Dystir.Services
         private async Task DystirHubConnection_Closed(Exception ex)
         {
             ShowLoading();
-            _ = StartDystirHubAsync();
-            await Task.CompletedTask;
+            await StartDystirHubAsync();
         }
 
         private async Task<ObservableCollection<CompetitionStatistic>> GetCompetitionStatistics()
@@ -203,18 +209,29 @@ namespace Dystir.Services
             return CompetitionStatistics;
         }
 
-        private ObservableCollection<Match> GetDemoData()
+        private ObservableCollection<MatchDetails> GetDemoData()
         {
-            var demoMatches = new ObservableCollection<Match>();
+            var demoMatches = new ObservableCollection<MatchDetails>();
             for (int i = 0; i < 8; i++)
             {
-                demoMatches.Add(new Match
+                demoMatches.Add(new MatchDetails
                 {
-                    Time = DateTime.UtcNow,
-                    HomeTeam = "Team1" + i,
-                    AwayTeam = "Team2" + i,
-                    Location = "location" + i,
-                    MatchTypeName = "Betri"
+                    Match = new Match
+                    {
+                        Time = DateTime.UtcNow,
+                        HomeTeamFullName = "Team1" + i,
+                        AwayTeamFullName = "Team2" + i,
+                        MatchInfo = "location" + i,
+                        MatchTypeName = "Betri",
+                        MatchID = i,
+                        HomeTeamScore = 10,
+                        AwayTeamScore = 0,
+                        StatusTime = DateTime.UtcNow,
+                        StatusID = 2,
+                        HomeTeamPenaltiesScore = 4,
+                        AwayTeamPenaltiesScore = 5
+                    },
+                    MatchDetailsID = i
                 });
             }
 

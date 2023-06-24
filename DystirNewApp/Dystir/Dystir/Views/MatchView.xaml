@@ -15,10 +15,10 @@
                 Padding="0">
             
             <Grid Padding="10"
-                  ColumnDefinitions="30,*,*,2,Auto" 
+                  ColumnDefinitions="30,*,*,2,Auto,Auto" 
                   RowDefinitions="Auto,2,30,5,30,Auto">
 
-                <Grid Grid.ColumnSpan="5"
+                <Grid Grid.ColumnSpan="6"
                       ColumnDefinitions="*,Auto">
                     <Label Grid.Column="0"
                            Text="{Binding MatchInfo}"
@@ -81,29 +81,45 @@
                         HorizontalOptions="Start"
                         FontSize="16" />
 
-                <Label Text="{Binding HomeTeamScore}"
-                       IsVisible="{Binding GoalVisible}"
+                <Label Text="{Binding HomeTeamPenaltiesScoreText}"
                         Grid.Column="4"
                         Grid.Row="2"
                         Margin="4,0"
-                        WidthRequest="30"
-                        FontAttributes="Bold"
                         TextColor="White"
-                        FontFamily="NunitoSemiBold"
                         LineBreakMode="NoWrap"
                         HorizontalOptions="Center"
-                        FontSize="16" />
+                        FontSize="14" />
 
-                <Label Text="{Binding AwayTeamScore}"
-                       IsVisible="{Binding GoalVisible}"
+                <Label Text="{Binding AwayTeamPenaltiesScoreText}"
                         Grid.Column="4"
                         Grid.Row="4"
                         Margin="4,0"
-                        WidthRequest="30"
+                        TextColor="White"
+                        LineBreakMode="NoWrap"
+                        HorizontalOptions="Center"
+                        FontSize="14" />
+
+                <Label Text="{Binding HomeTeamScoreText}"
+                        Grid.Column="5"
+                        Grid.Row="2"
+                        Margin="4,0,10,0"
                         FontAttributes="Bold"
                         TextColor="White"
                         FontFamily="NunitoSemiBold"
                         LineBreakMode="NoWrap"
+                       HorizontalTextAlignment="End"
+                        HorizontalOptions="Center"
+                        FontSize="16" />
+
+                <Label Text="{Binding AwayTeamScoreText}"
+                        Grid.Column="5"
+                        Grid.Row="4"
+                        Margin="4,0,10,0"
+                        FontAttributes="Bold"
+                        TextColor="White"
+                        FontFamily="NunitoSemiBold"
+                        LineBreakMode="NoWrap"
+                       HorizontalTextAlignment="End"
                         HorizontalOptions="Center"
                         FontSize="16" />
             </Grid>

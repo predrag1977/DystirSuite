@@ -87,7 +87,8 @@
                        BorderColor="#181818"
                        BackgroundColor="#181818"
                        CornerRadius="8"
-                       Padding="0">
+                       Padding="0"
+                       IsVisible="{Binding MatchTimeVisible}">
                     <Label Text="{Binding MatchTime}"
                            Padding="15,8"
                            HorizontalTextAlignment="Center"
@@ -167,7 +168,7 @@
                     TextColor="DarkGray" />
         </Grid>
 
-        <Grid Grid.Row="4"
+        <Grid Grid.Row="4" IsVisible="False"
                 Margin="5">
             <Frame HorizontalOptions="Center"
                     BorderColor="#181818"
@@ -207,7 +208,7 @@
                             HorizontalOptions="Center"
                             VerticalOptions="Center">
                         <Label VerticalOptions="Center"
-                                FontSize="12"
+                                FontSize="10"
                                 TextColor="{Binding TextColor}"
                                 FontAttributes="Bold"
                                 FontFamily="NunitoSemiBold"

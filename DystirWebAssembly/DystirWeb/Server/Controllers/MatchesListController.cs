@@ -20,7 +20,7 @@ namespace DystirWeb.Controllers
             _dystirService = dystirService;
         }
 
-        // GET: data/request/matcheslist/portal
+        // GET: data/request/matches/portal
         [HttpGet("{requestorValue}")]
         public IActionResult GetNumberOfMatches(string requestorValue)
         {

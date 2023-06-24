@@ -42,6 +42,13 @@ namespace Dystir.Pages
             _ = LoadDataAsync();
         }
 
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            matchDetailViewModel.MatchID = null;
+            matchDetailViewModel.SelectedMatch = null;
+        }
+
         private async Task LoadDataAsync()
         {
             matchDetailViewModel.IsLoading = true;

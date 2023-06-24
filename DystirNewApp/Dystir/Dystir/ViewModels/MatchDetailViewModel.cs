@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using Dystir.Models;
 using Dystir.Services;
-using Dystir.Views;
 using Xamarin.Forms;
-using Match = Dystir.Models.Match;
 
 namespace Dystir.ViewModels
 {
@@ -23,7 +16,7 @@ namespace Dystir.ViewModels
         //      PROPERTIES      //
         //**********************//
 
-        public int MatchID { get; internal set; }
+        public int? MatchID { get; internal set; }
         public Command<MatchDetailsTab> MatchDetailsTabTapped { get; }
 
         MatchDetails matchDetails;
@@ -113,6 +106,10 @@ namespace Dystir.ViewModels
         {
             try
             {
+                if(MatchID == null)
+                {
+                    return;
+                }
                 IsLoading = true;
                 var reverse = DystirService.AllMatches.Reverse();
                 foreach (var matchDetails in reverse)
@@ -121,7 +118,7 @@ namespace Dystir.ViewModels
                     {
                         if (matchDetails?.IsDataLoaded == false)
                         {
-                            MatchDetails = await DystirService.GetMatchDetailsAsync(MatchID);
+                            MatchDetails = await DystirService.GetMatchDetailsAsync(MatchID ?? 0);
                         }
                         else
                         {
@@ -133,7 +130,6 @@ namespace Dystir.ViewModels
                 
                 SelectedMatch = MatchDetails.Match;
                 await PopulateMatchDetailsTabs();
-                //await LoadMatchDetailsData();
                 IsLoading = false;
             }
             catch (Exception ex)
@@ -148,7 +144,6 @@ namespace Dystir.ViewModels
         public async Task PopulateMatchDetailsTabs()
         {
             var matchDetailsTabs = new ObservableCollection<MatchDetailsTab>();
-            var matchDetailsTabsViews = new ObservableCollection<ContentView>();
             var matchTypeID = SelectedMatch.MatchTypeID;
 
             if (matchTypeID != null)
@@ -263,9 +258,9 @@ namespace Dystir.ViewModels
             IsLoading = true;
         }
 
-        private void DystirService_OnFullDataLoaded()
+        private async void DystirService_OnFullDataLoaded()
         {
-            _ = LoadMatchDetailAsync();
+            await LoadMatchDetailAsync();
         }
 
         private async void DystirService_OnMatchDetailsLoaded(MatchDetails matchDetails)
