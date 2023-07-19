@@ -1,15 +1,9 @@
-﻿using System.ComponentModel;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Dystir.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Dystir.Models;
 using System.Threading.Tasks;
 using Dystir.Services;
-using System.Diagnostics;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace Dystir.Pages
 {
@@ -20,39 +14,30 @@ namespace Dystir.Pages
 
         public int MatchID { get; set; }
 
-        private DystirService dystirService;
-
-        //private string matchID;
-        //public string MatchID
-        //{
-        //    get { return matchID; }
-        //    set { matchID = value; }
-        //}
+        private readonly DystirService dystirService;
 
         public MatchDetailPage()
         {
             dystirService = DependencyService.Get<DystirService>();
             InitializeComponent();
-            BindingContext = matchDetailViewModel = new MatchDetailViewModel();
         }
 
         protected override void OnAppearing()
         {
             Shell.SetTabBarIsVisible(this, false);
+            BindingContext = matchDetailViewModel = new MatchDetailViewModel(MatchID);
             _ = LoadDataAsync();
         }
 
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-            matchDetailViewModel.MatchID = null;
             matchDetailViewModel.SelectedMatch = null;
         }
 
         private async Task LoadDataAsync()
         {
             matchDetailViewModel.IsLoading = true;
-            matchDetailViewModel.MatchID = MatchID;
             matchDetailViewModel.SelectedMatch = dystirService.AllMatches.FirstOrDefault(x => x.Match?.MatchID == MatchID).Match;
 
             await matchDetailViewModel.PopulateMatchDetailsTabs();

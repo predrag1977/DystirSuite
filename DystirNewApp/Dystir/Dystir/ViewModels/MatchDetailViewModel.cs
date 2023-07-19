@@ -16,7 +16,7 @@ namespace Dystir.ViewModels
         //      PROPERTIES      //
         //**********************//
 
-        public int? MatchID { get; internal set; }
+        public static int? MatchID { get; internal set; }
         public Command<MatchDetailsTab> MatchDetailsTabTapped { get; }
 
         MatchDetails matchDetails;
@@ -85,8 +85,9 @@ namespace Dystir.ViewModels
         //**********************//
         //     CONSTRUCTOR      //
         //**********************//
-        public MatchDetailViewModel()
+        public MatchDetailViewModel(int? matchID)
         {
+            MatchID = matchID;
             DystirService = DependencyService.Get<DystirService>();
             DystirService.OnShowLoading += DystirService_OnShowLoading;
             DystirService.OnFullDataLoaded += DystirService_OnFullDataLoaded;

@@ -7,9 +7,10 @@
        xmlns:viewmodels="clr-namespace:Dystir.ViewModels"
        x:DataType="viewmodels:DystirViewModel"
        BackgroundColor="Black">
-
-    <TabBar>
-        <ShellContent Title="{x:Static localization:Resources.Matches}"
+     
+    <TabBar x:Name="TabBar">
+        <ShellContent x:Name="Matches"
+                      Title="{x:Static localization:Resources.Matches}"
                       Icon="matches.png" 
                       Route="MatchesPage"
                       ContentTemplate="{DataTemplate pages:MatchesPage}" />

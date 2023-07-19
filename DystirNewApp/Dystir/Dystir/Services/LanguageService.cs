@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using Xamarin.Forms;
 
@@ -16,33 +17,35 @@ namespace Dystir.Services
             SetLanguage();
         }
 
-        internal async void SetLanguage()
+        public async void LanguageChange()
         {
             string languageCode = Application.Current.Properties.FirstOrDefault(x => x.Key == "languageCode").Value?.ToString();
-            try
-            {
-                if (string.IsNullOrWhiteSpace(languageCode))
-                {
-                    languageCode = "en-GB";
-                    Application.Current.Properties.Remove("languageCode");
-                    Application.Current.Properties.Add("languageCode", languageCode);
-                    await Application.Current.SavePropertiesAsync();
-                }
-            }
-            catch
-            {
-                languageCode = "en-GB";
-                Application.Current.Properties.Remove("languageCode");
-                Application.Current.Properties.Add("languageCode", languageCode);
-                await Application.Current.SavePropertiesAsync();
-            }
-            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(languageCode);
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(languageCode);
+            languageCode = languageCode == "fo-FO" ? languageCode = "en-GB" : languageCode = "fo-FO";
+            Application.Current.Properties.Remove("languageCode");
+            Application.Current.Properties.Add("languageCode", languageCode);
+            await Application.Current.SavePropertiesAsync();
+            SetLanguage();
         }
 
-        public void LanguageChange()
+        public void SetLanguage()
         {
+            string languageCode = GetLanguageCode();
+            CultureInfo cultureInfo = new CultureInfo(languageCode);
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
+            Thread.CurrentThread.CurrentUICulture = cultureInfo;
+            Resources.Localization.Resources.Culture = cultureInfo;
             OnLanguageChanged?.Invoke();
+        }
+
+        public string GetLanguageCode()
+        {
+            string languageCode = Application.Current.Properties.FirstOrDefault(x => x.Key == "languageCode").Value?.ToString();
+            if (string.IsNullOrWhiteSpace(languageCode))
+            {
+                languageCode = "fo-FO";
+            }
+            languageCode = "fo-FO";
+            return languageCode;
         }
     }
 }

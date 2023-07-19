@@ -17,8 +17,8 @@
                CornerRadius="10"
                Padding="5" >
             <Grid ColumnDefinitions="50,*,50">
-                <ffsvg:SvgCachedImage Grid.Column="0"
-                                      IsVisible="False"
+
+                <!--<ffsvg:SvgCachedImage Grid.Column="0"
                                       WidthRequest="22"
                                       HeightRequest="22"
                                       VerticalOptions="Center"
@@ -28,9 +28,9 @@
                         <fftransformation:TintTransformation HexColor="#A9A9A9" EnableSolidColor="true"/>
                     </ffsvg:SvgCachedImage.Transformations>
                     <ffsvg:SvgCachedImage.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="RefreshButton_Clicked" />
+                        <TapGestureRecognizer Tapped="Language_Clicked" />
                     </ffsvg:SvgCachedImage.GestureRecognizers>
-                </ffsvg:SvgCachedImage>
+                </ffsvg:SvgCachedImage>-->
 
                 <Label Grid.Column="1"
                        TextColor="#A9A9A9"

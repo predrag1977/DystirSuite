@@ -11,7 +11,7 @@ namespace Dystir.Services
         public Action OnSponsorsTimerElapsed;
         public void SponsorsTimerElapsed() => OnSponsorsTimerElapsed?.Invoke();
         
-        private System.Timers.Timer _sponsorsTimer;
+        private Timer _sponsorsTimer;
 
         public TimeService()
         {
@@ -21,7 +21,7 @@ namespace Dystir.Services
 
         public void SetTimer()
         {
-            var timer = new System.Timers.Timer(1000);
+            var timer = new Timer(60000);
             timer.Elapsed += NotifyTimerElapsed;
             timer.Enabled = true;
             timer.Start();
@@ -29,7 +29,7 @@ namespace Dystir.Services
 
         public void SetSponsorsTimer()
         {
-            _sponsorsTimer = new System.Timers.Timer(10000);
+            _sponsorsTimer = new Timer(10000);
             _sponsorsTimer.Elapsed += NotifySponsorsTimerElapsed;
             _sponsorsTimer.Enabled = true;
         }

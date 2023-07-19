@@ -13,12 +13,14 @@ namespace Dystir.Pages
         private readonly ResultsViewModel resultsViewModel;
         private readonly DystirService dystirService;
         private readonly LiveStandingService liveStandingService;
+        private readonly LanguageService languageService;
 
         public ResultsPage()
         {
             resultsViewModel = new ResultsViewModel();
             dystirService = DependencyService.Get<DystirService>();
             liveStandingService = DependencyService.Get<LiveStandingService>();
+            languageService = DependencyService.Get<LanguageService>();
 
             resultsViewModel.IsLoading = true;
             InitializeComponent();
@@ -36,6 +38,11 @@ namespace Dystir.Pages
             {
                 await resultsViewModel.DystirService.LoadDataAsync(true);
             }
+        }
+
+        void Language_Clicked(object sender, EventArgs e)
+        {
+            languageService.LanguageChange();
         }
     }
 }

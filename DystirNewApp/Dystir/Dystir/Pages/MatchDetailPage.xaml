@@ -157,15 +157,27 @@
 
         <Grid Grid.Row="3"
               BindingContext="{Binding SelectedMatch}">
-            <Label x:DataType="models:Match"
+            <StackLayout Orientation="Vertical">
+                <Label x:DataType="models:Match"
                     Text="{Binding MatchInfo}"
                     MaxLines="2"
-                    Margin="0,7"
+                    Margin="0,7,0,2"
                     FontSize="13"
                     HorizontalOptions="Fill"
                     HorizontalTextAlignment="Center"
-                    LineBreakMode="CharacterWrap"
+                    LineBreakMode="WordWrap"
                     TextColor="DarkGray" />
+                <Label x:DataType="models:Match"
+                    Text="{Binding Location}"
+                    MaxLines="2"
+                    Margin="0,0,0,7"
+                    FontSize="13"
+                    HorizontalOptions="Fill"
+                    HorizontalTextAlignment="Center"
+                    LineBreakMode="WordWrap"
+                    TextColor="DarkGray" />
+            </StackLayout>
+            
         </Grid>
 
         <Grid Grid.Row="4" IsVisible="False"
