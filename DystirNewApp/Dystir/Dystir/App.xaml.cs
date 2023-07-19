@@ -1,8 +1,5 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using Xamarin.Forms;
 using Dystir.Services;
-using Dystir.Views;
 
 namespace Dystir
 {
@@ -14,11 +11,15 @@ namespace Dystir
         {
             InitializeComponent();
             ServiceRegistrations();
-            
+
             MainPage = new AppShell();
 
             _dystirService = DependencyService.Get<DystirService>();
             _ = _dystirService.LoadDataAsync(true);
+
+            var languageService = DependencyService.Get<LanguageService>();
+            languageService.SetLanguage();
+
         }
 
         private void ServiceRegistrations()

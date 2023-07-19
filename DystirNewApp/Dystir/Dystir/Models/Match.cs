@@ -152,6 +152,13 @@ namespace Dystir.Models
             set { matchInfo = value; OnPropertyChanged();}
         }
 
+        string fullMatchInfo = string.Empty;
+        public string FullMatchInfo
+        {
+            get { return fullMatchInfo; }
+            set { fullMatchInfo = value; OnPropertyChanged(); }
+        }
+
         bool goalVisible;
         public bool GoalVisible
         {
@@ -188,7 +195,7 @@ namespace Dystir.Models
 
         private void LanguageServiceOnLanguageChanged()
         {
-           
+            
         }
 
         private void SetMatchTime()
@@ -272,7 +279,7 @@ namespace Dystir.Models
                     min = "0" + min;
                 if (seconds < 10)
                     sec = "0" + sec;
-                return addtime + " " + min + ":" + sec;
+                return addtime + " " + min + "'" + sec;
             }
             catch
             {
@@ -350,10 +357,16 @@ namespace Dystir.Models
                 matchTime = Time?.ToLocalTime().ToString("dd.MM. - ");
             }
             string matchType = !string.IsNullOrWhiteSpace(MatchTypeName) ? MatchTypeName + " - " : string.Empty;
-            string matchRound = !string.IsNullOrWhiteSpace(RoundName) ? RoundName + " - " : string.Empty;
-            string matchLocation = Location;
-            var matchInfo = matchTime + matchType + matchRound + matchLocation;
+            string matchRound = RoundName ?? string.Empty;
+
+            var matchInfo = matchTime + matchType + matchRound;
             MatchInfo = matchInfo.Trim();
+
+            matchRound = !string.IsNullOrWhiteSpace(matchRound) ? matchRound + " - " : string.Empty;
+            string location = Location;
+
+            var fullMatchInfo = matchTime + matchType + matchRound + location;
+            FullMatchInfo = fullMatchInfo.Trim();
         }
 
         private void SetCorrectHomeTeamScore()

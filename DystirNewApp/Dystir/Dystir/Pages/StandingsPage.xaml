@@ -16,7 +16,7 @@
                CornerRadius="10"
                Padding="5" >
             <Grid ColumnDefinitions="50,*,50">
-                <ffsvg:SvgCachedImage Grid.Column="0"
+                <!--<ffsvg:SvgCachedImage Grid.Column="0"
                                       IsVisible="False"
                                       WidthRequest="22"
                                       HeightRequest="22"
@@ -29,7 +29,7 @@
                     <ffsvg:SvgCachedImage.GestureRecognizers>
                         <TapGestureRecognizer Tapped="RefreshButton_Clicked" />
                     </ffsvg:SvgCachedImage.GestureRecognizers>
-                </ffsvg:SvgCachedImage>
+                </ffsvg:SvgCachedImage>-->
 
                 <Label Grid.Column="1"
                        TextColor="#A9A9A9"
@@ -97,6 +97,40 @@
                     VerticalOptions="FillAndExpand"
                     HasUnevenRows="True"
                     ItemsSource="{Binding Standing.TeamStandings}">
+            <ListView.Header>
+                <StackLayout BackgroundColor="#181818"
+                             HeightRequest="40"
+                             Margin="0,0,0,4">
+                    <Grid ColumnDefinitions="20,140,*,*,*,*,*,*,*,*,5"
+                            VerticalOptions="CenterAndExpand">
+                        <Label Grid.Column="1"
+                               HorizontalOptions="StartAndExpand"
+                               HorizontalTextAlignment="Start"
+                               Text="{Binding Standing.StandingCompetitionName}" />
+                        <Label Grid.Column="2"
+                                Text="{x:Static localization:Resources.MatchPlayedShort}" />
+                        <Label Grid.Column="3"
+                                Text="{x:Static localization:Resources.VictoriesShort}" />
+                        <Label Grid.Column="4"
+                                Text="{x:Static localization:Resources.DrawShort}" />
+                        <Label Grid.Column="5"
+                                Text="{x:Static localization:Resources.LosesShort}" />
+                        <Label Grid.Column="6"
+                                Text="{x:Static localization:Resources.GoalsScored}"  />
+                        <Label Grid.Column="7"
+                                Text="{x:Static localization:Resources.GoalsAgainst}" />
+                        <Label Grid.Column="8"
+                                Text="{x:Static localization:Resources.GoalsDiffrent}"  />
+                        <Label Grid.Column="9"
+                                FontAttributes="Bold"
+                                FontFamily="NunitoSemiBold"
+                                TextColor="White"
+                                Text="{x:Static localization:Resources.Points}" />
+                    </Grid>
+                    <StackLayout HeightRequest="1"
+                                 BackgroundColor="DimGray" />
+                </StackLayout>
+            </ListView.Header>
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:TeamStanding" >
                     <ViewCell IsEnabled="False" >
