@@ -105,17 +105,15 @@
               BindingContext="{Binding SelectedMatch}"
               HorizontalOptions="CenterAndExpand">
 
-            <Image Grid.Column="0"
+            <ffsvg:SvgCachedImage Grid.Column="0"
                     x:DataType="models:Match"
                     HeightRequest="50"
                     WidthRequest="50"
                     HorizontalOptions="End"
                     VerticalOptions="Start"
-                    Margin="0">
-                <Image.Source>
-                    <UriImageSource Uri="{Binding HomeTeamLogo}" />
-                </Image.Source>
-            </Image>
+                    Margin="0"
+                    Source = "{Binding HomeTeamLogo}" >
+            </ffsvg:SvgCachedImage>
 
             <ffsvg:SvgCachedImage Grid.Column="1"
                                   Aspect="AspectFill"
@@ -124,17 +122,15 @@
                                   HorizontalOptions="Center"
                                   Source="resource://Dystir.Resources.Images.football_pitch_3d.svg"/>
 
-            <Image Grid.Column="2"
+            <ffsvg:SvgCachedImage Grid.Column="2"
                     x:DataType="models:Match"
                     HeightRequest="50"
                     WidthRequest="50"
                     HorizontalOptions="Start"
                     VerticalOptions="Start"
-                    Margin="0">
-                <Image.Source>
-                    <UriImageSource Uri="{Binding AwayTeamLogo}" />
-                </Image.Source>
-            </Image>
+                    Margin="0"
+                    Source = "{Binding AwayTeamLogo}" >
+            </ffsvg:SvgCachedImage>
 
             <StackLayout Grid.Column="1"
                          HeightRequest="50"
@@ -244,11 +240,16 @@
         <views:StatisticView Grid.Row="6" IsVisible="{Binding StatisticsIsVisible}" />
         <views:LiveStandingsView Grid.Row="6" IsVisible="{Binding LiveStandingsIsVisible}" />
 
-        <ActivityIndicator Grid.Row="6"
-                           IsVisible="{Binding IsLoading}"
-                           IsRunning="True"
-                           WidthRequest="30"
-                           HeightRequest="30" />
+        <Grid Grid.Row="6"
+              IsVisible="{Binding IsLoading}"
+              HorizontalOptions="Center"
+              VerticalOptions="Center"
+              WidthRequest="40"
+              HeightRequest="40">
+            <ActivityIndicator IsRunning="True"
+                               WidthRequest="40"
+                               HeightRequest="40" />
+        </Grid>
 
         <StackLayout Grid.Row="7"
                      HeightRequest="2"

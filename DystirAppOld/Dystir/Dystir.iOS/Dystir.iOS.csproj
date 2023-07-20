@@ -191,13 +191,13 @@
       <HintPath>..\..\packages\Xamarin.FFImageLoading.Forms.2.4.11.982\lib\Xamarin.iOS10\FFImageLoading.Forms.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AppCenter">
-      <HintPath>..\..\packages\Microsoft.AppCenter.5.0.1\lib\Xamarin.iOS10\Microsoft.AppCenter.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AppCenter.5.0.2\lib\Xamarin.iOS10\Microsoft.AppCenter.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AppCenter.Analytics">
-      <HintPath>..\..\packages\Microsoft.AppCenter.Analytics.5.0.1\lib\Xamarin.iOS10\Microsoft.AppCenter.Analytics.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AppCenter.Analytics.5.0.2\lib\Xamarin.iOS10\Microsoft.AppCenter.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AppCenter.Crashes">
-      <HintPath>..\..\packages\Microsoft.AppCenter.Crashes.5.0.1\lib\Xamarin.iOS10\Microsoft.AppCenter.Crashes.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AppCenter.Crashes.5.0.2\lib\Xamarin.iOS10\Microsoft.AppCenter.Crashes.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces">
       <HintPath>..\..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\netstandard2.1\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -206,7 +206,7 @@
       <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.7.0.0\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Features">
-      <HintPath>..\..\packages\Microsoft.Extensions.Features.7.0.5\lib\netstandard2.0\Microsoft.Extensions.Features.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.Extensions.Features.7.0.9\lib\netstandard2.0\Microsoft.Extensions.Features.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe">
       <HintPath>..\..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
@@ -218,7 +218,7 @@
       <HintPath>..\..\packages\System.Memory.4.5.5\lib\netstandard2.0\System.Memory.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Logging.Abstractions">
-      <HintPath>..\..\packages\Microsoft.Extensions.Logging.Abstractions.7.0.0\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.Extensions.Logging.Abstractions.7.0.1\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.Primitives">
       <HintPath>..\..\packages\Microsoft.Extensions.Primitives.7.0.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
@@ -251,37 +251,37 @@
       <HintPath>..\..\packages\System.IO.Pipelines.7.0.0\lib\netstandard2.0\System.IO.Pipelines.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNetCore.Connections.Abstractions">
-      <HintPath>..\..\packages\Microsoft.AspNetCore.Connections.Abstractions.7.0.5\lib\netstandard2.1\Microsoft.AspNetCore.Connections.Abstractions.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNetCore.Connections.Abstractions.7.0.9\lib\netstandard2.1\Microsoft.AspNetCore.Connections.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNetCore.Http.Features">
       <HintPath>..\..\packages\Microsoft.AspNetCore.Http.Features.5.0.17\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.Json">
-      <HintPath>..\..\packages\System.Text.Json.7.0.2\lib\netstandard2.0\System.Text.Json.dll</HintPath>
+      <HintPath>..\..\packages\System.Text.Json.7.0.3\lib\netstandard2.0\System.Text.Json.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNetCore.Http.Connections.Common">
-      <HintPath>..\..\packages\Microsoft.AspNetCore.Http.Connections.Common.7.0.5\lib\netstandard2.0\Microsoft.AspNetCore.Http.Connections.Common.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNetCore.Http.Connections.Common.7.0.9\lib\netstandard2.0\Microsoft.AspNetCore.Http.Connections.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNetCore.Http.Connections.Client">
-      <HintPath>..\..\packages\Microsoft.AspNetCore.Http.Connections.Client.7.0.5\lib\netstandard2.1\Microsoft.AspNetCore.Http.Connections.Client.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNetCore.Http.Connections.Client.7.0.9\lib\netstandard2.1\Microsoft.AspNetCore.Http.Connections.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNetCore.SignalR.Common">
-      <HintPath>..\..\packages\Microsoft.AspNetCore.SignalR.Common.7.0.5\lib\netstandard2.0\Microsoft.AspNetCore.SignalR.Common.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNetCore.SignalR.Common.7.0.9\lib\netstandard2.0\Microsoft.AspNetCore.SignalR.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNetCore.SignalR.Protocols.Json">
-      <HintPath>..\..\packages\Microsoft.AspNetCore.SignalR.Protocols.Json.7.0.5\lib\netstandard2.0\Microsoft.AspNetCore.SignalR.Protocols.Json.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNetCore.SignalR.Protocols.Json.7.0.9\lib\netstandard2.0\Microsoft.AspNetCore.SignalR.Protocols.Json.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNetCore.SignalR.Client.Core">
-      <HintPath>..\..\packages\Microsoft.AspNetCore.SignalR.Client.Core.7.0.5\lib\netstandard2.1\Microsoft.AspNetCore.SignalR.Client.Core.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNetCore.SignalR.Client.Core.7.0.9\lib\netstandard2.1\Microsoft.AspNetCore.SignalR.Client.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNetCore.SignalR.Client">
-      <HintPath>..\..\packages\Microsoft.AspNetCore.SignalR.Client.7.0.5\lib\netstandard2.0\Microsoft.AspNetCore.SignalR.Client.dll</HintPath>
+      <HintPath>..\..\packages\Microsoft.AspNetCore.SignalR.Client.7.0.9\lib\netstandard2.0\Microsoft.AspNetCore.SignalR.Client.dll</HintPath>
     </Reference>
     <Reference Include="Plugin.LatestVersion">
       <HintPath>..\..\packages\Xam.Plugin.LatestVersion.2.1.0\lib\xamarinios10\Plugin.LatestVersion.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Essentials">
-      <HintPath>..\..\packages\Xamarin.Essentials.1.7.5\lib\xamarinios10\Xamarin.Essentials.dll</HintPath>
+      <HintPath>..\..\packages\Xamarin.Essentials.1.7.7\lib\xamarinios10\Xamarin.Essentials.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>..\..\packages\Xamarin.Forms.5.0.0.2578\lib\Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>

@@ -130,11 +130,16 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <ActivityIndicator Grid.Row="3"
-                            IsVisible="{Binding IsLoading}"
-                            IsRunning="True"
-                            WidthRequest="30"
-                            HeightRequest="30" />
+        <Grid Grid.Row="3"
+              IsVisible="{Binding IsLoading}"
+              HorizontalOptions="Center"
+              VerticalOptions="Center"
+              WidthRequest="40"
+              HeightRequest="40">
+            <ActivityIndicator IsRunning="True"
+                               WidthRequest="40"
+                               HeightRequest="40" />
+        </Grid>
 
         <StackLayout Grid.Row="4"
                      HeightRequest="2"

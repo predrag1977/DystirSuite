@@ -2,6 +2,7 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Dystir.Views.MatchView"
+             xmlns:ffsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:models="clr-namespace:Dystir.Models"
              x:DataType="models:Match">
 
@@ -36,28 +37,22 @@
                            FontSize="12" />
                 </Grid>
 
-                <Image Grid.Column="0"
+                <ffsvg:SvgCachedImage Grid.Column="0"
                         Grid.Row="2"
                         WidthRequest="30" HeightRequest="28"
                         HorizontalOptions="CenterAndExpand"
-                        VerticalOptions="CenterAndExpand"  >
-                    <Image.Source>
-                        <UriImageSource Uri="{Binding HomeTeamLogo}"
-                                        CacheValidity="10:00:00:00" />
-                    </Image.Source>
-                </Image>
+                        VerticalOptions="CenterAndExpand"
+                        Source="{Binding HomeTeamLogo}" >
+                </ffsvg:SvgCachedImage>
 
-                <Image Grid.Column="0"
+                <ffsvg:SvgCachedImage Grid.Column="0"
                         Grid.Row="4"
                         WidthRequest="30"
                         HeightRequest="28"
                         HorizontalOptions="CenterAndExpand"
-                        VerticalOptions="CenterAndExpand">
-                    <Image.Source>
-                        <UriImageSource Uri="{Binding AwayTeamLogo}"
-                                        CacheValidity="10:00:00:00" />
-                    </Image.Source>
-                </Image>
+                        VerticalOptions="CenterAndExpand"
+                        Source="{Binding AwayTeamLogo}">
+                </ffsvg:SvgCachedImage>
 
                 <Label Grid.Column="1"
                         Grid.Row="2"
