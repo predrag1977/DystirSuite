@@ -1,27 +1,28 @@
 ﻿using System;
-using System.ComponentModel;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 using Dystir.ViewModels;
 using Dystir.Services;
-using Dystir.Models;
 
 namespace Dystir.Pages
 {
     public partial class StandingsPage : ContentPage
     {
         private readonly StandingsViewModel standingsViewModel;
+        private readonly AnalyticsService analyticsService;
 
         public StandingsPage()
         {
-            standingsViewModel = new StandingsViewModel();
+            analyticsService = DependencyService.Get<AnalyticsService>();
 
             InitializeComponent();
-            BindingContext = standingsViewModel;
+            BindingContext = standingsViewModel = new StandingsViewModel();
+            standingsViewModel.IsLoading = true;
         }
 
         protected override void OnAppearing()
         {
+            analyticsService.Standings();
+
             _ = standingsViewModel.LoadDataAsync();
         }
 

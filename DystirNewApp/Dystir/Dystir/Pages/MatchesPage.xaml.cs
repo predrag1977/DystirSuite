@@ -9,17 +9,23 @@ namespace Dystir.Pages
     {
         private readonly LanguageService languageService;
         private readonly MatchesViewModel matchesViewModel;
+        private readonly AnalyticsService analyticsService;
 
         public MatchesPage()
         {
+            analyticsService = DependencyService.Get<AnalyticsService>();
             languageService = DependencyService.Get<LanguageService>();
             languageService.OnLanguageChanged += LanguageServiceOnLanguageChanged;
+
             InitializeComponent();
             BindingContext = matchesViewModel = new MatchesViewModel();
+            matchesViewModel.IsLoading = true;
         }
 
         protected override void OnAppearing()
         {
+            analyticsService.Matches();
+
             _ = matchesViewModel.LoadDataAsync();
         }
 

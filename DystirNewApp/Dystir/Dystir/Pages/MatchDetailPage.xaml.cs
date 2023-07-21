@@ -15,10 +15,13 @@ namespace Dystir.Pages
         public int MatchID { get; set; }
 
         private readonly DystirService dystirService;
+        private readonly AnalyticsService analyticsService;
 
         public MatchDetailPage()
         {
             dystirService = DependencyService.Get<DystirService>();
+            analyticsService = DependencyService.Get<AnalyticsService>();
+
             InitializeComponent();
         }
 
@@ -43,6 +46,8 @@ namespace Dystir.Pages
             await matchDetailViewModel.PopulateMatchDetailsTabs();
             await Task.Delay(100);
             await matchDetailViewModel.LoadMatchDetailAsync();
+
+            analyticsService.MatchDetails(matchDetailViewModel.SelectedMatch);
         }
 
         private async void BackButton_Clicked(object sender, EventArgs e)

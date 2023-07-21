@@ -11,24 +11,22 @@ namespace Dystir.Pages
     public partial class ResultsPage : ContentPage
     {
         private readonly ResultsViewModel resultsViewModel;
-        private readonly DystirService dystirService;
-        private readonly LiveStandingService liveStandingService;
+        private readonly AnalyticsService analyticsService;
         private readonly LanguageService languageService;
 
         public ResultsPage()
         {
-            resultsViewModel = new ResultsViewModel();
-            dystirService = DependencyService.Get<DystirService>();
-            liveStandingService = DependencyService.Get<LiveStandingService>();
+            analyticsService = DependencyService.Get<AnalyticsService>();
             languageService = DependencyService.Get<LanguageService>();
-
-            resultsViewModel.IsLoading = true;
+            
             InitializeComponent();
-            BindingContext = resultsViewModel;
+            BindingContext = resultsViewModel = new ResultsViewModel();
+            resultsViewModel.IsLoading = true;
         }
 
         protected override void OnAppearing()
         {
+            analyticsService.Results();
             _ = resultsViewModel.LoadDataAsync();
         }
 
