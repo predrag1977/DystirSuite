@@ -1,5 +1,9 @@
 ﻿using Xamarin.Forms;
 using Dystir.Services;
+using System.Threading.Tasks;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 
 namespace Dystir
 {
@@ -11,6 +15,7 @@ namespace Dystir
         {
             InitializeComponent();
             ServiceRegistrations();
+            AppAnalytics();
 
             MainPage = new AppShell();
 
@@ -24,11 +29,18 @@ namespace Dystir
 
         private void ServiceRegistrations()
         {
+            DependencyService.Register<AnalyticsService>();
             DependencyService.Register<LanguageService>();
             DependencyService.Register<TimeService>();
             DependencyService.Register<LiveStandingService>();
             DependencyService.Register<DataLoadService>();
             DependencyService.Register<DystirService>();
+        }
+
+        private void AppAnalytics()
+        {
+            var analyticsService = DependencyService.Get<AnalyticsService>();
+            analyticsService.StartAnalytics();
         }
 
         protected override void OnStart ()

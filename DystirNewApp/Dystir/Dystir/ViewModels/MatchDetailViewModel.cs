@@ -190,6 +190,10 @@ namespace Dystir.ViewModels
             {
                 SelectedMatchDetailsTab = MatchDetailsTabs.FirstOrDefault();
             }
+            else
+            {
+                SelectedMatchDetailsTab = MatchDetailsTabs.FirstOrDefault(x => x.TabName == SelectedMatchDetailsTab.TabName);
+            }
             await Task.CompletedTask;
         }
 
