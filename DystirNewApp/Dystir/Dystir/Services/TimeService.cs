@@ -21,7 +21,8 @@ namespace Dystir.Services
 
         public void SetTimer()
         {
-            var timer = new Timer(60000);
+            TimerElapsed();
+            var timer = new Timer(1000);
             timer.Elapsed += NotifyTimerElapsed;
             timer.Enabled = true;
             timer.Start();
@@ -36,13 +37,13 @@ namespace Dystir.Services
 
         public void StartSponsorsTime()
         {
-            OnTimerElapsed?.Invoke();
+            SponsorsTimerElapsed();
             _sponsorsTimer.Start();
         }
 
         private void NotifyTimerElapsed(object source, ElapsedEventArgs e)
         {
-            OnTimerElapsed?.Invoke();
+            TimerElapsed();
         }
 
         private void NotifySponsorsTimerElapsed(object source, ElapsedEventArgs e)

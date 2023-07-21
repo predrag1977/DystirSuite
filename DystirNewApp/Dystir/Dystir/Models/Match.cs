@@ -279,7 +279,7 @@ namespace Dystir.Models
                     min = "0" + min;
                 if (seconds < 10)
                     sec = "0" + sec;
-                return addtime + " " + min + "'" + sec;
+                return addtime + " " + min + ":" + sec;
             }
             catch
             {

@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Runtime.Serialization;
+﻿using System.Collections.ObjectModel;
 
 namespace Dystir.Models
 {
@@ -9,5 +6,6 @@ namespace Dystir.Models
     {
         public string StandingCompetitionName { get; set; }
         public ObservableCollection<TeamStanding> TeamStandings { get; set; }
+        public bool IsHeaderVisible { get; set; }
     }
 }

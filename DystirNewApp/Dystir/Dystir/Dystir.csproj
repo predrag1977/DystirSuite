@@ -16,6 +16,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="CarouselView.FormsPlugin" Version="6.0.0" />
     <PackageReference Include="Xamarin.CommunityToolkit" Version="2.0.6" />
+    <PackageReference Include="SkiaSharp" Version="2.88.3" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Newtonsoft.Json" />
