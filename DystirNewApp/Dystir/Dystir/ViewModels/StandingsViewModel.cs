@@ -31,7 +31,7 @@ namespace Dystir.ViewModels
             set { standingCompetitions = value; OnPropertyChanged(); }
         }
 
-        private Standing standing;
+        private Standing standing = new Standing() { IsHeaderVisible = false};
         public Standing Standing
         {
             get { return standing; }
@@ -112,7 +112,7 @@ namespace Dystir.ViewModels
             {
                 competition.TextColor = competition.CompetitionName == StandingsCompetitionSelected.CompetitionName ? Color.LimeGreen : Color.White;
             }
-            StandingCompetitions = new ObservableCollection<Competition>(standingCompetitions);
+            //StandingCompetitions = new ObservableCollection<Competition>(standingCompetitions);
             await Task.CompletedTask;
         }
 

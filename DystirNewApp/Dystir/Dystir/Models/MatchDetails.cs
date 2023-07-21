@@ -103,7 +103,7 @@ namespace Dystir.Models
                     lineups.Add(playerInLineups);
                 }
 
-                var biggerSubstitution = homeTeamSubtitutions.Count >= awayTeamLineups.Count ? homeTeamSubtitutions : awayTeamSubtitutions;
+                var biggerSubstitution = homeTeamSubtitutions.Count >= awayTeamSubtitutions.Count ? homeTeamSubtitutions : awayTeamSubtitutions;
                 for (int i = 0; i < biggerSubstitution.Count; i++)
                 {
                     var playerInLineups = new PlayersInLineups()

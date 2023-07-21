@@ -89,6 +89,7 @@
         </CollectionView>
 
         <ListView Grid.Row="3"
+                  IsVisible="{Binding Standing.IsHeaderVisible}"
                     SelectionMode="None"
                     BackgroundColor="Black"
                     SeparatorVisibility="None"

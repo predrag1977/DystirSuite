@@ -114,7 +114,7 @@ namespace Dystir.ViewModels
             {
                 competition.TextColor = competition.CompetitionName == ResultsCompetitionSelected.CompetitionName ? Color.LimeGreen : Color.White;
             }
-            ResultsCompetitions = new ObservableCollection<Competition>(resultsCompetitions);
+            //ResultsCompetitions = new ObservableCollection<Competition>(resultsCompetitions);
             await Task.CompletedTask;
         }
 

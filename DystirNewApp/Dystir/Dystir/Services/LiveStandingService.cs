@@ -27,11 +27,13 @@ namespace Dystir.Services
         //**********************//
         public Standing GetStanding(string competititionName)
         {
-            var matchesList = _dystirService.AllMatches.Select(x => x.Match).ToList<Match>();
+            var matchesList = _dystirService.AllMatches.Select(x => x.Match).ToList();
+            var teamStandings = GetStandings(competititionName, matchesList);
             Standing standing = new Standing()
             {
                 StandingCompetitionName = competititionName,
-                TeamStandings = GetStandings(competititionName, matchesList)
+                TeamStandings = teamStandings,
+                IsHeaderVisible = teamStandings.Count > 0
             };
             foreach (TeamStanding teamStanding in standing.TeamStandings)
             {
