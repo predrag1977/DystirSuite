@@ -29,6 +29,10 @@ namespace Dystir.Models
         public string EventIconSource { get; set; }
         public bool ShowMinutes { get; set; } = true;
         public Color TextColorOfEventMinute { get; set; } = Color.Khaki;
+        public bool IsHomeSecondPlayerVisible { get; set; }
+        public bool IsAwaySecondPlayerVisible { get; set; }
+        public Color HomeSecondPlayerTextColor { get; set; } = Color.DarkGray;
+        public Color AwaySecondPlayerTextColor { get; set; } = Color.DarkGray;
 
         //**********************//
         //      CONSTRUCTOR     //

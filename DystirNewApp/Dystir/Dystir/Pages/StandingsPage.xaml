@@ -5,6 +5,7 @@
              xmlns:localization="clr-namespace:Dystir.Resources.Localization"
              xmlns:ffsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              xmlns:fftransformation="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:views="clr-namespace:Dystir.Views"
              x:DataType="viewModels:StandingsViewModel"
              xmlns:models="clr-namespace:Dystir.Models"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
@@ -187,6 +188,17 @@
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.Footer>
+                <StackLayout Orientation="Vertical"
+                             Padding="0,10">
+                    <views:SponsorsView BindableLayout.ItemsSource="{Binding FirstCategorySponsors}"
+                                        Margin="0,10" />
+                    <views:SponsorsView BindableLayout.ItemsSource="{Binding SecondCategorySponsors}"
+                                        Margin="0,10" />
+                    <views:SponsorsView BindableLayout.ItemsSource="{Binding ThirdCategorySponsors}"
+                                        Margin="0,10" />
+                </StackLayout>
+            </ListView.Footer>
         </ListView>
 
         <Grid Grid.Row="3"

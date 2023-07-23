@@ -48,6 +48,9 @@ namespace Dystir.ViewModels
             DystirService.OnFullDataLoaded += DystirService_OnFullDataLoaded;
             DystirService.OnMatchDetailsLoaded += DystirService_OnMatchDetailsLoaded;
 
+            var timeService = DependencyService.Get<TimeService>();
+            timeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
+
             LiveStandingService = DependencyService.Get<LiveStandingService>();
 
             CompetitionTapped = new Command<Competition>(OnCompetitionSelected);
@@ -70,6 +73,7 @@ namespace Dystir.ViewModels
                 AllStandings.Add(standing);
             }
             await SetStandingCompetitions();
+            await SetSponsors();
             IsLoading = false;
         }
 
@@ -97,6 +101,11 @@ namespace Dystir.ViewModels
         private void DystirService_OnMatchDetailsLoaded(MatchDetails matchDetails)
         {
             _ = LoadDataAsync();
+        }
+
+        private void TimeService_OnSponsorsTimerElapsed()
+        {
+            _ = SetSponsors();
         }
 
         private async Task SetSelectedCompetition()

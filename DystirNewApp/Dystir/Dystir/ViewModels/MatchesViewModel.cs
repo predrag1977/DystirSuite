@@ -55,7 +55,6 @@ namespace Dystir.ViewModels
 
             var timeService = DependencyService.Get<TimeService>();
             timeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
-            timeService.StartSponsorsTime();
 
             DayTapped = new Command<DayOfMatch>(OnDaySelected);
 

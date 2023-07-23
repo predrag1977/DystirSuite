@@ -103,13 +103,15 @@
         </CollectionView>
 
         <ListView Grid.Row="3"
-                  SeparatorVisibility="None" HasUnevenRows="True"
+                  SeparatorVisibility="None"
+                  SeparatorColor= "Black"
+                  HasUnevenRows="True"
                   CachingStrategy="RecycleElement"
                   SelectionMode="None"
+                  Header=""
                   BackgroundColor="Black"
                   IsGroupingEnabled="True"
                   VerticalOptions="FillAndExpand"
-                  Footer=""
                   ItemsSource="{Binding MatchesGroupList}">
             <ListView.GroupHeaderTemplate>
                 <DataTemplate x:DataType="models:MatchGroup">
@@ -141,6 +143,17 @@
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.Footer>
+                <StackLayout Orientation="Vertical"
+                             Padding="0,10">
+                    <views:SponsorsView BindableLayout.ItemsSource="{Binding FirstCategorySponsors}"
+                                        Margin="0,10" />
+                    <views:SponsorsView BindableLayout.ItemsSource="{Binding SecondCategorySponsors}"
+                                        Margin="0,10" />
+                    <views:SponsorsView BindableLayout.ItemsSource="{Binding ThirdCategorySponsors}"
+                                        Margin="0,10" />
+                </StackLayout>
+            </ListView.Footer>
         </ListView>
 
         <Grid Grid.Row="3"

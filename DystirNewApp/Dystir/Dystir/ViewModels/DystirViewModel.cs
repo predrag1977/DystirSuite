@@ -26,25 +26,27 @@ namespace Dystir.ViewModels
         public Command<Match> MatchTapped { get; }
         public Command NewsTapped { get; }
 
-        ObservableCollection<Sponsor> sponsors = new ObservableCollection<Sponsor>();
-        public ObservableCollection<Sponsor> Sponsors
+        
+
+        ObservableCollection<Sponsor> firstCategorySponsors = new ObservableCollection<Sponsor>();
+        public ObservableCollection<Sponsor> FirstCategorySponsors
         {
-            get { return sponsors; }
-            set { sponsors = value; }
+            get { return firstCategorySponsors; }
+            set { firstCategorySponsors = value; OnPropertyChanged(); }
         }
 
-        ObservableCollection<Sponsor> primarySponsors = new ObservableCollection<Sponsor>();
-        public ObservableCollection<Sponsor> PrimarySponsors
+        ObservableCollection<Sponsor> secondCategorySponsors = new ObservableCollection<Sponsor>();
+        public ObservableCollection<Sponsor> SecondCategorySponsors
         {
-            get { return primarySponsors; }
-            set { primarySponsors = value;  }
+            get { return secondCategorySponsors; }
+            set { secondCategorySponsors = value; OnPropertyChanged(); }
         }
 
-        ObservableCollection<Sponsor> secondarySponsors = new ObservableCollection<Sponsor>();
-        public ObservableCollection<Sponsor> SecondarySponsors
+        ObservableCollection<Sponsor> thirdCategorySponsors = new ObservableCollection<Sponsor>();
+        public ObservableCollection<Sponsor> ThirdCategorySponsors
         {
-            get { return secondarySponsors; }
-            set { secondarySponsors = value;  }
+            get { return thirdCategorySponsors; }
+            set { thirdCategorySponsors = value; OnPropertyChanged(); }
         }
 
         Match selectedMatch;
@@ -82,10 +84,20 @@ namespace Dystir.ViewModels
         //**************************//
         public async Task SetSponsors()
         {
-            Sponsors = DystirService.AllSponsors;
-            var sponsors = new ObservableCollection<Sponsor>(Sponsors.OrderBy(a => Guid.NewGuid()));
-            PrimarySponsors = new ObservableCollection<Sponsor>(sponsors.Where(x => x.SponsorID < 100).OrderBy(a => Guid.NewGuid()));
-            SecondarySponsors = new ObservableCollection<Sponsor>(PrimarySponsors?.Take(2));
+            var sponsors = DystirService.AllSponsors;
+            
+            var firstCategorySponsors = sponsors.Where(x => x.SponsorID < 20).OrderBy(a => Guid.NewGuid());
+            firstCategorySponsors.ToList().ForEach(x => x.Size = new Size(180, 60));
+            FirstCategorySponsors = new ObservableCollection<Sponsor>(firstCategorySponsors);
+
+            var secondCategorySponsors = sponsors.Where(x => x.SponsorID >= 20 && x.SponsorID < 100).OrderBy(a => Guid.NewGuid());
+            secondCategorySponsors.ToList().ForEach(x => x.Size = new Size(150, 50));
+            SecondCategorySponsors = new ObservableCollection<Sponsor>(secondCategorySponsors);
+
+            var thirdCategorySponsors = sponsors.Where(x => x.SponsorID >= 100).OrderBy(a => Guid.NewGuid());
+            thirdCategorySponsors.ToList().ForEach(x => x.Size = new Size(90, 30));
+            ThirdCategorySponsors = new ObservableCollection<Sponsor>(thirdCategorySponsors);
+
             await Task.CompletedTask;
         }
 
@@ -99,19 +111,6 @@ namespace Dystir.ViewModels
 
             SelectedMatch = match;
             await Shell.Current.GoToAsync($"{nameof(MatchDetailPage)}?MatchID={match.MatchID}");
-            //await Shell.Current.Navigation.PushAsync(new MatchDetailPage(match.MatchID));
-            //await Shell.Current.Navigation.PushModalAsync(new MatchDetailPage());
-            //SelectedMatch = match;
-            //var matchDetailPage = ListMatchDetailPages.FirstOrDefault(x => x.MatchID == match.MatchID);
-            //if (matchDetailPage == null)
-            //{
-            //    matchDetailPage = new MatchDetailPage(match.MatchID);
-            //    ListMatchDetailPages.Add(matchDetailPage);
-            //}
-
-            //// This will push the MatchDetailPage onto the navigation stack
-            ////await Shell.Current.GoToAsync($"{nameof(MatchDetailPage)}?MatchID={match.MatchID}");
-            //await Shell.Current.Navigation.PushAsync(matchDetailPage);
         }
 
         async void OnNewsTapped()

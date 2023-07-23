@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="2023.0.0" package="fo.Dystir" android:installLocation="auto" android:versionCode="75">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="2023.0.0" package="fo.Dystir" android:installLocation="auto" android:versionCode="78">
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33" />
 	<application android:label="Dystir" android:theme="@style/MainTheme" android:icon="@drawable/dystir_icon"></application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

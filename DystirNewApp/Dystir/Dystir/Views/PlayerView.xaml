@@ -21,7 +21,7 @@
            BackgroundColor="#181818">
         <Grid VerticalOptions="CenterAndExpand"
               HorizontalOptions="FillAndExpand"
-              Padding="2"
+              Padding="2,2,4,2"
               ColumnDefinitions="40,*">
 
             <Grid Grid.Column="0"
@@ -35,6 +35,7 @@
 
                 <Label Grid.Row="1"
                        FontSize="10"
+                       IsVisible="{Binding IsPositionVisible}"
                        Text="{Binding Position}"
                        TextColor="DarkGray"/>
             </Grid>
@@ -44,7 +45,7 @@
                   VerticalOptions="Center">
                 <Label Grid.Row="0"
                        Text="{Binding FirstName}"
-                       Margin="0,2"
+                       Margin="0,0,0,2"
                        HorizontalTextAlignment="Start"
                        HorizontalOptions="StartAndExpand"
                        LineBreakMode="WordWrap"

@@ -43,7 +43,8 @@
                     <Label Text="{Binding HomeMainPlayer}"
                            HorizontalOptions="Start"/>
                     <Label Text="{Binding HomeSecondPlayer}"
-                           TextColor="DarkGray"
+                           IsVisible="{Binding IsHomeSecondPlayerVisible}"
+                           TextColor="{Binding HomeSecondPlayerTextColor}"
                            HorizontalOptions="Start"/>
                 </StackLayout>
                 <StackLayout IsVisible="{Binding IsGoal}"
@@ -119,7 +120,8 @@
                     <Label Text="{Binding AwayMainPlayer}"
                            HorizontalOptions="End"/>
                     <Label Text="{Binding AwaySecondPlayer}"
-                           TextColor="DarkGray"
+                           IsVisible="{Binding IsAwaySecondPlayerVisible}"
+                           TextColor="{Binding AwaySecondPlayerTextColor}"
                            HorizontalOptions="End"/>
                 </StackLayout>
                 <ffsvg:SvgCachedImage Margin="4,0"
