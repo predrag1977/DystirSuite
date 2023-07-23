@@ -25,6 +25,8 @@ namespace Dystir
             var languageService = DependencyService.Get<LanguageService>();
             languageService.SetLanguage();
 
+            var timeService = DependencyService.Get<TimeService>();
+            timeService.StartSponsorsTime();
         }
 
         private void ServiceRegistrations()

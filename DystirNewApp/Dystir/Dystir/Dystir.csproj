@@ -61,6 +61,7 @@
     <None Remove="Resources\Images\penalty.svg" />
     <None Remove="Resources\Images\penaltymissed.svg" />
     <None Remove="Resources\Images\dystir_icon.png" />
+    <None Remove="Resources\Images\commentary.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pages\" />
@@ -92,5 +93,6 @@
     <EmbeddedResource Include="Resources\Images\penalty.svg" />
     <EmbeddedResource Include="Resources\Images\penaltymissed.svg" />
     <EmbeddedResource Include="Resources\Images\dystir_icon.png" />
+    <EmbeddedResource Include="Resources\Images\commentary.svg" />
   </ItemGroup>
 </Project>

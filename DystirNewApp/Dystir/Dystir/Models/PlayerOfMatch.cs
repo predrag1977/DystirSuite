@@ -1,8 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace Dystir.Models
 {
@@ -50,7 +46,7 @@ namespace Dystir.Models
         public string Position
         {
             get { return _position; }
-            set { _position = value; }
+            set { _position = value; IsPositionVisible = (value?.Length ?? 0) > 0; }
         }
 
         [JsonProperty("PlayerID")]
@@ -179,5 +175,7 @@ namespace Dystir.Models
         public string SubInImageSource { get; set; } = string.Empty;
 
         public string SubOutImageSource { get; set; } = string.Empty;
+
+        public bool IsPositionVisible { get; set; }
     }
 }

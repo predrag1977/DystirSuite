@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using Dystir.Services;
 using Dystir.Models;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.Linq;
@@ -51,7 +49,6 @@ namespace Dystir.ViewModels
 
             var timeService = DependencyService.Get<TimeService>();
             timeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
-            timeService.StartSponsorsTime();
 
             CompetitionTapped = new Command<Competition>(OnCompetitionSelected);
 
@@ -124,10 +121,10 @@ namespace Dystir.ViewModels
             var fromDate = new DateTime(toDate.Year - 1, 12, 31);
 
             var resultsMatches = DystirService.AllMatches?.Where(x => x.Match.Time > fromDate
-                && x.Match.Time < toDate
-                || (x.Match.StatusID == 13
-                || x.Match.StatusID == 12));
-            var orderedResultsMatches = resultsMatches.OrderBy(x => x.Match.MatchTypeID)
+                && x.Match.Time < toDate && IsMatchTypeForResult(x.Match.MatchTypeID))
+                .Where(x=> x.Match.StatusID == 12 || x.Match.StatusID == 13);
+            var orderedResultsMatches = resultsMatches
+                .OrderBy(x => GetOrder(x.Match.MatchTypeID))
                 .ThenByDescending(x => x.Match.Time)
                 .ThenBy(x => x.Match.MatchID)
                 .Select(x=>x.Match);
@@ -157,6 +154,8 @@ namespace Dystir.ViewModels
             await Task.CompletedTask;
         }
 
+        
+
         private async Task SetResults()
         {
             var resultsMatches = AllResultsMatches?.Where(x => x.MatchTypeName == ResultsCompetitionSelected.CompetitionName)
@@ -165,6 +164,25 @@ namespace Dystir.ViewModels
                 .ThenBy(x => x.MatchTypeID);
             ResultsGroupList = new ObservableCollection<MatchGroup>(resultsMatches.GroupBy(x => x.RoundName).Select(group => new MatchGroup(group.Key, new ObservableCollection<Match>(group))));
             await Task.CompletedTask;
+        }
+
+        private bool IsMatchTypeForResult(int? matchTypeID)
+        {
+            int?[] matchTypeIDs = { 1, 2, 5, 6, 101, 102 };
+            return matchTypeIDs.Contains(matchTypeID);
+        }
+
+        private object GetOrder(int? matchTypeId)
+        {
+            switch (matchTypeId)
+            {
+                case 101:
+                    return 2;
+                case 2:
+                    return 101;
+                default:
+                    return matchTypeId;
+            }
         }
     }
 }

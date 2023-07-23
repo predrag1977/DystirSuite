@@ -15,7 +15,7 @@ using System.Text.RegularExpressions;
 
 namespace Dystir.Models
 {
-    
+
     public class MatchDetails
     {
         //*****************************//
@@ -271,6 +271,20 @@ namespace Dystir.Models
                     summaryEventOfMatch.HomeSecondPlayer = homeMainPlayer;
                     summaryEventOfMatch.AwaySecondPlayer = awayMainPlayer;
                 }
+                else if (eventOfMatch.EventName == "PENALTYSCORED")
+                {
+                    summaryEventOfMatch.HomeSecondPlayer = summaryEventOfMatch.AwaySecondPlayer = Resources.Localization.Resources.Penalty.ToLower();
+                    summaryEventOfMatch.HomeSecondPlayerTextColor = summaryEventOfMatch.AwaySecondPlayerTextColor = Color.LimeGreen;
+                }
+                else if (eventOfMatch.EventName == "PENALTYMISSED")
+                {
+                    summaryEventOfMatch.HomeSecondPlayer = summaryEventOfMatch.AwaySecondPlayer = Resources.Localization.Resources.PenaltyMissed.ToLower();
+                    summaryEventOfMatch.HomeSecondPlayerTextColor = summaryEventOfMatch.AwaySecondPlayerTextColor = Color.Red;
+                }
+
+                summaryEventOfMatch.IsHomeSecondPlayerVisible = !string.IsNullOrEmpty(summaryEventOfMatch.HomeSecondPlayer);
+                summaryEventOfMatch.IsAwaySecondPlayerVisible = !string.IsNullOrEmpty(summaryEventOfMatch.AwaySecondPlayer);
+
                 eventOfMatchesList.Add(summaryEventOfMatch);
             }
 

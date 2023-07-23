@@ -50,7 +50,6 @@ namespace Dystir.ViewModels
 
             var timeService = DependencyService.Get<TimeService>();
             timeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
-            timeService.StartSponsorsTime();
 
             CompetitionTapped = new Command<Competition>(OnCompetitionSelected);
 

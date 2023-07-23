@@ -96,7 +96,7 @@
                   BackgroundColor="Black"
                   IsGroupingEnabled="True"
                   VerticalOptions="FillAndExpand"
-                  Footer=""
+                  Header=""
                   ItemsSource="{Binding ResultsGroupList}">
             <ListView.GroupHeaderTemplate>
                 <DataTemplate x:DataType="models:MatchGroup">
@@ -128,6 +128,17 @@
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.Footer>
+                <StackLayout Orientation="Vertical"
+                             Padding="0,10">
+                    <views:SponsorsView BindableLayout.ItemsSource="{Binding FirstCategorySponsors}"
+                                        Margin="0,10" />
+                    <views:SponsorsView BindableLayout.ItemsSource="{Binding SecondCategorySponsors}"
+                                        Margin="0,10" />
+                    <views:SponsorsView BindableLayout.ItemsSource="{Binding ThirdCategorySponsors}"
+                                        Margin="0,10" />
+                </StackLayout>
+            </ListView.Footer>
         </ListView>
 
         <Grid Grid.Row="3"

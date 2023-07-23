@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<FlexLayout xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="Dystir.Views.SponsorsView"
+            xmlns:ffsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+            xmlns:models="clr-namespace:Dystir.Models"
+            xmlns:viewModels="clr-namespace:Dystir.ViewModels"
+            x:DataType="viewModels:DystirViewModel"
+            Wrap="Wrap"
+            JustifyContent="Center">
+
+    <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="models:Sponsor">
+                    <Frame x:DataType="models:Sponsor"
+                        HasShadow="True"
+                        CornerRadius="10"
+                        HeightRequest="{Binding Size.Height}"
+                        WidthRequest="{Binding Size.Width}"
+                        BorderColor="DarkGray"
+                        Padding="2"
+                        Margin="5"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        BackgroundColor="White">
+
+                        <ffsvg:SvgCachedImage HeightRequest="{Binding Size.Height}"
+                                              WidthRequest="{Binding Size.Width}"
+                                              Source="{Binding SponsorsName}"/>
+                    </Frame>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+
+</FlexLayout>

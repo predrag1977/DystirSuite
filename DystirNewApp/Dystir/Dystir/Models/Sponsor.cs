@@ -1,7 +1,5 @@
-﻿using Dystir.ViewModels;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using Xamarin.Forms;
 
 namespace Dystir.Models
 {
@@ -15,5 +13,7 @@ namespace Dystir.Models
 
         [JsonProperty("SponsorWebSite")]
         public string SponsorWebSite { get; internal set; }
+
+        public Size Size { get; set; }
     }
 }
