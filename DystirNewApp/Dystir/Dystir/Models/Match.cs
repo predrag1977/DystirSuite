@@ -4,6 +4,7 @@ using Dystir.Services;
 using Newtonsoft.Json;
 using System;
 using Xamarin.Forms;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Dystir.Models
 {
@@ -12,6 +13,8 @@ namespace Dystir.Models
         //**********************//
         //      PROPERTIES      //
         //**********************//
+        private readonly DystirService dystirService;
+
         [JsonProperty("HomeTeam")]
         public string HomeTeam { get; internal set; }
 
@@ -178,10 +181,9 @@ namespace Dystir.Models
         //**********************//
         public Match()
         {
+            dystirService = DependencyService.Get<DystirService>();
             TimeService timeService = DependencyService.Get<TimeService>();
             timeService.OnTimerElapsed += OnTimerElapsed;
-            LanguageService languageService = DependencyService.Get<LanguageService>();
-            languageService.OnLanguageChanged += LanguageServiceOnLanguageChanged;
             SetMatchTime();
         }
 
@@ -191,11 +193,6 @@ namespace Dystir.Models
         private void OnTimerElapsed()
         {
             SetMatchTime();
-        }
-
-        private void LanguageServiceOnLanguageChanged()
-        {
-            
         }
 
         private void SetMatchTime()
@@ -279,7 +276,14 @@ namespace Dystir.Models
                     min = "0" + min;
                 if (seconds < 10)
                     sec = "0" + sec;
-                return addtime + " " + min + ":" + sec;
+                if (dystirService?.HubConnection.State == HubConnectionState.Disconnected && !string.IsNullOrEmpty(addtime))
+                {
+                    return addtime;
+                }
+                else
+                {
+                    return addtime + " " + min + ":" + sec;
+                }       
             }
             catch
             {
