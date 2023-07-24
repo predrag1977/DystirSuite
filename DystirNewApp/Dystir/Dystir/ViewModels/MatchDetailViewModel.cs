@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Threading.Tasks;
 using Dystir.Models;
 using Dystir.Services;
 using Xamarin.Forms;
+using Match = Dystir.Models.Match;
 
 namespace Dystir.ViewModels
 {
@@ -16,7 +16,6 @@ namespace Dystir.ViewModels
         //      PROPERTIES      //
         //**********************//
 
-        public static int? MatchID { get; internal set; }
         public Command<MatchDetailsTab> MatchDetailsTabTapped { get; }
 
         MatchDetails matchDetails;
@@ -85,19 +84,24 @@ namespace Dystir.ViewModels
         //**********************//
         //     CONSTRUCTOR      //
         //**********************//
-        public MatchDetailViewModel(int? matchID)
+        public MatchDetailViewModel(int matchID)
         {
-            MatchID = matchID;
             DystirService = DependencyService.Get<DystirService>();
             DystirService.OnShowLoading += DystirService_OnShowLoading;
             DystirService.OnFullDataLoaded += DystirService_OnFullDataLoaded;
             DystirService.OnMatchDetailsLoaded += DystirService_OnMatchDetailsLoaded;
 
-            var timeService = DependencyService.Get<TimeService>();
-            timeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
-            timeService.StartSponsorsTime();
+            TimeService = DependencyService.Get<TimeService>();
+            TimeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
 
             MatchDetailsTabTapped = new Command<MatchDetailsTab>(OnMatchDetailsTabTapped);
+
+            var previousMatchDetails = DystirService.AllMatches.FirstOrDefault(x => x.Match?.MatchID == matchID);
+            MatchDetails = new MatchDetails()
+            {
+                MatchDetailsID = previousMatchDetails.MatchDetailsID,
+                Match = previousMatchDetails.Match
+            };
         }
 
         //**********************//
@@ -107,29 +111,14 @@ namespace Dystir.ViewModels
         {
             try
             {
-                if(MatchID == null)
-                {
-                    return;
-                }
+                var matchDetails = DystirService.AllMatches.FirstOrDefault(x => x.Match?.MatchID == MatchDetails.MatchDetailsID);
                 IsLoading = true;
-                var reverse = DystirService.AllMatches.Reverse();
-                foreach (var matchDetails in reverse)
+                if (matchDetails?.IsDataLoaded == false)
                 {
-                    if(matchDetails.MatchDetailsID == MatchID)
-                    {
-                        if (matchDetails?.IsDataLoaded == false)
-                        {
-                            MatchDetails = await DystirService.GetMatchDetailsAsync(MatchID ?? 0);
-                        }
-                        else
-                        {
-                            MatchDetails = matchDetails;
-                        }
-                        break;
-                    }
+                    matchDetails = await DystirService.GetMatchDetailsAsync(MatchDetails.MatchDetailsID);
                 }
-                
-                SelectedMatch = MatchDetails.Match;
+                await matchDetails.SetFullData();
+                MatchDetails = matchDetails;
                 await PopulateMatchDetailsTabs();
                 IsLoading = false;
             }
@@ -139,54 +128,60 @@ namespace Dystir.ViewModels
             }
         }
 
+        internal void Dispose()
+        {
+            DystirService.OnShowLoading -= DystirService_OnShowLoading;
+            DystirService.OnFullDataLoaded -= DystirService_OnFullDataLoaded;
+            DystirService.OnMatchDetailsLoaded -= DystirService_OnMatchDetailsLoaded;
+
+            TimeService.OnSponsorsTimerElapsed -= TimeService_OnSponsorsTimerElapsed;
+        }
+
         //**********************//
         //    PRIVATE METHODS   //
         //**********************//
         public async Task PopulateMatchDetailsTabs()
         {
             var matchDetailsTabs = new ObservableCollection<MatchDetailsTab>();
-            var matchTypeID = SelectedMatch.MatchTypeID;
+            var matchTypeID = MatchDetails.Match.MatchTypeID;
 
-            if (matchTypeID != null)
+            matchDetailsTabs.Add(new MatchDetailsTab()
+            {
+                TabIndex = matchDetailsTabs.Count,
+                TabName = Resources.Localization.Resources.Summary,
+                TextColor = Color.LimeGreen
+            });
+            matchDetailsTabs.Add(new MatchDetailsTab()
+            {
+                TabIndex = matchDetailsTabs.Count,
+                TabName = Resources.Localization.Resources.FirstEleven
+            });
+            matchDetailsTabs.Add(new MatchDetailsTab()
+            {
+                TabIndex = matchDetailsTabs.Count,
+                TabName = Resources.Localization.Resources.Commentary
+            });
+            matchDetailsTabs.Add(new MatchDetailsTab()
+            {
+                TabIndex = matchDetailsTabs.Count,
+                TabName = Resources.Localization.Resources.Statistics
+            });
+
+            if (matchTypeID == 1
+                || matchTypeID == 5
+                || matchTypeID == 6
+                || matchTypeID == 15
+                || matchTypeID == 101)
             {
                 matchDetailsTabs.Add(new MatchDetailsTab()
                 {
                     TabIndex = matchDetailsTabs.Count,
-                    TabName = Resources.Localization.Resources.Summary,
-                    TextColor = Color.LimeGreen
+                    TabName = Resources.Localization.Resources.StandingsTab
                 });
-                matchDetailsTabs.Add(new MatchDetailsTab()
-                {
-                    TabIndex = matchDetailsTabs.Count,
-                    TabName = Resources.Localization.Resources.FirstEleven
-                });
-                matchDetailsTabs.Add(new MatchDetailsTab()
-                {
-                    TabIndex = matchDetailsTabs.Count,
-                    TabName = Resources.Localization.Resources.Commentary
-                });
-                matchDetailsTabs.Add(new MatchDetailsTab()
-                {
-                    TabIndex = matchDetailsTabs.Count,
-                    TabName = Resources.Localization.Resources.Statistics
-                });
-
-                if (matchTypeID == 1
-                    || matchTypeID == 5
-                    || matchTypeID == 6
-                    || matchTypeID == 15
-                    || matchTypeID == 101)
-                {
-                    matchDetailsTabs.Add(new MatchDetailsTab()
-                    {
-                        TabIndex = matchDetailsTabs.Count,
-                        TabName = Resources.Localization.Resources.StandingsTab
-                    });
-                }
             }
 
             MatchDetailsTabs = new ObservableCollection<MatchDetailsTab>(matchDetailsTabs);
-            if(SelectedMatchDetailsTab == null)
+            if (SelectedMatchDetailsTab == null)
             {
                 SelectedMatchDetailsTab = MatchDetailsTabs.FirstOrDefault();
             }
@@ -196,26 +191,18 @@ namespace Dystir.ViewModels
             }
             await Task.CompletedTask;
         }
-
-        private static ObservableCollection<PlayerOfMatch> GetLineups(MatchDetails matchDetails, string Team, int playingStatus)
-        {
-            var lineUps = matchDetails.PlayersOfMatch.Where(x => x.TeamName == Team && x.PlayingStatus == playingStatus).OrderBy(x => x.Number);
-            return new ObservableCollection<PlayerOfMatch>(lineUps);
-        }
         
         private async Task SetMatchesBySelectedDate()
         {
-            var matches = DystirService.AllMatches?.Where(x => x.Match.Time?.Date == SelectedMatch?.Time?.AddSeconds(1).Date)
+            var matches = DystirService.AllMatches?.Where(x => x.Match.Time?.Date == MatchDetails?.Match?.Time?.AddSeconds(1).Date)
                 .Select(x => x.Match)
                 .OrderBy(x => x.MatchTypeID)
-                .ThenBy(x => x.Time)?.ToList() ?? new List<Match>();
+                .ThenBy(x => x.Time)?.ToList();
 
-            if (SelectedMatch != null)
-            {
+            
                 matches.RemoveAll(x => x.MatchID == MatchDetails.MatchDetailsID);
-                matches.Insert(0, SelectedMatch);
+                matches.Insert(0, MatchDetails.Match);
                 MatchesBySelectedDate = new ObservableCollection<Match>(matches);
-            }
             await Task.CompletedTask;
         }
 
@@ -270,11 +257,10 @@ namespace Dystir.ViewModels
 
         private async void DystirService_OnMatchDetailsLoaded(MatchDetails matchDetails)
         {
-            if (MatchDetails.MatchDetailsID == matchDetails?.MatchDetailsID)
+            if (MatchDetails?.MatchDetailsID == matchDetails?.MatchDetailsID)
             {
-                SelectedMatch = matchDetails.Match;
+                await matchDetails.SetFullData();
                 MatchDetails = matchDetails;
-                await MatchDetails.SetFullData();
                 await PopulateMatchDetailsTabs();
             }
             await SetMatchesBySelectedDate();

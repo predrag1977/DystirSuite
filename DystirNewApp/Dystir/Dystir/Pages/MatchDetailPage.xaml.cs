@@ -8,18 +8,16 @@ using System.Linq;
 namespace Dystir.Pages
 {
     [QueryProperty(nameof(MatchID), nameof(MatchID))]
-    public partial class MatchDetailPage : ContentPage
+    public partial class MatchDetailPage : ContentPage, IDisposable
     {
         private MatchDetailViewModel matchDetailViewModel;
 
         public int MatchID { get; set; }
 
-        private readonly DystirService dystirService;
         private readonly AnalyticsService analyticsService;
 
         public MatchDetailPage()
         {
-            dystirService = DependencyService.Get<DystirService>();
             analyticsService = DependencyService.Get<AnalyticsService>();
 
             InitializeComponent();
@@ -35,19 +33,18 @@ namespace Dystir.Pages
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-            matchDetailViewModel.SelectedMatch = null;
+            Dispose();
         }
 
         private async Task LoadDataAsync()
         {
             matchDetailViewModel.IsLoading = true;
-            matchDetailViewModel.SelectedMatch = dystirService.AllMatches.FirstOrDefault(x => x.Match?.MatchID == MatchID).Match;
-
+            
             await matchDetailViewModel.PopulateMatchDetailsTabs();
             await Task.Delay(100);
             await matchDetailViewModel.LoadMatchDetailAsync();
 
-            analyticsService.MatchDetails(matchDetailViewModel.SelectedMatch);
+            analyticsService.MatchDetails(matchDetailViewModel.MatchDetails.Match);
         }
 
         private async void BackButton_Clicked(object sender, EventArgs e)
@@ -56,7 +53,7 @@ namespace Dystir.Pages
             await Navigation.PopAsync(true);
         }
 
-        private async void RefreshButton_Clicked(System.Object sender, System.EventArgs e)
+        private async void RefreshButton_Clicked(object sender, EventArgs e)
         {
             if (matchDetailViewModel.IsLoading == false)
             {
@@ -64,9 +61,14 @@ namespace Dystir.Pages
             }
         }
 
-        async void News_Tapped(System.Object sender, System.EventArgs e)
+        async void News_Tapped(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync($"{nameof(NewsPage)}");
+        }
+
+        public void Dispose()
+        {
+            matchDetailViewModel.Dispose();
         }
     }
 }

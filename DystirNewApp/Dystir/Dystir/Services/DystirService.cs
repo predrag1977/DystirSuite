@@ -112,7 +112,6 @@ namespace Dystir.Services
             try
             {
                 matchDetails = await _dataLoadService.GetMatchDetailsAsync(matchID);
-                await matchDetails.SetFullData();
                 UpdateDataAsync(matchDetails);
             }
             catch (Exception ex)
