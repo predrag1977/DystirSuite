@@ -90,8 +90,8 @@
         </CollectionView>
 
         <ListView Grid.Row="3"
-                  SeparatorVisibility="None" HasUnevenRows="True"
-                  CachingStrategy="RecycleElement"
+                  SeparatorVisibility="None"
+                  HasUnevenRows="True"
                   SelectionMode="None"
                   BackgroundColor="Black"
                   IsGroupingEnabled="True"

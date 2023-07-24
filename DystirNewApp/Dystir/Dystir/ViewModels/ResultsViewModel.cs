@@ -42,18 +42,12 @@ namespace Dystir.ViewModels
         //**********************//
         public ResultsViewModel()
         {
-            DystirService = DependencyService.Get<DystirService>();
-            DystirService.OnShowLoading += DystirService_OnShowLoading;
             DystirService.OnFullDataLoaded += DystirService_OnFullDataLoaded;
             DystirService.OnMatchDetailsLoaded += DystirService_OnMatchDetailsLoaded;
 
-            var timeService = DependencyService.Get<TimeService>();
-            timeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
+            TimeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
 
             CompetitionTapped = new Command<Competition>(OnCompetitionSelected);
-
-            IsLoading = true;
-            _ = SetResultCompetitions();
         }
 
         //**********************//
@@ -61,10 +55,13 @@ namespace Dystir.ViewModels
         //**********************//
         public async Task LoadDataAsync()
         {
-            await Task.Delay(200);
-            await SetResultCompetitions();
+            await Task.Delay(100);
+            if(DystirService.AllMatches != null)
+            {
+                await SetResultCompetitions();
+                IsLoading = false;
+            }
             await SetSponsors();
-            IsLoading = false;
         }
 
         //**********************//
@@ -76,11 +73,6 @@ namespace Dystir.ViewModels
                 return;
 
             ResultsCompetitionSelected = competition;
-        }
-
-        private void DystirService_OnShowLoading()
-        {
-            IsLoading = true;
         }
 
         private void DystirService_OnFullDataLoaded()
@@ -153,8 +145,6 @@ namespace Dystir.ViewModels
             await SetSelectedCompetition();
             await Task.CompletedTask;
         }
-
-        
 
         private async Task SetResults()
         {

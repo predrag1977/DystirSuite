@@ -43,19 +43,15 @@ namespace Dystir.ViewModels
         //**********************//
         public StandingsViewModel()
         {
-            DystirService = DependencyService.Get<DystirService>();
-            DystirService.OnShowLoading += DystirService_OnShowLoading;
             DystirService.OnFullDataLoaded += DystirService_OnFullDataLoaded;
             DystirService.OnMatchDetailsLoaded += DystirService_OnMatchDetailsLoaded;
 
-            var timeService = DependencyService.Get<TimeService>();
-            timeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
+            TimeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
 
             LiveStandingService = DependencyService.Get<LiveStandingService>();
 
             CompetitionTapped = new Command<Competition>(OnCompetitionSelected);
 
-            IsLoading = true;
             _ = SetStandingCompetitions();
         }
 
@@ -65,16 +61,19 @@ namespace Dystir.ViewModels
         public async Task LoadDataAsync()
         {
             await Task.Delay(200);
-            var competitions = DystirService.AllCompetitions.Where(x => x.CompetitionID > 0).OrderBy(x => x.OrderID);
-            AllStandings = new ObservableCollection<Standing>();
-            foreach (MatchCompetition competition in competitions)
+            if (DystirService.AllMatches != null)
             {
-                var standing = LiveStandingService.GetStanding(competition.MatchTypeName);
-                AllStandings.Add(standing);
+                var competitions = DystirService.AllCompetitions.Where(x => x.CompetitionID > 0).OrderBy(x => x.OrderID);
+                AllStandings = new ObservableCollection<Standing>();
+                foreach (MatchCompetition competition in competitions)
+                {
+                    var standing = LiveStandingService.GetStanding(competition.MatchTypeName);
+                    AllStandings.Add(standing);
+                }
+                await SetStandingCompetitions();
+                IsLoading = false;
             }
-            await SetStandingCompetitions();
             await SetSponsors();
-            IsLoading = false;
         }
 
         //**********************//
@@ -86,11 +85,6 @@ namespace Dystir.ViewModels
                 return;
 
             StandingsCompetitionSelected = competition;
-        }
-
-        private void DystirService_OnShowLoading()
-        {
-            IsLoading = true;
         }
 
         private void DystirService_OnFullDataLoaded()

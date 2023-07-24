@@ -28,7 +28,6 @@
 
     <ListView SeparatorVisibility="None"
                   HasUnevenRows="True"
-                  CachingStrategy="RecycleElement"
                   SelectionMode="None"
                   BackgroundColor="Black"
                   VerticalOptions="FillAndExpand"

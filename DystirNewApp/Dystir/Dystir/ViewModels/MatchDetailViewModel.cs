@@ -86,22 +86,21 @@ namespace Dystir.ViewModels
         //**********************//
         public MatchDetailViewModel(int matchID)
         {
-            DystirService = DependencyService.Get<DystirService>();
-            DystirService.OnShowLoading += DystirService_OnShowLoading;
             DystirService.OnFullDataLoaded += DystirService_OnFullDataLoaded;
             DystirService.OnMatchDetailsLoaded += DystirService_OnMatchDetailsLoaded;
-
-            TimeService = DependencyService.Get<TimeService>();
             TimeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
 
             MatchDetailsTabTapped = new Command<MatchDetailsTab>(OnMatchDetailsTabTapped);
 
-            var previousMatchDetails = DystirService.AllMatches.FirstOrDefault(x => x.Match?.MatchID == matchID);
-            MatchDetails = new MatchDetails()
+            var previousMatchDetails = DystirService.AllMatches?.FirstOrDefault(x => x.Match?.MatchID == matchID);
+            if(previousMatchDetails != null)
             {
-                MatchDetailsID = previousMatchDetails.MatchDetailsID,
-                Match = previousMatchDetails.Match
-            };
+                MatchDetails = new MatchDetails()
+                {
+                    MatchDetailsID = previousMatchDetails.MatchDetailsID,
+                    Match = previousMatchDetails?.Match
+                };
+            }
         }
 
         //**********************//
@@ -111,8 +110,8 @@ namespace Dystir.ViewModels
         {
             try
             {
-                var matchDetails = DystirService.AllMatches.FirstOrDefault(x => x.Match?.MatchID == MatchDetails.MatchDetailsID);
                 IsLoading = true;
+                var matchDetails = DystirService.AllMatches?.FirstOrDefault(x => x.Match?.MatchID == MatchDetails.MatchDetailsID);
                 if (matchDetails?.IsDataLoaded == false)
                 {
                     matchDetails = await DystirService.GetMatchDetailsAsync(MatchDetails.MatchDetailsID);
@@ -133,7 +132,6 @@ namespace Dystir.ViewModels
             DystirService.OnShowLoading -= DystirService_OnShowLoading;
             DystirService.OnFullDataLoaded -= DystirService_OnFullDataLoaded;
             DystirService.OnMatchDetailsLoaded -= DystirService_OnMatchDetailsLoaded;
-
             TimeService.OnSponsorsTimerElapsed -= TimeService_OnSponsorsTimerElapsed;
         }
 
@@ -243,11 +241,6 @@ namespace Dystir.ViewModels
                 return;
 
             SelectedMatchDetailsTab = matchDetailsTab;
-        }
-
-        private void DystirService_OnShowLoading()
-        {
-            IsLoading = true;
         }
 
         private async void DystirService_OnFullDataLoaded()

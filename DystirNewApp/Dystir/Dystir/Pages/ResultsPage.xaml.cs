@@ -1,10 +1,7 @@
 ﻿using System;
-using System.ComponentModel;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 using Dystir.ViewModels;
 using Dystir.Services;
-using Dystir.Models;
 
 namespace Dystir.Pages
 {

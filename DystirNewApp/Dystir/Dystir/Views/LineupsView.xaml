@@ -8,8 +8,7 @@
              x:Class="Dystir.Views.LineupsView">
 
     <ListView SeparatorVisibility="None"
-            HasUnevenRows="True"
-            CachingStrategy="RecycleElement"
+              HasUnevenRows="True"
             SelectionMode="None"
             BackgroundColor="Black"
             VerticalOptions="FillAndExpand"

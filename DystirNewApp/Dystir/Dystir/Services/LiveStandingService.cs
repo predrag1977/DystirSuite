@@ -27,7 +27,7 @@ namespace Dystir.Services
         //**********************//
         public Standing GetStanding(string competititionName)
         {
-            var matchesList = _dystirService.AllMatches.Select(x => x.Match).ToList();
+            var matchesList = _dystirService.AllMatches?.Select(x => x.Match)?.ToList();
             var teamStandings = GetStandings(competititionName, matchesList);
             Standing standing = new Standing()
             {
@@ -43,12 +43,12 @@ namespace Dystir.Services
             return standing;
         }
 
-        public static ObservableCollection<TeamStanding> GetStandings(string competitionName, IEnumerable<Match> matchesList)
+        public static ObservableCollection<TeamStanding> GetStandings(string competitionName, List<Match> matchesList)
         {
-            List<TeamStanding> teamStandings = new List<TeamStanding>();
+            var teamStandings = new List<TeamStanding>();
             try
             {
-                List<Match> matches = matchesList?.Where(x => x.MatchTypeName == competitionName && /*(x.StatusId == 13 || x.StatusId == 12)&& */ (x.RoundID < 1000)).ToList();
+                var matches = matchesList?.Where(x => x.MatchTypeName == competitionName && /*(x.StatusId == 13 || x.StatusId == 12)&& */ (x.RoundID < 1000)).ToList();
                 foreach (Match match in matches)
                 {
                     if (!teamStandings.Any(x => x.Team.Trim() == match.HomeTeam.Trim()))
@@ -115,6 +115,7 @@ namespace Dystir.Services
             }
             teamStanding.MatchesNo += 1;
             teamStanding.MatchesNo = teamStanding.IsLive ? teamStanding.MatchesNo - 1 : teamStanding.MatchesNo;
+            teamStanding.LiveColor = teamStanding.IsLive ? Color.LimeGreen : Color.Transparent;
             if (mainTeamScore != null && opponentTeamScore != null)
             {
                 if (mainTeamScore > opponentTeamScore)

@@ -3,7 +3,6 @@ using Dystir.ViewModels;
 using System;
 using System.Threading.Tasks;
 using Dystir.Services;
-using System.Linq;
 
 namespace Dystir.Pages
 {
@@ -38,10 +37,8 @@ namespace Dystir.Pages
 
         private async Task LoadDataAsync()
         {
-            matchDetailViewModel.IsLoading = true;
-            
             await matchDetailViewModel.PopulateMatchDetailsTabs();
-            await Task.Delay(100);
+            await Task.Delay(200);
             await matchDetailViewModel.LoadMatchDetailAsync();
 
             analyticsService.MatchDetails(matchDetailViewModel.MatchDetails.Match);
