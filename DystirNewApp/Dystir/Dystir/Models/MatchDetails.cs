@@ -25,12 +25,7 @@ namespace Dystir.Models
 
         public bool IsDataLoaded = false;
 
-        private Match match;
-        public Match Match
-        {
-            get { return match; }
-            set { match = value; }
-        }
+        public Match Match { get; set; }
 
         public ObservableCollection<EventOfMatch> EventsOfMatch { get; set; }
 

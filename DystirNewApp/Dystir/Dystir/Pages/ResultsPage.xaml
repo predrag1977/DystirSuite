@@ -96,7 +96,6 @@
                   BackgroundColor="Black"
                   IsGroupingEnabled="True"
                   VerticalOptions="FillAndExpand"
-                  Header=""
                   ItemsSource="{Binding ResultsGroupList}">
             <ListView.GroupHeaderTemplate>
                 <DataTemplate x:DataType="models:MatchGroup">

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dystir.Models;
 using Microsoft.AppCenter;
@@ -51,6 +52,12 @@ namespace Dystir.Services
             string awayTeam = $"{match?.AwayTeam} {match?.AwayCategoriesName} {match?.AwaySquadName}".Trim();
             string matchDetails = $"{homeTeam} vs {awayTeam} ({match.MatchTypeName})";
             Analytics.TrackEvent("MatchDetails", new Dictionary<string, string> { { "Match", matchDetails } });
+        }
+
+        internal void Sponsors(string sponsorWebSite)
+        {
+            Analytics.TrackEvent("Sponsors", new Dictionary<string, string> { { "Sponsor", sponsorWebSite } });
+
         }
     }
 }
