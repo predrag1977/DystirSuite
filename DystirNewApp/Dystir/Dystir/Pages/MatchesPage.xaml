@@ -105,7 +105,6 @@
         <ListView Grid.Row="3"
                   SeparatorVisibility="None"
                   HasUnevenRows="True"
-                  CachingStrategy="RecycleElement"
                   SelectionMode="None"
                   BackgroundColor="Black"
                   IsGroupingEnabled="True"

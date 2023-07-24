@@ -3,13 +3,8 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Dystir.Models;
 using System.Linq;
-using System.Reflection;
 using Dystir.Services;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using Xamarin.Forms;
-using Dystir.Views;
-using Dystir.Pages;
 
 namespace Dystir.ViewModels
 {
@@ -48,17 +43,11 @@ namespace Dystir.ViewModels
         //**********************//
         public MatchesViewModel()
         {
-            DystirService = DependencyService.Get<DystirService>();
-            DystirService.OnShowLoading += DystirService_OnShowLoading;
             DystirService.OnFullDataLoaded += DystirService_OnFullDataLoaded;
             DystirService.OnMatchDetailsLoaded += DystirService_OnMatchDetailsLoaded;
-
-            var timeService = DependencyService.Get<TimeService>();
-            timeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
+            TimeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
 
             DayTapped = new Command<DayOfMatch>(OnDaySelected);
-
-            IsLoading = true;
         }
 
         //**********************//
@@ -67,9 +56,12 @@ namespace Dystir.ViewModels
         public async Task LoadDataAsync()
         {
             await Task.Delay(100);
-            await SetMatches();
+            if (DystirService.AllMatches != null)
+            {
+                await SetMatches();
+                IsLoading = false;
+            }
             await SetSponsors();
-            IsLoading = false;
         }
 
         //**********************//
@@ -82,11 +74,6 @@ namespace Dystir.ViewModels
                 MatchesDaySelected = dayOfMatch;
             }
             await Task.CompletedTask;
-        }
-
-        private void DystirService_OnShowLoading()
-        {
-            IsLoading = true;
         }
 
         private void DystirService_OnFullDataLoaded()

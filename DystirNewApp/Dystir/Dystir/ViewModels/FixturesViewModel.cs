@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using Dystir.Services;
 using Dystir.Models;
 using System.Threading.Tasks;
@@ -43,17 +42,12 @@ namespace Dystir.ViewModels
         //**********************//
         public FixturesViewModel()
         {
-            DystirService = DependencyService.Get<DystirService>();
-            DystirService.OnShowLoading += DystirService_OnShowLoading;
             DystirService.OnFullDataLoaded += DystirService_OnFullDataLoaded;
             DystirService.OnMatchDetailsLoaded += DystirService_OnMatchDetailsLoaded;
-
-            var timeService = DependencyService.Get<TimeService>();
-            timeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
+            TimeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
 
             CompetitionTapped = new Command<Competition>(OnCompetitionSelected);
 
-            IsLoading = true;
             _ = SetFixturesCompetitions();
         }
 
@@ -63,9 +57,12 @@ namespace Dystir.ViewModels
         public async Task LoadDataAsync()
         {
             await Task.Delay(100);
-            await SetFixturesCompetitions();
+            if (DystirService.AllMatches != null)
+            {
+                await SetFixturesCompetitions();
+                IsLoading = false;
+            }
             await SetSponsors();
-            IsLoading = false;
         }
 
         //**********************//
@@ -77,11 +74,6 @@ namespace Dystir.ViewModels
                 return;
 
             FixturesCompetitionSelected = competition;
-        }
-
-        private void DystirService_OnShowLoading()
-        {
-            IsLoading = true;
         }
 
         private void DystirService_OnFullDataLoaded()

@@ -21,6 +21,7 @@ namespace Dystir.ViewModels
         public DystirService DystirService;
         public TimeService TimeService;
         public LiveStandingService LiveStandingService;
+        private readonly AnalyticsService AnalyticsService;
 
         public Command<Match> MatchTapped { get; }
         public Command<Sponsor> SponsorTapped { get; }
@@ -54,7 +55,7 @@ namespace Dystir.ViewModels
         //    set { selectedMatch = value; OnPropertyChanged(); }
         //}
 
-        bool isLoading = false;
+        bool isLoading;
         public bool IsLoading
         {
             get { return isLoading; }
@@ -73,11 +74,20 @@ namespace Dystir.ViewModels
         //**********************//
         public DystirViewModel()
         {
-            analyticsService = DependencyService.Get<AnalyticsService>();
+            DystirService = DependencyService.Get<DystirService>();
+            AnalyticsService = DependencyService.Get<AnalyticsService>();
+            TimeService = DependencyService.Get<TimeService>();
+
+            DystirService.OnShowLoading += DystirService_OnShowLoading;
 
             MatchTapped = new Command<Match>(OnMatchSelected);
             SponsorTapped = new Command<Sponsor>(OnSponsorTapped);
             NewsTapped = new Command(OnNewsTapped);
+        }
+
+        public void DystirService_OnShowLoading()
+        {
+            IsLoading = true;
         }
 
         //**************************//
@@ -119,7 +129,7 @@ namespace Dystir.ViewModels
             {
                 if (sponsor == null) return;
                 await Launcher.OpenAsync(new Uri(sponsor.SponsorWebSite));
-                analyticsService.Sponsors(sponsor.SponsorWebSite);
+                AnalyticsService.Sponsors(sponsor.SponsorWebSite);
             }
             catch { }
         }
@@ -221,8 +231,6 @@ namespace Dystir.ViewModels
         }
 
         Exception mainException = null;
-        private readonly AnalyticsService analyticsService;
-
         public Exception MainException
         {
             get { return mainException; }

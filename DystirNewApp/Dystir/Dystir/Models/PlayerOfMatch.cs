@@ -176,6 +176,11 @@ namespace Dystir.Models
 
         public string SubOutImageSource { get; set; } = string.Empty;
 
-        public bool IsPositionVisible { get; set; }
+        public bool IsPositionVisible { get; set; } = false;
+
+        public PlayerOfMatch()
+        {
+
+        }
     }
 }

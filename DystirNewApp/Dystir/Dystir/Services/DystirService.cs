@@ -8,7 +8,6 @@ using System.Threading;
 using Dystir.Models;
 using Xamarin.Forms;
 using System.Diagnostics;
-using Dystir.Pages;
 
 namespace Dystir.Services
 {
@@ -18,18 +17,15 @@ namespace Dystir.Services
         //        PROPERTIES        //
         //**************************//
         static readonly object lockUpdateData = new object();
-        static readonly SemaphoreSlim semaphoreLoadMatchDetails = new SemaphoreSlim(1, 1);
+        //static readonly SemaphoreSlim semaphoreLoadMatchDetails = new SemaphoreSlim(1, 1);
 
         private readonly DataLoadService _dataLoadService;
         public readonly HubConnection HubConnection;
-        public ObservableCollection<MatchDetails> AllMatches = new ObservableCollection<MatchDetails>();
+        public ObservableCollection<MatchDetails> AllMatches;
         public ObservableCollection<Sponsor> AllSponsors = new ObservableCollection<Sponsor>();
         public ObservableCollection<MatchCompetition> AllCompetitions = new ObservableCollection<MatchCompetition>();
         public ObservableCollection<Standing> Standings;
         public ObservableCollection<CompetitionStatistic> CompetitionStatistics;
-        public ObservableCollection<MatchDetailPage> ListMatchDetailPages = new ObservableCollection<MatchDetailPage>();
-
-        public object AllMatchesDetailsPages { get; internal set; }
 
         //**************************//
         //          EVENTS          //
@@ -70,7 +66,7 @@ namespace Dystir.Services
             });
             HubConnection.On("RefreshData", () =>
             {
-                _ = LoadDataAsync(false);
+                _ = LoadDataAsync(true);
             });
             HubConnection.Closed += DystirHubConnection_Closed;
         }
@@ -82,10 +78,13 @@ namespace Dystir.Services
         {
             try
             {
-                if(loadFullData)
+                ShowLoading();
+
+                if (HubConnection.State == HubConnectionState.Disconnected)
                 {
-                    ShowLoading();
+                    await HubConnection.StartAsync();
                 }
+
                 var loadAllMatchesTask = LoadAllMatchesAsync();
                 var loadSponsorsTask = loadFullData ? LoadSponsorsAsync() : Task.CompletedTask;
                 var loadCompetitionsTask = loadFullData ? LoadCompetitionsAsync() : Task.CompletedTask;
@@ -94,8 +93,8 @@ namespace Dystir.Services
                     loadSponsorsTask,
                     loadCompetitionsTask
                     );
+
                 FullDataLoaded();
-                _ = StartDystirHubAsync();
             }
             catch (Exception ex)
             {
@@ -170,28 +169,9 @@ namespace Dystir.Services
             AllCompetitions = await _dataLoadService.GetCompetitionsAsync();
         }
 
-        private async Task StartDystirHubAsync()
-        {
-            try
-            {
-                if (HubConnection.State == HubConnectionState.Disconnected)
-                {
-                    await Task.Delay(2000);
-                    await HubConnection.StartAsync();
-                    await LoadDataAsync(false);
-                }
-            }
-            catch (Exception)
-            {
-                ShowLoading();
-                await StartDystirHubAsync();
-            }
-        }
-
         private async Task DystirHubConnection_Closed(Exception ex)
         {
-            ShowLoading();
-            await StartDystirHubAsync();
+            await LoadDataAsync(false);
         }
 
         private async Task<ObservableCollection<CompetitionStatistic>> GetCompetitionStatistics()

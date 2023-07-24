@@ -1,7 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 using Dystir.ViewModels;
 using Dystir.Services;
 
@@ -26,7 +24,6 @@ namespace Dystir.Pages
             analyticsService.Fixtures();
 
             _ = fixturesViewModel.LoadDataAsync();
-            
         }
 
         void CollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
