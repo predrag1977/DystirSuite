@@ -19,7 +19,7 @@
                BackgroundColor="#181818"
                CornerRadius="10"
                Padding="5"
-               BindingContext="{Binding SelectedMatch}">
+               BindingContext="{Binding MatchDetails.Match}">
             <Grid x:DataType="models:Match"
                   ColumnDefinitions="50,*,Auto,*,50">
 
@@ -78,7 +78,7 @@
               Margin="0"
               RowDefinitions="Auto,Auto"
               HorizontalOptions="FillAndExpand"
-              BindingContext="{Binding SelectedMatch}">
+              BindingContext="{Binding MatchDetails.Match}">
 
             <Grid Grid.Row="0"
                   Margin="5"
@@ -102,7 +102,7 @@
         <Grid Grid.Row="2"
               Margin="0"
               ColumnDefinitions="50,*,50"
-              BindingContext="{Binding SelectedMatch}"
+              BindingContext="{Binding MatchDetails.Match}"
               HorizontalOptions="CenterAndExpand">
 
             <ffsvg:SvgCachedImage Grid.Column="0"
@@ -133,48 +133,44 @@
             </ffsvg:SvgCachedImage>
 
             <Grid Grid.Column="1"
-                  RowDefinitions="Auto, Auto">
-                <StackLayout Grid.Row="0"
-                             x:DataType="models:Match"
-                             HorizontalOptions="Center"
-                             VerticalOptions="Center"
-                             Orientation="Horizontal"
-                             Margin="0,5">
-                    <Label Text="{Binding HomeTeamScoreText}"
-                            FontSize="30"
-                            WidthRequest="80"
-                            FontAttributes="Bold"
-                            FontFamily="NunitoSemiBold"/>
-                    <Label Text="{Binding AwayTeamScoreText}"
-                            WidthRequest="80"
-                            FontSize="30"
-                            FontAttributes="Bold"
-                            FontFamily="NunitoSemiBold"/>
-                </StackLayout>
-                <StackLayout Grid.Row="1"
-                             x:DataType="models:Match"
-                             HorizontalOptions="Center"
-                             VerticalOptions="Start"
-                             Orientation="Horizontal">
-                    <Label Text="{Binding HomeTeamPenaltiesScoreText}"
-                            FontSize="20"
-                           TextColor="Beige"
-                            WidthRequest="80"
-                            FontAttributes="Bold"
-                            FontFamily="NunitoSemiBold"/>
-                    <Label Text="{Binding AwayTeamPenaltiesScoreText}"
-                           TextColor="Beige"
-                            WidthRequest="80"
-                            FontSize="20"
-                            FontAttributes="Bold"
-                            FontFamily="NunitoSemiBold"/>
-                </StackLayout>
+                  x:DataType="models:Match"
+                  ColumnDefinitions="Auto,Auto,50,Auto,Auto"
+                  HorizontalOptions="Center"
+                  VerticalOptions="Start"
+                  Margin="0,5,0,0">
+
+                <Label Grid.Column="0"
+                       Text="{Binding HomeTeamPenaltiesScoreText}"
+                        FontSize="20"
+                        TextColor="Beige"
+                        FontAttributes="Bold"
+                        FontFamily="NunitoSemiBold"
+                       Margin="10,0"/>
+
+                <Label Grid.Column="1"
+                       Text="{Binding HomeTeamScoreText}"
+                        FontSize="30"
+                        FontAttributes="Bold"
+                        FontFamily="NunitoSemiBold" />
+
+                <Label Grid.Column="3"
+                       Text="{Binding AwayTeamScoreText}"
+                        FontSize="30"
+                        FontAttributes="Bold"
+                        FontFamily="NunitoSemiBold"/>
+                    
+                <Label Grid.Column="4"
+                       Text="{Binding AwayTeamPenaltiesScoreText}"
+                        TextColor="Beige"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        FontFamily="NunitoSemiBold"
+                       Margin="10,0"/>
             </Grid>
-            
         </Grid>
 
         <Grid Grid.Row="3"
-              BindingContext="{Binding SelectedMatch}">
+              BindingContext="{Binding MatchDetails.Match}">
             <StackLayout Orientation="Vertical">
                 <Label x:DataType="models:Match"
                     Text="{Binding MatchInfo}"

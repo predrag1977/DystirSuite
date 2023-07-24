@@ -106,7 +106,7 @@ namespace Dystir.ViewModels
 
         private async Task SetMatches()
         {
-            _ = SetMatchesDays();
+            await SetMatchesDays();
             var matches = DystirService.AllMatches?
                 .Where(x => IsDaysRange(x.Match.Time?.Date, MatchesDaySelected.Date))
                 .Select(x => x.Match)

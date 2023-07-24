@@ -19,6 +19,7 @@ namespace Dystir.ViewModels
         //        PROPERTIES        //
         //**************************//
         public DystirService DystirService;
+        public TimeService TimeService;
         public LiveStandingService LiveStandingService;
 
         public Command<Match> MatchTapped { get; }
@@ -46,12 +47,12 @@ namespace Dystir.ViewModels
             set { thirdCategorySponsors = value; OnPropertyChanged(); }
         }
 
-        Match selectedMatch;
-        public Match SelectedMatch
-        {
-            get { return selectedMatch; }
-            set { selectedMatch = value; OnPropertyChanged(); }
-        }
+        //Match selectedMatch;
+        //public Match SelectedMatch
+        //{
+        //    get { return selectedMatch; }
+        //    set { selectedMatch = value; OnPropertyChanged(); }
+        //}
 
         bool isLoading = false;
         public bool IsLoading
@@ -109,7 +110,6 @@ namespace Dystir.ViewModels
             if (match == null)
                 return;
 
-            SelectedMatch = match;
             await Shell.Current.GoToAsync($"{nameof(MatchDetailPage)}?MatchID={match.MatchID}");
         }
 
