@@ -10,24 +10,31 @@
             JustifyContent="Center">
 
     <BindableLayout.ItemTemplate>
-                <DataTemplate x:DataType="models:Sponsor">
-                    <Frame x:DataType="models:Sponsor"
-                        HasShadow="True"
-                        CornerRadius="10"
-                        HeightRequest="{Binding Size.Height}"
-                        WidthRequest="{Binding Size.Width}"
-                        BorderColor="DarkGray"
-                        Padding="2"
-                        Margin="5"
-                        VerticalOptions="Center"
-                        HorizontalOptions="Center"
-                        BackgroundColor="White">
+        <DataTemplate x:DataType="models:Sponsor">
+            <Frame x:DataType="models:Sponsor"
+                    HasShadow="True"
+                    CornerRadius="10"
+                    HeightRequest="{Binding Size.Height}"
+                    WidthRequest="{Binding Size.Width}"
+                    BorderColor="DarkGray"
+                    Padding="2"
+                    Margin="5"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    BackgroundColor="White">
 
-                        <ffsvg:SvgCachedImage HeightRequest="{Binding Size.Height}"
-                                              WidthRequest="{Binding Size.Width}"
-                                              Source="{Binding SponsorsName}"/>
-                    </Frame>
-                </DataTemplate>
-            </BindableLayout.ItemTemplate>
+                <ffsvg:SvgCachedImage HeightRequest="{Binding Size.Height}"
+                                        WidthRequest="{Binding Size.Width}"
+                                        Source="{Binding SponsorsName}"/>
+
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:DystirViewModel}}, Path=SponsorTapped}"		
+                                            CommandParameter="{Binding}">
+                    </TapGestureRecognizer>
+                </Frame.GestureRecognizers>
+            </Frame>
+        </DataTemplate>
+    </BindableLayout.ItemTemplate>
 
 </FlexLayout>

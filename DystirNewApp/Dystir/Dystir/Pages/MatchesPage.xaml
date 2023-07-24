@@ -104,11 +104,9 @@
 
         <ListView Grid.Row="3"
                   SeparatorVisibility="None"
-                  SeparatorColor= "Black"
                   HasUnevenRows="True"
                   CachingStrategy="RecycleElement"
                   SelectionMode="None"
-                  Header=""
                   BackgroundColor="Black"
                   IsGroupingEnabled="True"
                   VerticalOptions="FillAndExpand"

@@ -48,7 +48,7 @@ namespace Dystir
             //StartLoading();
             //TimeOfMatches();
             //StartSponsors();
-            CheckLatestVersion();
+            //CheckLatestVersion();
         }
 
         private void LoadData()

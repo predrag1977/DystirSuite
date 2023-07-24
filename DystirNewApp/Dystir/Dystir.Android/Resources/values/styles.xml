@@ -7,6 +7,7 @@
     <!-- Underneath are a couple of entries to get you started. -->
 
     <!-- Set theme colors from https://aka.ms/material-colors -->
+    <item name="android:windowBackground">@color/launcher_background</item>
 
     <!-- colorPrimary is used for the default action bar background -->
     <item name="colorPrimary">#000</item>

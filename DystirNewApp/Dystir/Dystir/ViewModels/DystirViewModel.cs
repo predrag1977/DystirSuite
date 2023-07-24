@@ -5,14 +5,11 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using Dystir.Models;
 using Dystir.Services;
-using System.Reflection;
-using Dystir.Views;
 using System.Threading.Tasks;
 using System.Linq;
 using Dystir.Pages;
 using Xamarin.Forms;
-using System.Text.RegularExpressions;
-using Match = Dystir.Models.Match;
+using Xamarin.Essentials;
 
 namespace Dystir.ViewModels
 {
@@ -23,10 +20,10 @@ namespace Dystir.ViewModels
         //**************************//
         public DystirService DystirService;
         public LiveStandingService LiveStandingService;
-        public Command<Match> MatchTapped { get; }
-        public Command NewsTapped { get; }
 
-        
+        public Command<Match> MatchTapped { get; }
+        public Command<Sponsor> SponsorTapped { get; }
+        public Command NewsTapped { get; }
 
         ObservableCollection<Sponsor> firstCategorySponsors = new ObservableCollection<Sponsor>();
         public ObservableCollection<Sponsor> FirstCategorySponsors
@@ -75,7 +72,10 @@ namespace Dystir.ViewModels
         //**********************//
         public DystirViewModel()
         {
+            analyticsService = DependencyService.Get<AnalyticsService>();
+
             MatchTapped = new Command<Match>(OnMatchSelected);
+            SponsorTapped = new Command<Sponsor>(OnSponsorTapped);
             NewsTapped = new Command(OnNewsTapped);
         }
 
@@ -111,6 +111,17 @@ namespace Dystir.ViewModels
 
             SelectedMatch = match;
             await Shell.Current.GoToAsync($"{nameof(MatchDetailPage)}?MatchID={match.MatchID}");
+        }
+
+        async void OnSponsorTapped(Sponsor sponsor)
+        {
+            try
+            {
+                if (sponsor == null) return;
+                await Launcher.OpenAsync(new Uri(sponsor.SponsorWebSite));
+                analyticsService.Sponsors(sponsor.SponsorWebSite);
+            }
+            catch { }
         }
 
         async void OnNewsTapped()
@@ -210,6 +221,7 @@ namespace Dystir.ViewModels
         }
 
         Exception mainException = null;
+        private readonly AnalyticsService analyticsService;
 
         public Exception MainException
         {
@@ -260,9 +272,5 @@ namespace Dystir.ViewModels
             }
             SelectedCompetitionStatistics = selectedCompetitionStatisticsRowsList;
         }
-        
-
-
-        
     }
 }
