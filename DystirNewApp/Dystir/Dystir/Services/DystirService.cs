@@ -20,8 +20,8 @@ namespace Dystir.Services
         static readonly object lockUpdateData = new object();
         static readonly SemaphoreSlim semaphoreLoadMatchDetails = new SemaphoreSlim(1, 1);
 
-        private readonly HubConnection _hubConnection;
         private readonly DataLoadService _dataLoadService;
+        public readonly HubConnection HubConnection;
         public ObservableCollection<MatchDetails> AllMatches = new ObservableCollection<MatchDetails>();
         public ObservableCollection<Sponsor> AllSponsors = new ObservableCollection<Sponsor>();
         public ObservableCollection<MatchCompetition> AllCompetitions = new ObservableCollection<MatchCompetition>();
@@ -53,12 +53,12 @@ namespace Dystir.Services
         {
             _dataLoadService = DependencyService.Get<DataLoadService>();
 
-            _hubConnection = new HubConnectionBuilder()
+            HubConnection = new HubConnectionBuilder()
                 .WithUrl("https://www.dystir.fo/DystirHub")
                 //.WithAutomaticReconnect()
                 .Build();
 
-            _hubConnection.On<string, string>("ReceiveMatchDetails", (matchID, matchDetailsJson) =>
+            HubConnection.On<string, string>("ReceiveMatchDetails", (matchID, matchDetailsJson) =>
             {
                 MatchDetails matchDetails = JsonConvert.DeserializeObject<MatchDetails>(matchDetailsJson);
                 
@@ -68,11 +68,11 @@ namespace Dystir.Services
                     MatchDetailsLoaded(matchDetails);
                 }
             });
-            _hubConnection.On("RefreshData", () =>
+            HubConnection.On("RefreshData", () =>
             {
-                _ = LoadDataAsync(true);
+                _ = LoadDataAsync(false);
             });
-            _hubConnection.Closed += DystirHubConnection_Closed;
+            HubConnection.Closed += DystirHubConnection_Closed;
         }
 
         //**************************//
@@ -101,9 +101,8 @@ namespace Dystir.Services
             {
                 var t = ex.Message;
                 await Task.Delay(500);
-                _ = LoadDataAsync(loadFullData);
+                await LoadDataAsync(loadFullData);
             }
-            await Task.CompletedTask;
         }
 
         public async Task<MatchDetails> GetMatchDetailsAsync(int matchID)
@@ -175,19 +174,18 @@ namespace Dystir.Services
         {
             try
             {
-                if (_hubConnection.State == HubConnectionState.Disconnected)
+                if (HubConnection.State == HubConnectionState.Disconnected)
                 {
-                    await _hubConnection.StartAsync();
+                    await Task.Delay(2000);
+                    await HubConnection.StartAsync();
                     await LoadDataAsync(false);
                 }
             }
             catch (Exception)
             {
-                await Task.Delay(2000);
                 ShowLoading();
                 await StartDystirHubAsync();
             }
-            await Task.CompletedTask;
         }
 
         private async Task DystirHubConnection_Closed(Exception ex)
