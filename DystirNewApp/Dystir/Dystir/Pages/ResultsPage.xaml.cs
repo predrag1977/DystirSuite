@@ -31,7 +31,7 @@ namespace Dystir.Pages
         {
             if (resultsViewModel.IsLoading == false)
             {
-                await resultsViewModel.DystirService.LoadDataAsync(true);
+                await resultsViewModel.DystirService.LoadDataAsync(false);
             }
         }
 

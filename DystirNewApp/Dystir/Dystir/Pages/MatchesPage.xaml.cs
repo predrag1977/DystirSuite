@@ -33,7 +33,7 @@ namespace Dystir.Pages
         {
             if (matchesViewModel.IsLoading == false)
             {
-                await matchesViewModel.DystirService.LoadDataAsync(true);
+                await matchesViewModel.DystirService.LoadDataAsync(false);
             }
         }
 
@@ -44,7 +44,7 @@ namespace Dystir.Pages
 
         private async void LanguageServiceOnLanguageChanged()
         {
-            await matchesViewModel.DystirService.LoadDataAsync(true);
+            await matchesViewModel.DystirService.LoadDataAsync(false);
             await matchesViewModel.LoadDataAsync();
         }
     }

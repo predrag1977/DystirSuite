@@ -1,9 +1,5 @@
 ﻿using Xamarin.Forms;
 using Dystir.Services;
-using System.Threading.Tasks;
-using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
 
 namespace Dystir
 {
