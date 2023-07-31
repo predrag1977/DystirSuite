@@ -213,10 +213,13 @@ namespace Dystir.Models
                         }
                     }
                 }
-                summaryEventOfMatch.HomeTeamScore = homeScore;
-                summaryEventOfMatch.AwayTeamScore = awayScore;
+
+                summaryEventOfMatch.HomeTeamScore = eventOfMatch.EventPeriodID != 10 ? homeScore : homeTeamPenaltiesScore;
+                summaryEventOfMatch.AwayTeamScore = eventOfMatch.EventPeriodID != 10 ? awayScore : awayTeamPenaltiesScore;
+
                 summaryEventOfMatch.HomeTeamPenaltiesScore = homeTeamPenaltiesScore;
                 summaryEventOfMatch.AwayTeamPenaltiesScore = awayTeamPenaltiesScore;
+
 
                 if (eventOfMatch.EventName == "GOAL")
                 {

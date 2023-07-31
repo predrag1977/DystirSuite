@@ -5,12 +5,12 @@ using Dystir.Services;
 
 namespace Dystir.Pages
 {
-    public partial class StandingsPage : ContentPage
+    public partial class StatisticsPage : ContentPage
     {
         private readonly StandingsViewModel standingsViewModel;
         private readonly AnalyticsService analyticsService;
 
-        public StandingsPage()
+        public StatisticsPage()
         {
             analyticsService = DependencyService.Get<AnalyticsService>();
 

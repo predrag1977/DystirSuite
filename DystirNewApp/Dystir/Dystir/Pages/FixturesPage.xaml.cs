@@ -35,7 +35,7 @@ namespace Dystir.Pages
         {
             if (fixturesViewModel.IsLoading == false)
             {
-                await fixturesViewModel.DystirService.LoadDataAsync(true);
+                await fixturesViewModel.DystirService.LoadDataAsync(false);
             }
         }
     }

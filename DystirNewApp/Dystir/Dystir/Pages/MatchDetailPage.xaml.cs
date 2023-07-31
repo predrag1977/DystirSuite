@@ -54,7 +54,7 @@ namespace Dystir.Pages
         {
             if (matchDetailViewModel.IsLoading == false)
             {
-                await matchDetailViewModel.DystirService.LoadDataAsync(true);
+                await matchDetailViewModel.DystirService.LoadDataAsync(false);
             }
         }
 
