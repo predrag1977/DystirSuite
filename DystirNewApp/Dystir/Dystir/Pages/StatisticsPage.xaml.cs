@@ -7,7 +7,7 @@ namespace Dystir.Pages
 {
     public partial class StatisticsPage : ContentPage
     {
-        private readonly StandingsViewModel standingsViewModel;
+        private readonly StatisticsViewModel statisticsViewModel;
         private readonly AnalyticsService analyticsService;
 
         public StatisticsPage()
@@ -15,23 +15,30 @@ namespace Dystir.Pages
             analyticsService = DependencyService.Get<AnalyticsService>();
 
             InitializeComponent();
-            BindingContext = standingsViewModel = new StandingsViewModel();
-            standingsViewModel.IsLoading = true;
+            BindingContext = statisticsViewModel = new StatisticsViewModel();
+            statisticsViewModel.IsLoading = true;
         }
 
         protected override void OnAppearing()
         {
-            analyticsService.Standings();
+            analyticsService.Statistics();
 
-            _ = standingsViewModel.LoadDataAsync();
+            _ = statisticsViewModel.LoadDataAsync();
         }
 
         async void RefreshButton_Clicked(object sender, EventArgs e)
         {
-            if (standingsViewModel.IsLoading == false)
+            if (statisticsViewModel.IsLoading == false)
             {
-                await standingsViewModel.DystirService.LoadDataAsync(false);
+                statisticsViewModel.IsLoading = true;
+                await statisticsViewModel.LoadDataAsync();
             }
         }
+
+        //async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        //{
+        //    PlayerOfMatch playerOfMatch = (e as TappedEventArgs).Parameter as PlayerOfMatch;
+        //    await App.Current.MainPage.Navigation.ShowPopupAsync(new PlayerInfoPopupView(playerOfMatch));
+        //}
     }
 }

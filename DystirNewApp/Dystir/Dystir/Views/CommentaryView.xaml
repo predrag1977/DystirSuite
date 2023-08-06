@@ -35,7 +35,7 @@
                   ItemsSource="{Binding MatchDetails.Commentary}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
+                    <ViewCell IsEnabled="False">
                         <views:CommentaryEventView />
                     </ViewCell>
                 </DataTemplate>

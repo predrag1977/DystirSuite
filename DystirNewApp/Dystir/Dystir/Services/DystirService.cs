@@ -174,7 +174,7 @@ namespace Dystir.Services
             await LoadDataAsync(false);
         }
 
-        private async Task<ObservableCollection<CompetitionStatistic>> GetCompetitionStatistics()
+        public async Task<ObservableCollection<CompetitionStatistic>> GetCompetitionStatistics()
         {
             var competitionStatisticsArray = await _dataLoadService.GetStatisticsAsync();
             CompetitionStatistics = new ObservableCollection<CompetitionStatistic>(competitionStatisticsArray);

@@ -1,21 +1,20 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace Dystir.Models
 {
-    [DataContract]
     public class CompetitionStatistic
     {
-        [DataMember]
+        [JsonProperty("CompetitionName")]
         public string CompetitionName { get; set; }
 
-        [DataMember]
-        public List<TeamStatistic> TeamStatistics { get; set; } = new List<TeamStatistic>();
+        //[JsonProperty("TeamStatistics")]
+        //public List<TeamStatistic> TeamStatistics { get; set; } = new List<TeamStatistic>();
 
-        [DataMember]
+        [JsonProperty("GoalPlayers")]
         public List<PlayerOfMatch> GoalPlayers { get; set; } = new List<PlayerOfMatch>();
 
-        [DataMember]
+        [JsonProperty("AssistPlayers")]
         public List<PlayerOfMatch> AssistPlayers { get; set; } = new List<PlayerOfMatch>();
     }
 }

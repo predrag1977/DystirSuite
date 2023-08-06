@@ -64,8 +64,12 @@ namespace Dystir.Models
         [JsonProperty("MatchTypeName")]
         public string MatchTypeName { get; set; }
 
+        int? assist;
         [JsonProperty("Assist")]
-        public int? Assist { get; set; }
+        public int? Assist {
+            get { return assist; }
+            set { assist = value; }
+        }
 
         int? goal;
         [JsonProperty("Goal")]
