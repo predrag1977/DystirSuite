@@ -152,7 +152,7 @@ namespace Dystir.ViewModels
             matchDetailsTabs.Add(new MatchDetailsTab()
             {
                 TabIndex = matchDetailsTabs.Count,
-                TabName = Resources.Localization.Resources.FirstEleven
+                TabName = Resources.Localization.Resources.Players
             });
             matchDetailsTabs.Add(new MatchDetailsTab()
             {

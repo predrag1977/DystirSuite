@@ -652,5 +652,16 @@ namespace Dystir.Resources.Localization {
                 return ResourceManager.GetString("Days", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Players.
+        /// </summary>
+        public static string Players
+        {
+            get
+            {
+                return ResourceManager.GetString("Players", resourceCulture);
+            }
+        }
     }
 }

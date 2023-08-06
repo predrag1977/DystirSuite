@@ -53,7 +53,7 @@
                   ItemsSource="{Binding MatchDetails.Summary}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
+                    <ViewCell IsEnabled="False">
                         <views:SummaryEventView />
                     </ViewCell>
                 </DataTemplate>

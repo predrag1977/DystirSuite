@@ -78,6 +78,7 @@ namespace Dystir.Services
         public async Task<ObservableCollection<CompetitionStatistic>> GetStatisticsAsync()
         {
             ObservableCollection<CompetitionStatistic> competitionStatistics = new ObservableCollection<CompetitionStatistic>();
+
             List<CompetitionStatistic> competitionStatisticList = new List<CompetitionStatistic>();
             var responseCompetitionStatistics = await httpClient.GetAsync(Url + "Statistics");
             if (responseCompetitionStatistics.IsSuccessStatusCode)
@@ -89,6 +90,7 @@ namespace Dystir.Services
             {
                 competitionStatistics.Add(competitionStatistic);
             }
+
             return await Task.FromResult(competitionStatistics);
         }
 

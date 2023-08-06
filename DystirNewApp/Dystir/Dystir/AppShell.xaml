@@ -30,9 +30,9 @@
                       Route="StandingsPage"
                       ContentTemplate="{DataTemplate pages:StandingsPage}" />
 
-        <ShellContent Title="{x:Static localization:Resources.Statistics}"
-                      Icon="standings.png"
-                      Route="StandingsPage"
+        <ShellContent Title="{x:Static localization:Resources.StatisticsTab}"
+                      Icon="statistics.png"
+                      Route="StatisticsPage"
                       ContentTemplate="{DataTemplate pages:StatisticsPage}" />
     </TabBar>
 

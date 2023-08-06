@@ -210,4 +210,7 @@
   <data name="Days" xml:space="preserve">
     <value>days</value>
   </data>
+  <data name="Players" xml:space="preserve">
+    <value>Players</value>
+  </data>
 </root>
