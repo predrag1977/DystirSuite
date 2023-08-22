@@ -48,33 +48,42 @@ namespace DystirWeb.Services
             });
             _hubConnection.On("RefreshData", () =>
             {
-                _ = StartUpAsync();
+                _ = LoadDataAsync(true);
             });
             _hubConnection.Closed += DystirHubConnection_Closed;
         }
 
-        public async Task StartUpAsync()
+        private async Task DystirHubConnection_Closed(Exception ex)
+        {
+            Thread.Sleep(500);
+            await LoadDataAsync(false);
+        }
+
+        public async Task LoadDataAsync(bool loadFullData)
         {
             try
             {
-                _ = LoadDataAsync();
-            }
-            catch (Exception)
-            {
-                Thread.Sleep(1000);
-                _ = StartUpAsync();
-            }
-            await Task.CompletedTask;
-        }
+                if (_hubConnection.State == HubConnectionState.Disconnected)
+                {
+                    await _hubConnection.StartAsync();
+                }
 
-        public async Task LoadDataAsync()
-        {
-            var loadAllMatchesTask = LoadAllMatchesAsync();
-            var loadSponsorsTask = LoadSponsorsAsync();
-            var loadAllCompetitionTask = LoadAllCompetitionAsync();
-            await Task.WhenAll(loadAllMatchesTask, loadSponsorsTask, loadAllCompetitionTask);
-            FullDataLoaded();
-            _ = StartDystirHubAsync();
+                var loadAllMatchesTask = LoadAllMatchesAsync();
+                var loadSponsorsTask = loadFullData ? LoadSponsorsAsync() : Task.CompletedTask;
+                var loadCompetitionsTask = loadFullData ? LoadCompetitionsAsync() : Task.CompletedTask;
+                await Task.WhenAll(
+                    loadAllMatchesTask,
+                    loadSponsorsTask,
+                    loadCompetitionsTask
+                    );
+                FullDataLoaded();
+            }
+            catch
+            {
+                HubConnectionDisconnected();
+                await Task.Delay(500);
+                await LoadDataAsync(loadFullData);
+            }
         }
 
         public async Task LoadAllMatchesAsync()
@@ -82,6 +91,7 @@ namespace DystirWeb.Services
             var matches = await _httpClient.GetFromJsonAsync<Matches[]>("api/matches");
             AllMatches = matches?.ToList() ?? new List<Matches>();
             AllMatchesDetails = new List<MatchDetails>();
+            _timeService.StartTimer();
         }
 
         private async Task LoadSponsorsAsync()
@@ -91,35 +101,10 @@ namespace DystirWeb.Services
             _timeService.StartSponsorsTime();
         }
 
-        private async Task LoadAllCompetitionAsync()
+        private async Task LoadCompetitionsAsync()
         {
             var matchTypes = await _httpClient.GetFromJsonAsync<MatchTypes[]>("api/matchtypes");
             AllCompetitions = new ObservableCollection<MatchTypes>(matchTypes);
-        }
-
-        public async Task StartDystirHubAsync()
-        {
-            try
-            {
-                if(_hubConnection.State == HubConnectionState.Disconnected)
-                {
-                    await _hubConnection.StartAsync();
-                    await LoadAllMatchesAsync();
-                    HubConnectionConnected();
-                }
-            }
-            catch (Exception)
-            {
-                HubConnectionDisconnected();
-                Thread.Sleep(1000);
-                _ = StartDystirHubAsync();
-            }
-        }
-
-        private async Task DystirHubConnection_Closed(Exception ex)
-        {
-            HubConnectionDisconnected();
-            await StartDystirHubAsync();
         }
 
         public async void UpdateDataAsync(MatchDetails matchDetails)
@@ -128,12 +113,18 @@ namespace DystirWeb.Services
             {
                 Matches match = matchDetails?.Match;
                 if (matchDetails?.Match == null) return;
-                    
-                AllMatches.RemoveAll(x => x.MatchID == matchDetails?.MatchDetailsID);
-                AllMatches.Add(match);
-                    
-                AllMatchesDetails.RemoveAll(x=>x.MatchDetailsID == matchDetails?.MatchDetailsID);
-                AllMatchesDetails.Add(matchDetails);
+
+                if(AllMatches != null)
+                {
+                    AllMatches.RemoveAll(x => x.MatchID == matchDetails?.MatchDetailsID);
+                    AllMatches.Add(match);
+                }
+
+                if(AllMatchesDetails != null)
+                {
+                    AllMatchesDetails.RemoveAll(x => x.MatchDetailsID == matchDetails?.MatchDetailsID);
+                    AllMatchesDetails.Add(matchDetails);
+                }
 
                 RefreshMatchDetails(matchDetails);
             }

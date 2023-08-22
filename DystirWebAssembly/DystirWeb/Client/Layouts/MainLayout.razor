@@ -19,7 +19,7 @@
         DystirWebClientService.OnFullDataLoaded += DystirWebClientService_FullDataLoaded;
         DystirWebClientService.OnConnected += HubConnection_OnConnected;
         DystirWebClientService.OnDisconnected += HubConnection_OnDisconnected;
-        _ = DystirWebClientService.StartUpAsync();
+        _ = DystirWebClientService.LoadDataAsync(true);
         await Task.CompletedTask;
     }
 
