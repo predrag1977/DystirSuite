@@ -7,6 +7,7 @@ namespace DystirWeb.Services
     {
         public EventHandler<EventArgs> OnTimerElapsed;
         public EventHandler<EventArgs> OnSponsorsTimerElapsed;
+        private Timer _timer;
         private Timer _sponsorsTimer;
 
         public TimeService()
@@ -17,10 +18,14 @@ namespace DystirWeb.Services
 
         public void SetTimer()
         {
-            Timer timer = new Timer(1000);
-            timer.Elapsed += NotifyTimerElapsed;
-            timer.Enabled = true;
-            timer.Start();
+            _timer = new Timer(1000);
+            _timer.Elapsed += NotifyTimerElapsed;
+            _timer.Enabled = true;
+        }
+
+        public void StartTimer()
+        {
+            _timer.Start();
         }
 
         public void SetSponsorsTimer()
@@ -32,7 +37,7 @@ namespace DystirWeb.Services
 
         public void StartSponsorsTime()
         {
-            OnTimerElapsed?.Invoke(this, new EventArgs());
+            OnSponsorsTimerElapsed?.Invoke(this, new EventArgs());
             _sponsorsTimer.Start();
         }
 

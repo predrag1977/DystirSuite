@@ -140,9 +140,13 @@
         {
             var fromDate = DateTime.Now.Date.AddDays(_daysFrom);
             var toDate = fromDate.AddDays(_daysAfter);
-            SelectedMatchListGroup = DystirWebClientService.AllMatches?.OrderBy(x => GetOrder(x.MatchTypeID)).ThenBy(x => x.Time).ThenBy(x => x.MatchID)
-            .Where(x => x.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate
-            && x.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate).GroupBy(x => x.MatchTypeName)?.ToList();
+            SelectedMatchListGroup = DystirWebClientService.AllMatches?
+                .Where(x => x.Time.Value.AddMinutes(-timeZoneOffset).Date >= fromDate
+                && x.Time.Value.AddMinutes(-timeZoneOffset).Date <= toDate)
+                .OrderBy(x => GetOrder(x.MatchTypeID))
+                .ThenBy(x => x.Time)
+                .ThenBy(x => x.MatchID)
+            .GroupBy(x => x.MatchTypeName)?.ToList();
         });
 
         if (SelectedMatchListGroup == null) return;
