@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace DystirWeb.Services
+﻿namespace DystirWeb.Services
 {
     public class AuthService
     {
