@@ -276,7 +276,7 @@ namespace Dystir.Models
                     min = "0" + min;
                 if (seconds < 10)
                     sec = "0" + sec;
-                if (dystirService?.HubConnection.State == HubConnectionState.Disconnected && !string.IsNullOrEmpty(addtime))
+                if (dystirService?.IsDataLoading == true && !string.IsNullOrEmpty(addtime))
                 {
                     return addtime;
                 }

@@ -2,6 +2,8 @@
 using Xamarin.Forms;
 using Dystir.ViewModels;
 using Dystir.Services;
+using Dystir.Models;
+using System.Linq;
 
 namespace Dystir.Pages
 {
@@ -34,6 +36,28 @@ namespace Dystir.Pages
                 await statisticsViewModel.LoadDataAsync();
             }
         }
+
+        //void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        //{
+        //    Device.BeginInvokeOnMainThread(() =>
+        //    {
+        //        try
+        //        {
+        //            if (StatisticListView.ItemsSource != null && StatisticListView.ItemsSource.Cast<PlayersInLineups>().Count() > 0)
+        //            {
+        //                var firstItem = StatisticListView.ItemsSource.Cast<PlayersInLineups>().FirstOrDefault();
+        //                if (firstItem != null)
+        //                {
+        //                    StatisticListView.ScrollTo(firstItem, ScrollToPosition.Start, false);
+        //                }
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            System.Diagnostics.Debug.WriteLine(ex.ToString());
+        //        }
+        //    });
+        //}
 
         //async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         //{

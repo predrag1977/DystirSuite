@@ -80,10 +80,9 @@
                                 Text="{Binding CompetitionName}">
                         </Label>
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer 
-                                NumberOfTapsRequired="1"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:StatisticsViewModel}}, Path=CompetitionTapped}"		
-                                CommandParameter="{Binding .}">
+                            <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                  Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:StatisticsViewModel}}, Path=CompetitionTapped}"		
+                                                  CommandParameter="{Binding .}">
                             </TapGestureRecognizer>
                         </Frame.GestureRecognizers>
                     </Frame>
@@ -153,14 +152,13 @@
             </Grid>
         </StackLayout>
 
-        <ListView Grid.Row="4"
+        <ListView x:Name="StatisticListView"
+                  Grid.Row="4"
                   SeparatorVisibility="None"
                   HasUnevenRows="True"
                   SelectionMode="None"
                   BackgroundColor="Black"
                   VerticalOptions="FillAndExpand"
-                  Header=""
-                  Footer=""
                   ItemsSource="{Binding StatisticPlayers}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:PlayersInLineups">
