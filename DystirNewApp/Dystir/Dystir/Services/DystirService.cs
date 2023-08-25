@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
-using System.Threading;
 using Dystir.Models;
 using Xamarin.Forms;
 using System.Diagnostics;
@@ -25,7 +24,8 @@ namespace Dystir.Services
         public ObservableCollection<Sponsor> AllSponsors = new ObservableCollection<Sponsor>();
         public ObservableCollection<MatchCompetition> AllCompetitions = new ObservableCollection<MatchCompetition>();
         public ObservableCollection<Standing> Standings;
-        public ObservableCollection<CompetitionStatistic> CompetitionStatistics;
+        public ObservableCollection<CompetitionStatistic> CompetitionStatistics = new ObservableCollection<CompetitionStatistic>();
+        public bool IsDataLoading = false;
 
         //**************************//
         //          EVENTS          //
@@ -78,6 +78,7 @@ namespace Dystir.Services
         {
             try
             {
+                IsDataLoading = true;
                 ShowLoading();
 
                 if (HubConnection.State == HubConnectionState.Disconnected)
@@ -95,10 +96,10 @@ namespace Dystir.Services
                     );
 
                 FullDataLoaded();
+                IsDataLoading = false;
             }
-            catch (Exception ex)
+            catch
             {
-                var t = ex.Message;
                 await Task.Delay(500);
                 await LoadDataAsync(loadFullData);
             }
@@ -112,9 +113,9 @@ namespace Dystir.Services
                 matchDetails = await _dataLoadService.GetMatchDetailsAsync(matchID);
                 UpdateDataAsync(matchDetails);
             }
-            catch (Exception ex)
+            catch
             {
-                var exception = ex.Message;
+                //Ignored
             }
             return matchDetails;
         }
@@ -208,7 +209,6 @@ namespace Dystir.Services
             }
 
             return demoMatches;
-
         }
     }
 }

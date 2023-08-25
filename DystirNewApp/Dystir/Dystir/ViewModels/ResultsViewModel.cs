@@ -162,17 +162,9 @@ namespace Dystir.ViewModels
             return matchTypeIDs.Contains(matchTypeID);
         }
 
-        private object GetOrder(int? matchTypeId)
+        private int? GetOrder(int? matchTypeId)
         {
-            switch (matchTypeId)
-            {
-                case 101:
-                    return 2;
-                case 2:
-                    return 101;
-                default:
-                    return matchTypeId;
-            }
+            return DystirService.AllCompetitions.FirstOrDefault(x => x.MatchTypeID == matchTypeId)?.OrderID;
         }
     }
 }

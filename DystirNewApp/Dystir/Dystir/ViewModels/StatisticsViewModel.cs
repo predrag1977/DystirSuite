@@ -63,13 +63,6 @@ namespace Dystir.ViewModels
         //**********************//
         public StatisticsViewModel()
         {
-            DystirService.OnFullDataLoaded += DystirService_OnFullDataLoaded;
-            DystirService.OnMatchDetailsLoaded += DystirService_OnMatchDetailsLoaded;
-
-            TimeService.OnSponsorsTimerElapsed += TimeService_OnSponsorsTimerElapsed;
-
-            LiveStandingService = DependencyService.Get<LiveStandingService>();
-
             CompetitionTapped = new Command<Competition>(OnCompetitionSelected);
 
             _ = SetStatisticCompetitions();
@@ -97,21 +90,6 @@ namespace Dystir.ViewModels
                 return;
 
             StatisticCompetitionSelected = competition;
-        }
-
-        private void DystirService_OnFullDataLoaded()
-        {
-            _ = LoadDataAsync();
-        }
-
-        private void DystirService_OnMatchDetailsLoaded(MatchDetails matchDetails)
-        {
-            _ = LoadDataAsync();
-        }
-
-        private void TimeService_OnSponsorsTimerElapsed()
-        {
-            _ = SetSponsors();
         }
 
         private async Task SetSelectedCompetition()

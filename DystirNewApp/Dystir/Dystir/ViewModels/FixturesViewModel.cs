@@ -117,7 +117,7 @@ namespace Dystir.ViewModels
                 && x.Match.Time < toDate
                 || (x.Match.StatusID < 12
                 || x.Match.StatusID == 14));
-            var orderedFixturesMatches = fixturesMatches.OrderBy(x => x.Match.MatchTypeID)
+            var orderedFixturesMatches = fixturesMatches.OrderBy(x => GetOrder(x.Match.MatchTypeID))
                 .ThenByDescending(x => x.Match.Time)
                 .ThenBy(x => x.Match.MatchID)
                 .Select(x => x.Match);
@@ -153,6 +153,11 @@ namespace Dystir.ViewModels
                 .ThenBy(x => x.MatchTypeID);
             FixturesGroupList = new ObservableCollection<MatchGroup>(fixturesMatches.GroupBy(x => x.RoundName).Select(group => new MatchGroup(group.Key, new ObservableCollection<Match>(group))));
             await Task.CompletedTask;
+        }
+
+        private int? GetOrder(int? matchTypeId)
+        {
+            return DystirService.AllCompetitions.FirstOrDefault(x => x.MatchTypeID == matchTypeId)?.OrderID;
         }
     }
 }
