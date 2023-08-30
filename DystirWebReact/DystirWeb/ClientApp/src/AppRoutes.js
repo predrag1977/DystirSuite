@@ -3,18 +3,26 @@ import { FetchData } from "./components/FetchData";
 import { Matches } from "./components/Matches";
 
 const AppRoutes = [
-  {
-    index: true,
-    element: <Matches />
-  },
-  {
-    path: '/counter',
-    element: <Counter />
-  },
-  {
-    path: '/fetch-data',
-    element: <FetchData />
-  }
+    {
+        index: true,
+        element: <Matches />
+    },
+    {
+        path: '/counter',
+        element: <Counter />
+    },
+    {
+        path: '/info/fetch-data',
+        element: <FetchData />
+    },
+    {
+        path: '/portal',
+        element: <Counter />
+    },
+    {
+        path: '/info/*',
+        element: <Counter />
+    }
 ];
 
 export default AppRoutes;

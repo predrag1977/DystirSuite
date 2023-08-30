@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import DystirWebClientService from '../services/dystirWebClientService';
 import MatchDate from '../extentions/matchDate';
 import { MatchView } from "./views/MatchView";
+import { NavMenu } from './NavMenu';
 import { groupBy } from "core-js/actual/array/group-by";
 import { groupByToMap } from "core-js/actual/array/group-by-to-map";
+import { LayoutDystir } from './layouts/LayoutDystir';
 
 export class Matches extends Component {
     static displayName = Matches.name;
@@ -30,7 +32,11 @@ export class Matches extends Component {
             ? <p><em>Loading...</em></p>
             : this.renderMatchDetails(this.state.matches);
         return (
-            <div>{contents}</div>
+            <LayoutDystir>
+            {
+                contents
+            }     
+            </LayoutDystir>
         );
     }
 
@@ -39,14 +45,14 @@ export class Matches extends Component {
         return (
             Object.keys(matchesGroup).map(group =>
                 <div key={group}>
-                    <h3>{group}</h3>
+                    <div className="match-group-competition-name">{group}</div>
                     {
                         matchesGroup[group].map(match =>
                             <MatchView key={match.matchID} match={match} />
                         )
                     }
                 </div>
-            )
+            )  
         );
     }
 

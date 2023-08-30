@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import { Container } from 'reactstrap';
-import { NavMenu } from './NavMenu';
+import { NavMenu } from '../NavMenu';
+import '../../css/dystir.css?version=4';
 
-export class Layout extends Component {
-    static displayName = Layout.name;
+export class LayoutDystir extends Component {
+    static displayName = LayoutDystir.name;
 
     constructor(props) {
         super(props);
@@ -11,7 +13,7 @@ export class Layout extends Component {
 
     render() {
         return (
-            <div>
+            <div className="background">
                 <NavMenu />
                 <Container tag="main">
                     {this.props.children}
