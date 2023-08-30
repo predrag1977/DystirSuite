@@ -35,16 +35,21 @@ export default class DystirWebClientService {
         });
 
         this.hubConnection.connection.on('RefreshData', () => {
-            console.log('RefreshData');
+            //console.log('RefreshData');
         });
 
+        this.hubConnection.connection.on('ReceiveMessage', (match, matchJson) => {
+            //console.log('ReceiveMessage');
+        });
+        
+
         this.hubConnection.connection.onclose(async () => {
-            console.log('Disconnected');
-            await this.start();
+            //console.log('Disconnected');
+            await this.startHubConnection();
         });
 
         this.hubConnection.connection.onreconnected(() => {
-            console.log('Reconnected');
+            //console.log('Reconnected');
         });
 
         this.startHubConnection();
@@ -55,7 +60,7 @@ export default class DystirWebClientService {
             .then(() => this.loadFullDataAsync())
             .catch(err => {
                 console.log(err);
-                setTimeout(this.start(), 1000);
+                setTimeout(this.startHubConnection, 1000);
             });
     }
 
