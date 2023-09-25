@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="2023.1.0" package="fo.Dystir" android:installLocation="auto" android:versionCode="88">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="2023.1.1" package="fo.Dystir" android:installLocation="auto" android:versionCode="89">
 	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33" />
-	<application android:label="Dystir"></application>
+	<application android:label="Dystir" android:icon="@drawable/dystir_icon"></application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>
