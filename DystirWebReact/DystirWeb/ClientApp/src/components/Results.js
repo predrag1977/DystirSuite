@@ -53,30 +53,30 @@ export class Results extends Component {
     render() {
         let contents =
             <div>
-                {
-                    (this.state.matches == null || this.state.isMatchesLoading) &&
-                    <div className="loading-spinner-parent spinner-border" />
-                }
-                {
-                    this.renderMatches(this.state.matches)
-                }
+            {
+                (this.state.matches == null || this.state.isMatchesLoading) &&
+                <div className="loading-spinner-parent spinner-border" />
+            }
+            {
+                this.renderMatches(this.state.matches)
+            }
             </div>
         return (
-            <LayoutDystir page="DYSTIR">
-                {
-                    contents
-                }
+            <LayoutDystir page="ÚRSLIT">
+            {
+                contents
+            }
             </LayoutDystir>
         );
     }
 
     renderMatches(matches) {
         if (matches == null) return;
-        const matchesGroup = matches.groupBy(match => { return match.matchTypeName });
+        const matchesGroup = matches.groupBy(match => { return match.roundName });
         return (
             Object.keys(matchesGroup).map(group =>
                 <div key={group}>
-                    <div className="match-group-competition-name">{group}</div>
+                    <div className="match-group-competition-name">{group ?? ""}</div>
                     {
                         matchesGroup[group].map(match =>
                             <MatchView key={match.matchID} match={match} />
@@ -91,9 +91,10 @@ export class Results extends Component {
         const response = await fetch('api/matches/results');
         const data = await response.json();
         const sortedMatches = data
-            .sort((a, b) => a.matchTypeName.localeCompare(b.matchTypeName)
-                || a.roundID < b.roundID 
-                || Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)));
+            .sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)))
+            .sort((a, b) => b.roundID - a.roundID)
+            .sort((a, b) => a.matchTypeID - b.matchTypeID);
+            
             
         this.setState({ matches: this.filterMatches(sortedMatches), isMatchesLoading: false });
         DystirWebClientService.resultsData = {
@@ -113,6 +114,7 @@ export class Results extends Component {
         return matches.filter((match) =>
             MatchDate.parse(match.time) > MatchDate.parse(fromDate)
             && MatchDate.parse(match.time) < MatchDate.parse(toDate)
+            && match.statusID >= 12
             && match.matchTypeName == matches[0].matchTypeName);
     }
 }

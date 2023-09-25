@@ -43,19 +43,19 @@ export class NavMenu extends Component {
                                     <span>{this.props.page}</span>
                                 </td>
                                 <td className="nav-item header_item">
-                                    <NavLink tag={Link} className={(this.props.page.toUpper != "DYSTIR" ? "active" : "") + " text-dark"} to="/">DYSTIR</NavLink>
+                                    <NavLink tag={Link} className={(this.props.page == "DYSTIR" ? "active" : "") + " text-dark"} to="/">DYSTIR</NavLink>
                                 </td>
                                 <td className="nav-item header_item">
-                                    <NavLink tag={Link} className={(this.props.page.toUpper != "ÚRSLIT" ? "active" : "") + " text-dark"} to="/results">ÚRSLIT</NavLink>
+                                    <NavLink tag={Link} className={(this.props.page == "ÚRSLIT" ? "active" : "") + " text-dark"} to="/results">ÚRSLIT</NavLink>
                                 </td>
                                 <td className="nav-item header_item">
-                                    <NavLink tag={Link} className="text-dark" to="/football/fixtures">KOMANDI</NavLink>
+                                    <NavLink tag={Link} className={(this.props.page == "KOMANDI" ? "active" : "") + " text-dark"} to="/fixtures">KOMANDI</NavLink>
                                 </td>
                                 <td className="nav-item header_item">
-                                    <NavLink tag={Link} className="text-dark" to="/football/standings">STØÐAN</NavLink>
+                                    <NavLink tag={Link} className={(this.props.page == "STØÐAN" ? "active" : "") + " text-dark"} to="/standings">STØÐAN</NavLink>
                                 </td>
                                 <td className="nav-item header_item">
-                                    <NavLink tag={Link} className="text-dark" to="/football/statistics">HAGTØL</NavLink>
+                                    <NavLink tag={Link} className={(this.props.page == "HAGTØL" ? "active" : "") + " text-dark"} to="/statistics">HAGTØL</NavLink>
                                 </td>
                             </tr>
                         </tbody>
@@ -93,29 +93,19 @@ export class NavMenu extends Component {
                 <div id="navigation_menu" className={this.state.collapsed ? "collapse" : ""} >
                     <ul className="nav flex-column">
                         <li className="nav-item">
-                            <NavLink className="nav-link" href="" >
-                                <span>DYSTIR</span>
-                            </NavLink>
+                            <NavLink tag={Link} className={(this.props.page == "DYSTIR" ? "active" : "") + " text-dark nav-link"} to="/">DYSTIR</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" href="results">
-                                <span>ÚRSLIT</span>
-                            </NavLink>
+                            <NavLink tag={Link} className={(this.props.page == "ÚRSLIT" ? "active" : "") + " text-dark nav-link"} to="/results">ÚRSLIT</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" href="football/fixtures">
-                                <span>KOMANDI</span>
-                            </NavLink>
+                            <NavLink tag={Link} className={(this.props.page == "KOMANDI" ? "active" : "") + " text-dark nav-link"} to="/fixtures">KOMANDI</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" href="football/standings">
-                                <span>STØÐAN</span>
-                            </NavLink>
+                            <NavLink tag={Link} className={(this.props.page == "STØÐAN" ? "active" : "") + " text-dark nav-link"} to="/standings">STØÐAN</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" href="football/statistics">
-                                <span>HAGTØL</span>
-                            </NavLink>
+                            <NavLink tag={Link} className={(this.props.page == "HAGTØL" ? "active" : "") + " text-dark nav-link"} to="/statistics">HAGTØL</NavLink>
                         </li>
                     </ul>
                 </div>

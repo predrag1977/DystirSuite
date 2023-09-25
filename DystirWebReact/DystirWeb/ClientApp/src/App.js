@@ -4,6 +4,7 @@ import { Container } from 'reactstrap';
 import AppRoutes from './AppRoutes';
 import { Layout } from './components/layouts/Layout';
 import DystirWebClientService from './services/dystirWebClientService';
+import TimeService from './services/timeService';
 //import './custom.css?version=3';
 
 export default class App extends Component {
@@ -13,6 +14,7 @@ export default class App extends Component {
         super(props);
         this.dystirWebClientService = new DystirWebClientService();
         this.dystirWebClientService.init();
+        this.timeService = new TimeService();
     }
 
     render() {
