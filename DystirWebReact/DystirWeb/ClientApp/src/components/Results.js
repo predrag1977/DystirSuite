@@ -7,13 +7,13 @@ import { groupBy } from "core-js/actual/array/group-by";
 import { groupByToMap } from "core-js/actual/array/group-by-to-map";
 import { LayoutDystir } from './layouts/LayoutDystir';
 
-export class Matches extends Component {
-    static displayName = Matches.name;
+export class Results extends Component {
+    static displayName = Results.name;
 
     constructor(props) {
         super(props);
-        this.state = DystirWebClientService.matchesData;
-        if (DystirWebClientService.matchesData.matches == null) {
+        this.state = DystirWebClientService.resultsData;
+        if (DystirWebClientService.resultsData.matches == null) {
             this.loadMatchesDataAsync();
         };
     }
@@ -39,30 +39,33 @@ export class Matches extends Component {
 
     onReceiveMatchDetails(event) {
         const match = event.detail.matchDetail['match'];
-        const list = DystirWebClientService.matchesData.matches.filter((item) => item.matchID !== match.matchID)
+        const list = DystirWebClientService.resultsData.results.filter((item) => item.matchID !== match.matchID)
 
         list.push(match);
 
         this.setState({ matches: this.filterMatches(list) });
-        DystirWebClientService.matchesData = this.state;
+        DystirWebClientService.resultsData = {
+            matches: this.filterMatches(list),
+            isMatchesLoading: false
+        };
     }
 
     render() {
         let contents =
             <div>
-            {
-                (this.state.matches == null || this.state.isMatchesLoading) &&
-                <div className="loading-spinner-parent spinner-border" />
-            }
-            {
-                this.renderMatches(this.state.matches)
-            }
+                {
+                    (this.state.matches == null || this.state.isMatchesLoading) &&
+                    <div className="loading-spinner-parent spinner-border" />
+                }
+                {
+                    this.renderMatches(this.state.matches)
+                }
             </div>
         return (
             <LayoutDystir page="DYSTIR">
-            {
-                contents
-            }     
+                {
+                    contents
+                }
             </LayoutDystir>
         );
     }
@@ -80,34 +83,36 @@ export class Matches extends Component {
                         )
                     }
                 </div>
-            )  
+            )
         );
     }
 
     async loadMatchesDataAsync() {
-        const response = await fetch('api/matches');
+        const response = await fetch('api/matches/results');
         const data = await response.json();
-        const sortedMatches = data.sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)));
+        const sortedMatches = data
+            .sort((a, b) => a.matchTypeName.localeCompare(b.matchTypeName)
+                || a.roundID < b.roundID 
+                || Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)));
+            
         this.setState({ matches: this.filterMatches(sortedMatches), isMatchesLoading: false });
-        DystirWebClientService.matchesData = {
+        DystirWebClientService.resultsData = {
             matches: this.filterMatches(sortedMatches),
             isMatchesLoading: false
         };
     }
 
     filterMatches(matches) {
-        if (matches == null) {
+        if (matches == null || matches.lenght == 0) {
             return matches;
         }
-        var now = new MatchDate();
-        now.setHours(0, 0, 0, 0);
 
-        var fromDate = now.dateUtc().addDays(-10);
-        var toDate = now.dateUtc().addDays(10);
+        var fromDate = new MatchDate(new MatchDate().getFullYear(), 1, 1);
+        var toDate = new MatchDate().dateUtc();
 
         return matches.filter((match) =>
             MatchDate.parse(match.time) > MatchDate.parse(fromDate)
             && MatchDate.parse(match.time) < MatchDate.parse(toDate)
-        );
+            && match.matchTypeName == matches[0].matchTypeName);
     }
 }
