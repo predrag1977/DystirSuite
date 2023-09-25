@@ -33,7 +33,7 @@
 
                 <Label Grid.Column="1"
                        TextColor="#A9A9A9"
-                       Text="{x:Static localization:Resources.Statistics}"
+                       Text="{x:Static localization:Resources.StatisticsTab}"
                        FontSize="14"/>
 
                 <ffsvg:SvgCachedImage Grid.Column="2"

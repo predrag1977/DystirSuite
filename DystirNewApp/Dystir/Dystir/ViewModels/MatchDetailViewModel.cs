@@ -18,7 +18,7 @@ namespace Dystir.ViewModels
 
         public Command<MatchDetailsTab> MatchDetailsTabTapped { get; }
 
-        MatchDetails matchDetails;
+        MatchDetails matchDetails = new MatchDetails() { MatchDetailsID = 0};
         public MatchDetails MatchDetails
         {
             get { return matchDetails; }
@@ -141,7 +141,7 @@ namespace Dystir.ViewModels
         public async Task PopulateMatchDetailsTabs()
         {
             var matchDetailsTabs = new ObservableCollection<MatchDetailsTab>();
-            var matchTypeID = MatchDetails.Match.MatchTypeID;
+            var matchTypeID = MatchDetails.Match?.MatchTypeID ?? 0;
 
             matchDetailsTabs.Add(new MatchDetailsTab()
             {

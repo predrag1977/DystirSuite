@@ -21,6 +21,7 @@ namespace Dystir
             TabBar.Items[1].Title = Dystir.Resources.Localization.Resources.Results;
             TabBar.Items[2].Title = Dystir.Resources.Localization.Resources.Fixtures;
             TabBar.Items[3].Title = Dystir.Resources.Localization.Resources.Standings;
+            TabBar.Items[4].Title = Dystir.Resources.Localization.Resources.StatisticsTab;
         }
     }
 }

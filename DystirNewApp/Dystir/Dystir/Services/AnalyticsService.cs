@@ -48,10 +48,13 @@ namespace Dystir.Services
 
         internal void MatchDetails(Match match)
         {
-            string homeTeam = $"{match?.HomeTeam} {match?.HomeCategoriesName} {match?.HomeSquadName}".Trim();
-            string awayTeam = $"{match?.AwayTeam} {match?.AwayCategoriesName} {match?.AwaySquadName}".Trim();
-            string matchDetails = $"{homeTeam} vs {awayTeam} ({match.MatchTypeName})";
-            Analytics.TrackEvent("MatchDetails", new Dictionary<string, string> { { "Match", matchDetails } });
+            if(match != null)
+            {
+                string homeTeam = $"{match?.HomeTeam} {match?.HomeCategoriesName} {match?.HomeSquadName}".Trim();
+                string awayTeam = $"{match?.AwayTeam} {match?.AwayCategoriesName} {match?.AwaySquadName}".Trim();
+                string matchDetails = $"{homeTeam} vs {awayTeam} ({match.MatchTypeName})";
+                Analytics.TrackEvent("MatchDetails", new Dictionary<string, string> { { "Match", matchDetails } });
+            }
         }
 
         internal void Sponsors(string sponsorWebSite)
