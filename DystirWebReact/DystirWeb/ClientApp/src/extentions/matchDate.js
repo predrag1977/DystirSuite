@@ -14,4 +14,8 @@ export default class MatchDate extends Date {
         const dateTimeString = moment(this).locale("fo").format("ddd DD.MM. HH:mm");
         return dateTimeString.charAt(0).toUpperCase() + dateTimeString.slice(1);
     }
+
+    dateLocale() {
+        return new MatchDate(this.getTime() - this.getTimezoneOffset() * 60000);
+    }
 }

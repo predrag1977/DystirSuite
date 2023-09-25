@@ -11,7 +11,8 @@ export default class App extends Component {
 
     constructor(props) {
         super(props);
-        (new DystirWebClientService).init();
+        this.dystirWebClientService = new DystirWebClientService();
+        this.dystirWebClientService.init();
     }
 
     render() {

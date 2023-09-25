@@ -11,18 +11,22 @@ body {
     user-select: text;
 }
 
-header {
+#header {
     position: fixed;
     width: 100%;
     top: 0;
-    height: 90px;
+    height: 80px;
+    margin: 0 auto;
+    padding: 0 20px;
     background-color: #19191a;
+    border-bottom: 1px solid dimgray;
 }
 
 main {
     background-color: rgba(24, 24, 24, 0.85);
-    width:100%;
-    margin: 90px auto 0 auto;
+    width: 100%;
+    margin: 80px auto 0 auto;
+    max-width: 1000px !important;
 }
 
 .background {
@@ -33,13 +37,14 @@ main {
     background-position: center;
 }
 
-
-
-
-
+#header_container {
+    min-width: 290px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
 
 .border-bottom {
-    border-bottom: 0px !important;
+    border-bottom: 1px solid dimgray !important;
 }
 
 .navbar-brand {
@@ -70,20 +75,20 @@ main {
             color: white;
         }
 
-
-
-
-
-
-
-#header_container {
-    background-color: rgba(24, 24, 24, 0.85);
-    width: 100%;
-    height: 80px;
-    margin: 0 auto;
-    border-bottom: 1px solid dimgray;
-    min-width: 290px;
+.navbar-toggler {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 8px;
+    margin: 15px;
 }
+
+#header_title {
+    border-radius: 7px;
+    text-align: left;
+    font-size: 0.8rem;
+    font-weight: 900;
+    line-height: 80px;
+}
+
 
 
 
@@ -137,13 +142,7 @@ main {
             padding: 12px;
         }
 
-#header_title {
-    border-radius: 7px;
-    text-align: left;
-    padding: 18px 0;
-    font-size: 0.8rem;
-    font-weight: 900;
-}
+
 
 #days_selection, #competitions_selection {
     height: 60px;
@@ -493,11 +492,7 @@ main {
     color: red;
 }
 
-.navbar-toggler {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 8px;
-    margin-right: 15px;
-}
+
 
 .statistics_goal, .statistics_asist {
     width: 2.5rem;
@@ -546,6 +541,7 @@ a, .btn-link, .nav-link {
     position: fixed;
     top: calc(50% - 1.3rem);
     left: calc(50% - 1.3rem);
+    color: darkgrey;
 }
 
 .loading-spinner {

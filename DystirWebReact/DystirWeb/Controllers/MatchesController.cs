@@ -37,17 +37,16 @@ namespace DystirWeb.Controllers
             _matchDetailsService = matchDetailsService;
         }
 
-        // GET: api/Matches
-        [HttpGet]
-        public async Task<IEnumerable<Matches>> GetMatches()
+        // GET: api/matches
+        [HttpGet("{parameter?}")]
+        public async Task<IEnumerable<Matches>> GetMatches(string parameter)
         {
-            string action = "";
             Debug.WriteLine("Start:" + DateTime.Now.ToString("hh:mm:ss:ff"));
             IEnumerable<Matches> matches;
             int year = DateTime.UtcNow.Year;
             var fromDate = DateTime.UtcNow.Date.AddDays(-15);
             var toDate = DateTime.UtcNow.Date.AddDays(15);
-            switch (action?.ToLower())
+            switch (parameter?.ToLower())
             {
                 case "matches":
                     matches = _dystirService.AllMatches.Where(x => x.Time > fromDate && x.Time < toDate && x.MatchActivation != 1 && x.MatchActivation != 2);
@@ -72,18 +71,18 @@ namespace DystirWeb.Controllers
             return await Task.FromResult(matches);
         }
 
-        // GET: api/Matches/5
-        [HttpGet("{id}", Name = "GetMatch")]
-        public IActionResult GetMatches(int id)
-        {
-            Matches matches = _dystirDBContext.Matches.Find(id);
-            if (matches == null)
-            {
-                return NotFound();
-            }
+        //// GET: api/Matches/5
+        //[HttpGet("{id}", Name = "GetMatch")]
+        //public IActionResult GetMatches(int id)
+        //{
+        //    Matches matches = _dystirDBContext.Matches.Find(id);
+        //    if (matches == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok(matches);
-        }
+        //    return Ok(matches);
+        //}
 
         // PUT: api/Matches/5
         [HttpPut("{id}/{token}")]

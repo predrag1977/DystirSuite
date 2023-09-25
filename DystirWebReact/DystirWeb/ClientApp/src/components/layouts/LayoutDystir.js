@@ -14,7 +14,7 @@ export class LayoutDystir extends Component {
     render() {
         return (
             <div className="background">
-                <NavMenu />
+                <NavMenu page={this.props.page} />
                 <Container tag="main">
                     {this.props.children}
                 </Container>

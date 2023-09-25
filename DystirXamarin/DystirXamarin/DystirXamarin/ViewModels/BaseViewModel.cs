@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
-using Xamarin.Forms;
-
 using DystirXamarin.Models;
-using DystirXamarin.Services;
 using System.Collections.ObjectModel;
 
 namespace DystirXamarin.ViewModels
