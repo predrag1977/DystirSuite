@@ -3,7 +3,8 @@
 export default class DystirWebClientService {
     static matchesData = {
         matches: null,
-        isMatchesLoading: false
+        isMatchesLoading: false,
+        selectedPeriod: 0
     }
 
     static resultsData = {

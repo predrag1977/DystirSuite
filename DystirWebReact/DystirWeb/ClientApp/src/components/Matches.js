@@ -3,6 +3,7 @@ import DystirWebClientService from '../services/dystirWebClientService';
 import MatchDate from '../extentions/matchDate';
 import { MatchView } from "./views/MatchView";
 import { NavMenu } from './NavMenu';
+import { ChooseDays } from './ChooseDays';
 import { groupBy } from "core-js/actual/array/group-by";
 import { groupByToMap } from "core-js/actual/array/group-by-to-map";
 import { LayoutDystir } from './layouts/LayoutDystir';
@@ -49,18 +50,24 @@ export class Matches extends Component {
 
     render() {
         let contents =
-            <div>
-            {
-                (this.state.matches == null || this.state.isMatchesLoading) &&
-                <div className="loading-spinner-parent spinner-border" />
-            }
-            {
-                this.renderMatches(this.state.matches)
-            }
-            </div>
+            <>
+                <ChooseDays />
+                <div>
+                    {
+                        (this.state.matches == null || this.state.isMatchesLoading) &&
+                        <div className="loading-spinner-parent spinner-border" />
+                    }
+                    {
+                        this.renderMatches(this.state.matches)
+                    }
+                </div>
+            </>
         return (
             <LayoutDystir page="DYSTIR">
+                
             {
+                
+
                 contents
             }     
             </LayoutDystir>
@@ -103,7 +110,12 @@ export class Matches extends Component {
         now.setHours(0, 0, 0, 0);
 
         var fromDate = now.dateUtc().addDays(-10);
-        var toDate = now.dateUtc().addDays(10);
+        var toDate = now.dateUtc().addDays(0);
+
+        if (this.state.selectedPeriod == 0) {
+            fromDate = now.dateUtc().addDays(0)
+        }
+
 
         return matches.filter((match) =>
             MatchDate.parse(match.time) > MatchDate.parse(fromDate)
