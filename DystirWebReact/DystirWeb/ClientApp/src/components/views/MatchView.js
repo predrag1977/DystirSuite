@@ -85,12 +85,12 @@ export class MatchView extends Component {
             default:
                 return this.getTimeToStart(milsecToStart, "-- : --");
         }
-            var min = minutes.ToString();
-            var sec = seconds.ToString();
+            var min = minutes;
+            var sec = seconds;
         if (minutes < 10)
-            min = "0" + minutes.ToString();
+            min = "0" + minutes;
         if (seconds < 10)
-            sec = "0" + seconds.ToString();
+            sec = "0" + seconds;
         return addtime + " " + min + ":" + sec;
     }
 

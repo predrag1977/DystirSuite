@@ -28,16 +28,15 @@
     <None Remove="ClientApp\src\services\" />
     <None Remove="ClientApp\src\extentions\" />
     <None Remove="ClientApp\src\components\views\" />
-    <None Remove="ClientApp\public\team_logos\" />
     <None Remove="ClientApp\src\css\" />
     <None Remove="ClientApp\src\components\layouts\" />
+    <None Remove="ClientApp\public\team_logos\nsí.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="ClientApp\src\services\" />
     <Folder Include="ClientApp\src\extentions\" />
     <Folder Include="ClientApp\src\components\views\" />
-    <Folder Include="ClientApp\public\team_logos\" />
     <Folder Include="ClientApp\src\css\" />
     <Folder Include="ClientApp\src\components\layouts\" />
   </ItemGroup>
