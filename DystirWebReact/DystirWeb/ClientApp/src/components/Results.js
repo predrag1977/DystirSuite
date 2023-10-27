@@ -13,8 +13,8 @@ export class Results extends Component {
     constructor(props) {
         super(props);
         this.state = DystirWebClientService.resultsData;
-        if (DystirWebClientService.resultsData.matches == null) {
-            this.loadMatchesDataAsync();
+        if (this.state.matches == null) {
+            DystirWebClientService.loadResultDataAsync();
         };
     }
 
@@ -22,16 +22,18 @@ export class Results extends Component {
         document.body.addEventListener('onConnected', this.onConnected.bind(this));
         document.body.addEventListener('onDisconnected', this.onDisconnected.bind(this));
         document.body.addEventListener('onReceiveMatchDetails', this.onReceiveMatchDetails.bind(this));
+        document.body.addEventListener('onResultDataLoaded', this.onResultDataLoaded.bind(this));
     }
 
     componentWillUnmount() {
         document.body.removeEventListener('onConnected', this.onConnected.bind(this));
         document.body.removeEventListener('onDisconnected', this.onDisconnected.bind(this));
         document.body.removeEventListener('onReceiveMatchDetails', this.onReceiveMatchDetails.bind(this));
+        document.body.removeEventListener('onResultDataLoaded', this.onResultDataLoaded.bind(this));
     }
 
     onConnected() {
-        this.loadMatchesDataAsync();
+        DystirWebClientService.loadResultDataAsync();
     }
 
     onDisconnected() {
@@ -42,23 +44,33 @@ export class Results extends Component {
         const list = DystirWebClientService.resultsData.results.filter((item) => item.matchID !== match.matchID)
 
         list.push(match);
-
-        this.setState({ matches: this.filterMatches(list) });
+      
         DystirWebClientService.resultsData = {
-            matches: this.filterMatches(list),
+            matches: list,
             isMatchesLoading: false
         };
+        this.setState({
+            matches: list
+        });
+    }
+
+    onResultDataLoaded() {
+        console.log("onResultDataLoaded");
+        this.setState({
+            matches: DystirWebClientService.resultsData.matches,
+            isLoading: DystirWebClientService.resultsData.isLoading
+        });
     }
 
     render() {
         let contents =
             <div>
             {
-                (this.state.matches == null || this.state.isMatchesLoading) &&
+                (this.state.matches == null || this.state.isLoading) &&
                 <div className="loading-spinner-parent spinner-border" />
             }
             {
-                this.renderMatches(this.state.matches)
+                this.renderResults(this.filterMatches(this.state.matches))
             }
             </div>
         return (
@@ -70,7 +82,7 @@ export class Results extends Component {
         );
     }
 
-    renderMatches(matches) {
+    renderResults(matches) {
         if (matches == null) return;
         const matchesGroup = matches.groupBy(match => { return match.roundName });
         return (
@@ -85,22 +97,6 @@ export class Results extends Component {
                 </div>
             )
         );
-    }
-
-    async loadMatchesDataAsync() {
-        const response = await fetch('api/matches/results');
-        const data = await response.json();
-        const sortedMatches = data
-            .sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)))
-            .sort((a, b) => b.roundID - a.roundID)
-            .sort((a, b) => a.matchTypeID - b.matchTypeID);
-            
-            
-        this.setState({ matches: this.filterMatches(sortedMatches), isMatchesLoading: false });
-        DystirWebClientService.resultsData = {
-            matches: this.filterMatches(sortedMatches),
-            isMatchesLoading: false
-        };
     }
 
     filterMatches(matches) {
