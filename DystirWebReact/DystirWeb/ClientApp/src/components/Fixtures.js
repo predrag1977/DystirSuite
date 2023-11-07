@@ -9,18 +9,18 @@ import { LayoutDystir } from './layouts/LayoutDystir';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
-export class Results extends Component {
-    static displayName = Results.name;
+export class Fixtures extends Component {
+    static displayName = Fixtures.name;
 
     constructor(props) {
         super(props);
-        let resultsData = dystirWebClientService.state.resultsData;
+        let fixturesData = dystirWebClientService.state.fixturesData;
         this.state = {
-            matches: resultsData.matches,
-            isLoading: resultsData.isLoading
+            matches: fixturesData.matches,
+            isLoading: fixturesData.isLoading
         }
         if (this.state.matches === null) {
-            dystirWebClientService.loadResultDataAsync();
+            dystirWebClientService.loadFixturesDataAsync();
         };
     }
 
@@ -28,18 +28,18 @@ export class Results extends Component {
         document.body.addEventListener('onConnected', this.onConnected.bind(this));
         document.body.addEventListener('onDisconnected', this.onDisconnected.bind(this));
         document.body.addEventListener('onReceiveMatchDetails', this.onReceiveMatchDetails.bind(this));
-        document.body.addEventListener('onResultDataLoaded', this.onResultDataLoaded.bind(this));
+        document.body.addEventListener('onFixturesDataLoaded', this.onFixturesDataLoaded.bind(this));
     }
 
     componentWillUnmount() {
         document.body.removeEventListener('onConnected', this.onConnected.bind(this));
         document.body.removeEventListener('onDisconnected', this.onDisconnected.bind(this));
         document.body.removeEventListener('onReceiveMatchDetails', this.onReceiveMatchDetails.bind(this));
-        document.body.removeEventListener('onResultDataLoaded', this.onResultDataLoaded.bind(this));
+        document.body.removeEventListener('onFixturesDataLoaded', this.onFixturesDataLoaded.bind(this));
     }
 
     onConnected() {
-        dystirWebClientService.loadResultDataAsync();
+        dystirWebClientService.loadFixturesDataAsync();
     }
 
     onDisconnected() {
@@ -47,7 +47,7 @@ export class Results extends Component {
 
     onReceiveMatchDetails(event) {
         const match = event.detail.matchDetail['match'];
-        const list = dystirWebClientService.resultsData.results.filter((item) => item.matchID !== match.matchID)
+        const list = dystirWebClientService.fixturesData.results.filter((item) => item.matchID !== match.matchID)
 
         list.push(match);
 
@@ -56,10 +56,10 @@ export class Results extends Component {
         });
     }
 
-    onResultDataLoaded() {
+    onFixturesDataLoaded() {
         this.setState({
-            matches: dystirWebClientService.state.resultsData.matches,
-            isLoading: dystirWebClientService.state.resultsData.isLoading
+            matches: dystirWebClientService.state.fixturesData.matches,
+            isLoading: dystirWebClientService.state.fixturesData.isLoading
         });
     }
 
@@ -71,11 +71,11 @@ export class Results extends Component {
                 <div className="loading-spinner-parent spinner-border" />
             }
             {
-                this.renderResults(this.filterMatches(this.state.matches))
+                this.renderFixtures(this.filterMatches(this.state.matches))
             }
             </div>
         return (
-            <LayoutDystir page={PageName.RESULTS}>
+            <LayoutDystir page={PageName.FIXTURES}>
             {
                 contents
             }
@@ -83,7 +83,7 @@ export class Results extends Component {
         );
     }
 
-    renderResults(matches) {
+    renderFixtures(matches) {
         if (matches == null) return;
         const matchesGroup = matches.groupBy(match => { return match.roundName });
         return (
@@ -105,13 +105,11 @@ export class Results extends Component {
             return matches;
         }
 
-        var fromDate = new MatchDate(new MatchDate().getFullYear(), 1, 1);
-        var toDate = new MatchDate().dateUtc();
+        var fromDate = new MatchDate().dateUtc();
 
         return matches.filter((match) =>
-            MatchDate.parse(match.time) > MatchDate.parse(fromDate)
-            && MatchDate.parse(match.time) < MatchDate.parse(toDate)
-            && match.statusID >= 12
+            MatchDate.parse(match.time) >= MatchDate.parse(fromDate)
+            && match.statusID < 30
             && match.matchTypeName == matches[0].matchTypeName);
     }
 }

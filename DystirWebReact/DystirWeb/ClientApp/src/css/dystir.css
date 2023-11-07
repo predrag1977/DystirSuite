@@ -1,5 +1,11 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Nunito');
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: 'Nunito', sans-serif;
     color: white;
@@ -9,6 +15,11 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: text;
+    background-image: url('background.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    background-position: center;
 }
 
 #header {
@@ -30,11 +41,7 @@ main {
 }
 
 .background {
-    background-image: url('background.jpg');
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    background-attachment: fixed;
-    background-position: center;
+    
 }
 
 #header_container {
@@ -81,6 +88,10 @@ main {
     margin: 15px;
 }
 
+table, tbody, tr {
+    vertical-align: top;
+}
+
 #header_title {
     border-radius: 7px;
     text-align: left;
@@ -88,6 +99,22 @@ main {
     font-weight: 900;
     line-height: 80px;
 }
+
+#horizontal_menu_days {
+    display: flex;
+    height: 60px;
+    text-align: center;
+    justify-content: center;
+    border-bottom: 1px solid dimgray;
+}
+
+    #horizontal_menu_days .tab {
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 20%;
+    }
 
 
 
@@ -146,7 +173,6 @@ main {
 
 #days_selection, #competitions_selection {
     height: 60px;
-    margin: 0 5px;
 }
 
 #competitions_selection {
@@ -204,12 +230,11 @@ main {
         background-color: rgba(255,255,255,0.1);
     }
 
-.tab {
+.tab, .selected_tab {
     color: #a6a6a6;
     font-size: 0.8rem;
     font-weight: 800;
-    height: 30px;
-    margin: 20px 8px 0 8px;
+    height: 58px;
     text-align: center;
 }
 
@@ -218,22 +243,21 @@ main {
         cursor: pointer;
     }
 
-#horizontal_menu_days {
-    display: flex;
-    height: 60px;
-    text-align: center;
-    justify-content: center;
-    border-bottom: 1px solid dimgray;
+    .tab .nav-link, .selected_tab .nav-link {
+        color: #a6a6a6;
+        height: 58px;
+        padding: 20px 0 0 0;
+    }
+
+.selected_tab {
+    color: #00be14;
+    border-bottom: 2px solid #00be14;
 }
 
-    #horizontal_menu_days .tab {
-        display: inline-block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        width: 20%;
-        margin: 20px 0 0 0;
+    .selected_tab .nav-link {
+        color: #00be14;
     }
+
 
 #match-details_static_part #horizontal_menu_days {
     height: 50px;
