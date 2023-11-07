@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DystirWebClientService from '../services/dystirWebClientService';
+import { DystirWebClientService, SelectPeriodName, PageName } from '../services/dystirWebClientService';
 import MatchDate from '../extentions/matchDate';
 import { MatchView } from "./views/MatchView";
 import { NavMenu } from './NavMenu';
@@ -8,15 +8,31 @@ import { groupBy } from "core-js/actual/array/group-by";
 import { groupByToMap } from "core-js/actual/array/group-by-to-map";
 import { LayoutDystir } from './layouts/LayoutDystir';
 
+const dystirWebClientService = DystirWebClientService.getInstance();
+
 export class Matches extends Component {
     static displayName = Matches.name;
 
     constructor(props) {
         super(props);
-        this.state = DystirWebClientService.matchesData;
-        if (this.state.matches == null) {
-            DystirWebClientService.loadMatchesDataAsync();
-        };
+        let matchesData = dystirWebClientService.state.matchesData;
+        if (matchesData.selectedPeriod !== undefined && matchesData.selectedPeriod !== "") {
+            window.history.replaceState(null, null, "/matches/" + matchesData.selectedPeriod);
+        } else {
+            matchesData.selectedPeriod = window.location.pathname.split("/").pop();
+        }
+        this.state = {
+            matches: matchesData.matches,
+            isLoading: matchesData.isLoading,
+            selectedPeriod: matchesData.selectedPeriod
+        }
+
+        if (this.state.selectedPeriod !== undefined && this.state.selectedPeriod !== "") {
+            window.history.replaceState(null, null, "/matches/" + this.state.selectedPeriod);
+        }
+        if (this.state.matches === null) {
+            dystirWebClientService.loadMatchesDataAsync(this.state.selectedPeriod);
+        }
     }
 
     componentDidMount() {
@@ -34,60 +50,54 @@ export class Matches extends Component {
     }
 
     onConnected() {
-        DystirWebClientService.loadMatchesDataAsync();
+        dystirWebClientService.loadMatchesDataAsync(this.state.selectedPeriod);
     }
 
     onDisconnected() {
     }
 
     onReceiveMatchDetails(event) {
-        const match = event.detail.matchDetail['match'];
-        const list = DystirWebClientService.matchesData.matches.filter((item) => item.matchID !== match.matchID)
-
-        list.push(match);
-
-        DystirWebClientService.matchesData = {
-            matches: list
-        };
         this.setState({
-            matches: list
+            matches: dystirWebClientService.state.matchesData.matches,
+            isLoading: dystirWebClientService.state.matchesData.isLoading
         });
     }
 
     onMatchesDataLoaded() {
-        console.log("onMatchesDataLoaded");
         this.setState({
-            matches: DystirWebClientService.matchesData.matches,
-            isLoading: DystirWebClientService.matchesData.isLoading
+            matches: dystirWebClientService.state.matchesData.matches,
+            isLoading: dystirWebClientService.state.matchesData.isLoading
         });
     }
 
-    periodSelected(periodIndex) {
-        console.log(periodIndex);
-        DystirWebClientService.matchesData = {
-            selectedPeriod: periodIndex
-        };
+    onClickPeriod() {
+        let periodParameter = window.location.pathname.split("/").pop();
+        dystirWebClientService.state.matchesData.selectedPeriod = periodParameter;
         this.setState({
-            selectedPeriod: periodIndex
+            selectedPeriod: periodParameter
         });
     }
 
     render() {
         let contents =
             <>
-                <ChooseDays periodSelected={(periodIndex) => this.periodSelected(periodIndex)} />
-                <div>
+                <ChooseDays onClickPeriod={() => this.onClickPeriod()} selectedPeriod={this.state.selectedPeriod} />
+                <>
                     {
-                        (this.state.matches == null || this.state.isLoading) &&
-                        <div className="loading-spinner-parent spinner-border" />
+                        (this.state.matches === null || this.state.isLoading) &&
+
+                        <div style={{ height: '100vh' }}>
+                            <div className="loading-spinner-parent spinner-border" />
+                        </div>
+                        
                     }
                     {
                         this.renderMatches(this.filterMatches(this.state.matches))
                     }
-                </div>
+                </>
             </>
         return (
-            <LayoutDystir page="DYSTIR">
+            <LayoutDystir page={PageName.MATCHES}>
             {
                 contents
             }
@@ -99,16 +109,24 @@ export class Matches extends Component {
         if (matches == null) return;
         const matchesGroup = matches.groupBy(match => { return match.matchTypeName });
         return (
-            Object.keys(matchesGroup).map(group =>
-                <div key={group}>
-                    <div className="match-group-competition-name">{group}</div>
-                    {
-                        matchesGroup[group].map(match =>
-                            <MatchView key={match.matchID} match={match} />
-                        )
-                    }
-                </div>
-            )  
+            <table style={{ height: '100vh' }} >
+                <tbody>
+                {
+                    Object.keys(matchesGroup).map(group =>
+                        <tr key={group} >
+                            <td>
+                                <div className="match-group-competition-name">{group}</div>
+                                {
+                                    matchesGroup[group].map(match =>
+                                        <MatchView key={match.matchID} match={match} />
+                                    )
+                                }
+                            </td>
+                        </tr>
+                    )
+                }
+                </tbody>
+            </table>
         );
     }
 
@@ -119,13 +137,24 @@ export class Matches extends Component {
         var now = new MatchDate();
         now.setHours(0, 0, 0, 0);
 
-        var fromDate = now.dateUtc().addDays(-1);
+        var fromDate = now.dateUtc().addDays(0);
         var toDate = now.dateUtc().addDays(1);
 
-        if (this.state.selectedPeriod === 2) {
+        if (this.state.selectedPeriod === SelectPeriodName.BEFORE) {
             fromDate = now.dateUtc().addDays(-10);
+            toDate = now.dateUtc().addDays(0);
+        } else if (this.state.selectedPeriod === SelectPeriodName.YESTERDAY) {
+            fromDate = now.dateUtc().addDays(-2);
+            toDate = now.dateUtc().addDays(-1);
+        } else if (this.state.selectedPeriod === SelectPeriodName.TODAY) {
+            fromDate = now.dateUtc().addDays(0);
+            toDate = now.dateUtc().addDays(1);
+        } else if (this.state.selectedPeriod === SelectPeriodName.TOMORROW) {
+            fromDate = now.dateUtc().addDays(1);
+            toDate = now.dateUtc().addDays(2);
+        } else if (this.state.selectedPeriod === SelectPeriodName.NEXT) {
+            fromDate = now.dateUtc().addDays(0);
             toDate = now.dateUtc().addDays(10);
-            console.log(this.state.selectedPeriod);
         }
 
         var list = matches.filter((match) =>

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import DystirWebClientService from '../services/dystirWebClientService';
+import DystirWebClientService, { SelectPeriodName } from '../services/dystirWebClientService';
 import MatchDate from '../extentions/matchDate';
+import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import { format } from 'react-string-format';
 
 export class ChooseDays extends Component {
@@ -16,23 +18,49 @@ export class ChooseDays extends Component {
 
     render() {
         const match = this.props.match;
+        const selectedPeriod = this.props.selectedPeriod !== undefined && this.props.selectedPeriod !== "" ? this.props.selectedPeriod : SelectPeriodName.TODAY;
         return (
             <div id="days_selection">
                 <div id="horizontal_menu_days">
-                    <div className="tab" onClick={() => this.props.periodSelected(0)}>
-                        <span>-10 dagar</span>
+                    <div className={"tab " + (selectedPeriod == SelectPeriodName.BEFORE ? "selected_tab" : "")}
+                        onClick={() => this.props.onClickPeriod()}>
+                        <NavLink
+                            tag={Link}
+                            to="/matches/before">
+                            <span>-10 dagar</span>
+                        </NavLink>
                     </div>
-                    <div className="tab" onClick={() => this.props.periodSelected(1)}>
-                        <span>Í gjár</span>
+                    <div className={"tab " + (selectedPeriod == SelectPeriodName.YESTERDAY ? "selected_tab" : "")}
+                        onClick={() => this.props.onClickPeriod()}>
+                        <NavLink 
+                            tag={Link}
+                            to="/matches/yesterday">
+                            <span>Í gjár</span>
+                        </NavLink>
                     </div>
-                    <div className="tab" onClick={() => this.props.periodSelected(2)}>
-                        <span>Í dag</span>
+                    <div className={"tab " + (selectedPeriod == SelectPeriodName.TODAY ? "selected_tab" : "")}
+                        onClick={() => this.props.onClickPeriod()}>
+                        <NavLink
+                            tag={Link}
+                            to="/matches/today">
+                            <span>Í dag</span>
+                        </NavLink>
                     </div>
-                    <div className="tab" onClick={() => this.props.periodSelected(3)}>
-                        <span>Í morgin</span>
+                    <div className={"tab " + (selectedPeriod == SelectPeriodName.TOMORROW ? "selected_tab" : "")}
+                        onClick={() => this.props.onClickPeriod()}>
+                        <NavLink
+                            tag={Link}
+                            to="/matches/tomorrow">
+                            <span>Í morgin</span>
+                        </NavLink>
                     </div>
-                    <div className="tab" onClick={() => this.props.periodSelected(4)}>
-                        <span>+10 dagar</span>
+                    <div className={"tab " + (selectedPeriod == SelectPeriodName.NEXT ? "selected_tab" : "")}
+                        onClick={() => this.props.onClickPeriod()}>
+                        <NavLink
+                            tag={Link}
+                            to="/matches/next">
+                            <span>+10 dagar</span>
+                        </NavLink>
                     </div>
                 </div>
             </div>
