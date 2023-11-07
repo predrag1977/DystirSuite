@@ -4,11 +4,13 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    min-width: 370px;
 }
 
 body {
     font-family: 'Nunito', sans-serif;
     color: white;
+    overflow: hidden;
     background-color: #19191a;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -31,13 +33,29 @@ body {
     padding: 0 20px;
     background-color: #19191a;
     border-bottom: 1px solid dimgray;
+    min-width: 370px;
 }
 
 main {
-    background-color: rgba(24, 24, 24, 0.85);
+    height: calc(100vh - 80px);
+    
     width: 100%;
     margin: 80px auto 0 auto;
     max-width: 1000px !important;
+}
+
+.main_container {
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: calc(100vh - 150px);
+    padding: 0 10px;
+    background-color: rgba(24, 24, 24, 0.85);
+    width: 100%;
+}
+
+
+.container {
+    padding: 0;
 }
 
 .background {
@@ -48,6 +66,11 @@ main {
     min-width: 290px;
     max-width: 1000px;
     margin: 0 auto;
+}
+
+#days_selection, #competitions_selection {
+    height: 60px;
+    background-color: rgba(24, 24, 24, 0.85);
 }
 
 .border-bottom {
@@ -119,15 +142,7 @@ table, tbody, tr {
 
 
 
-#main_container, #match_details_container {
-    overflow-x: hidden;
-    overflow-y: auto;
-    height: calc(100vh - 150px);
-    margin: auto 0;
-    font-size: 1rem;
-    padding: 0 5px;
-    width: 100%;
-}
+
 
 #dystir_icon_button img {
     border-radius: 50%;
@@ -168,12 +183,6 @@ table, tbody, tr {
         #navigation_menu .nav-item a {
             padding: 12px;
         }
-
-
-
-#days_selection, #competitions_selection {
-    height: 60px;
-}
 
 #competitions_selection {
     border-bottom: 1px solid dimgray;

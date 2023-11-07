@@ -89,7 +89,9 @@ export class DystirWebClientService {
     async loadMatchesDataAsync(selectedPeriod) {
         const response = await fetch('api/matches/matches');
         const data = await response.json();
-        const sortedMatches = data.sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)));
+        const sortedMatches = data
+            .sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)))
+            .sort((a, b) => a.matchTypeID - b.matchTypeID);
         this.state.matchesData = {
             matches: sortedMatches,
             isLoading: false,

@@ -82,7 +82,7 @@ export class Matches extends Component {
         let contents =
             <>
                 <ChooseDays onClickPeriod={() => this.onClickPeriod()} selectedPeriod={this.state.selectedPeriod} />
-                <>
+                <div >
                     {
                         (this.state.matches === null || this.state.isLoading) &&
 
@@ -94,7 +94,7 @@ export class Matches extends Component {
                     {
                         this.renderMatches(this.filterMatches(this.state.matches))
                     }
-                </>
+                </div>
             </>
         return (
             <LayoutDystir page={PageName.MATCHES}>
@@ -109,24 +109,20 @@ export class Matches extends Component {
         if (matches == null) return;
         const matchesGroup = matches.groupBy(match => { return match.matchTypeName });
         return (
-            <table style={{ height: '100vh' }} >
-                <tbody>
-                {
-                    Object.keys(matchesGroup).map(group =>
-                        <tr key={group} >
-                            <td>
-                                <div className="match-group-competition-name">{group}</div>
-                                {
-                                    matchesGroup[group].map(match =>
-                                        <MatchView key={match.matchID} match={match} />
-                                    )
-                                }
-                            </td>
-                        </tr>
-                    )
-                }
-                </tbody>
-            </table>
+            <div className="main_container"  >
+            {
+                Object.keys(matchesGroup).map(group =>
+                    <div key={group}>
+                        <div className="match-group-competition-name">{group}</div>
+                        {
+                            matchesGroup[group].map(match =>
+                                <MatchView key={match.matchID} match={match} />
+                            )
+                        }
+                    </div>
+                )
+            }
+            </div>
         );
     }
 
