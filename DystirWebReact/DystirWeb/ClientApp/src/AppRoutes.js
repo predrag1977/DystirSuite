@@ -3,6 +3,7 @@ import { FetchData } from "./components/FetchData";
 import { Fixtures } from "./components/Fixtures";
 import { Matches } from "./components/Matches";
 import { Results } from "./components/Results";
+import { Standings } from "./components/Standings";
 
 const AppRoutes = [
     {
@@ -20,6 +21,10 @@ const AppRoutes = [
     {
         path: '/fixtures',
         element: <Fixtures />
+    },
+    {
+        path: '/standings',
+        element: <Standings />
     },
     {
         path: '/info/fetch-data',

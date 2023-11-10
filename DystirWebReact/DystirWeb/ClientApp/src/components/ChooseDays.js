@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DystirWebClientService, { SelectPeriodName } from '../services/dystirWebClientService';
+import { SelectPeriodName } from '../services/dystirWebClientService';
 import MatchDate from '../extentions/matchDate';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';

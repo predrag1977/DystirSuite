@@ -1,4 +1,5 @@
-﻿using DystirWeb.Shared;
+﻿using System.Text.RegularExpressions;
+using DystirWeb.Shared;
 
 namespace DystirWeb.Services
 {
@@ -46,6 +47,7 @@ namespace DystirWeb.Services
             try
             {
                 List<Matches> matches = matchesList?.Where(x => x.MatchTypeName == competitionName && /*(x.StatusId == 13 || x.StatusId == 12)&& */ (x.RoundID < 1000)).ToList();
+                
                 foreach (Matches match in matches)
                 {
                     if (!teamStandings.Any(x => x.Team.Trim() == match.HomeTeam.Trim()))
@@ -100,15 +102,18 @@ namespace DystirWeb.Services
 
         private void CalculatePoints(TeamStanding teamStanding, Matches match, int? mainTeamScore, int? opponentTeamScore)
         {
-            //teamStanding.IsLive = match.StatusId > 1 && match.StatusId < 6;
+            if(teamStanding.IsLive == false)
+            {
+                teamStanding.IsLive = (match.StatusID > 1 && match.StatusID < 6);
+            }
             //if (match.StatusId < 2 || match.StatusId > 13)
             //{
             //    return;
             //}
-            if (match.StatusID != 12 && match.StatusID != 13)
-            {
-                return;
-            }
+            //if (match.StatusID != 12 && match.StatusID != 13)
+            //{
+            //    return;
+            //}
             teamStanding.MatchesNo += 1;
             if (mainTeamScore != null && opponentTeamScore != null)
             {
@@ -166,7 +171,7 @@ namespace DystirWeb.Services
             }
         }
 
-        private string GetPositionColor(TeamStanding teamStanding)
+        private static string GetPositionColor(TeamStanding teamStanding)
         {
             if (teamStanding.CompetitionName == "Betri deildin")
             {

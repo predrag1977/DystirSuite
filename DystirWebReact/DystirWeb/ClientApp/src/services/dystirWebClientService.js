@@ -17,10 +17,15 @@ export class DystirWebClientService {
             matches: null,
             isLoading: true
         };
+        this.standingsData = {
+            standings: null,
+            isLoading: true
+        };
         this.state = {
             matchesData: this.matchesData,
             resultsData: this.resultsData,
-            fixturesData: this.fixturesData
+            fixturesData: this.fixturesData,
+            standingsData: this.standingsData
         };
 
         this.hubConnection = {
@@ -49,26 +54,29 @@ export class DystirWebClientService {
 
             const match = JSON.parse(matchDetails)['match'];
             const matchDetail = JSON.parse(matchDetails);
-            console.log(matchDetail);
             this.onReceiveMatch(match);
-            //document.body.dispatchEvent(new CustomEvent("onReceiveMatchDetails", { detail: { matchDetail } }));
         });
 
         this.hubConnection.connection.on('RefreshData', () => {
-            document.body.dispatchEvent(new CustomEvent("onRefreshData"));
+            this.loadMatchesDataAsync(this.state.matchesData.selectedPeriod);
         });
 
         this.hubConnection.connection.on('ReceiveMessage', (match, matchJson) => {
             //console.log('ReceiveMessage');
         });
 
-        this.hubConnection.connection.onclose(async () => {
-            document.body.dispatchEvent(new CustomEvent("onDisconnected"));
-            await this.startHubConnection();
-        });
-
         this.hubConnection.connection.onreconnected(() => {
             //console.log('Reconnected');
+        });
+
+        this.hubConnection.connection.onclose(async () => {
+            this.state.matchesData = {
+                matches: this.state.matchesData.matches,
+                isLoading: true,
+                selectedPeriod: this.state.matchesData.selectedPeriod
+            };
+            document.body.dispatchEvent(new CustomEvent("onDisconnected"));
+            await this.startHubConnection();
         });
 
         this.startHubConnection();
@@ -77,7 +85,7 @@ export class DystirWebClientService {
     async startHubConnection() {
         this.hubConnection.connection.start()
             .then(() => {
-                document.body.dispatchEvent(new CustomEvent("onConnected"));
+                this.loadMatchesDataAsync(this.state.matchesData.selectedPeriod);
             })
             .catch(err => {
                 setTimeout(() => {
@@ -88,12 +96,9 @@ export class DystirWebClientService {
 
     async loadMatchesDataAsync(selectedPeriod) {
         const response = await fetch('api/matches/matches');
-        const data = await response.json();
-        const sortedMatches = data
-            .sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)))
-            .sort((a, b) => a.matchTypeID - b.matchTypeID);
+        const matches = await response.json();
         this.state.matchesData = {
-            matches: sortedMatches,
+            matches: matches,
             isLoading: false,
             selectedPeriod: selectedPeriod
         };
@@ -112,7 +117,7 @@ export class DystirWebClientService {
             matches: sortedMatches,
             isLoading: false
         };
-        document.body.dispatchEvent(new CustomEvent("onResultDataLoaded"));
+        document.body.dispatchEvent(new CustomEvent("onResultsDataLoaded"));
     }
 
     async loadFixturesDataAsync() {
@@ -131,6 +136,18 @@ export class DystirWebClientService {
         document.body.dispatchEvent(new CustomEvent("onFixturesDataLoaded"));
     }
 
+    async loadStandingsDataAsync() {
+        const response = await fetch('api/standings');
+        const standings = await response.json();
+
+        this.state.standingsData = {
+            standings: standings,
+            isLoading: false
+        };
+        console.log(standings);
+        document.body.dispatchEvent(new CustomEvent("onStandingsDataLoaded"));
+    }
+
     onReceiveMatch(match) {
         const list = this.state.matchesData.matches.filter((item) => item.matchID !== match.matchID)
 
@@ -145,16 +162,14 @@ export class DystirWebClientService {
         };
         document.body.dispatchEvent(new CustomEvent("onMatchesDataLoaded"));
     }
-
-
 }
 
 export const PageName = {
     MATCHES: "DYSTIR",
     RESULTS: "ÚRSLIT",
     FIXTURES: "KOMANDI",
-    TOMORROW: "tomorrow",
-    NEXT: "next"
+    STANDINGS: "STØÐAN",
+    STATISTICS: "HAGTØL"
 }
 
 export const SelectPeriodName = {

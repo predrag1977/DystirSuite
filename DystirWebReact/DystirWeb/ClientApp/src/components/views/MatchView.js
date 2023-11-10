@@ -5,11 +5,13 @@ import { format } from 'react-string-format';
 export class MatchView extends Component {
     constructor(props) {
         super(props);
-        this.state = { matchTime: this.getMatchTime(this.props.match), statusColor: this.getStatusColor(this.props.match.statusID) };
+        this.state = {
+            matchTime: this.getMatchTime(this.props.match),
+            statusColor: this.getStatusColor(this.props.match.statusID)
+        };
     }
 
     componentDidMount() {
-        
         document.body.addEventListener('onMatchTime', this.onMatchTime.bind(this));
     }
 
@@ -145,15 +147,15 @@ export class MatchView extends Component {
                                 <td className="match_info text-start">
                                     <span>{(new MatchDate(Date.parse(match.time)).dateLocale().toDateTimeString())}</span>
                                     {
-                                        match.matchTypeName?.trim() !== undefined && <span> - </span>
+                                        (match.matchTypeName?.trim() !== undefined && match.matchTypeName?.trim() !== "") && <span> - </span>
                                     }
                                     <span>{match.matchTypeName}</span>
                                     {
-                                        match.roundName?.trim() !== undefined && <span> - </span>
+                                        (match.roundName?.trim() !== undefined && match.roundName?.trim() !== "") && <span> - </span>
                                     }
                                     <span>{match.roundName}</span>
                                     {
-                                        match.location?.trim() !== undefined && <span> - </span>
+                                        (match.location?.trim() !== undefined && match.location?.trim() !== "") && <span> - </span>
                                     }
                                     <span>{match.location}</span>
                                 </td>
@@ -253,11 +255,17 @@ export class MatchView extends Component {
                             <tr>
                                 <td className="match_info text-start">
                                     <span>{(new MatchDate(Date.parse(match.time)).dateLocale().toDateTimeString())}</span>
-                                    {match.matchTypeName?.trim() !== undefined && <span> - </span>}
+                                    {
+                                        (match.matchTypeName?.trim() !== undefined && match.matchTypeName?.trim() !== "") && <span> - </span>
+                                    }
                                     <span>{match.matchTypeName}</span>
-                                    {match.roundName?.trim() !== undefined && <span> - </span>}
+                                    {
+                                        (match.roundName?.trim() !== undefined && match.roundName?.trim() !== "") && <span> - </span>
+                                    }
                                     <span>{match.roundName}</span>
-                                    {match.location?.trim() !== undefined && <span> - </span>}
+                                    {
+                                        (match.location?.trim() !== undefined && match.location?.trim() !== "") && <span> - </span>
+                                    }
                                     <span>{match.location}</span>
                                 </td>
 
