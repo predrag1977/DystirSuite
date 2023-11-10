@@ -1,7 +1,5 @@
 ﻿using DystirWeb.Shared;
-using DystirWeb.DystirDB;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using DystirWeb.Services;
 
 namespace DystirWeb.Controllers
@@ -12,7 +10,7 @@ namespace DystirWeb.Controllers
     {
         private readonly StandingService _standingService;
 
-        public StandingsController(DystirDBContext dystirDBContext, StandingService standingService)
+        public StandingsController(StandingService standingService)
         {
             _standingService = standingService;
         }

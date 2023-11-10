@@ -6,6 +6,7 @@ import { NavMenu } from './NavMenu';
 import { groupBy } from "core-js/actual/array/group-by";
 import { groupByToMap } from "core-js/actual/array/group-by-to-map";
 import { LayoutDystir } from './layouts/LayoutDystir';
+import { ChooseDays } from './ChooseDays';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
@@ -17,63 +18,41 @@ export class Fixtures extends Component {
         let fixturesData = dystirWebClientService.state.fixturesData;
         this.state = {
             matches: fixturesData.matches,
-            isLoading: fixturesData.isLoading
+            isLoading: true
         }
-        if (this.state.matches === null) {
-            dystirWebClientService.loadFixturesDataAsync();
-        };
+        dystirWebClientService.loadFixturesDataAsync();
     }
 
     componentDidMount() {
-        document.body.addEventListener('onConnected', this.onConnected.bind(this));
-        document.body.addEventListener('onDisconnected', this.onDisconnected.bind(this));
-        document.body.addEventListener('onReceiveMatchDetails', this.onReceiveMatchDetails.bind(this));
         document.body.addEventListener('onFixturesDataLoaded', this.onFixturesDataLoaded.bind(this));
     }
 
     componentWillUnmount() {
-        document.body.removeEventListener('onConnected', this.onConnected.bind(this));
-        document.body.removeEventListener('onDisconnected', this.onDisconnected.bind(this));
-        document.body.removeEventListener('onReceiveMatchDetails', this.onReceiveMatchDetails.bind(this));
         document.body.removeEventListener('onFixturesDataLoaded', this.onFixturesDataLoaded.bind(this));
-    }
-
-    onConnected() {
-        dystirWebClientService.loadFixturesDataAsync();
-    }
-
-    onDisconnected() {
-    }
-
-    onReceiveMatchDetails(event) {
-        const match = event.detail.matchDetail['match'];
-        const list = dystirWebClientService.fixturesData.results.filter((item) => item.matchID !== match.matchID)
-
-        list.push(match);
-
-        this.setState({
-            matches: list
-        });
     }
 
     onFixturesDataLoaded() {
         this.setState({
             matches: dystirWebClientService.state.fixturesData.matches,
-            isLoading: dystirWebClientService.state.fixturesData.isLoading
+            isLoading: false
         });
     }
 
     render() {
         let contents =
-            <div>
-            {
-                (this.state.matches === null || this.state.isLoading) &&
-                <div className="loading-spinner-parent spinner-border" />
-            }
-            {
-                this.renderFixtures(this.filterMatches(this.state.matches))
-            }
-            </div>
+            <>
+                <ChooseDays />
+                <div className="main_container">
+                    {
+                        (this.state.matches === null || this.state.isLoading) &&
+                        <div className="loading-spinner-parent spinner-border" />
+                    }
+                    {
+                        this.renderFixtures(this.filterMatches(this.state.matches))
+                    }
+                </div>
+            </>
+        
         return (
             <LayoutDystir page={PageName.FIXTURES}>
             {
@@ -107,9 +86,10 @@ export class Fixtures extends Component {
 
         var fromDate = new MatchDate().dateUtc();
 
-        return matches.filter((match) =>
+        var fixtures = matches.filter((match) =>
             MatchDate.parse(match.time) >= MatchDate.parse(fromDate)
-            && match.statusID < 30
-            && match.matchTypeName == matches[0].matchTypeName);
+            && match.statusID < 30);
+
+        return fixtures.filter((match) => match.matchTypeName == fixtures[0].matchTypeName);
     }
 }

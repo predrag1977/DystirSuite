@@ -36,36 +36,25 @@ export class Matches extends Component {
     }
 
     componentDidMount() {
-        document.body.addEventListener('onConnected', this.onConnected.bind(this));
-        document.body.addEventListener('onDisconnected', this.onDisconnected.bind(this));
-        document.body.addEventListener('onReceiveMatchDetails', this.onReceiveMatchDetails.bind(this));
         document.body.addEventListener('onMatchesDataLoaded', this.onMatchesDataLoaded.bind(this));
+        document.body.addEventListener('onDisconnected', this.onDisconnected.bind(this));
     }
 
     componentWillUnmount() {
-        document.body.removeEventListener('onConnected', this.onConnected.bind(this));
-        document.body.removeEventListener('onDisconnected', this.onDisconnected.bind(this));
-        document.body.removeEventListener('onReceiveMatchDetails', this.onReceiveMatchDetails.bind(this));
         document.body.removeEventListener('onMatchesDataLoaded', this.onMatchesDataLoaded.bind(this));
-    }
-
-    onConnected() {
-        dystirWebClientService.loadMatchesDataAsync(this.state.selectedPeriod);
-    }
-
-    onDisconnected() {
-    }
-
-    onReceiveMatchDetails(event) {
-        this.setState({
-            matches: dystirWebClientService.state.matchesData.matches,
-            isLoading: dystirWebClientService.state.matchesData.isLoading
-        });
+        document.body.removeEventListener('onDisconnected', this.onDisconnected.bind(this));
     }
 
     onMatchesDataLoaded() {
         this.setState({
             matches: dystirWebClientService.state.matchesData.matches,
+            isLoading: false
+        });
+    }
+
+    onDisconnected() {
+        console.log("onDisconnected");
+        this.setState({
             isLoading: dystirWebClientService.state.matchesData.isLoading
         });
     }
@@ -82,18 +71,15 @@ export class Matches extends Component {
         let contents =
             <>
                 <ChooseDays onClickPeriod={() => this.onClickPeriod()} selectedPeriod={this.state.selectedPeriod} />
-                <div >
-                    {
-                        (this.state.matches === null || this.state.isLoading) &&
+                <div className="main_container">
+                {
+                    (this.state.matches === null || this.state.isLoading) &&
 
-                        <div style={{ height: '100vh' }}>
-                            <div className="loading-spinner-parent spinner-border" />
-                        </div>
-                        
-                    }
-                    {
-                        this.renderMatches(this.filterMatches(this.state.matches))
-                    }
+                    <div className="loading-spinner-parent spinner-border" />
+                }
+                {
+                    this.renderMatches(this.filterMatches(this.state.matches))
+                }
                 </div>
             </>
         return (
@@ -109,20 +95,16 @@ export class Matches extends Component {
         if (matches == null) return;
         const matchesGroup = matches.groupBy(match => { return match.matchTypeName });
         return (
-            <div className="main_container"  >
-            {
-                Object.keys(matchesGroup).map(group =>
-                    <div key={group}>
-                        <div className="match-group-competition-name">{group}</div>
-                        {
-                            matchesGroup[group].map(match =>
-                                <MatchView key={match.matchID} match={match} />
-                            )
-                        }
-                    </div>
-                )
-            }
-            </div>
+            Object.keys(matchesGroup).map(group =>
+                <div key={group}>
+                    <div className="match-group-competition-name">{group}</div>
+                    {
+                        matchesGroup[group].map(match =>
+                            <MatchView key={match.matchID} match={match} />
+                        )
+                    }
+                </div>
+            )
         );
     }
 
@@ -158,6 +140,9 @@ export class Matches extends Component {
             && MatchDate.parse(match.time) < MatchDate.parse(toDate)
         );
 
-        return list;
+        return list
+            .sort((a, b) => a.matchID - b.matchID)
+            .sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)))
+            .sort((a, b) => a.matchTypeID - b.matchTypeID)            ;
     }
 }

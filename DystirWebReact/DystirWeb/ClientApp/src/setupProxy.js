@@ -11,6 +11,7 @@ const context = [
     "/api/matches/results",
     "/api/refresh",
     "/api/Login",
+    "/api/standings"
 ];
 
 const onError = (err, req, resp, target) => {

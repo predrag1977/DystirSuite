@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PageName } from '../services/dystirWebClientService';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import '../css/nav-menu.css';
@@ -43,19 +44,19 @@ export class NavMenu extends Component {
                                     <span>{this.props.page}</span>
                                 </td>
                                 <td className="nav-item header_item">
-                                    <NavLink tag={Link} className={(this.props.page == "DYSTIR" ? "active" : "") + " text-dark"} to="/">DYSTIR</NavLink>
+                                    <NavLink tag={Link} className={(this.props.page == PageName.MATCHES ? "active" : "") + " text-dark"} to="/">{PageName.MATCHES}</NavLink>
                                 </td>
                                 <td className="nav-item header_item">
-                                    <NavLink tag={Link} className={(this.props.page == "ÚRSLIT" ? "active" : "") + " text-dark"} to="/results">ÚRSLIT</NavLink>
+                                    <NavLink tag={Link} className={(this.props.page == PageName.RESULTS ? "active" : "") + " text-dark"} to="/results">{PageName.RESULTS}</NavLink>
                                 </td>
                                 <td className="nav-item header_item">
-                                    <NavLink tag={Link} className={(this.props.page == "KOMANDI" ? "active" : "") + " text-dark"} to="/fixtures">KOMANDI</NavLink>
+                                    <NavLink tag={Link} className={(this.props.page == PageName.FIXTURES ? "active" : "") + " text-dark"} to="/fixtures">{PageName.FIXTURES}</NavLink>
                                 </td>
                                 <td className="nav-item header_item">
-                                    <NavLink tag={Link} className={(this.props.page == "STØÐAN" ? "active" : "") + " text-dark"} to="/standings">STØÐAN</NavLink>
+                                    <NavLink tag={Link} className={(this.props.page == PageName.STANDINGS ? "active" : "") + " text-dark"} to="/standings">{PageName.STANDINGS}</NavLink>
                                 </td>
                                 <td className="nav-item header_item">
-                                    <NavLink tag={Link} className={(this.props.page == "HAGTØL" ? "active" : "") + " text-dark"} to="/statistics">HAGTØL</NavLink>
+                                    <NavLink tag={Link} className={(this.props.page == PageName.STATISTICS ? "active" : "") + " text-dark"} to="/statistics">{PageName.STATISTICS}</NavLink>
                                 </td>
                             </tr>
                         </tbody>
@@ -93,19 +94,19 @@ export class NavMenu extends Component {
                 <div id="navigation_menu" className={this.state.collapsed ? "collapse" : ""} >
                     <ul className="nav flex-column">
                         <li className="nav-item">
-                            <NavLink tag={Link} className={(this.props.page == "DYSTIR" ? "active" : "") + " text-dark nav-link"} to="/">DYSTIR</NavLink>
+                            <NavLink tag={Link} className={(this.props.page == PageName.MATCHES ? "active" : "") + " text-dark nav-link"} to="/">{PageName.MATCHES}</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink tag={Link} className={(this.props.page == "ÚRSLIT" ? "active" : "") + " text-dark nav-link"} to="/results">ÚRSLIT</NavLink>
+                            <NavLink tag={Link} className={(this.props.page == PageName.RESULTS ? "active" : "") + " text-dark nav-link"} to="/results">{PageName.RESULTS}</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink tag={Link} className={(this.props.page == "KOMANDI" ? "active" : "") + " text-dark nav-link"} to="/fixtures">KOMANDI</NavLink>
+                            <NavLink tag={Link} className={(this.props.page == PageName.FIXTURES ? "active" : "") + " text-dark nav-link"} to="/fixtures">{PageName.FIXTURES}</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink tag={Link} className={(this.props.page == "STØÐAN" ? "active" : "") + " text-dark nav-link"} to="/standings">STØÐAN</NavLink>
+                            <NavLink tag={Link} className={(this.props.page == PageName.STANDINGS ? "active" : "") + " text-dark nav-link"} to="/standings">{PageName.STANDINGS}</NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink tag={Link} className={(this.props.page == "HAGTØL" ? "active" : "") + " text-dark nav-link"} to="/statistics">HAGTØL</NavLink>
+                            <NavLink tag={Link} className={(this.props.page == PageName.STATISTICS ? "active" : "") + " text-dark nav-link"} to="/statistics">{PageName.STATISTICS}</NavLink>
                         </li>
                     </ul>
                 </div>

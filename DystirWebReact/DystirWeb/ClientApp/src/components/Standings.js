@@ -7,33 +7,34 @@ import { groupBy } from "core-js/actual/array/group-by";
 import { groupByToMap } from "core-js/actual/array/group-by-to-map";
 import { LayoutDystir } from './layouts/LayoutDystir';
 import { ChooseDays } from './ChooseDays';
+import { StandingView } from './views/StandingView';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
-export class Results extends Component {
-    static displayName = Results.name;
+export class Standings extends Component {
+    static displayName = Standings.name;
 
     constructor(props) {
         super(props);
-        let resultsData = dystirWebClientService.state.resultsData;
+        let standingsData = dystirWebClientService.state.standingsData;
         this.state = {
-            matches: resultsData.matches,
+            standings: standingsData.standings,
             isLoading: true
         }
-        dystirWebClientService.loadResultDataAsync();
+        dystirWebClientService.loadStandingsDataAsync();
     }
 
     componentDidMount() {
-        document.body.addEventListener('onResultsDataLoaded', this.onResultsDataLoaded.bind(this));
+        document.body.addEventListener('onStandingsDataLoaded', this.onStandingsDataLoaded.bind(this));
     }
 
     componentWillUnmount() {
-        document.body.removeEventListener('onResultsDataLoaded', this.onResultsDataLoaded.bind(this));
+        document.body.removeEventListener('onStandingsDataLoaded', this.onStandingsDataLoaded.bind(this));
     }
 
-    onResultsDataLoaded() {
+    onStandingsDataLoaded() {
         this.setState({
-            matches: dystirWebClientService.state.resultsData.matches,
+            standings: dystirWebClientService.state.standingsData.standings,
             isLoading: false
         });
     }
@@ -44,16 +45,17 @@ export class Results extends Component {
                 <ChooseDays />
                 <div className="main_container">
                     {
-                        (this.state.matches === null || this.state.isLoading) &&
+                        (this.state.standings === null || this.state.isLoading) &&
                         <div className="loading-spinner-parent spinner-border" />
                     }
                     {
-                        this.renderResults(this.filterMatches(this.state.matches))
+                        this.renderStandings(this.state.standings)
                     }
                 </div>
             </>
+        
         return (
-            <LayoutDystir page={PageName.RESULTS}>
+            <LayoutDystir page={PageName.STANDINGS}>
             {
                 contents
             }
@@ -61,16 +63,16 @@ export class Results extends Component {
         );
     }
 
-    renderResults(matches) {
-        if (matches == null) return;
-        const matchesGroup = matches.groupBy(match => { return match.roundName });
+    renderStandings(standings) {
+        if (standings == null) return;
+        const standingsGroup = standings.groupBy(standing => { return standing.standingCompetitionName });
         return (
-            Object.keys(matchesGroup).map(group =>
+            Object.keys(standingsGroup).map(group =>
                 <div key={group}>
                     <div className="match-group-competition-name">{group ?? ""}</div>
                     {
-                        matchesGroup[group].map(match =>
-                            <MatchView key={match.matchID} match={match} />
+                        standingsGroup[group].map(standing =>
+                            <StandingView key={standing.standingCompetitionName} standing={standing} />
                         )
                     }
                 </div>
@@ -83,13 +85,12 @@ export class Results extends Component {
             return matches;
         }
 
-        var fromDate = new MatchDate(new MatchDate().getFullYear(), 1, 1);
-        var toDate = new MatchDate().dateUtc();
+        var fromDate = new MatchDate().dateUtc();
 
-        return matches.filter((match) =>
-            MatchDate.parse(match.time) > MatchDate.parse(fromDate)
-            && MatchDate.parse(match.time) < MatchDate.parse(toDate)
-            && match.statusID >= 12
-            && match.matchTypeName == matches[0].matchTypeName);
+        var fixtures = matches.filter((match) =>
+            MatchDate.parse(match.time) >= MatchDate.parse(fromDate)
+            && match.statusID < 30);
+
+        return fixtures.filter((match) => match.matchTypeName == fixtures[0].matchTypeName);
     }
 }

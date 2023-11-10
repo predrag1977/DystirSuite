@@ -41,10 +41,11 @@ namespace DystirWeb.Controllers
 
         private List<Matches> GetMatchesList()
         {
-            var fromDate = DateTime.Now.AddHours(1).Date.AddDays(0);
+            var fromDate = DateTime.UtcNow.Date.AddDays(0);
             var toDate = fromDate.AddDays(0);
             var matchesList = _dystirService.AllMatches?
-                .Where(x => x.Time.Value.Date >= fromDate && x.Time.Value.Date <= toDate)
+                .Where(x => x.Time.Value.Date >= fromDate
+                && x.Time.Value.Date <= toDate)
                 .OrderBy(x => x.MatchTypeID).ThenBy(x => x.Time).ThenBy(x => x.MatchID)?.ToList();
 
             return matchesList ?? new List<Matches>();
@@ -52,7 +53,7 @@ namespace DystirWeb.Controllers
 
         private List<Matches> GetMatchesListForPortal()
         {
-            var fromDate = DateTime.Now.AddHours(1).Date.AddDays(0);
+            var fromDate = DateTime.UtcNow.Date.AddDays(0);
             var toDate = fromDate.AddDays(0);
             var matchesList = _dystirService.AllMatches?
                 .Where(x => x.Time.Value.Date >= fromDate
