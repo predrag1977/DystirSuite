@@ -19,23 +19,40 @@ export class Standings extends Component {
         let standingsData = dystirWebClientService.state.standingsData;
         this.state = {
             standings: standingsData.standings,
+            selectedStandingsCompetition: standingsData.selectedStandingsCompetition,
             isLoading: true
         }
-        dystirWebClientService.loadStandingsDataAsync();
+        dystirWebClientService.loadStandingsDataAsync("Betri deildin");
     }
 
     componentDidMount() {
-        document.body.addEventListener('onStandingsDataLoaded', this.onStandingsDataLoaded.bind(this));
+        document.body.addEventListener('onReloadData', this.onReloadData.bind(this));
+        document.body.addEventListener('onConnected', this.onConnected.bind(this));
+        document.body.addEventListener('onDisconnected', this.onDisconnected.bind(this));
+        document.body.addEventListener('onUpdateStandings', this.onReloadData.bind(this));
     }
 
     componentWillUnmount() {
-        document.body.removeEventListener('onStandingsDataLoaded', this.onStandingsDataLoaded.bind(this));
+        document.body.removeEventListener('onReloadData', this.onReloadData.bind(this));
+        document.body.removeEventListener('onConnected', this.onConnected.bind(this));
+        document.body.removeEventListener('onDisconnected', this.onDisconnected.bind(this));
+        document.body.removeEventListener('onUpdateStandings', this.onReloadData.bind(this));
     }
 
-    onStandingsDataLoaded() {
+    onReloadData() {
         this.setState({
             standings: dystirWebClientService.state.standingsData.standings,
             isLoading: false
+        });
+    }
+
+    onConnected() {
+        dystirWebClientService.loadStandingsDataAsync("Betri deildin");
+    }
+
+    onDisconnected() {
+        this.setState({
+            isLoading: true
         });
     }
 

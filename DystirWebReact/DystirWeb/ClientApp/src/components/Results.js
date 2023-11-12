@@ -24,17 +24,31 @@ export class Results extends Component {
     }
 
     componentDidMount() {
-        document.body.addEventListener('onResultsDataLoaded', this.onResultsDataLoaded.bind(this));
+        document.body.addEventListener('onReloadData', this.onReloadData.bind(this));
+        document.body.addEventListener('onConnected', this.onConnected.bind(this));
+        document.body.addEventListener('onDisconnected', this.onDisconnected.bind(this));
     }
 
     componentWillUnmount() {
-        document.body.removeEventListener('onResultsDataLoaded', this.onResultsDataLoaded.bind(this));
+        document.body.removeEventListener('onReloadData', this.onReloadData.bind(this));
+        document.body.removeEventListener('onConnected', this.onConnected.bind(this));
+        document.body.removeEventListener('onDisconnected', this.onDisconnected.bind(this));
     }
 
-    onResultsDataLoaded() {
+    onReloadData() {
         this.setState({
             matches: dystirWebClientService.state.resultsData.matches,
             isLoading: false
+        });
+    }
+
+    onConnected() {
+        dystirWebClientService.loadResultDataAsync();
+    }
+
+    onDisconnected() {
+        this.setState({
+            isLoading: true
         });
     }
 

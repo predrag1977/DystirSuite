@@ -23,39 +23,47 @@ export class Matches extends Component {
         }
         this.state = {
             matches: matchesData.matches,
-            isLoading: matchesData.isLoading,
-            selectedPeriod: matchesData.selectedPeriod
+            selectedPeriod: matchesData.selectedPeriod,
+            isLoading: false
         }
 
         if (this.state.selectedPeriod !== undefined && this.state.selectedPeriod !== "") {
             window.history.replaceState(null, null, "/matches/" + this.state.selectedPeriod);
         }
         if (this.state.matches === null) {
+            this.state.isLoading = true;
             dystirWebClientService.loadMatchesDataAsync(this.state.selectedPeriod);
         }
     }
 
     componentDidMount() {
-        document.body.addEventListener('onMatchesDataLoaded', this.onMatchesDataLoaded.bind(this));
+        document.body.addEventListener('onReloadData', this.onReloadData.bind(this));
+        document.body.addEventListener('onConnected', this.onConnected.bind(this));
         document.body.addEventListener('onDisconnected', this.onDisconnected.bind(this));
+        document.body.addEventListener('onUpdateMatch', this.onReloadData.bind(this));
     }
 
     componentWillUnmount() {
-        document.body.removeEventListener('onMatchesDataLoaded', this.onMatchesDataLoaded.bind(this));
+        document.body.removeEventListener('onReloadData', this.onReloadData.bind(this));
+        document.body.removeEventListener('onConnected', this.onConnected.bind(this));
         document.body.removeEventListener('onDisconnected', this.onDisconnected.bind(this));
+        document.body.removeEventListener('onUpdateMatch', this.onReloadData.bind(this));
     }
 
-    onMatchesDataLoaded() {
+    onReloadData() {
         this.setState({
             matches: dystirWebClientService.state.matchesData.matches,
             isLoading: false
         });
     }
 
+    onConnected() {
+        dystirWebClientService.loadMatchesDataAsync(this.state.selectedPeriod);
+    }
+
     onDisconnected() {
-        console.log("onDisconnected");
         this.setState({
-            isLoading: dystirWebClientService.state.matchesData.isLoading
+            isLoading: true
         });
     }
 

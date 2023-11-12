@@ -11,7 +11,17 @@ const context = [
     "/api/matches/results",
     "/api/refresh",
     "/api/Login",
-    "/api/standings"
+    "/api/standings",
+    "/api/matchDetails",
+    "/api/eventsOfMatches",
+    "/api/playersOfMatches",
+    "/api/Administrators/token",
+    "/api/teams",
+    "/api/categories",
+    "/api/matchTypes",
+    "/api/squads",
+    "/api/statuses",
+    "/api/rounds"
 ];
 
 const onError = (err, req, resp, target) => {

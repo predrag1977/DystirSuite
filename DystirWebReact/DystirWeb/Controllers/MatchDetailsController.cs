@@ -15,7 +15,7 @@ namespace DystirWeb.Controllers
             _matchDetailsService = matchDetailsService;
         }
 
-        // GET api/<controller>/5
+        // GET api/matchDetails/5
         [HttpGet("{id}", Name = "GetMatchDetails")]
         public MatchDetails Get(int id)
         {
