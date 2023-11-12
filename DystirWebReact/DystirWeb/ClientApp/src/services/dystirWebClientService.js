@@ -5,21 +5,20 @@ export class DystirWebClientService {
 
     constructor() {
         this.matchesData = {
-            matches: null,
-            isLoading: true,
+            matches: [],
             selectedPeriod: ""
         };
         this.resultsData = {
-            matches: null,
-            isLoading: true
+            matches: [],
+            selectedResultsCompetition: ""
         };
         this.fixturesData = {
-            matches: null,
-            isLoading: true
+            matches: [],
+            selectedFixturesCompetition: ""
         };
         this.standingsData = {
-            standings: null,
-            isLoading: true
+            standings: [],
+            selectedStandingsCompetition: ""
         };
         this.state = {
             matchesData: this.matchesData,
@@ -48,17 +47,17 @@ export class DystirWebClientService {
 
     init() {
         this.hubConnection.connection.on('ReceiveMatchDetails', (matchID, matchDetailsJson) => {
-            const matchDetails = matchDetailsJson.replace(/"([^"]+)":/g,
+            const matchDetailsData = matchDetailsJson.replace(/"([^"]+)":/g,
                 function ($0, $1) { return ('"' + $1.charAt(0).toLowerCase() + $1.slice(1) + '":'); }
             );
 
-            const match = JSON.parse(matchDetails)['match'];
-            const matchDetail = JSON.parse(matchDetails);
-            this.onReceiveMatch(match);
+            const matchDetails = JSON.parse(matchDetailsData);
+
+            this.onUpdateMatchDetails(matchDetails);
         });
 
         this.hubConnection.connection.on('RefreshData', () => {
-            this.loadMatchesDataAsync(this.state.matchesData.selectedPeriod);
+            document.body.dispatchEvent(new CustomEvent("onReloadData"));
         });
 
         this.hubConnection.connection.on('ReceiveMessage', (match, matchJson) => {
@@ -70,11 +69,6 @@ export class DystirWebClientService {
         });
 
         this.hubConnection.connection.onclose(async () => {
-            this.state.matchesData = {
-                matches: this.state.matchesData.matches,
-                isLoading: true,
-                selectedPeriod: this.state.matchesData.selectedPeriod
-            };
             document.body.dispatchEvent(new CustomEvent("onDisconnected"));
             await this.startHubConnection();
         });
@@ -85,10 +79,11 @@ export class DystirWebClientService {
     async startHubConnection() {
         this.hubConnection.connection.start()
             .then(() => {
-                this.loadMatchesDataAsync(this.state.matchesData.selectedPeriod);
+                document.body.dispatchEvent(new CustomEvent("onConnected"));
             })
             .catch(err => {
                 setTimeout(() => {
+                    document.body.dispatchEvent(new CustomEvent("onDisconnected"));
                     this.startHubConnection();
                 }, 2000);
             });
@@ -99,10 +94,9 @@ export class DystirWebClientService {
         const matches = await response.json();
         this.state.matchesData = {
             matches: matches,
-            isLoading: false,
             selectedPeriod: selectedPeriod
         };
-        document.body.dispatchEvent(new CustomEvent("onMatchesDataLoaded"));
+        document.body.dispatchEvent(new CustomEvent("onReloadData"));
     }
 
     async loadResultDataAsync() {
@@ -114,10 +108,9 @@ export class DystirWebClientService {
             .sort((a, b) => a.matchTypeID - b.matchTypeID);
 
         this.state.resultsData = {
-            matches: sortedMatches,
-            isLoading: false
+            matches: sortedMatches
         };
-        document.body.dispatchEvent(new CustomEvent("onResultsDataLoaded"));
+        document.body.dispatchEvent(new CustomEvent("onReloadData"));
     }
 
     async loadFixturesDataAsync() {
@@ -130,37 +123,57 @@ export class DystirWebClientService {
 
 
         this.state.fixturesData = {
-            matches: sortedMatches,
-            isLoading: false
+            matches: sortedMatches
         };
-        document.body.dispatchEvent(new CustomEvent("onFixturesDataLoaded"));
+        document.body.dispatchEvent(new CustomEvent("onReloadData"));
     }
 
-    async loadStandingsDataAsync() {
+    async loadStandingsDataAsync(selectedStandingsCompetition) {
         const response = await fetch('api/standings');
         const standings = await response.json();
 
         this.state.standingsData = {
             standings: standings,
-            isLoading: false
+            selectedStandingsCompetition: selectedStandingsCompetition
         };
-        console.log(standings);
-        document.body.dispatchEvent(new CustomEvent("onStandingsDataLoaded"));
+        document.body.dispatchEvent(new CustomEvent("onReloadData"));
     }
 
-    onReceiveMatch(match) {
-        const list = this.state.matchesData.matches.filter((item) => item.matchID !== match.matchID)
+    onUpdateMatchDetails(matchDetails) {
+        const match = matchDetails['match'];
+        const eventsOfMatch = matchDetails['eventsOfMatch'];
+        const playersOfMatch = matchDetails['playersOfMatch'];
+        const standings = matchDetails['standings'];
+        console.log(eventsOfMatch);
+        console.log(playersOfMatch);
+        console.log(standings);
 
+        this.onUpdateMatch(match);
+
+        this.state.standingsData.selectedStandingsCompetition = "Betri deildin";
+        const fst = this.state.standingsData.standings.filter((standing) => standing.standingCompetitionName === this.state.standingsData.selectedStandingsCompetition);
+        this.onUpdateStandings(fst);
+    }
+
+    onUpdateMatch(match) {
+        const list = this.state.matchesData.matches.filter((item) => item.matchID !== match.matchID);
         list.push(match);
 
         const sortedMatches = list.sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)));
 
         this.state.matchesData = {
             matches: sortedMatches,
-            isLoading: false,
             selectedPeriod: this.state.matchesData.selectedPeriod
         };
-        document.body.dispatchEvent(new CustomEvent("onMatchesDataLoaded"));
+        document.body.dispatchEvent(new CustomEvent("onUpdateMatch"));
+    }
+
+    onUpdateStandings(standings) {
+        this.state.standingsData = {
+            standings: standings,
+            selectedStandingsCompetition: this.state.standingsData.selectedStandingsCompetition
+        };
+        document.body.dispatchEvent(new CustomEvent("onUpdateStandings"));
     }
 }
 

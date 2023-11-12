@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Serialization;
-using Newtonsoft.Json;
 
 namespace DystirWeb.Shared
 {
@@ -7,12 +6,14 @@ namespace DystirWeb.Shared
     public class MatchDetails
     {
         [DataMember]
+        public int MatchDetailsID { get; set; }
+        [DataMember]
         public Matches Match { get; set; }
         [DataMember]
         public List<EventsOfMatches> EventsOfMatch { get; set; } = new List<EventsOfMatches>();
         [DataMember]
         public List<PlayersOfMatches> PlayersOfMatch { get; set; } = new List<PlayersOfMatches>();
         [DataMember]
-        public int MatchDetailsID { get; set; }
+        public List<Standing> Standings { get; set; } = new List<Standing>();
     }
 }

@@ -24,17 +24,31 @@ export class Fixtures extends Component {
     }
 
     componentDidMount() {
-        document.body.addEventListener('onFixturesDataLoaded', this.onFixturesDataLoaded.bind(this));
+        document.body.addEventListener('onReloadData', this.onReloadData.bind(this));
+        document.body.addEventListener('onConnected', this.onConnected.bind(this));
+        document.body.addEventListener('onDisconnected', this.onDisconnected.bind(this));
     }
 
     componentWillUnmount() {
-        document.body.removeEventListener('onFixturesDataLoaded', this.onFixturesDataLoaded.bind(this));
+        document.body.removeEventListener('onReloadData', this.onReloadData.bind(this));
+        document.body.removeEventListener('onConnected', this.onConnected.bind(this));
+        document.body.removeEventListener('onDisconnected', this.onDisconnected.bind(this));
     }
 
-    onFixturesDataLoaded() {
+    onReloadData() {
         this.setState({
             matches: dystirWebClientService.state.fixturesData.matches,
             isLoading: false
+        });
+    }
+
+    onConnected() {
+        dystirWebClientService.loadFixturesDataAsync();
+    }
+
+    onDisconnected() {
+        this.setState({
+            isLoading: true
         });
     }
 
