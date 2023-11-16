@@ -26,11 +26,10 @@ export class Matches extends Component {
             selectedPeriod: matchesData.selectedPeriod,
             isLoading: false
         }
-
         if (this.state.selectedPeriod !== undefined && this.state.selectedPeriod !== "") {
             window.history.replaceState(null, null, "/matches/" + this.state.selectedPeriod);
         }
-        if (this.state.matches === null) {
+        if (this.state.matches.length === 0) {
             this.state.isLoading = true;
             dystirWebClientService.loadMatchesDataAsync(this.state.selectedPeriod);
         }
@@ -81,7 +80,7 @@ export class Matches extends Component {
                 <ChooseDays onClickPeriod={() => this.onClickPeriod()} selectedPeriod={this.state.selectedPeriod} />
                 <div className="main_container">
                 {
-                    (this.state.matches === null || this.state.isLoading) &&
+                    this.state.isLoading &&
 
                     <div className="loading-spinner-parent spinner-border" />
                 }

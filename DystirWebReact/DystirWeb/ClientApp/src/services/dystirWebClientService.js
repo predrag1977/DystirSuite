@@ -18,7 +18,7 @@ export class DystirWebClientService {
         };
         this.standingsData = {
             standings: [],
-            selectedStandingsCompetition: ""
+            selectedStandingsCompetitionId: ""
         };
         this.state = {
             matchesData: this.matchesData,
@@ -128,13 +128,13 @@ export class DystirWebClientService {
         document.body.dispatchEvent(new CustomEvent("onReloadData"));
     }
 
-    async loadStandingsDataAsync(selectedStandingsCompetition) {
+    async loadStandingsDataAsync(selectedStandingsCompetitionId) {
         const response = await fetch('api/standings');
         const standings = await response.json();
 
         this.state.standingsData = {
             standings: standings,
-            selectedStandingsCompetition: selectedStandingsCompetition
+            selectedStandingsCompetitionId: selectedStandingsCompetitionId
         };
         document.body.dispatchEvent(new CustomEvent("onReloadData"));
     }
@@ -144,15 +144,9 @@ export class DystirWebClientService {
         const eventsOfMatch = matchDetails['eventsOfMatch'];
         const playersOfMatch = matchDetails['playersOfMatch'];
         const standings = matchDetails['standings'];
-        console.log(eventsOfMatch);
-        console.log(playersOfMatch);
-        console.log(standings);
 
         this.onUpdateMatch(match);
-
-        this.state.standingsData.selectedStandingsCompetition = "Betri deildin";
-        const fst = this.state.standingsData.standings.filter((standing) => standing.standingCompetitionName === this.state.standingsData.selectedStandingsCompetition);
-        this.onUpdateStandings(fst);
+        this.onUpdateStandings(standings);
     }
 
     onUpdateMatch(match) {
@@ -171,7 +165,7 @@ export class DystirWebClientService {
     onUpdateStandings(standings) {
         this.state.standingsData = {
             standings: standings,
-            selectedStandingsCompetition: this.state.standingsData.selectedStandingsCompetition
+            selectedStandingsCompetitionId: this.state.standingsData.selectedStandingsCompetitionId
         };
         document.body.dispatchEvent(new CustomEvent("onUpdateStandings"));
     }
