@@ -58,7 +58,7 @@ export class Fixtures extends Component {
                 <ChooseDays />
                 <div className="main_container">
                     {
-                        (this.state.matches === null || this.state.isLoading) &&
+                        this.state.isLoading &&
                         <div className="loading-spinner-parent spinner-border" />
                     }
                     {

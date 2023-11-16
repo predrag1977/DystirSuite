@@ -8,20 +8,23 @@ const context = [
     "/weatherforecast",
     "/dystirhub",
     "/api/matches",
-    "/api/matches/results",
     "/api/refresh",
-    "/api/Login",
     "/api/standings",
-    "/api/matchDetails",
-    "/api/eventsOfMatches",
-    "/api/playersOfMatches",
-    "/api/Administrators/token",
-    "/api/teams",
-    "/api/categories",
-    "/api/matchTypes",
-    "/api/squads",
-    "/api/statuses",
-    "/api/rounds"
+    "/api/matchdetails",
+
+    //API for DystirManager
+    "/api/Login",
+    "/api/Matches",
+    "/api/MatchDetails",
+    "/api/Administrators",
+    "/api/EventsOfMatches",
+    "/api/PlayersOfMatches",
+    "/api/Teams",
+    "/api/Categories",
+    "/api/MatchTypes",
+    "/api/Squads",
+    "/api/Statuses",
+    "/api/Rounds"
 ];
 
 const onError = (err, req, resp, target) => {

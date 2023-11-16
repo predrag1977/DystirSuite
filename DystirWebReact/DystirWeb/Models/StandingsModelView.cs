@@ -14,6 +14,8 @@ namespace DystirWeb.Shared
     public class Standing
     {
         [DataMember]
+        public string StandingCompetitionId { get; set; }
+        [DataMember]
         public string StandingCompetitionName { get; set; }
         [DataMember]
         public IEnumerable<TeamStanding> TeamStandings { get; set; }

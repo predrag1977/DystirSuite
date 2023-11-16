@@ -297,7 +297,7 @@ table, tbody, tr {
 }
 
 .match-group-competition-name {
-    padding: 8px 15px;
+    padding: 20px 20px 8px 20px;
     font-weight: 800;
     font-size: 0.9rem;
 }
@@ -368,6 +368,7 @@ table, tbody, tr {
 }
 
 #standings_header {
+    border-top: 1px solid dimgray;
     border-bottom: 1px solid dimgray;
     color: #a6a6a6;
 }

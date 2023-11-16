@@ -27,6 +27,10 @@ const AppRoutes = [
         element: <Standings />
     },
     {
+        path: '/standings/*',
+        element: <Standings />
+    },
+    {
         path: '/info/fetch-data',
         element: <FetchData />
     },

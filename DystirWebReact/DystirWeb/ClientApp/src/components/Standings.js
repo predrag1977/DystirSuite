@@ -6,7 +6,7 @@ import { NavMenu } from './NavMenu';
 import { groupBy } from "core-js/actual/array/group-by";
 import { groupByToMap } from "core-js/actual/array/group-by-to-map";
 import { LayoutDystir } from './layouts/LayoutDystir';
-import { ChooseDays } from './ChooseDays';
+import { ChooseCompetitions } from './ChooseCompetitions';
 import { StandingView } from './views/StandingView';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
@@ -17,12 +17,19 @@ export class Standings extends Component {
     constructor(props) {
         super(props);
         let standingsData = dystirWebClientService.state.standingsData;
+        if (standingsData.selectedStandingsCompetitionId !== undefined && standingsData.selectedStandingsCompetitionId !== "") {
+            window.history.replaceState(null, null, "/standings/" + standingsData.selectedStandingsCompetitionId);
+        }
+        
         this.state = {
             standings: standingsData.standings,
-            selectedStandingsCompetition: standingsData.selectedStandingsCompetition,
+            selectedStandingsCompetitionId: standingsData.selectedStandingsCompetitionId,
             isLoading: true
         }
-        dystirWebClientService.loadStandingsDataAsync("Betri deildin");
+        if (this.state.selectedStandingsCompetitionId !== undefined && this.state.selectedStandingsCompetitionId !== "") {
+            window.history.replaceState(null, null, "/standings/" + this.state.selectedStandingsCompetitionId);
+        }
+        dystirWebClientService.loadStandingsDataAsync(this.state.selectedStandingsCompetitionId);
     }
 
     componentDidMount() {
@@ -47,7 +54,7 @@ export class Standings extends Component {
     }
 
     onConnected() {
-        dystirWebClientService.loadStandingsDataAsync("Betri deildin");
+        dystirWebClientService.loadStandingsDataAsync(this.state.selectedStandingsCompetitionId);
     }
 
     onDisconnected() {
@@ -56,13 +63,23 @@ export class Standings extends Component {
         });
     }
 
+    onClickCompetition() {
+        let periodParameter = window.location.pathname.split("/").pop();
+        dystirWebClientService.state.standingsData.selectedStandingsCompetitionId = periodParameter;
+        this.setState({
+            selectedStandingsCompetitionId: periodParameter
+        });
+    }
+
     render() {
         let contents =
             <>
-                <ChooseDays />
+                <ChooseCompetitions onClickCompetition={() => this.onClickCompetition()}
+                    selectedStandingsCompetitionId={this.state.selectedStandingsCompetitionId}
+                    standings={this.state.standings} />
                 <div className="main_container">
                     {
-                        (this.state.standings === null || this.state.isLoading) &&
+                        this.state.isLoading &&
                         <div className="loading-spinner-parent spinner-border" />
                     }
                     {
@@ -70,7 +87,6 @@ export class Standings extends Component {
                     }
                 </div>
             </>
-        
         return (
             <LayoutDystir page={PageName.STANDINGS}>
             {
@@ -81,33 +97,12 @@ export class Standings extends Component {
     }
 
     renderStandings(standings) {
-        if (standings == null) return;
-        const standingsGroup = standings.groupBy(standing => { return standing.standingCompetitionName });
+        let standing = standings.filter(
+            (standing) => standing.standingCompetitionId == this.state.selectedStandingsCompetitionId
+        )[0] ?? (standings.length > 0 ? standings[0] : []);
+        if (standing.length === 0) return;
         return (
-            Object.keys(standingsGroup).map(group =>
-                <div key={group}>
-                    <div className="match-group-competition-name">{group ?? ""}</div>
-                    {
-                        standingsGroup[group].map(standing =>
-                            <StandingView key={standing.standingCompetitionName} standing={standing} />
-                        )
-                    }
-                </div>
-            )
+            <StandingView key={standing.standingCompetitionName} standing={standing} />
         );
-    }
-
-    filterMatches(matches) {
-        if (matches == null || matches.lenght == 0) {
-            return matches;
-        }
-
-        var fromDate = new MatchDate().dateUtc();
-
-        var fixtures = matches.filter((match) =>
-            MatchDate.parse(match.time) >= MatchDate.parse(fromDate)
-            && match.statusID < 30);
-
-        return fixtures.filter((match) => match.matchTypeName == fixtures[0].matchTypeName);
     }
 }
