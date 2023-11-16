@@ -116,9 +116,6 @@ export class Matches extends Component {
     }
 
     filterMatches(matches) {
-        if (matches == null) {
-            return matches;
-        }
         var now = new MatchDate();
         now.setHours(0, 0, 0, 0);
 

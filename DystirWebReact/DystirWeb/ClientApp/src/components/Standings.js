@@ -72,11 +72,14 @@ export class Standings extends Component {
     }
 
     render() {
+        const standings = this.state.standings !== undefined ? this.state.standings : [];
+        const selectedStandingsCompetitionId = this.state.selectedStandingsCompetitionId !== undefined && this.state.selectedStandingsCompetitionId !== ""
+            ? this.state.selectedStandingsCompetitionId : (standings.length > 0 ? standings[0].standingCompetitionId : "");
         let contents =
             <>
                 <ChooseCompetitions onClickCompetition={() => this.onClickCompetition()}
-                    selectedStandingsCompetitionId={this.state.selectedStandingsCompetitionId}
-                    standings={this.state.standings} />
+                    selectedStandingsCompetitionId={selectedStandingsCompetitionId}
+                    standings={standings} />
                 <div className="main_container">
                     {
                         this.state.isLoading &&

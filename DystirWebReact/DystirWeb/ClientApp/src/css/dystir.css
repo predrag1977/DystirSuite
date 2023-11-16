@@ -298,8 +298,11 @@ table, tbody, tr {
 
 .match-group-competition-name {
     padding: 20px 20px 8px 20px;
+    text-align: right;
+    font-style: italic;
     font-weight: 800;
     font-size: 0.9rem;
+    color: #a6a6a6;
 }
 
 #matches_same_day {
