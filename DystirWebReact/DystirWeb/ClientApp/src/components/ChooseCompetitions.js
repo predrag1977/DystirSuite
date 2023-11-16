@@ -17,17 +17,14 @@ export class ChooseCompetitions extends Component {
     }
 
     render() {
-        const standings = this.props.standings !== undefined ? this.props.standings : [];
-        const selectedStandingsCompetitionId = this.props.selectedStandingsCompetitionId !== undefined && this.props.selectedStandingsCompetitionId !== ""
-            ? this.props.selectedStandingsCompetitionId : (standings.length > 0 ? standings[0].standingCompetitionId : "");
         return (
             <div id="competitions_selection">
                 <div id="horizontal_menu">
                     <div id="horizontal_menu_wrapper">
                     {
-                        standings.map((standing) =>
+                            this.props.standings.map((standing) =>
                             <div key={standing.standingCompetitionId}
-                                className={"tab " + (selectedStandingsCompetitionId === standing.standingCompetitionId ? "selected_tab" : "")}
+                                    className={"tab " + (this.props.selectedStandingsCompetitionId === standing.standingCompetitionId ? "selected_tab" : "")}
                                 onClick={() => this.props.onClickCompetition()}>
                                 <NavLink
                                     tag={Link}
