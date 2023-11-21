@@ -6,7 +6,7 @@ import { NavMenu } from './NavMenu';
 import { groupBy } from "core-js/actual/array/group-by";
 import { groupByToMap } from "core-js/actual/array/group-by-to-map";
 import { LayoutDystir } from './layouts/LayoutDystir';
-import { ChooseDays } from './ChooseDays';
+import { ChooseCompetitions } from './ChooseCompetitions';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
@@ -15,12 +15,20 @@ export class Results extends Component {
 
     constructor(props) {
         super(props);
-        let resultsData = dystirWebClientService.state.resultsData;
+        const resultsData = dystirWebClientService.state.resultsData;
+        if (resultsData.selectedResultsCompetitionId !== undefined && resultsData.selectedResultsCompetitionId !== "") {
+            window.history.replaceState(null, null, "/results/" + resultsData.selectedResultsCompetitionId);
+        }
+
         this.state = {
             matches: resultsData.matches,
+            selectedResultsCompetitionId: resultsData.selectedResultsCompetitionId,
             isLoading: true
         }
-        dystirWebClientService.loadResultDataAsync();
+        if (this.state.selectedResultsCompetitionId !== undefined && this.state.selectedResultsCompetitionId !== "") {
+            window.history.replaceState(null, null, "/results/" + this.state.selectedResultsCompetitionId);
+        }
+        dystirWebClientService.loadResultDataAsync(this.state.selectedResultsCompetitionId);
     }
 
     componentDidMount() {
@@ -43,7 +51,7 @@ export class Results extends Component {
     }
 
     onConnected() {
-        dystirWebClientService.loadResultDataAsync();
+        dystirWebClientService.loadResultDataAsync(this.state.selectedResultsCompetitionId);
     }
 
     onDisconnected() {
@@ -52,17 +60,37 @@ export class Results extends Component {
         });
     }
 
+    onClickCompetition() {
+        let periodParameter = window.location.pathname.split("/").pop();
+        dystirWebClientService.state.resultsData.selectedResultsCompetitionId = periodParameter;
+        this.setState({
+            selectedResultsCompetitionId: periodParameter
+        });
+    }
+
     render() {
+        const results = this.filterMatches(this.state.matches)
+        const matchesGroup = results.groupBy(match => { return match.matchTypeName });
+        const competitions = [];
+        Object.keys(matchesGroup).map((group) => {
+            competitions.push(group);
+        });
+        const selectedResultsCompetitionId = this.state.selectedResultsCompetitionId !== ""
+            ? this.state.selectedResultsCompetitionId : (competitions.length > 0 ? 0 : "");
         let contents =
             <>
-                <ChooseDays />
+                <ChooseCompetitions onClickCompetition={() => this.onClickCompetition()}
+                    competitions={competitions}
+                    page={Results.name.toLowerCase()}
+                    selectedCompetition={competitions[selectedResultsCompetitionId]} />
                 <div className="main_container">
                     {
                         this.state.isLoading &&
                         <div className="loading-spinner-parent spinner-border" />
                     }
                     {
-                        this.renderResults(this.filterMatches(this.state.matches))
+                        competitions.length > 0 &&
+                        this.renderResults(matchesGroup, competitions[selectedResultsCompetitionId])
                     }
                 </div>
             </>
@@ -75,15 +103,17 @@ export class Results extends Component {
         );
     }
 
-    renderResults(matches) {
-        if (matches == null) return;
-        const matchesGroup = matches.groupBy(match => { return match.roundName });
+    renderResults(matchesGroup, competition) {
+        if (competition === undefined) {
+            return
+        }
+        const matchesByRound = matchesGroup[competition].groupBy(match => { return match.roundName })
         return (
-            Object.keys(matchesGroup).map(group =>
+            Object.keys(matchesByRound).map(group =>
                 <div key={group}>
                     <div className="match-group-competition-name">{group ?? ""}</div>
                     {
-                        matchesGroup[group].map(match =>
+                        matchesByRound[group].map(match =>
                             <MatchView key={match.matchID} match={match} />
                         )
                     }
@@ -93,17 +123,12 @@ export class Results extends Component {
     }
 
     filterMatches(matches) {
-        if (matches == null || matches.lenght == 0) {
-            return matches;
-        }
-
         var fromDate = new MatchDate(new MatchDate().getFullYear(), 1, 1);
         var toDate = new MatchDate().dateUtc();
 
         return matches.filter((match) =>
             MatchDate.parse(match.time) > MatchDate.parse(fromDate)
             && MatchDate.parse(match.time) < MatchDate.parse(toDate)
-            && match.statusID >= 12
-            && match.matchTypeName == matches[0].matchTypeName);
+            && match.statusID >= 12);
     }
 }

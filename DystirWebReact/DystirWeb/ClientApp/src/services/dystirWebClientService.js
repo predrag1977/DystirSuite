@@ -10,11 +10,11 @@ export class DystirWebClientService {
         };
         this.resultsData = {
             matches: [],
-            selectedResultsCompetition: ""
+            selectedResultsCompetitionId: ""
         };
         this.fixturesData = {
             matches: [],
-            selectedFixturesCompetition: ""
+            selectedFixturesCompetitionId: ""
         };
         this.standingsData = {
             standings: [],
@@ -99,21 +99,22 @@ export class DystirWebClientService {
         document.body.dispatchEvent(new CustomEvent("onReloadData"));
     }
 
-    async loadResultDataAsync() {
+    async loadResultDataAsync(selectedResultsCompetitionId) {
         const response = await fetch('api/matches/results');
         const data = await response.json();
         const sortedMatches = data
-            .sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)))
+            .sort((a, b) => Date.parse(new Date(b.time)) - Date.parse(new Date(a.time)))
             .sort((a, b) => b.roundID - a.roundID)
             .sort((a, b) => a.matchTypeID - b.matchTypeID);
 
         this.state.resultsData = {
-            matches: sortedMatches
+            matches: sortedMatches,
+            selectedResultsCompetitionId: selectedResultsCompetitionId
         };
         document.body.dispatchEvent(new CustomEvent("onReloadData"));
     }
 
-    async loadFixturesDataAsync() {
+    async loadFixturesDataAsync(selectedFixturesCompetitionId) {
         const response = await fetch('api/matches/fixtures');
         const data = await response.json();
         const sortedMatches = data
@@ -123,7 +124,8 @@ export class DystirWebClientService {
 
 
         this.state.fixturesData = {
-            matches: sortedMatches
+            matches: sortedMatches,
+            selectedFixturesCompetitionId: selectedFixturesCompetitionId
         };
         document.body.dispatchEvent(new CustomEvent("onReloadData"));
     }

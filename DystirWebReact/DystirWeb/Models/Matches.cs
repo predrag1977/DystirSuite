@@ -4,22 +4,22 @@ namespace DystirWeb.Shared
 {
     public partial class Matches
     {
-        [JsonProperty("HomeTeam")]
+        [JsonProperty(nameof(HomeTeam))]
         public string HomeTeam { get; set; }
 
-        [JsonProperty("AwayTeam")]
+        [JsonProperty(nameof(AwayTeam))]
         public string AwayTeam { get; set; }
 
-        [JsonProperty("HomeCategoriesName")]
+        [JsonProperty(nameof(HomeCategoriesName))]
         public string HomeCategoriesName { get; set; }
 
-        [JsonProperty("AwayCategoriesName")]
+        [JsonProperty(nameof(AwayCategoriesName))]
         public string AwayCategoriesName { get; set; }
 
-        [JsonProperty("HomeSquadName")]
+        [JsonProperty(nameof(HomeSquadName))]
         public string HomeSquadName { get; set; }
 
-        [JsonProperty("AwaySquadName")]
+        [JsonProperty(nameof(AwaySquadName))]
         public string AwaySquadName { get; set; }
 
         [JsonProperty(nameof(MatchID))]
@@ -28,79 +28,79 @@ namespace DystirWeb.Shared
         [JsonProperty(nameof(Time))]
         public DateTime? Time { get; set; }
 
-        [JsonProperty("Location")]
+        [JsonProperty(nameof(Location))]
         public string Location { get; set; }
 
-        [JsonProperty("StatusID")]
+        [JsonProperty(nameof(StatusID))]
         public int? StatusID { get; set; }
 
-        [JsonProperty("HomeTeamScore")]
+        [JsonProperty(nameof(HomeTeamScore))]
         public int? HomeTeamScore { get; set; }
 
-        [JsonProperty("AwayTeamScore")]
+        [JsonProperty(nameof(AwayTeamScore))]
         public int? AwayTeamScore { get; set; }
 
-        [JsonProperty("HomeTeamPenaltiesScore")]
+        [JsonProperty(nameof(HomeTeamPenaltiesScore))]
         public int? HomeTeamPenaltiesScore { get; set; }
 
-        [JsonProperty("AwayTeamPenaltiesScore")]
+        [JsonProperty(nameof(AwayTeamPenaltiesScore))]
         public int? AwayTeamPenaltiesScore { get; set; }
 
-        [JsonProperty("MatchTypeName")]
+        [JsonProperty(nameof(MatchTypeName))]
         public string MatchTypeName { get; set; }
 
-        [JsonProperty("HomeTeamID")]
+        [JsonProperty(nameof(HomeTeamID))]
         public int? HomeTeamID { get; set; }
 
-        [JsonProperty("AwayTeamID")]
+        [JsonProperty(nameof(AwayTeamID))]
         public int? AwayTeamID { get; set; }
 
-        [JsonProperty("StatusName")]
+        [JsonProperty(nameof(StatusName))]
         public string StatusName { get; set; }
 
-        [JsonProperty("MatchActivation")]
+        [JsonProperty(nameof(MatchActivation))]
         public int? MatchActivation { get; set; }
 
-        [JsonProperty("StatusTime")]
+        [JsonProperty(nameof(StatusTime))]
         public DateTime? StatusTime { get; set; }
 
-        [JsonProperty("MatchTypeID")]
+        [JsonProperty(nameof(MatchTypeID))]
         public int? MatchTypeID { get; set; }
 
-        [JsonProperty("TeamAdminID")]
+        [JsonProperty(nameof(TeamAdminID))]
         public int? TeamAdminID { get; set; }
 
-        [JsonProperty("RoundID")]
+        [JsonProperty(nameof(RoundID))]
         public int? RoundID { get; set; }
 
-        [JsonProperty("RoundName")]
+        [JsonProperty(nameof(RoundName))]
         public string RoundName { get; set; }
 
-        [JsonProperty("ExtraMinutes")]
+        [JsonProperty(nameof(ExtraMinutes))]
         public int ExtraMinutes { get; set; }
 
-        [JsonProperty("ExtraSeconds")]
+        [JsonProperty(nameof(ExtraSeconds))]
         public int ExtraSeconds { get; set; }
 
-        [JsonProperty("HomeTeamOnTarget")]
+        [JsonProperty(nameof(HomeTeamOnTarget))]
         public int? HomeTeamOnTarget { get; set; }
 
-        [JsonProperty("AwayTeamOnTarget")]
+        [JsonProperty(nameof(AwayTeamOnTarget))]
         public int? AwayTeamOnTarget { get; set; }
 
-        [JsonProperty("HomeTeamCorner")]
+        [JsonProperty(nameof(HomeTeamCorner))]
         public int? HomeTeamCorner { get; set; }
 
-        [JsonProperty("AwayTeamCorner")]
+        [JsonProperty(nameof(AwayTeamCorner))]
         public int? AwayTeamCorner { get; set; }
 
-        [JsonProperty("HomeTeamLogo")]
+        [JsonProperty(nameof(HomeTeamLogo))]
         public string HomeTeamLogo { get; set; }
 
-        [JsonProperty("AwayTeamLogo")]
+        [JsonProperty(nameof(AwayTeamLogo))]
         public string AwayTeamLogo { get; set; }
 
-        [JsonProperty("FullMatchDetails")]
+        [JsonProperty(nameof(FullMatchDetails))]
         public FullMatchDetailsModelView FullMatchDetails { get; set; }
         
     }

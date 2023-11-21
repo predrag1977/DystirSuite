@@ -19,7 +19,15 @@ const AppRoutes = [
         element: <Results />
     },
     {
+        path: '/results/*',
+        element: <Results />
+    },
+    {
         path: '/fixtures',
+        element: <Fixtures />
+    },
+    {
+        path: '/fixtures/*',
         element: <Fixtures />
     },
     {
