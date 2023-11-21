@@ -72,14 +72,20 @@ export class Standings extends Component {
     }
 
     render() {
-        const standings = this.state.standings !== undefined ? this.state.standings : [];
-        const selectedStandingsCompetitionId = this.state.selectedStandingsCompetitionId !== undefined && this.state.selectedStandingsCompetitionId !== ""
-            ? this.state.selectedStandingsCompetitionId : (standings.length > 0 ? standings[0].standingCompetitionId : "");
+        const standings = this.state.standings;
+        const competitions = [];
+        standings.map((group) => {
+            competitions.push(group.standingCompetitionName);
+        });
+        const selectedStandingsCompetitionId = this.state.selectedStandingsCompetitionId !== ""
+            ? this.state.selectedStandingsCompetitionId : (competitions.length > 0 ? 0 : "");
+
         let contents =
             <>
                 <ChooseCompetitions onClickCompetition={() => this.onClickCompetition()}
-                    selectedStandingsCompetitionId={selectedStandingsCompetitionId}
-                    standings={standings} />
+                    competitions={competitions}
+                    page={Standings.name.toLowerCase()}
+                    selectedCompetition={competitions[selectedStandingsCompetitionId]} />
                 <div className="main_container">
                     {
                         this.state.isLoading &&

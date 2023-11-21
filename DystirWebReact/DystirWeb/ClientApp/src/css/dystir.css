@@ -73,6 +73,10 @@ main {
     background-color: rgba(24, 24, 24, 0.85);
 }
 
+#competitions_selection {
+    padding: 0 10px;
+}
+
 .border-bottom {
     border-bottom: 1px solid dimgray !important;
 }
@@ -216,7 +220,7 @@ table, tbody, tr {
     border-radius: 20px;
     line-height: 40px;
     margin-top: 10px;
-} 
+}
 
 #scroll_button_right {
     float: right;
@@ -255,7 +259,7 @@ table, tbody, tr {
     .tab .nav-link, .selected_tab .nav-link {
         color: #a6a6a6;
         height: 58px;
-        padding: 20px 0 0 0;
+        padding: 20px 15px 0 15px;
     }
 
 .selected_tab {

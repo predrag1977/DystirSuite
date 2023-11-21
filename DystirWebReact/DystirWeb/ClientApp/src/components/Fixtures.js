@@ -6,7 +6,7 @@ import { NavMenu } from './NavMenu';
 import { groupBy } from "core-js/actual/array/group-by";
 import { groupByToMap } from "core-js/actual/array/group-by-to-map";
 import { LayoutDystir } from './layouts/LayoutDystir';
-import { ChooseDays } from './ChooseDays';
+import { ChooseCompetitions } from './ChooseCompetitions';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
@@ -16,11 +16,19 @@ export class Fixtures extends Component {
     constructor(props) {
         super(props);
         let fixturesData = dystirWebClientService.state.fixturesData;
+        if (fixturesData.selectedFixturesCompetitionId !== undefined && fixturesData.selectedFixturesCompetitionId !== "") {
+            window.history.replaceState(null, null, "/fixtures/" + fixturesData.selectedFixturesCompetitionId);
+        }
+        
         this.state = {
             matches: fixturesData.matches,
+            selectedFixturesCompetitionId: fixturesData.selectedFixturesCompetitionId,
             isLoading: true
         }
-        dystirWebClientService.loadFixturesDataAsync();
+        if (this.state.selectedFixturesCompetitionId !== undefined && this.state.selectedFixturesCompetitionId !== "") {
+            window.history.replaceState(null, null, "/fixtures/" + this.state.selectedFixturesCompetitionId);
+        }
+        dystirWebClientService.loadFixturesDataAsync(this.state.selectedFixturesCompetitionId);
     }
 
     componentDidMount() {
@@ -43,7 +51,7 @@ export class Fixtures extends Component {
     }
 
     onConnected() {
-        dystirWebClientService.loadFixturesDataAsync();
+        dystirWebClientService.loadFixturesDataAsync(this.state.selectedFixturesCompetitionId);
     }
 
     onDisconnected() {
@@ -52,18 +60,39 @@ export class Fixtures extends Component {
         });
     }
 
+    onClickCompetition() {
+        let periodParameter = window.location.pathname.split("/").pop();
+        dystirWebClientService.state.fixturesData.selectedFixturesCompetitionId = periodParameter;
+        this.setState({
+            selectedFixturesCompetitionId: periodParameter
+        });
+    }
+
     render() {
+        const fixtures = this.filterMatches(this.state.matches)
+        const matchesGroup = fixtures.groupBy(match => { return match.matchTypeName });
+        const competitions = [];
+        Object.keys(matchesGroup).map((group) => {
+            competitions.push(group);
+        });
+        const selectedFixturesCompetitionId = this.state.selectedFixturesCompetitionId !== ""
+            ? this.state.selectedFixturesCompetitionId : (competitions.length > 0 ? 0 : "");
+
         let contents =
             <>
-                <ChooseDays />
+                <ChooseCompetitions onClickCompetition={() => this.onClickCompetition()}
+                    competitions={competitions}
+                    page={Fixtures.name.toLowerCase()}
+                    selectedCompetition={competitions[selectedFixturesCompetitionId]} />
                 <div className="main_container">
-                    {
-                        this.state.isLoading &&
-                        <div className="loading-spinner-parent spinner-border" />
-                    }
-                    {
-                        this.renderFixtures(this.filterMatches(this.state.matches))
-                    }
+                {
+                    this.state.isLoading &&
+                    <div className="loading-spinner-parent spinner-border" />
+                }
+                {
+                    competitions.length > 0 &&
+                    this.renderFixtures(matchesGroup, competitions[selectedFixturesCompetitionId])
+                }
                 </div>
             </>
         
@@ -76,15 +105,17 @@ export class Fixtures extends Component {
         );
     }
 
-    renderFixtures(matches) {
-        if (matches == null) return;
-        const matchesGroup = matches.groupBy(match => { return match.roundName });
+    renderFixtures(matchesGroup, competition) {
+        if (competition === undefined) {
+            return
+        }
+        const matchesByRound = matchesGroup[competition].groupBy(match => { return match.roundName })
         return (
-            Object.keys(matchesGroup).map(group =>
+            Object.keys(matchesByRound).map(group =>
                 <div key={group}>
                     <div className="match-group-competition-name">{group ?? ""}</div>
                     {
-                        matchesGroup[group].map(match =>
+                        matchesByRound[group].map(match =>
                             <MatchView key={match.matchID} match={match} />
                         )
                     }
@@ -94,16 +125,12 @@ export class Fixtures extends Component {
     }
 
     filterMatches(matches) {
-        if (matches == null || matches.lenght == 0) {
-            return matches;
-        }
-
         var fromDate = new MatchDate().dateUtc();
 
         var fixtures = matches.filter((match) =>
             MatchDate.parse(match.time) >= MatchDate.parse(fromDate)
             && match.statusID < 30);
 
-        return fixtures.filter((match) => match.matchTypeName == fixtures[0].matchTypeName);
+        return fixtures;
     }
 }

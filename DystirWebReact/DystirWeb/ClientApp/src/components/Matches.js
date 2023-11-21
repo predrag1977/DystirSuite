@@ -119,29 +119,29 @@ export class Matches extends Component {
         var now = new MatchDate();
         now.setHours(0, 0, 0, 0);
 
-        var fromDate = now.dateUtc().addDays(0);
-        var toDate = now.dateUtc().addDays(1);
+        var fromDate = now.addDays(0);
+        var toDate = now.addDays(1);
 
         if (this.state.selectedPeriod === SelectPeriodName.BEFORE) {
-            fromDate = now.dateUtc().addDays(-10);
-            toDate = now.dateUtc().addDays(0);
+            fromDate = now.addDays(-10);
+            toDate = now.addDays(0);
         } else if (this.state.selectedPeriod === SelectPeriodName.YESTERDAY) {
-            fromDate = now.dateUtc().addDays(-2);
-            toDate = now.dateUtc().addDays(-1);
+            fromDate = now.addDays(-1);
+            toDate = now.addDays(0);
         } else if (this.state.selectedPeriod === SelectPeriodName.TODAY) {
-            fromDate = now.dateUtc().addDays(0);
-            toDate = now.dateUtc().addDays(1);
+            fromDate = now.addDays(0);
+            toDate = now.addDays(1);
         } else if (this.state.selectedPeriod === SelectPeriodName.TOMORROW) {
-            fromDate = now.dateUtc().addDays(1);
-            toDate = now.dateUtc().addDays(2);
+            fromDate = now.addDays(1);
+            toDate = now.addDays(2);
         } else if (this.state.selectedPeriod === SelectPeriodName.NEXT) {
-            fromDate = now.dateUtc().addDays(0);
-            toDate = now.dateUtc().addDays(10);
+            fromDate = now.addDays(0);
+            toDate = now.addDays(10);
         }
 
         var list = matches.filter((match) =>
-            MatchDate.parse(match.time) > MatchDate.parse(fromDate)
-            && MatchDate.parse(match.time) < MatchDate.parse(toDate)
+            (new MatchDate(Date.parse(match.time))).dateLocale() > MatchDate.parse(fromDate)
+            && (new MatchDate(Date.parse(match.time))).dateLocale() < MatchDate.parse(toDate)
         );
 
         return list
