@@ -19,6 +19,8 @@ export class Statistics extends Component {
         let statisticsData = dystirWebClientService.state.statisticsData;
         if (statisticsData.selectedStatisticsCompetitionId !== undefined && statisticsData.selectedStatisticsCompetitionId !== "") {
             window.history.replaceState(null, null, "/statistics/" + statisticsData.selectedStatisticsCompetitionId);
+        } else {
+            statisticsData.selectedStatisticsCompetitionId = window.location.pathname.split("/statistics").pop().replace('/', '');
         }
         
         this.state = {

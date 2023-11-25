@@ -15,9 +15,11 @@ export class Results extends Component {
 
     constructor(props) {
         super(props);
-        const resultsData = dystirWebClientService.state.resultsData;
+        let resultsData = dystirWebClientService.state.resultsData;
         if (resultsData.selectedResultsCompetitionId !== undefined && resultsData.selectedResultsCompetitionId !== "") {
             window.history.replaceState(null, null, "/results/" + resultsData.selectedResultsCompetitionId);
+        } else {
+            resultsData.selectedResultsCompetitionId = window.location.pathname.split("/results").pop().replace('/','');
         }
 
         this.state = {
@@ -107,7 +109,7 @@ export class Results extends Component {
         if (competition === undefined) {
             return
         }
-        const matchesByRound = matchesGroup[competition].groupBy(match => { return match.roundName })
+        const matchesByRound = matchesGroup[competition].groupBy(match => { return match.roundName ?? "" })
         return (
             Object.keys(matchesByRound).map(group =>
                 <div key={group}>

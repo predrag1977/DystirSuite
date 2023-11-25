@@ -19,6 +19,8 @@ export class Standings extends Component {
         let standingsData = dystirWebClientService.state.standingsData;
         if (standingsData.selectedStandingsCompetitionId !== undefined && standingsData.selectedStandingsCompetitionId !== "") {
             window.history.replaceState(null, null, "/standings/" + standingsData.selectedStandingsCompetitionId);
+        } else {
+            standingsData.selectedStandingsCompetitionId = window.location.pathname.split("/standings").pop().replace('/', '');
         }
         
         this.state = {
