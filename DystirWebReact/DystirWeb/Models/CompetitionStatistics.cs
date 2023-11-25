@@ -7,6 +7,9 @@ namespace DystirWeb.Shared
     public class CompetitionStatistic
     {
         [DataMember]
+        public string StatisticCompetitionId { get; set; }
+
+        [DataMember]
         public string CompetitionName { get; set; }
 
         [DataMember]

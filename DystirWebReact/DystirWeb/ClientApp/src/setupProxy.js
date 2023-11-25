@@ -10,6 +10,7 @@ const context = [
     "/api/matches",
     "/api/refresh",
     "/api/standings",
+    "/api/statistics",
     "/api/matchdetails",
 
     //API for DystirManager

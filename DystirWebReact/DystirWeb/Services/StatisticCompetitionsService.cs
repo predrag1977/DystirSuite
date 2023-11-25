@@ -26,6 +26,10 @@ namespace DystirWeb.Services
             {
                 competitionStatisticsList.Add(GetStatistics(matchesList, competititionName, playersList));
             }
+            for (int i = 0; i < competitionStatisticsList.Count; i++)
+            {
+                competitionStatisticsList[i].StatisticCompetitionId = i.ToString();
+            }
             return competitionStatisticsList;
         }
 

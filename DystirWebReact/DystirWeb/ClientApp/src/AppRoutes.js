@@ -4,6 +4,7 @@ import { Fixtures } from "./components/Fixtures";
 import { Matches } from "./components/Matches";
 import { Results } from "./components/Results";
 import { Standings } from "./components/Standings";
+import { Statistics } from "./components/Statistics";
 
 const AppRoutes = [
     {
@@ -37,6 +38,14 @@ const AppRoutes = [
     {
         path: '/standings/*',
         element: <Standings />
+    },
+    {
+        path: '/statistics',
+        element: <Statistics />
+    },
+    {
+        path: '/statistics/*',
+        element: <Statistics />
     },
     {
         path: '/info/fetch-data',
