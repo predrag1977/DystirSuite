@@ -20,11 +20,16 @@ export class DystirWebClientService {
             standings: [],
             selectedStandingsCompetitionId: ""
         };
+        this.statisticsData = {
+            statistics: [],
+            selectedStatisticsCompetitionId: ""
+        };
         this.state = {
             matchesData: this.matchesData,
             resultsData: this.resultsData,
             fixturesData: this.fixturesData,
-            standingsData: this.standingsData
+            standingsData: this.standingsData,
+            statisticsData: this.statisticsData
         };
 
         this.hubConnection = {
@@ -137,6 +142,17 @@ export class DystirWebClientService {
         this.state.standingsData = {
             standings: standings,
             selectedStandingsCompetitionId: selectedStandingsCompetitionId
+        };
+        document.body.dispatchEvent(new CustomEvent("onReloadData"));
+    }
+
+    async loadStatisticsDataAsync(selectedStatisticsCompetitionId) {
+        const response = await fetch('api/statistics');
+        const statistics = await response.json();
+
+        this.state.statisticsData = {
+            statistics: statistics,
+            selectedStatisticsCompetitionId: selectedStatisticsCompetitionId
         };
         document.body.dispatchEvent(new CustomEvent("onReloadData"));
     }

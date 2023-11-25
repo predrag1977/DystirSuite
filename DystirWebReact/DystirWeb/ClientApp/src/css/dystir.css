@@ -71,6 +71,7 @@ main {
 #days_selection, #competitions_selection {
     height: 60px;
     background-color: rgba(24, 24, 24, 0.85);
+    user-select:none;
 }
 
 #competitions_selection {
