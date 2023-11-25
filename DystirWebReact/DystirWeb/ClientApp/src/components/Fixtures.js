@@ -18,6 +18,8 @@ export class Fixtures extends Component {
         let fixturesData = dystirWebClientService.state.fixturesData;
         if (fixturesData.selectedFixturesCompetitionId !== undefined && fixturesData.selectedFixturesCompetitionId !== "") {
             window.history.replaceState(null, null, "/fixtures/" + fixturesData.selectedFixturesCompetitionId);
+        } else {
+            fixturesData.selectedFixturesCompetitionId = window.location.pathname.split("/fixtures").pop().replace('/', '');
         }
         
         this.state = {
@@ -109,7 +111,7 @@ export class Fixtures extends Component {
         if (competition === undefined) {
             return
         }
-        const matchesByRound = matchesGroup[competition].groupBy(match => { return match.roundName })
+        const matchesByRound = matchesGroup[competition].groupBy(match => { return match.roundName ?? "" })
         return (
             Object.keys(matchesByRound).map(group =>
                 <div key={group}>

@@ -105,6 +105,7 @@ export class DystirWebClientService {
     }
 
     async loadResultDataAsync(selectedResultsCompetitionId) {
+        console.log(selectedResultsCompetitionId);
         const response = await fetch('api/matches/results');
         const data = await response.json();
         const sortedMatches = data
