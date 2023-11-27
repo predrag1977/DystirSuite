@@ -5,6 +5,7 @@ import { Matches } from "./components/Matches";
 import { Results } from "./components/Results";
 import { Standings } from "./components/Standings";
 import { Statistics } from "./components/Statistics";
+import { MatchDetails } from "./components/MatchDetails";
 
 const AppRoutes = [
     {
@@ -46,6 +47,10 @@ const AppRoutes = [
     {
         path: '/statistics/*',
         element: <Statistics />
+    },
+    {
+        path: '/matchDetails/*',
+        element: <MatchDetails />
     },
     {
         path: '/info/fetch-data',

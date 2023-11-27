@@ -30,7 +30,7 @@ body {
     top: 0;
     height: 80px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 15px;
     background-color: #19191a;
     border-bottom: 1px solid dimgray;
     min-width: 370px;
@@ -71,10 +71,7 @@ main {
 #days_selection, #competitions_selection {
     height: 60px;
     background-color: rgba(24, 24, 24, 0.85);
-    user-select:none;
-}
-
-#competitions_selection {
+    user-select: none;
     padding: 0 10px;
 }
 
@@ -113,7 +110,7 @@ main {
 .navbar-toggler {
     background-color: rgba(255, 255, 255, 0.1);
     padding: 8px;
-    margin: 15px;
+    margin: 15px 15px 15px 0;
 }
 
 table, tbody, tr {
@@ -144,7 +141,17 @@ table, tbody, tr {
         width: 20%;
     }
 
+.match_details_header_text {
+    text-align:center;
+    line-height:50px;
+    font-size:16px;
+}
 
+.team_logo {
+    height: 25px;
+    width: 25px;
+    margin-right:0 5px;
+}
 
 
 
@@ -229,11 +236,10 @@ table, tbody, tr {
 
 #back_button {
     margin: 0;
-    font-size: 1.0rem;
+    font-size: 20px;
     visibility: visible;
     height: 50px;
     width: 50px;
-    line-height: 50px;
     background-color: transparent;
     border: 1px solid rgba(255,255,255,0.25);
     border-radius: 10px;
@@ -325,6 +331,7 @@ table, tbody, tr {
     padding: 5px 10px;
     border-radius: 10px;
     color:white;
+    cursor: pointer;
 }
 
     .match_item:hover, .match_item_mobile:hover, .match_item_same_day:hover {
@@ -361,6 +368,7 @@ table, tbody, tr {
     overflow: hidden;
     max-width: 1px;
     text-align: left;
+    padding: 0 5px;
 }
 
 .match_item_team_name {

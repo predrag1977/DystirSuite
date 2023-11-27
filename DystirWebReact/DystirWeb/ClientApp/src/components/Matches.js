@@ -100,7 +100,7 @@ export class Matches extends Component {
 
     renderMatches(matches) {
         if (matches == null) return;
-        const matchesGroup = matches.groupBy(match => { return match.matchTypeName });
+        const matchesGroup = matches.groupBy(match => { return match.matchTypeName ?? "" });
         return (
             Object.keys(matchesGroup).map(group =>
                 <div key={group}>

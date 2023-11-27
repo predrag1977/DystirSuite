@@ -6,7 +6,7 @@ export class DystirWebClientService {
     constructor() {
         this.matchesData = {
             matches: [],
-            selectedPeriod: ""
+            selectedPeriod: "",
         };
         this.resultsData = {
             matches: [],
@@ -24,18 +24,25 @@ export class DystirWebClientService {
             statistics: [],
             selectedStatisticsCompetitionId: ""
         };
+        this.matchDetailsData = {
+            matches: [],
+            match: "",
+            matchId: ""
+        };
+
         this.state = {
             matchesData: this.matchesData,
             resultsData: this.resultsData,
             fixturesData: this.fixturesData,
             standingsData: this.standingsData,
-            statisticsData: this.statisticsData
+            statisticsData: this.statisticsData,
+            matchDetailsData: this.matchDetailsData
         };
 
         this.hubConnection = {
             connection: new signalR.HubConnectionBuilder()
-                .withUrl('../dystirhub')
-                //.withUrl('https://www.dystir.fo/dystirhub')
+                //.withUrl('../dystirhub')
+                .withUrl('https://www.dystir.fo/dystirhub')
                 .withAutomaticReconnect([0, 1000, 2000, 3000, 5000, 10000])
                 .configureLogging(signalR.LogLevel.Information)
                 .build()
@@ -105,7 +112,6 @@ export class DystirWebClientService {
     }
 
     async loadResultDataAsync(selectedResultsCompetitionId) {
-        console.log(selectedResultsCompetitionId);
         const response = await fetch('api/matches/results');
         const data = await response.json();
         const sortedMatches = data
@@ -156,6 +162,18 @@ export class DystirWebClientService {
             selectedStatisticsCompetitionId: selectedStatisticsCompetitionId
         };
         document.body.dispatchEvent(new CustomEvent("onReloadData"));
+    }
+
+    async loadMatchDetailsDataAsync(matchId) {
+        const response = await fetch('api/matchdetails/' + matchId);
+        const matchDetails = await response.json();
+
+        this.state.matchDetailsData = {
+            matches: this.state.matchesData.matches,
+            match: matchDetails['match'],
+            matchId: matchId
+        }
+        this.onUpdateMatchDetails(matchDetails);
     }
 
     onUpdateMatchDetails(matchDetails) {

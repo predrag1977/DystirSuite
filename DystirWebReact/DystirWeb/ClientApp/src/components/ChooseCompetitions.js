@@ -13,17 +13,21 @@ export class ChooseCompetitions extends Component {
     }
 
     componentDidMount() {
-        this.scrollButtonVisibility();
         window.addEventListener('resize', this.scrollButtonVisibility);
     }
+
     componentWillUnmount() {
         window.removeEventListener('resize', this.scrollButtonVisibility);
+    }
+
+    componentDidUpdate() {
+        this.scrollButtonVisibility();
     }
 
     render() {
         return (
             <div id="competitions_selection">
-                <div id="scroll_button_left" onClick={() => this.scrollOnMouseOver('left')}>
+                <div id="scroll_button_left" onClick={() => this.scrollOnClick('left')}>
                     <BsCaretLeftFill />
                 </div>
                 <div id="horizontal_menu">
@@ -43,7 +47,7 @@ export class ChooseCompetitions extends Component {
                     }
                     </div>
                 </div>
-                <div id="scroll_button_right" onClick={() => this.scrollOnMouseOver('right')}>
+                <div id="scroll_button_right" onClick={() => this.scrollOnClick('right')}>
                     <BsCaretRightFill />
                 </div>
             </div>
@@ -70,17 +74,8 @@ export class ChooseCompetitions extends Component {
         }
     }
 
-    scrollOnMouseOver(direction) {
+    scrollOnClick(direction) {
         var horizontalMenu = document.getElementById('horizontal_menu');
-        if (direction == 'left') {
-            horizontalMenu.scrollLeft -= horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
-        } else {
-            horizontalMenu.scrollLeft += horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
-        }
-    }
-
-    scrollOnMouseOverBottom(direction) {
-        var horizontalMenu = document.getElementById('horizontal_menu_bottom');
         if (direction == 'left') {
             horizontalMenu.scrollLeft -= horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
         } else {
