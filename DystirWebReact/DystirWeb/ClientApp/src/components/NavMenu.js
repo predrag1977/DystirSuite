@@ -32,14 +32,6 @@ export class NavMenu extends Component {
                                 <td>
                                     <NavbarToggler onClick={this.toggleNavbar} className="mr-2 navbar-dark" />
                                 </td>
-                                {/*@if (ShowBackButton())*/}
-                                {/*{*/}
-                                {/*    <td>*/}
-                                {/*        <span id="back_button" onclick="goBack()">*/}
-                                {/*            <span className="fas fa-arrow-left"></span>*/}
-                                {/*        </span>*/}
-                                {/*    </td>*/}
-                                {/*}*/}
                                 <td id="header_title">
                                     <span>{this.props.page}</span>
                                 </td>

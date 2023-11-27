@@ -1,8 +1,4 @@
-﻿using DystirWeb.Shared;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace DystirWeb.Shared
+﻿namespace DystirWeb.Shared
 {
     public class FullMatchDetailsModelView
     {
