@@ -15,5 +15,7 @@ namespace DystirWeb.Shared
         public List<PlayersOfMatches> PlayersOfMatch { get; set; } = new List<PlayersOfMatches>();
         [DataMember]
         public List<Standing> Standings { get; set; } = new List<Standing>();
+        [DataMember]
+        public Statistic Statistic { get; set; } = new Statistic();
     }
 }

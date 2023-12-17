@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { DystirWebClientService, SelectPeriodName, PageName } from '../services/dystirWebClientService';
 import MatchDate from '../extentions/matchDate';
 import { MatchView } from "./views/MatchView";
-import { NavMenu } from './NavMenu';
 import { ChooseDays } from './ChooseDays';
 import { groupBy } from "core-js/actual/array/group-by";
 import { groupByToMap } from "core-js/actual/array/group-by-to-map";
@@ -147,6 +146,6 @@ export class Matches extends Component {
         return list
             .sort((a, b) => a.matchID - b.matchID)
             .sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)))
-            .sort((a, b) => a.matchTypeID - b.matchTypeID)            ;
+            .sort((a, b) => a.matchTypeID - b.matchTypeID);
     }
 }

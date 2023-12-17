@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { DystirWebClientService, PageName } from '../services/dystirWebClientService';
 import { LayoutMatchDetails } from './layouts/LayoutMatchDetails';
+import { Lineups } from './Lineups';
+import { SummaryTab } from './SummaryTab';
+import { CommentaryTab } from './CommentaryTab';
+import { StandingsTab } from './StandingsTab';
+import { StatisticsTab } from './StatisticsTab';
+import { MatchDetailsTabs } from './MatchDetailsTabs';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
@@ -16,7 +22,11 @@ export class MatchDetails extends Component {
             matches: matchDetailsData.matches,
             match: matchDetailsData.match,
             matchId: matchDetailsData.matchId,
-            isLoading: false
+            eventsOfMatch: matchDetailsData.eventsOfMatch,
+            playersOfMatch: matchDetailsData.playersOfMatch,
+            standings: matchDetailsData.standings,
+            statistic: matchDetailsData.statistic,
+            isLoading: true
         }
         dystirWebClientService.loadMatchDetailsDataAsync(this.state.matchId);
     }
@@ -41,6 +51,10 @@ export class MatchDetails extends Component {
             matches: matchDetailsData.matches,
             match: matchDetailsData.match,
             matchId: matchDetailsData.matchId,
+            eventsOfMatch: matchDetailsData.eventsOfMatch,
+            playersOfMatch: matchDetailsData.playersOfMatch,
+            standings: matchDetailsData.standings,
+            statistic: matchDetailsData.statistic,
             isLoading: false
         });
     }
@@ -55,9 +69,18 @@ export class MatchDetails extends Component {
         });
     }
 
+    onClickTab() {
+        //let periodParameter = window.location.pathname.split("/").pop();
+        //dystirWebClientService.state.matchesData.selectedPeriod = periodParameter;
+        //this.setState({
+        //    selectedPeriod: periodParameter
+        //});
+    }
+
     render() {
         let contents =
             <>
+                <MatchDetailsTabs onClickTab={() => this.onClickTab()} match={this.state.match} selectedTab={this.state.selectedTab} />
                 <div className="main_container">
                     {
                         this.state.isLoading &&
@@ -65,7 +88,13 @@ export class MatchDetails extends Component {
                         <div className="loading-spinner-parent spinner-border" />
                     }
                     {
-                        <div>MATCH DETAILS</div>
+                        <>
+                            <SummaryTab match={this.state.match} eventsOfMatch={this.state.eventsOfMatch} />
+                            <Lineups match={this.state.match} playersOfMatch={this.state.playersOfMatch} />
+                            <CommentaryTab match={this.state.match} eventsOfMatch={this.state.eventsOfMatch} />
+                            <StatisticsTab match={this.state.match} statistic={this.state.statistic} />
+                            <StandingsTab match={this.state.match} standings={this.state.standings} />
+                        </>
                     }
                 </div>
             </>
