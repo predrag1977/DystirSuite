@@ -17,6 +17,7 @@ export class StatisticsTab extends Component {
         if (statistic === null) return;
         console.log(statistic);
         let contents =
+        <>
             <table className="content_table statistic_table">
                 <tbody>
                     <tr>
@@ -30,10 +31,18 @@ export class StatisticsTab extends Component {
                             {statistic.awayTeamStatistic.goal}
                         </td>
                     </tr>
+                </tbody>
+            </table>
+            <table className="content_table statistic_table">
+                <tbody>
                     <tr>
                         <td colSpan="2" className="statistic-home" style={{ width: statistic.homeTeamStatistic.goalProcent + "%" }}></td>
                         <td colSpan="2" className="statistic-away" style={{ width: statistic.awayTeamStatistic.goalProcent + "%" }}></td>
                     </tr>
+                </tbody>
+            </table>
+            <table className="content_table statistic_table">
+                <tbody>
                     <tr>
                         <td className="statistic_cell_number">
                             {statistic.homeTeamStatistic.onTarget}
@@ -44,11 +53,19 @@ export class StatisticsTab extends Component {
                         <td className="statistic_cell_number">
                             {statistic.awayTeamStatistic.onTarget}
                         </td>
-                    </tr>
+                        </tr>
+                    </tbody>
+                </table>
+            <table className="content_table statistic_table">
+                <tbody>
                     <tr>
                         <td colSpan="2" className="statistic-home" style={{ width: statistic.homeTeamStatistic.onTargetProcent + "%" }}></td>
                         <td colSpan="2" className="statistic-away" sstyle={{ width: statistic.awayTeamStatistic.onTargetProcent + "%" }}></td>
                     </tr>
+                </tbody>
+            </table>
+            <table className="content_table statistic_table">
+                <tbody>
                     <tr>
                         <td className="statistic_cell_number">
                             {statistic.homeTeamStatistic.offTarget}
@@ -60,10 +77,18 @@ export class StatisticsTab extends Component {
                             {statistic.awayTeamStatistic.offTarget}
                         </td>
                     </tr>
+                </tbody>
+            </table>
+            <table className="content_table statistic_table">
+                <tbody>
                     <tr>
                         <td colSpan="2" className="statistic-home" style={{ width: statistic.homeTeamStatistic.offTargetProcent + "%" }}></td>
                         <td colSpan="2" className="statistic-away" sstyle={{ width: statistic.awayTeamStatistic.offTargetProcent + "%" }}></td>
                     </tr>
+                </tbody>
+            </table>
+            <table className="content_table statistic_table">
+                <tbody>
                     <tr>
                         <td className="statistic_cell_number">
                             {statistic.homeTeamStatistic.blockedShot}
@@ -75,10 +100,18 @@ export class StatisticsTab extends Component {
                             {statistic.awayTeamStatistic.blockedShot}
                         </td>
                     </tr>
+                </tbody>
+            </table>
+            <table className="content_table statistic_table">
+                <tbody>
                     <tr>
                         <td colSpan="2" className="statistic-home" style={{ width: statistic.homeTeamStatistic.blockedShotProcent + "%" }}></td>
                         <td colSpan="2" className="statistic-away" sstyle={{ width: statistic.awayTeamStatistic.blockedShotProcent + "%" }}></td>
                     </tr>
+                </tbody>
+            </table>
+            <table className="content_table statistic_table">
+                <tbody>
                     <tr>
                         <td className="statistic_cell_number">
                             {statistic.homeTeamStatistic.corner}
@@ -90,10 +123,18 @@ export class StatisticsTab extends Component {
                             {statistic.awayTeamStatistic.corner}
                         </td>
                     </tr>
+                </tbody>
+            </table>
+            <table className="content_table statistic_table">
+                <tbody>
                     <tr>
                         <td colSpan="2" className="statistic-home" style={{ width: statistic.homeTeamStatistic.cornerProcent + "%" }}></td>
                         <td colSpan="2" className="statistic-away" sstyle={{ width: statistic.awayTeamStatistic.cornerProcent + "%" }}></td>
                     </tr>
+                </tbody>
+            </table>
+            <table className="content_table statistic_table">
+                <tbody>
                     <tr>
                         <td className="statistic_cell_number">
                             {statistic.homeTeamStatistic.bigChance}
@@ -105,10 +146,18 @@ export class StatisticsTab extends Component {
                             {statistic.awayTeamStatistic.bigChance}
                         </td>
                     </tr>
+                </tbody>
+            </table>
+            <table className="content_table statistic_table">
+                <tbody>
                     <tr>
                         <td colSpan="2" className="statistic-home" style={{ width: statistic.homeTeamStatistic.bigChanceProcent + "%" }}></td>
                         <td colSpan="2" className="statistic-away" sstyle={{ width: statistic.awayTeamStatistic.bigChanceProcent + "%" }}></td>
                     </tr>
+                </tbody>
+            </table>
+            <table className="content_table statistic_table">
+                <tbody>
                     <tr>
                         <td className="statistic_cell_number">
                             {statistic.homeTeamStatistic.yellowCard}
@@ -120,10 +169,18 @@ export class StatisticsTab extends Component {
                             {statistic.awayTeamStatistic.yellowCard}
                         </td>
                     </tr>
+                </tbody>
+            </table>
+            <table className="content_table statistic_table">
+                <tbody>
                     <tr>
                         <td colSpan="2" className="statistic-home" style={{ width: statistic.homeTeamStatistic.yellowCardProcent + "%" }}></td>
                         <td colSpan="2" className="statistic-away" sstyle={{ width: statistic.awayTeamStatistic.yellowCardProcent + "%" }}></td>
                     </tr>
+                </tbody>
+            </table>
+            <table className="content_table statistic_table">
+                <tbody>
                     <tr>
                         <td className="statistic_cell_number">
                             {statistic.homeTeamStatistic.redCard}
@@ -135,12 +192,18 @@ export class StatisticsTab extends Component {
                             {statistic.awayTeamStatistic.redCard}
                         </td>
                     </tr>
+                </tbody>
+            </table>
+            <table className="content_table statistic_table">
+                <tbody>
                     <tr>
                         <td colSpan="2" className="statistic-home" style={{ width: statistic.homeTeamStatistic.redCardProcent + "%" }}></td>
                         <td colSpan="2" className="statistic-away" sstyle={{ width: statistic.awayTeamStatistic.redCardProcent + "%" }}></td>
                     </tr>
                 </tbody>
             </table>
+        </>
+            
         return contents
     }
 }
