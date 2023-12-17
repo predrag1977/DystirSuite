@@ -467,6 +467,7 @@ table, tbody, tr {
 .statistic_table {
     text-align: center;
     width: 80%;
+    height:10px;
     max-width: 800px;
     margin: 0 auto;
 }
