@@ -12,7 +12,6 @@ export class LayoutMatchDetails extends Component {
     }
 
     render() {
-        console.log(this.props.match);
         return (
             <>
                 <HeaderMatchDetails match={this.props.match} />

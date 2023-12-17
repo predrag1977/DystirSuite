@@ -14,6 +14,7 @@ services.AddControllersWithViews();
 services.AddSignalR();
 services.AddSingleton<DystirService>();
 services.AddSingleton<StandingService>();
+services.AddSingleton<MatchStatisticService>();
 services.AddSingleton<StatisticCompetitionsService>();
 services.AddScoped<MatchDetailsService>();
 services.AddScoped<AuthService>();

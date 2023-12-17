@@ -177,7 +177,11 @@ table, tbody, tr {
     font-weight: 900;
 }
 
-
+#header_match_details_wrapper {
+    margin: auto;
+    max-width: 1000px;
+    width: 100%;
+}
 
 #navigation_menu {
     background-color: rgba(24, 24, 24, 0.92);
@@ -236,6 +240,7 @@ table, tbody, tr {
 
 #back_button {
     margin: 0;
+    padding-top: 3px;
     font-size: 20px;
     visibility: visible;
     height: 50px;
@@ -359,6 +364,10 @@ table, tbody, tr {
         border-top: 0;
         vertical-align: middle;
     }
+
+.lineups td {
+    vertical-align: top;
+}
 
 .match_item_team_name, .match_item_same_day_team_name {
     font-weight: bold;

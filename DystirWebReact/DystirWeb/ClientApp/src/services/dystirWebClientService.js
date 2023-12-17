@@ -27,7 +27,11 @@ export class DystirWebClientService {
         this.matchDetailsData = {
             matches: [],
             match: "",
-            matchId: ""
+            matchId: "",
+            eventsOfMatch: [],
+            playersOfMatch: [],
+            statistic: null,
+            standings: []
         };
 
         this.state = {
@@ -41,8 +45,8 @@ export class DystirWebClientService {
 
         this.hubConnection = {
             connection: new signalR.HubConnectionBuilder()
-                //.withUrl('../dystirhub')
-                .withUrl('https://www.dystir.fo/dystirhub')
+                .withUrl('../dystirhub')
+                //.withUrl('https://www.dystir.fo/dystirhub')
                 .withAutomaticReconnect([0, 1000, 2000, 3000, 5000, 10000])
                 .configureLogging(signalR.LogLevel.Information)
                 .build()
@@ -167,11 +171,20 @@ export class DystirWebClientService {
     async loadMatchDetailsDataAsync(matchId) {
         const response = await fetch('api/matchdetails/' + matchId);
         const matchDetails = await response.json();
+        const match = matchDetails['match'];
+        const eventsOfMatch = matchDetails['eventsOfMatch'];
+        const playersOfMatch = matchDetails['playersOfMatch'];
+        const statistic = matchDetails['statistic'];
+        const standings = matchDetails['standings'];
 
         this.state.matchDetailsData = {
             matches: this.state.matchesData.matches,
             match: matchDetails['match'],
-            matchId: matchId
+            matchId: matchId,
+            eventsOfMatch: eventsOfMatch,
+            playersOfMatch: playersOfMatch,
+            statistic: statistic,
+            standings: standings
         }
         this.onUpdateMatchDetails(matchDetails);
     }
@@ -180,6 +193,7 @@ export class DystirWebClientService {
         const match = matchDetails['match'];
         const eventsOfMatch = matchDetails['eventsOfMatch'];
         const playersOfMatch = matchDetails['playersOfMatch'];
+        const statistic = matchDetails['statistic'];
         const standings = matchDetails['standings'];
 
         this.onUpdateMatch(match);
@@ -222,5 +236,13 @@ export const SelectPeriodName = {
     TODAY: "today",
     TOMORROW: "tomorrow",
     NEXT: "next"
+}
+
+export const TabName = {
+    SUMMARY: "summary",
+    LINEUPS: "lineups",
+    COMMENTARY: "commentary",
+    STATISTICS: "statistics",
+    STANDINGS: "standings"
 }
 

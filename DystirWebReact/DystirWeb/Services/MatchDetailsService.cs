@@ -7,13 +7,19 @@ namespace DystirWeb.Services
     {
         private readonly DystirService _dystirService;
         private readonly StandingService _standingService;
+        private readonly MatchStatisticService _matchStatisticService;
         private readonly DystirDBContext _dystirDBContext;
         static readonly object lockGetMatchDetails = new object();
 
-        public MatchDetailsService(DystirService dystirService, StandingService standingService, DystirDBContext dystirDBContext)
+        public MatchDetailsService(
+            DystirService dystirService,
+            StandingService standingService,
+            MatchStatisticService matchStatisticService,
+            DystirDBContext dystirDBContext)
         {
             _dystirService = dystirService;
             _standingService = standingService;
+            _matchStatisticService = matchStatisticService;
             _dystirDBContext = dystirDBContext;
         }
 
@@ -36,8 +42,9 @@ namespace DystirWeb.Services
                         .ThenBy(x => x.EventMinute)
                         .ThenBy(x => x.EventOfMatchId).ToList(),
                         PlayersOfMatch = playersOfMatch?.Where(x => x.PlayingStatus != 3).ToList(),
-                        Standings = _standingService.GetStandings().ToList()
+                        Standings = _standingService.GetStandings().ToList(),
                     };
+                    matchDetails.Statistic = _matchStatisticService.GetStatistic(matchDetails.EventsOfMatch, matchDetails.Match);
                     _dystirService.UpdateDataAsync(matchDetails);
                 }
                 return matchDetails;
