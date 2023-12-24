@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DystirWebClientService, PageName } from '../services/dystirWebClientService';
+import { DystirWebClientService, PageName, TabName } from '../services/dystirWebClientService';
 import { LayoutMatchDetails } from './layouts/LayoutMatchDetails';
 import { Lineups } from './Lineups';
 import { SummaryTab } from './SummaryTab';
@@ -16,7 +16,14 @@ export class MatchDetails extends Component {
     constructor(props) {
         super(props);
         let matchDetailsData = dystirWebClientService.state.matchDetailsData;
-        matchDetailsData.matchId = window.location.pathname.split("/").pop();
+        const lenght = window.location.pathname.split("/").length;
+        matchDetailsData.matchId = window.location.pathname.split("/")[2];
+        if (lenght > 3) {
+            matchDetailsData.selectedTab = window.location.pathname.split("/")[3];
+        }
+        if (matchDetailsData.selectedTab.length == 0) {
+            matchDetailsData.selectedTab = "summary";
+        }
 
         this.state = {
             matches: matchDetailsData.matches,
@@ -26,9 +33,10 @@ export class MatchDetails extends Component {
             playersOfMatch: matchDetailsData.playersOfMatch,
             standings: matchDetailsData.standings,
             statistic: matchDetailsData.statistic,
+            selectedTab: matchDetailsData.selectedTab,
             isLoading: true
         }
-        dystirWebClientService.loadMatchDetailsDataAsync(this.state.matchId);
+        dystirWebClientService.loadMatchDetailsDataAsync(this.state.matchId, this.state.selectedTab);
     }
 
     componentDidMount() {
@@ -55,12 +63,13 @@ export class MatchDetails extends Component {
             playersOfMatch: matchDetailsData.playersOfMatch,
             standings: matchDetailsData.standings,
             statistic: matchDetailsData.statistic,
+            selectedTab: matchDetailsData.selectedTab,
             isLoading: false
         });
     }
 
     onConnected() {
-        dystirWebClientService.loadMatchDetailsDataAsync(this.state.matchId);
+        dystirWebClientService.loadMatchDetailsDataAsync(this.state.matchId, this.state.selectedTab);
     }
 
     onDisconnected() {
@@ -70,11 +79,11 @@ export class MatchDetails extends Component {
     }
 
     onClickTab() {
-        //let periodParameter = window.location.pathname.split("/").pop();
-        //dystirWebClientService.state.matchesData.selectedPeriod = periodParameter;
-        //this.setState({
-        //    selectedPeriod: periodParameter
-        //});
+        let selectedTabParameter = window.location.pathname.split("/").pop();
+        dystirWebClientService.state.matchesData.selectedTab = selectedTabParameter;
+        this.setState({
+            selectedTab: selectedTabParameter
+        });
     }
 
     render() {
@@ -84,16 +93,25 @@ export class MatchDetails extends Component {
                 <div className="main_container">
                     {
                         this.state.isLoading &&
-
                         <div className="loading-spinner-parent spinner-border" />
                     }
                     {
                         <>
-                            <SummaryTab match={this.state.match} eventsOfMatch={this.state.eventsOfMatch} />
-                            <Lineups match={this.state.match} playersOfMatch={this.state.playersOfMatch} />
-                            <CommentaryTab match={this.state.match} eventsOfMatch={this.state.eventsOfMatch} />
-                            <StatisticsTab match={this.state.match} statistic={this.state.statistic} />
-                            <StandingsTab match={this.state.match} standings={this.state.standings} />
+                            <div className={this.state.selectedTab === TabName.SUMMARY ? "active_tab" : "no_active_tab"}>
+                                <SummaryTab match={this.state.match} eventsOfMatch={this.state.eventsOfMatch} />
+                            </div>
+                            <div className={this.state.selectedTab === TabName.LINEUPS ? "active_tab" : "no_active_tab"}>
+                                <Lineups match={this.state.match} playersOfMatch={this.state.playersOfMatch} />
+                            </div>
+                            <div className={this.state.selectedTab === TabName.COMMENTARY ? "active_tab" : "no_active_tab"}>
+                                <CommentaryTab match={this.state.match} eventsOfMatch={this.state.eventsOfMatch} />
+                            </div>
+                            <div className={this.state.selectedTab === TabName.STATISTICS ? "active_tab" : "no_active_tab"}>
+                                <StatisticsTab match={this.state.match} statistic={this.state.statistic} />
+                            </div>
+                            <div className={this.state.selectedTab === TabName.STANDINGS ? "active_tab" : "no_active_tab"}>
+                                <StandingsTab match={this.state.match} standings={this.state.standings} />
+                            </div>
                         </>
                     }
                 </div>

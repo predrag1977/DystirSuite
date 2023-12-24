@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { GiSoccerBall } from "react-icons/gi";
 
 export class PlayerView extends Component {
     static displayName = PlayerView.name;
@@ -14,68 +15,65 @@ export class PlayerView extends Component {
                 <table className="content_table" style={{ textAlign: "left" }}>
                     <tbody>
                         <tr>
-                            <td style={{ textAlign: "center" }, { verticalAlign: "central" }, { width: "35px" }}>
-                                <div className="player_number">{player.number}</div>
+                            <td className="player_number">
+                                <div>{player.number}</div>
                             </td>
                             <td>
                                 <div className="player_name">
                                     {((player.firstName ?? "") + " " + (player.lastname ?? "")).trim()}
                                 </div>
-                                <div style={{ color: "#a6a6a6" }}>
-                                    <span style={{ color: "#a6a6a6" }, { marginRight: "4px" }}>
-                                        {/*@if (Player.Position == "GK")*/}
-                                        {/*{*/}
-                                        {/*    @("MM")*/}
-                                        {/*}*/}
-                                        {/*            else if (Player.Position == "DEF")*/}
-                                        {/*            {*/}
-                                        {/*    @("VL")*/}
-                                        {/*}*/}
-                                        {/*            else if (Player.Position == "MID")*/}
-                                        {/*            {*/}
-                                        {/*    @("MV")*/}
-                                        {/*}*/}
-                                        {/*            else if (Player.Position == "ATT")*/}
-                                        {/*            {*/}
-                                        {/*    @("AL")*/}
-                                        {/*}*/}
-                                        {/*            else*/}
-                                        {/*            {*/}
-                                        {/*    @("---")*/}
-                                        {/*}*/}
-                                    </span>
-                                    {/*@if (Player.Goal > 0)*/}
-                                    {/*{*/}
-                                    {/*    <span className="goal_icon">&#9917;</span>*/}
-                                    {/*    <span>@(Player.Goal)</span>*/}
-                                    {/*}*/}
-                                    {/*@if (Player.OwnGoal > 0)*/}
-                                    {/*            {*/}
-                                    {/*    <span className="owngoal_icon">&#9917;</span>*/}
-                                    {/*    <span>@(Player.OwnGoal)</span>*/}
-                                    {/*            }*/}
-                                    {/*@if (Player.YellowCard > 0)*/}
-                                    {/*            {*/}
-                                    {/*                <span className="yellow_card" style="margin-right:2px;"></span>*/}
-                                    {/*            }*/}
-                                    {/*@if (Player.YellowCard > 1)*/}
-                                    {/*            {*/}
-                                    {/*                <span className="yellow_card" style="margin-right:2px;"></span>*/}
-                                    {/*            }*/}
-                                    {/*@if (Player.RedCard > 0)*/}
-                                    {/*            {*/}
-                                    {/*                <span className="red_card" style="margin-right:2px;"></span>*/}
-                                    {/*            }*/}
-                                    {/*@if (Player.SubIn > -1)*/}
-                                    {/*            {*/}
-                                    {/*    <span className="sub_in">&#9650;</span>*/}
-                                    {/*    <span>@(Player.SubIn)'</span>*/}
-                                    {/*            }*/}
-                                    {/*@if (Player.SubOut > -1)*/}
-                                    {/*            {*/}
-                                    {/*    <span className="sub_out">&#9660;</span>*/}
-                                    {/*    <span>@(Player.SubOut)'</span>*/}
-                                    {/*}*/}
+                                <div>
+                                {
+                                    player.position == "GK" && <span className="position_text">MM</span> ||
+                                    player.position == "DEF" && <span className="position_text">VL</span> ||
+                                    player.position == "MID" && <span className="position_text">MV</span> ||
+                                    player.position == "ATT" && <span className="position_text">AL</span> ||
+                                    <span className="position_text">--</span>
+                                }
+                                {
+                                    player.goal > 0 &&
+                                    <>
+                                        <GiSoccerBall className="goal_icon" />
+                                        <span className="player_statistic_lineups_text">{player.goal}</span>
+                                    </>
+                                }
+                                {
+                                    player.ownGoal > 0 &&
+                                    <>
+                                        <GiSoccerBall className="owngoal_icon" />
+                                        <span className="player_statistic_lineups_text">{player.ownGoal}</span>
+                                    </>
+                                }
+                                {
+                                    player.yellowCard > 0 &&
+                                    <span className="yellow_card player_statistic_lineups_text"></span>
+                                }
+
+                                {
+                                    player.yellowCard > 1 &&
+                                    <span className="yellow_card player_statistic_lineups_text"></span>
+                                }
+
+                                {
+                                    player.redCard > 0 &&
+                                    <span className="red_card player_statistic_lineups_text"></span>
+                                }
+
+                                {
+                                    player.subIn > -1 &&
+                                    <>
+                                        <span className="sub_in">&#9650;</span>
+                                        <span className="player_statistic_lineups_text">{player.subIn}'</span>
+                                    </>
+                                }
+
+                                {
+                                    player.subOut > -1 &&
+                                    <>
+                                        <span className="sub_out">&#9660;</span>
+                                        <span className="player_statistic_lineups_text">{player.subOut}'</span>
+                                    </>
+                                }
                                 </div>
                             </td>
                         </tr>
