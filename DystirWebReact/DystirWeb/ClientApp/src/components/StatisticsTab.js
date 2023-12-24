@@ -15,7 +15,6 @@ export class StatisticsTab extends Component {
         const match = this.props.match;
         const statistic = this.props.statistic;
         if (statistic === null) return;
-        console.log(statistic);
         let contents =
         <>
             <table className="content_table statistic_table">

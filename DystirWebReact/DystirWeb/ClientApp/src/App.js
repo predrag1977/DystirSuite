@@ -17,6 +17,10 @@ export default class App extends Component {
         super(props);
         dystirWebClientService.init();
         this.timeService = new TimeService();
+
+        window.onpopstate = () => {
+            window.location.reload(false);
+        }
     }
 
     render() {

@@ -31,7 +31,8 @@ export class DystirWebClientService {
             eventsOfMatch: [],
             playersOfMatch: [],
             statistic: null,
-            standings: []
+            standings: [],
+            selectedTab: ""
         };
 
         this.state = {
@@ -168,7 +169,7 @@ export class DystirWebClientService {
         document.body.dispatchEvent(new CustomEvent("onReloadData"));
     }
 
-    async loadMatchDetailsDataAsync(matchId) {
+    async loadMatchDetailsDataAsync(matchId, selectedTab) {
         const response = await fetch('api/matchdetails/' + matchId);
         const matchDetails = await response.json();
         const match = matchDetails['match'];
@@ -184,7 +185,8 @@ export class DystirWebClientService {
             eventsOfMatch: eventsOfMatch,
             playersOfMatch: playersOfMatch,
             statistic: statistic,
-            standings: standings
+            standings: standings,
+            selectedTab: selectedTab
         }
         this.onUpdateMatchDetails(matchDetails);
     }
@@ -244,5 +246,23 @@ export const TabName = {
     COMMENTARY: "commentary",
     STATISTICS: "statistics",
     STANDINGS: "standings"
+}
+
+export const EventName = {
+    GOAL: "GOAL",
+    OWNGOAL: "OWNGOAL",
+    PENALTYSCORED: "PENALTYSCORED",
+    PENALTYMISSED: "PENALTYMISSED",
+    PLAYEROFTHEMATCH: "PLAYEROFTHEMATCH",
+    BIGCHANCE: "BIGCHANCE",
+    YELLOW: "YELLOW",
+    RED: "RED",
+    SUBSTITUTION: "SUBSTITUTION",
+    ASSIST: "ASSIST",
+    CORNER: "CORNER",
+    ONTARGET: "ONTARGET",
+    OFFTARGET: "OFFTARGET",
+    BLOCKEDSHOT: "BLOCKEDSHOT",
+    PLAYEROFTHEMATCH: "PLAYEROFTHEMATCH"
 }
 

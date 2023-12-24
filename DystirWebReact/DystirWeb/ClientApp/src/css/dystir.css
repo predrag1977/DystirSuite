@@ -369,6 +369,16 @@ table, tbody, tr {
     vertical-align: top;
 }
 
+.position_text, .player_statistic_lineups_text {
+    color: #a6a6a6;
+    margin-right: 6px;
+    font-size: 0.8rem;
+}
+
+.player_statistic_lineups_text {
+    margin-right: 3px;
+}
+
 .match_item_team_name, .match_item_same_day_team_name {
     font-weight: bold;
     width: 100%;
@@ -528,8 +538,8 @@ table, tbody, tr {
 
 .yellow_card, .red_card {
     background-color: gold;
-    padding: 0 0.4rem;
-    border-radius: 0.2rem;
+    padding: 0 0.3rem;
+    border-radius: 0.1rem;
 }
 
 .red_card {
@@ -539,12 +549,19 @@ table, tbody, tr {
 .goal_icon, .owngoal_icon {
     font-size: 1rem;
     background-color: darkgreen;
-    padding: 0 0.2rem;
     border-radius: 0.5rem;
 }
 
 .owngoal_icon {
     background-color: darkred;
+}
+
+.goal_icon_new, .owngoal_icon_new {
+    color: white;
+}
+
+.owngoal_icon_new {
+    color: red;
 }
 
 .sub_in {
@@ -664,6 +681,9 @@ a, .btn-link, .nav-link {
 
 .player_number {
     color: khaki;
+    text-align: center;
+    width: 45px;
+    vertical-align: middle !important;
 }
 
 .active_tab {
