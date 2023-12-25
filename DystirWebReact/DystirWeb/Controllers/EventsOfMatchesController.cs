@@ -302,7 +302,7 @@ namespace DystirWeb.Controllers
                         }
                         break;
                     case 3:
-                        return "hálvleikur";
+                        return "46";
                     case 4:
                         if (minutes > 90)
                         {
@@ -311,7 +311,7 @@ namespace DystirWeb.Controllers
                         }
                         break;
                     case 5:
-                        return "liðugt";
+                        return "91";
                     case 6:
                         if (minutes > 105)
                         {
@@ -320,7 +320,7 @@ namespace DystirWeb.Controllers
                         }
                         break;
                     case 7:
-                        return "longd leiktíð hálvleikur";
+                        return "106";
                     case 8:
                         if (minutes > 120)
                         {
@@ -329,7 +329,7 @@ namespace DystirWeb.Controllers
                         }
                         break;
                     case 9:
-                        return "longd leiktíð liðugt";
+                        return "120";
                     case 10:
                         return "brotsspark";
                     default:

@@ -536,10 +536,14 @@ table, tbody, tr {
     min-height: 4rem;
 }
 
+.event_list_item td {
+    vertical-align: middle;
+}
+
 .yellow_card, .red_card {
     background-color: gold;
-    padding: 0 0.3rem;
-    border-radius: 0.1rem;
+    padding: 0 0.4rem;
+    border-radius: 0.2rem;
 }
 
 .red_card {
