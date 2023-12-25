@@ -59,7 +59,8 @@ namespace DystirWeb.Services
                 .ThenByDescending(x => x.EventTotalTime)
                 .ThenByDescending(x => x.EventMinute)
                 .ThenByDescending(x => x.EventOfMatchId);
-            return sortedEventList ?? Enumerable.Empty<EventsOfMatches>();
+            var fullEventsOfMatchList = GetFullEventsList(sortedEventList ?? Enumerable.Empty<EventsOfMatches>(), matchID);
+            return fullEventsOfMatchList;
         }
 
         public IEnumerable<PlayersOfMatches> GetPlayersOfMatches(int matchID)
@@ -82,10 +83,53 @@ namespace DystirWeb.Services
                 .ThenBy(x => x.Lastname);
         }
 
+        private IEnumerable<EventsOfMatches> GetFullEventsList(IEnumerable<EventsOfMatches> sortedEventList, int matchID)
+        {
+            var match = GetMatchFromDB(matchID);
+            int homeTeamScore = 0;
+            int awayTeamScore = 0;
+            int homeTeamPenaltiesScore = 0;
+            int awyTeamPenaltiesScore = 0;
+            foreach (EventsOfMatches eventOfMatch in sortedEventList.Reverse())
+            {
+                if(eventOfMatch.EventName == "GOAL" || eventOfMatch.EventName == "OWNGOAL" || eventOfMatch.EventName == "PENALTYSCORED")
+                {
+                    if (eventOfMatch.EventPeriodId != 10)
+                    {
+                        if (match.HomeTeam == eventOfMatch.EventTeam)
+                        {
+                            homeTeamScore++;
+                        }
+                        else if (match.AwayTeam == eventOfMatch.EventTeam)
+                        {
+                            awayTeamScore++;
+                        }
+                    }
+                    else
+                    {
+                        if (match.HomeTeam == eventOfMatch.EventTeam)
+                        {
+                            homeTeamPenaltiesScore++;
+                        }
+                        else if (match.AwayTeam == eventOfMatch.EventTeam)
+                        {
+                            awyTeamPenaltiesScore++;
+                        }
+                    }
+                }
+                eventOfMatch.HomeTeamScore = homeTeamScore;
+                eventOfMatch.AwayTeamScore = awayTeamScore;
+                eventOfMatch.HomeTeamPenaltiesScore =  homeTeamPenaltiesScore;
+                eventOfMatch.AwayTeamPenaltiesScore = awyTeamPenaltiesScore;
+            }
+            return sortedEventList;
+        }
+
         private Matches GetMatchFromDB(int matchID)
         {
             var match = _dystirDBContext.Matches.Find(matchID);
             _dystirService.SetTeamLogoInMatch(match);
+
             return match;
         }
     }

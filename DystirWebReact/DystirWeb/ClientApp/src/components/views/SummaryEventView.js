@@ -3,6 +3,7 @@ import { EventName } from '../../services/dystirWebClientService';
 import MatchDate from '../../extentions/matchDate';
 import { format } from 'react-string-format';
 import { GiSoccerBall } from "react-icons/gi";
+import { FaStar } from "react-icons/fa";
 
 export class SummaryEventView extends Component {
     constructor(props) {
@@ -35,30 +36,30 @@ export class SummaryEventView extends Component {
                                 <span style={{ margin: "0 5px" }}>Brotsspark skora</span>
                             </> ||
                             event.eventName == EventName.PENALTYMISSED &&
-                            <span className="penalty_missed">Brotsspark brent</span> ||
+                                <span className="penalty_missed">Brotsspark brent</span> ||
                             event.eventName == EventName.BIGCHANCE &&
-                            <span className="big_chance">Stórur møguleiki</span> ||
+                                <span className="big_chance">Stórur møguleiki</span> ||
                             event.eventName == EventName.YELLOW &&
-                            <span className="yellow_card"></span> ||
+                                <span className="yellow_card"></span> ||
                             event.eventName == EventName.RED &&
-                            <span className="red_card"></span> ||
+                                <span className="red_card"></span> ||
                             event.eventName == EventName.SUBSTITUTION &&
                             <>
                                 <span className="sub_in">&#9650;</span>
                                 <span className="sub_out">&#9660;</span>
                             </> ||
                             event.eventName == EventName.ASSIST &&
-                            <div className="big_chance">Upplegg</div> ||
+                                <div className="big_chance">Upplegg</div> ||
                             event.eventName == EventName.CORNER &&
-                            <div className="secondary_event">Hornaspark</div> ||
+                                <div className="secondary_event">Hornaspark</div> ||
                             event.eventName == EventName.ONTARGET &&
-                            <div className="secondary_event">Roynd á mál</div> ||
+                                <div className="secondary_event">Roynd á mál</div> ||
                             event.eventName == EventName.OFFTARGET &&
-                            <div className="secondary_event">Roynd framvið mál</div> ||
+                                <div className="secondary_event">Roynd framvið mál</div> ||
                             event.eventName == EventName.BLOCKEDSHOT &&
-                            <div className="secondary_event">Blokera skot</div> ||
+                                <div className="secondary_event">Blokera skot</div> ||
                             event.eventName == EventName.PLAYEROFTHEMATCH &&
-                            <span className="fas fa-star" style={{ color: "gold" }}></span>
+                                <FaStar style={{ color: "gold" }} />
                         }
                         </td>
 
@@ -111,8 +112,7 @@ export class SummaryEventView extends Component {
                             event.eventName == EventName.BLOCKEDSHOT &&
                                 <div className="secondary_event">Blokera skot</div> ||
                             event.eventName == EventName.PLAYEROFTHEMATCH &&
-                                <span className="fas fa-star" style={{ color: "gold" }}></span>
-
+                                <FaStar style={{ color: "gold" }} />
                         }
                         </td>
                     </tr>

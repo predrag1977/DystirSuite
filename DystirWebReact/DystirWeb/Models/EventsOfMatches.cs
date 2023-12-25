@@ -17,5 +17,9 @@ namespace DystirWeb.Shared
         public int? SecondPlayerOfMatchId { get; set; }
         public string MainPlayerOfMatchNumber { get; set; }
         public string SecondPlayerOfMatchNumber { get; set; }
+        public int HomeTeamScore { get; set; }
+        public int AwayTeamScore { get; set; }
+        public int HomeTeamPenaltiesScore { get; set; }
+        public int AwayTeamPenaltiesScore { get; set; }
     }
 }

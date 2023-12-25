@@ -123,6 +123,14 @@ namespace DystirWeb.DystirDB
                 entity.Property(e => e.MainPlayerOfMatchNumber).IsUnicode(false);
 
                 entity.Property(e => e.SecondPlayerOfMatchNumber).IsUnicode(false);
+
+                entity.Ignore("HomeTeamScore");
+
+                entity.Ignore("AwayTeamScore");
+
+                entity.Ignore("HomeTeamPenaltiesScore");
+
+                entity.Ignore("AwayTeamPenaltiesScore");
             });
 
             modelBuilder.Entity<MatchTypes>(entity =>

@@ -98,7 +98,7 @@ export class MatchDetails extends Component {
                     {
                         <>
                             <div className={this.state.selectedTab === TabName.SUMMARY ? "active_tab" : "no_active_tab"}>
-                                <SummaryTab match={this.state.match} eventsOfMatch={this.state.eventsOfMatch} />
+                                <SummaryTab match={this.state.match} eventsOfMatch={this.state.eventsOfMatch} playersOfMatch={this.state.playersOfMatch} />
                             </div>
                             <div className={this.state.selectedTab === TabName.LINEUPS ? "active_tab" : "no_active_tab"}>
                                 <Lineups match={this.state.match} playersOfMatch={this.state.playersOfMatch} />
