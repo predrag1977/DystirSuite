@@ -28,7 +28,7 @@ body {
     background-repeat: no-repeat;
     background-size: 100% 100%;
     background-position: center;
-    font-size: 32px;
+    font-size: 30px;
     font-weight: bold;
 }
 
@@ -559,9 +559,9 @@ table, tbody, tr {
 }
 
 .goal_icon, .owngoal_icon {
-    font-size: 1rem;
+    font-size: 1.2rem;
     background-color: darkgreen;
-    border-radius: 0.5rem;
+    border-radius: 0.6rem;
 }
 
 .owngoal_icon {

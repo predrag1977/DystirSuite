@@ -25,14 +25,14 @@ export class MatchDetailsInfo extends Component {
                             <div>
                                 {
                                     (match.homeTeamPenaltiesScore > 0 || match.awayTeamPenaltiesScore > 0) &&
-                                        <div className="d-inline-block" style={{ fontSize: "24px", marginRight: "5px" }}>{"(" + match.homeTeamPenaltiesScore + ")"}</div>
+                                    <div className="d-inline-block" style={{ fontSize: "22px", marginRight: "5px", color: "beige" }}>{"( " + match.homeTeamPenaltiesScore + " )"}</div>
                                 }
                                     <div className="d-inline-block">{match.homeTeamScore - match.homeTeamPenaltiesScore}</div>
                                     <div className="d-inline-block" style={{ width: "40px" }}>:</div>
                                     <div className="d-inline-block">{match.awayTeamScore - match.awayTeamPenaltiesScore}</div>
                                 {
                                     (match.homeTeamPenaltiesScore > 0 || match.awayTeamPenaltiesScore > 0) &&
-                                        <div className="d-inline-block" style={{ fontSize: "24px", marginLeft: "5px" }}>{"(" + match.awayTeamPenaltiesScore + ")"}</div>
+                                    <div className="d-inline-block" style={{ fontSize: "22px", marginLeft: "5px", color: "beige" }}>{"( " + match.awayTeamPenaltiesScore + " )"}</div>
                                 }
                             </div>
                         </td>
