@@ -12,112 +12,129 @@ export class SummaryTab extends Component {
 
     render() {
         const match = this.props.match;
-        const eventsOfMatch = (match?.statusID ?? 0) >= 12 ? [...this.props.eventsOfMatch].reverse() : this.props.eventsOfMatch;
+        const eventsOfMatch = (match?.statusID ?? 0) >= 12 ? this.props.eventsOfMatch : [...this.props.eventsOfMatch].reverse();
 
         let contents =
-        <table className="lineups content_table">
-            <tbody>
-                <tr>
-                    <td style={{textAlign: "center"}, {verticalAlign: "top"}, {padding: "5px 0"}}>
-                    {
-                        eventsOfMatch.filter((event) => this.filterEvent(event)).map((event) =>
-                            <table key={event.eventOfMatchId} className="event_list_item">
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <SummaryEventView match={match} event={event} />
-                                            {
-                                                event.eventPeriodId != 10 &&
-                                                <>
-                                                {
-                                                    (event.eventName == EventName.GOAL
-                                                        || event.eventName == EventName.OWNGOAL
-                                                        || event.eventName == EventName.PENALTYSCORED) &&
-                                                    <>
-                                                        <div className="score d-inline-block">{event.homeTeamScore}
-                                                        </div>
-                                                        <div className="d-inline-block" style={{width: "10px"}}>:</div>
-                                                        <div className="score d-inline-block">{event.awayTeamScore}</div>
-                                                    </>
-                                                }
-                                                </> ||
-                                                (event.eventName == EventName.GOAL
-                                                    || event.eventName == EventName.OWNGOAL
-                                                    || event.eventName == EventName.PENALTYSCORED
-                                                    || event.eventName == EventName.PENALTYMISSED) &&
-                                                <>
-                                                    <div className="score_match_view d-inline-block">{event.homeTeamPenaltiesScore}</div>
-                                                    <div className="d-inline-block" style={{ width: "10px" }}>:</div>
-                                                    <div className="score_match_view d-inline-block">{event.awayTeamPenaltiesScore}</div>
-                                                </>
-                                            }
-                                            {
-                                                (event.eventTeam == match.homeTeam) &&
-                                                <div className="summary_event text-center w-100">
-                                                {
-                                                    event.eventName == EventName.GOAL &&
-                                                    <>
-                                                        <div className="main_player">{this.getPlayer(event.mainPlayerOfMatchId)}</div>
-                                                        {
-                                                            this.getAssistPlayerId(event) > 0 &&
-                                                            <div className="second_player">{this.getPlayer(this.getAssistPlayerId(event))}</div>
-                                                        }
-                                                    </> ||
-                                                    event.eventName == EventName.SUBSTITUTION &&
-                                                    <>
-                                                        <div className="main_player">{this.getPlayer(event.mainPlayerOfMatchId)}</div>
-                                                        {
-                                                            event.secondPlayerOfMatchId > 0 &&
-                                                            <div className="second_player">{this.getPlayer(event.secondPlayerOfMatchId)}</div>
-                                                        }
-                                                    </> ||
-                                                    event.eventName == EventName.OWNGOAL &&
-                                                    <div className="owngoal_player d-inline-block">{this.getPlayer(event.mainPlayerOfMatchId)}</div> ||
-                                                    event.eventName == EventName.PENALTYMISSED &&
-                                                    <div className="second_player d-inline-block">{this.getPlayer(event.mainPlayerOfMatchId)}</div> ||
-                                                    <div className="main_player d-inline-block">{this.getPlayer(event.mainPlayerOfMatchId)}</div>
-                                                }
-                                                </div>
-                                            }
-                                            {
-                                                (event.eventTeam == match.awayTeam) &&
-                                                <div className="summary_event text-center w-100">
+        <>
+            <table className="w-100">
+                <tbody>
+                    <tr>
+                        <td className="match_info text-center" style={{ whiteSpace: "normal", padding: "12px 0" }}>
+                            <span>{(new MatchDate(Date.parse(match.time)).dateLocale().toDateTimeString())}</span>
+                            {
+                                (match.matchTypeName?.trim() !== undefined && match.matchTypeName?.trim() !== "") && <span> - </span>
+                            }
+                            <span>{match.matchTypeName}</span>
+                            {
+                                (match.roundName?.trim() !== undefined && match.roundName?.trim() !== "") && <span> - </span>
+                            }
+                            <span>{match.roundName}</span>
+                            {
+                                (match.location?.trim() !== undefined && match.location?.trim() !== "") && <span> - </span>
+                            }
+                            <span>{match.location}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style={{ borderBottom: "1px #404040 solid" }} />
+            <table className="lineups content_table">
+                <tbody>
+                    <tr>
+                        <td style={{ textAlign: "center" }, { verticalAlign: "top" }, { padding: "5px 0" }}>
+                            {
+                                eventsOfMatch.filter((event) => this.filterEvent(event)).map((event) =>
+                                    <table key={event.eventOfMatchId} className="event_list_item">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <SummaryEventView match={match} event={event} />
                                                     {
-                                                    event.eventName == EventName.GOAL &&
-                                                    <>
-                                                        <div className="main_player">{this.getPlayer(event.mainPlayerOfMatchId)}</div>
-                                                        {
-                                                            this.getAssistPlayerId(event) > 0 &&
-                                                            <div className="second_player">{this.getPlayer(this.getAssistPlayerId(event))}</div>
-                                                        }
-                                                    </> ||
-                                                    event.eventName == EventName.SUBSTITUTION &&
-                                                    <>
-                                                        <div className="main_player">{this.getPlayer(event.mainPlayerOfMatchId)}</div>
-                                                        {
-                                                            event.secondPlayerOfMatchId > 0 &&
-                                                            <div className="second_player">{this.getPlayer(event.secondPlayerOfMatchId)}</div>
-                                                        }
-                                                    </> ||
-                                                    event.eventName == EventName.OWNGOAL &&
-                                                    <div className="owngoal_player d-inline-block">{this.getPlayer(event.mainPlayerOfMatchId)}</div> ||
-                                                    event.eventName == EventName.PENALTYMISSED &&
-                                                    <div className="second_player d-inline-block">{this.getPlayer(event.mainPlayerOfMatchId)}</div> ||
-                                                    <div className="main_player d-inline-block">{this.getPlayer(event.mainPlayerOfMatchId)}</div>
-                                                }
-                                                </div>
-                                            }
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        )
-                    }
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
+                                                        event.eventPeriodId != 10 &&
+                                                        <>
+                                                            {
+                                                                (event.eventName == EventName.GOAL
+                                                                    || event.eventName == EventName.OWNGOAL
+                                                                    || event.eventName == EventName.PENALTYSCORED) &&
+                                                                <>
+                                                                    <div className="score d-inline-block">{event.homeTeamScore}
+                                                                    </div>
+                                                                    <div className="d-inline-block" style={{ width: "10px" }}>:</div>
+                                                                    <div className="score d-inline-block">{event.awayTeamScore}</div>
+                                                                </>
+                                                            }
+                                                        </> ||
+                                                        (event.eventName == EventName.GOAL
+                                                            || event.eventName == EventName.OWNGOAL
+                                                            || event.eventName == EventName.PENALTYSCORED
+                                                            || event.eventName == EventName.PENALTYMISSED) &&
+                                                        <>
+                                                            <div className="score_match_view d-inline-block">{event.homeTeamPenaltiesScore}</div>
+                                                            <div className="d-inline-block" style={{ width: "10px" }}>:</div>
+                                                            <div className="score_match_view d-inline-block">{event.awayTeamPenaltiesScore}</div>
+                                                        </>
+                                                    }
+                                                    {
+                                                        (event.eventTeam == match.homeTeam) &&
+                                                        <div className="summary_event text-center w-100">
+                                                            {
+                                                                event.eventName == EventName.GOAL &&
+                                                                <>
+                                                                    <div className="main_player">{this.getPlayer(event.mainPlayerOfMatchId)}</div>
+                                                                    {
+                                                                        this.getAssistPlayerId(event) > 0 &&
+                                                                        <div className="second_player">{this.getPlayer(this.getAssistPlayerId(event))}</div>
+                                                                    }
+                                                                </> ||
+                                                                event.eventName == EventName.SUBSTITUTION &&
+                                                                <>
+                                                                    <div className="main_player">{this.getPlayer(event.secondPlayerOfMatchId)}</div>
+                                                                    <div className="second_player">{this.getPlayer(event.mainPlayerOfMatchId)}</div>
+                                                                </> ||
+                                                                event.eventName == EventName.OWNGOAL &&
+                                                                <div className="owngoal_player d-inline-block">{this.getPlayer(event.mainPlayerOfMatchId)}</div> ||
+                                                                event.eventName == EventName.PENALTYMISSED &&
+                                                                <div className="second_player d-inline-block">{this.getPlayer(event.mainPlayerOfMatchId)}</div> ||
+                                                                <div className="main_player d-inline-block">{this.getPlayer(event.mainPlayerOfMatchId)}</div>
+                                                            }
+                                                        </div>
+                                                    }
+                                                    {
+                                                        (event.eventTeam == match.awayTeam) &&
+                                                        <div className="summary_event text-center w-100">
+                                                            {
+                                                                event.eventName == EventName.GOAL &&
+                                                                <>
+                                                                    <div className="main_player">{this.getPlayer(event.mainPlayerOfMatchId)}</div>
+                                                                    {
+                                                                        this.getAssistPlayerId(event) > 0 &&
+                                                                        <div className="second_player">{this.getPlayer(this.getAssistPlayerId(event))}</div>
+                                                                    }
+                                                                </> ||
+                                                                event.eventName == EventName.SUBSTITUTION &&
+                                                                <>
+                                                                    <div className="main_player">{this.getPlayer(event.secondPlayerOfMatchId)}</div>
+                                                                    <div className="second_player">{this.getPlayer(event.mainPlayerOfMatchId)}</div>
+                                                                </> ||
+                                                                event.eventName == EventName.OWNGOAL &&
+                                                                <div className="owngoal_player d-inline-block">{this.getPlayer(event.mainPlayerOfMatchId)}</div> ||
+                                                                event.eventName == EventName.PENALTYMISSED &&
+                                                                <div className="second_player d-inline-block">{this.getPlayer(event.mainPlayerOfMatchId)}</div> ||
+                                                                <div className="main_player d-inline-block">{this.getPlayer(event.mainPlayerOfMatchId)}</div>
+                                                            }
+                                                        </div>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                )
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </>
         return contents
     }
 

@@ -10,12 +10,6 @@ export class MatchDetailsTabs extends Component {
         super(props);
     }
 
-    componentDidMount() {
-    }
-
-    componentWillUnmount() {
-    }
-
     render() {
         const match = this.props.match;
         const selectedTab = this.props.selectedTab !== undefined && this.props.selectedTab !== "" ? this.props.selectedTab : TabName.SUMMARY;
