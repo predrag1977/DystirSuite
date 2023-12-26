@@ -7,6 +7,7 @@ import { CommentaryTab } from './CommentaryTab';
 import { StandingsTab } from './StandingsTab';
 import { StatisticsTab } from './StatisticsTab';
 import { MatchDetailsTabs } from './MatchDetailsTabs';
+import { MatchDetailsInfo } from './MatchDetailsInfo';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
@@ -22,7 +23,7 @@ export class MatchDetails extends Component {
             matchDetailsData.selectedTab = window.location.pathname.split("/")[3];
         }
         if (matchDetailsData.selectedTab.length == 0) {
-            matchDetailsData.selectedTab = "summary";
+            matchDetailsData.selectedTab = TabName.SUMMARY;
         }
 
         this.state = {
@@ -84,11 +85,14 @@ export class MatchDetails extends Component {
         this.setState({
             selectedTab: selectedTabParameter
         });
+        var mainContainer = document.getElementsByClassName('main_container')[0];
+        mainContainer.scrollTo(0, 0);
     }
 
     render() {
         let contents =
             <>
+                <MatchDetailsInfo match={this.state.match} />
                 <MatchDetailsTabs onClickTab={() => this.onClickTab()} match={this.state.match} selectedTab={this.state.selectedTab} />
                 <div className="main_container">
                     {
