@@ -15,7 +15,7 @@ export class HeaderMatchDetails extends Component {
         this.matchTimeAndColor = new MatchTimeAndColor();
         this.state = {
             matchTime: this.matchTimeAndColor.getMatchTime(this.props.match),
-            statusColor: this.matchTimeAndColor.getStatusColor(this.props.match.statusID)
+            statusColor: this.matchTimeAndColor.getStatusColor(this.props.match?.statusID)
         };
     }
 
@@ -34,6 +34,9 @@ export class HeaderMatchDetails extends Component {
 
     render() {
         const match = this.props.match;
+        if (match == undefined) {
+            return
+        }
         return (
             <div id="header" className="navbar">
                 <div id="header_match_details_wrapper">
@@ -41,8 +44,8 @@ export class HeaderMatchDetails extends Component {
                         <tbody>
                             <tr>
                                 <td style={{ width: '50px' }} >
-                                    <span id="back_button" onClick={() => window.history.back()}>
-                                        <FaArrowLeft />
+                                    <span id="back_button">
+                                        <NavLink tag={Link} to="/results"> <FaArrowLeft /></NavLink>
                                     </span>
                                 </td>
                                 <td>

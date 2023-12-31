@@ -17,19 +17,6 @@ export class StandingsTab extends Component {
             (standing) => standing.standingCompetitionName == match.matchTypeName)[0];
         if (standing === undefined) return;
         let contents =
-            //<table className="lineups content_table">
-            //    <tbody>
-            //        <tr>
-            //            <td style={{textAlign: "center"}, {verticalAlign: "top"}, {padding: "5px 0"}}>
-            //            {
-            //                eventsOfMatch.map((event) =>
-            //                    <div key={event.eventOfMatchId}>{event.eventText}</div>
-            //                )
-            //            }
-            //            </td>
-            //        </tr>
-            //    </tbody>
-            //</table>
             <StandingView key={standing?.standingCompetitionName} standing={standing} />
 
         return contents

@@ -52,13 +52,17 @@ main {
     max-width: 1000px !important;
 }
 
-.main_container {
+.main_container, .main_container_match_details {
     overflow-x: hidden;
     overflow-y: auto;
     height: calc(100vh - 140px);
     padding: 0 10px;
     background-color: rgba(24, 24, 24, 0.85);
     width: 100%;
+}
+
+.main_container_match_details {
+    height: calc(100vh - 290px);
 }
 
 

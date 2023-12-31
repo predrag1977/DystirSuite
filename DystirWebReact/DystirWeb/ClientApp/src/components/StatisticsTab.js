@@ -12,7 +12,6 @@ export class StatisticsTab extends Component {
     }
 
     render() {
-        const match = this.props.match;
         const statistic = this.props.statistic;
         if (statistic === null) return;
         let contents =
