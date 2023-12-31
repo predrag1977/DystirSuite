@@ -20,7 +20,6 @@ namespace DystirWeb.DystirDB
         public virtual DbSet<EventsOfMatches> EventsOfMatches { get; set; }
         public virtual DbSet<MatchTypes> MatchTypes { get; set; }
         public virtual DbSet<Matches> Matches { get; set; }
-        public virtual DbSet<HandballMatches> HandballMatches { get; set; }
         public virtual DbSet<Players> Players { get; set; }
         public virtual DbSet<PlayersOfMatches> PlayersOfMatches { get; set; }
         public virtual DbSet<Requestor> Requestor { get; set; }
@@ -29,7 +28,6 @@ namespace DystirWeb.DystirDB
         public virtual DbSet<Squad> Squad { get; set; }
         public virtual DbSet<Statuses> Statuses { get; set; }
         public virtual DbSet<Teams> Teams { get; set; }
-        public virtual DbSet<HandballTeams> HandballTeams { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -202,56 +200,7 @@ namespace DystirWeb.DystirDB
 
                 entity.Ignore("AwayTeamLogo");
 
-                entity.Ignore("FullMatchDetails");
-            });
-
-            modelBuilder.Entity<HandballMatches>(entity =>
-            {
-                entity.HasKey(e => e.HandballMatchId);
-
-                entity.ToTable("HandballMatches", "dbo");
-
-                entity.Property(e => e.HandballMatchId).HasColumnName("HandballMatchID");
-
-                entity.Property(e => e.AwayTeam).IsUnicode(false);
-
-                entity.Property(e => e.AwayTeamId).HasColumnName("AwayTeamID");
-
-                entity.Property(e => e.HomeTeam).IsUnicode(false);
-
-                entity.Property(e => e.HomeTeamId).HasColumnName("HomeTeamID");
-
-                entity.Property(e => e.Location).IsUnicode(false);
-
-                entity.Property(e => e.MatchTypeId).HasColumnName("MatchTypeID");
-
-                entity.Property(e => e.RoundId).HasColumnName("RoundID");
-
-                entity.Property(e => e.RoundName).IsUnicode(false);
-
-                entity.Property(e => e.StatusId).HasColumnName("StatusID");
-
-                entity.Property(e => e.StatusTime).HasColumnType("datetime");
-
-                entity.Property(e => e.TeamAdminId).HasColumnName("TeamAdminID");
-
-                entity.Property(e => e.Time).HasColumnType("datetime");
-
-                entity.Property(e => e.HomeTeamScore).HasColumnName("HomeTeamScore");
-
-                entity.Property(e => e.AwayTeamScore).HasColumnName("AwayTeamScore");
-
-                entity.Property(e => e.HomeTeamOnTarget).HasColumnName("HomeTeamOnTarget");
-
-                entity.Property(e => e.AwayTeamOnTarget).HasColumnName("AwayTeamOnTarget");
-
-                entity.Property(e => e.HomeTeamCorner).HasColumnName("HomeTeamCorner");
-
-                entity.Property(e => e.AwayTeamCorner).HasColumnName("AwayTeamCorner");
-
-                entity.Ignore("ExtraMinutes");
-
-                entity.Ignore("ExtraSeconds");
+                entity.Ignore("MatchDetails");
             });
 
             modelBuilder.Entity<Players>(entity =>
@@ -378,21 +327,6 @@ namespace DystirWeb.DystirDB
             modelBuilder.Entity<Teams>(entity =>
             {
                 entity.ToTable("Teams", "dbo");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.TeamId).HasColumnName("TeamID");
-
-                entity.Property(e => e.TeamLocation).IsUnicode(false);
-
-                entity.Property(e => e.TeamLogo).IsUnicode(false);
-
-                entity.Property(e => e.TeamName).IsUnicode(false);
-            });
-
-            modelBuilder.Entity<HandballTeams>(entity =>
-            {
-                entity.ToTable("HandballTeams", "dbo");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 

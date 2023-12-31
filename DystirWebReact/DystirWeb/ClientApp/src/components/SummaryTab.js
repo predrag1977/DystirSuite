@@ -12,32 +12,13 @@ export class SummaryTab extends Component {
 
     render() {
         const match = this.props.match;
+        if (match == undefined) {
+            return
+        }
         const eventsOfMatch = (match?.statusID ?? 0) >= 12 ? this.props.eventsOfMatch : [...this.props.eventsOfMatch].reverse();
 
         let contents =
         <>
-            <table className="w-100">
-                <tbody>
-                    <tr>
-                        <td className="match_info text-center" style={{ whiteSpace: "normal", padding: "12px 0" }}>
-                            <span>{(new MatchDate(Date.parse(match.time)).dateLocale().toDateTimeString())}</span>
-                            {
-                                (match.matchTypeName?.trim() !== undefined && match.matchTypeName?.trim() !== "") && <span> - </span>
-                            }
-                            <span>{match.matchTypeName}</span>
-                            {
-                                (match.roundName?.trim() !== undefined && match.roundName?.trim() !== "") && <span> - </span>
-                            }
-                            <span>{match.roundName}</span>
-                            {
-                                (match.location?.trim() !== undefined && match.location?.trim() !== "") && <span> - </span>
-                            }
-                            <span>{match.location}</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div style={{ borderBottom: "1px #404040 solid" }} />
             <table className="lineups content_table">
                 <tbody>
                     <tr>

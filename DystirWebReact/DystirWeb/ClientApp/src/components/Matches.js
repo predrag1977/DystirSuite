@@ -32,6 +32,10 @@ export class Matches extends Component {
             this.state.isLoading = true;
             dystirWebClientService.loadMatchesDataAsync(this.state.selectedPeriod);
         }
+
+        window.onpopstate = () => {
+            this.onClickPeriod();
+        }
     }
 
     componentDidMount() {
@@ -67,6 +71,9 @@ export class Matches extends Component {
 
     onClickPeriod() {
         let periodParameter = window.location.pathname.split("/").pop();
+        if (periodParameter.length == 0) {
+            periodParameter = SelectPeriodName.TODAY
+        }
         dystirWebClientService.state.matchesData.selectedPeriod = periodParameter;
         this.setState({
             selectedPeriod: periodParameter

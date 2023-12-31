@@ -100,8 +100,7 @@ namespace DystirWeb.Shared
         [JsonProperty(nameof(AwayTeamLogo))]
         public string AwayTeamLogo { get; set; }
 
-        [JsonProperty(nameof(FullMatchDetails))]
-        public FullMatchDetailsModelView FullMatchDetails { get; set; }
-        
+        [JsonProperty(nameof(MatchDetails))]
+        public MatchDetails MatchDetails { get; set; }
     }
 }

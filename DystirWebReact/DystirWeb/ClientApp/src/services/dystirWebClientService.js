@@ -28,10 +28,6 @@ export class DystirWebClientService {
             matches: [],
             match: "",
             matchId: "",
-            eventsOfMatch: [],
-            playersOfMatch: [],
-            statistic: null,
-            standings: [],
             selectedTab: ""
         };
 
@@ -46,8 +42,8 @@ export class DystirWebClientService {
 
         this.hubConnection = {
             connection: new signalR.HubConnectionBuilder()
-                .withUrl('../dystirhub')
-                //.withUrl('https://www.dystir.fo/dystirhub')
+                //.withUrl('../dystirhub')
+                .withUrl('https://www.dystir.fo/dystirhub')
                 .withAutomaticReconnect([0, 1000, 2000, 3000, 5000, 10000])
                 .configureLogging(signalR.LogLevel.Information)
                 .build()
@@ -108,9 +104,15 @@ export class DystirWebClientService {
 
     async loadMatchesDataAsync(selectedPeriod) {
         const response = await fetch('api/matches/matches');
-        const matches = await response.json();
+        const data = await response.json();
+
+        var matchesList = this.state.matchesData.matches;
+        data.forEach((match) => {
+            matchesList = matchesList.filter((item) => item.matchID !== match.matchID);
+            matchesList.push(match);
+        });
         this.state.matchesData = {
-            matches: matches,
+            matches: matchesList,
             selectedPeriod: selectedPeriod
         };
         document.body.dispatchEvent(new CustomEvent("onReloadData"));
@@ -119,7 +121,15 @@ export class DystirWebClientService {
     async loadResultDataAsync(selectedResultsCompetitionId) {
         const response = await fetch('api/matches/results');
         const data = await response.json();
-        const sortedMatches = data
+
+        var matchesList = this.state.matchesData.matches;
+        data.forEach((match) => {
+            matchesList = matchesList.filter((item) => item.matchID !== match.matchID);
+            matchesList.push(match);
+        });
+        this.state.matchesData.matches = matchesList;
+        
+        const sortedMatches = this.state.matchesData.matches
             .sort((a, b) => Date.parse(new Date(b.time)) - Date.parse(new Date(a.time)))
             .sort((a, b) => b.roundID - a.roundID)
             .sort((a, b) => a.matchTypeID - b.matchTypeID);
@@ -134,11 +144,18 @@ export class DystirWebClientService {
     async loadFixturesDataAsync(selectedFixturesCompetitionId) {
         const response = await fetch('api/matches/fixtures');
         const data = await response.json();
-        const sortedMatches = data
+
+        var matchesList = this.state.matchesData.matches;
+        data.forEach((match) => {
+            matchesList = matchesList.filter((item) => item.matchID !== match.matchID);
+            matchesList.push(match);
+        });
+        this.state.matchesData.matches = matchesList;
+
+        const sortedMatches = this.state.matchesData.matches
             .sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)))
             .sort((a, b) => b.roundID - a.roundID)
             .sort((a, b) => a.matchTypeID - b.matchTypeID);
-
 
         this.state.fixturesData = {
             matches: sortedMatches,
@@ -172,34 +189,37 @@ export class DystirWebClientService {
     async loadMatchDetailsDataAsync(matchId, selectedTab) {
         const response = await fetch('api/matchdetails/' + matchId);
         const matchDetails = await response.json();
-        const match = matchDetails['match'];
-        const eventsOfMatch = matchDetails['eventsOfMatch'];
-        const playersOfMatch = matchDetails['playersOfMatch'];
-        const statistic = matchDetails['statistic'];
-        const standings = matchDetails['standings'];
+        var match = matchDetails['match'];
+        match.matchDetails = matchDetails;
 
         this.state.matchDetailsData = {
             matches: this.state.matchesData.matches,
-            match: matchDetails['match'],
+            match: match,
             matchId: matchId,
-            eventsOfMatch: eventsOfMatch,
-            playersOfMatch: playersOfMatch,
-            statistic: statistic,
-            standings: standings,
             selectedTab: selectedTab
         }
+        
         this.onUpdateMatchDetails(matchDetails);
     }
 
     onUpdateMatchDetails(matchDetails) {
-        const match = matchDetails['match'];
-        const eventsOfMatch = matchDetails['eventsOfMatch'];
-        const playersOfMatch = matchDetails['playersOfMatch'];
-        const statistic = matchDetails['statistic'];
-        const standings = matchDetails['standings'];
+        var match = matchDetails['match'];
+        match.matchDetails = matchDetails;
 
         this.onUpdateMatch(match);
-        this.onUpdateStandings(standings);
+        this.onUpdateStandings(match.matchDetails.standings);
+
+        var isMatchIdEqual = this.state.matchDetailsData.matchId == match.matchID;
+        console.log(isMatchIdEqual);
+
+        this.state.matchDetailsData = {
+            matches: this.state.matchesData.matches,
+            match: isMatchIdEqual ? match : this.state.matchDetailsData.match,
+            matchId: isMatchIdEqual ? match.matchID : this.state.matchDetailsData.matchId,
+            selectedTab: this.state.matchDetailsData.selectedTab
+        }
+
+        document.body.dispatchEvent(new CustomEvent("onUpdateMatchDetails"));
     }
 
     onUpdateMatch(match) {

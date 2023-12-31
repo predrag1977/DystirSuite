@@ -12,6 +12,9 @@ export class MatchDetailsTabs extends Component {
 
     render() {
         const match = this.props.match;
+        if (match == undefined) {
+            return
+        }
         const selectedTab = this.props.selectedTab !== undefined && this.props.selectedTab !== "" ? this.props.selectedTab : TabName.SUMMARY;
         return (
             <div id="days_selection">

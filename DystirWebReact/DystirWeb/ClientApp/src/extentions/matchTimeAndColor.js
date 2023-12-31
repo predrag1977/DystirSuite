@@ -3,8 +3,8 @@
 export default class MatchTimeAndColor {
     getMatchTime(match) {
         var timeNow = new MatchDate().dateUtc().getTime();
-        var matchTime = new MatchDate(match.statusTime).getTime();
-        var matchStart = new MatchDate(match.time).getTime();
+        var matchTime = new MatchDate(match?.statusTime ?? 0).getTime();
+        var matchStart = new MatchDate(match?.time ?? 0).getTime();
 
         var totalMiliseconds = timeNow - matchTime;
         var seconds = Math.floor(totalMiliseconds / 1000);
@@ -12,7 +12,7 @@ export default class MatchTimeAndColor {
         seconds -= minutes * 60;
         var milsecToStart = matchStart - timeNow;
 
-        return this.getMatchPeriod(minutes, seconds, match.statusID, milsecToStart);
+        return this.getMatchPeriod(minutes, seconds, match?.statusID ?? 0, milsecToStart);
     }
 
     getMatchPeriod(minutes, seconds, matchStatus, milsecToStart) {
