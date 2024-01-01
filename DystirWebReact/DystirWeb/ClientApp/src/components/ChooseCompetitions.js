@@ -25,6 +25,7 @@ export class ChooseCompetitions extends Component {
     }
 
     render() {
+        var page = this.props.page;
         return (
             <div id="competitions_selection">
                 <div id="scroll_button_left" onClick={() => this.scrollOnClick('left')}>
@@ -39,7 +40,7 @@ export class ChooseCompetitions extends Component {
                                 onClick={() => this.props.onClickCompetition()}>
                                 <NavLink
                                     tag={Link}
-                                    to={"/" + this.props.page + "/" + this.props.competitions.indexOf(competition)}>
+                                    to={"/" + page + "/" + this.props.competitions.indexOf(competition)}>
                                     <span>{competition}</span>
                                 </NavLink>
                             </div>

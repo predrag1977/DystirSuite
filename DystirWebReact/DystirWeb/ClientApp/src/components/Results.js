@@ -82,7 +82,7 @@ export class Results extends Component {
             <>
                 <ChooseCompetitions onClickCompetition={() => this.onClickCompetition()}
                     competitions={competitions}
-                    page={Results.name.toLowerCase()}
+                    page="results"
                     selectedCompetition={competitions[selectedResultsCompetitionId]} />
                 <div className="main_container">
                     {
