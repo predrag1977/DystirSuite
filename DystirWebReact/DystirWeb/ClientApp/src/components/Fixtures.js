@@ -83,7 +83,7 @@ export class Fixtures extends Component {
             <>
                 <ChooseCompetitions onClickCompetition={() => this.onClickCompetition()}
                     competitions={competitions}
-                    page={Fixtures.name.toLowerCase()}
+                    page="fixtures"
                     selectedCompetition={competitions[selectedFixturesCompetitionId]} />
                 <div className="main_container">
                 {
