@@ -2,10 +2,8 @@
 using DystirXamarin.Models;
 using DystirXamarin.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,7 +12,7 @@ namespace DystirXamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EventsOfMatchPage : ContentPage
     {
-        private MatchesViewModel _viewModel;
+        private readonly MatchesViewModel _viewModel;
 
         public EventsOfMatchPage(MatchesViewModel viewModel)
         {

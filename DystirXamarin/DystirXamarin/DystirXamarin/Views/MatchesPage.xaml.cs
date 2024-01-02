@@ -13,7 +13,7 @@ namespace DystirXamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MatchesPage : ContentPage
     {
-        private MatchesViewModel _viewModel;
+        private readonly MatchesViewModel _viewModel;
         private Match _newMatch;
 
         public MatchesPage(MatchesViewModel viewModel)
@@ -21,15 +21,14 @@ namespace DystirXamarin.Views
             InitializeComponent();
             _viewModel = viewModel;
             _viewModel.PropertyChanged += _viewModel_PropertyChanged;
-            (Application.Current as App).OnResumeApplication += OnResumeApplication;
+            //(Application.Current as App).OnResumeApplication += OnResumeApplication;
             BindingContext = _viewModel;
-            
         }
 
         private void OnResumeApplication()
         {
-            _viewModel.IsLoading = true;
-            Populate();
+            //_viewModel.IsLoading = true;
+            //Populate();
         }
 
         protected override void OnAppearing()
@@ -55,7 +54,7 @@ namespace DystirXamarin.Views
                 NewMatchButton.IsVisible = false;
             }
             //TODO Change this
-            VersionLabel.Text = "4.0.0.56";
+            VersionLabel.Text = "4.0.0.57";
         }
 
         private void PopulateMatchList()

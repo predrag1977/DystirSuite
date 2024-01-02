@@ -13,7 +13,7 @@ namespace DystirXamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EventSelectedPage : ContentPage
     {
-        private MatchesViewModel _viewModel;
+        private readonly MatchesViewModel _viewModel;
         private string _teamName;
         private string _matchEventName;
         private Match _selectedMatch;
@@ -105,6 +105,10 @@ namespace DystirXamarin.Views
                 CommentaryView.IsVisible = true;
                 CommentaryEntry.Text = _eventOfMatch.EventText?.Replace("HENDINGAR:", "").Trim();
             }
+            else if (_matchEventName.ToUpper() == "SUBSTITUTION")
+            {
+                SubstitutionView.IsVisible = true;
+            }
             else
             {
                 MainView.IsVisible = true;
@@ -156,17 +160,21 @@ namespace DystirXamarin.Views
             _playersList = _matchEventName == "CORNER" || _matchEventName == "PENALTY" || _matchEventName == "COMMENTARY" ? null : GetPlayersList();
             MainEventNameLabel.Text = _matchEventName.ToUpper();
             _mainSelectedPlayer = _playersList?.FirstOrDefault(x => x.PlayerOfMatchID == _eventOfMatch.MainPlayerOfMatchID);
-            MainSelectedPlayerLabel.Text = (_mainSelectedPlayer?.FirstName + " " + _mainSelectedPlayer?.LastName)?.Trim();
+            MainSelectedPlayerLabel.Text = (_mainSelectedPlayer?.Number + " " + _mainSelectedPlayer?.FirstName + " " + _mainSelectedPlayer?.LastName)?.Trim();
             _secondSelectedPlayer = _playersList?.FirstOrDefault(x => x.PlayerOfMatchID == _eventOfMatch.SecondPlayerOfMatchID);
-            SecondEventNameLabel.Text = _matchEventName.ToUpper();
-            SecondSelectedPlayerLabel.Text = (_secondSelectedPlayer?.FirstName + " " + _secondSelectedPlayer?.LastName)?.Trim();
             MainPlayersListView.ItemsSource = _playersList;
             if (_matchEventName == "SUBSTITUTION")
             {
-                Title = string.Format("{0} - {1}", "SUBS OUT", _teamName);
-                MainEventNameLabel.Text = "SUBS OUT";
-                SecondEventNameLabel.Text = "SUBS OUT";
-                SecondPlayersListView.ItemsSource = _playersList;
+                Title = string.Format("{0} - {1}", "SUBSTITUTION", _teamName);
+
+                SubsOutEventNameLabel.Text = "SUBS OUT";
+                SubsInEventNameLabel.Text = "SUBS IN";
+
+                SubsOutPlayersListView.ItemsSource = _playersList.OrderBy(x=> GetSubstitutionOrder(true, x.PlayingStatus));
+                SubsInPlayersListView.ItemsSource = _playersList.OrderBy(x => GetSubstitutionOrder(false, x.PlayingStatus));
+
+                SubsOutSelectedPlayerLabel.Text = (_mainSelectedPlayer?.Number + " " + _mainSelectedPlayer?.FirstName + " " + _mainSelectedPlayer?.LastName)?.Trim();
+                SubsInSelectedPlayerLabel.Text = (_secondSelectedPlayer?.Number + " " + _secondSelectedPlayer?.FirstName + " " + _secondSelectedPlayer?.LastName)?.Trim();
             }
         }
 
@@ -181,22 +189,19 @@ namespace DystirXamarin.Views
                 AddNewEvent();
             }
 
-            if (_matchEventName == "SUBSTITUTION")
+            SendEventChanges();
+        }
+
+        private void SubstitutionViewSendEvent_Clicked(object sender, EventArgs e)
+        {
+            if (_isUpdateEvent)
             {
-                Title = string.Format("{0} - {1}", "SUBS IN", _teamName);
-                MainEventNameLabel.Text = "SUBS IN";
-                SecondEventNameLabel.Text = "SUBS IN";
-                MainView.IsVisible = false;
-                SecondView.IsVisible = true;
+                UpdateEvent();
             }
             else
             {
-                SendEventChanges();
+                AddNewEvent();
             }
-        }
-
-        private void SecondViewSendEvent_Clicked(object sender, EventArgs e)
-        {
             PlayerOfMatch secondPlayer = _secondSelectedPlayer;
             _eventOfMatch.SecondPlayerOfMatchID = secondPlayer?.PlayerOfMatchID ?? 0;
             _eventOfMatch.SecondPlayerOfMatchNumber = secondPlayer?.Number?.ToString();
@@ -293,19 +298,34 @@ namespace DystirXamarin.Views
                 {
                     _mainSelectedPlayer = playerOfMatch;
                 }
-                MainSelectedPlayerLabel.Text = (_mainSelectedPlayer?.FirstName + " " + _mainSelectedPlayer?.LastName)?.Trim();
+                MainSelectedPlayerLabel.Text = (_mainSelectedPlayer?.Number + " " + _mainSelectedPlayer?.FirstName + " " + _mainSelectedPlayer?.LastName)?.Trim();
             }
-            else if (SecondView.IsVisible)
+            else if (SubstitutionView.IsVisible)
             {
-                if (_secondSelectedPlayer == playerOfMatch)
+                if(((sender as ContentView).Parent as ViewCell).Parent == SubsOutPlayersListView)
                 {
-                    _secondSelectedPlayer = null;
+                    if (_mainSelectedPlayer == playerOfMatch)
+                    {
+                        _mainSelectedPlayer = null;
+                    }
+                    else
+                    {
+                        _mainSelectedPlayer = playerOfMatch;
+                    }
+                    SubsOutSelectedPlayerLabel.Text = (_mainSelectedPlayer?.Number + " " + _mainSelectedPlayer?.FirstName + " " + _mainSelectedPlayer?.LastName)?.Trim();
                 }
                 else
                 {
-                    _secondSelectedPlayer = playerOfMatch;
+                    if (_secondSelectedPlayer == playerOfMatch)
+                    {
+                        _secondSelectedPlayer = null;
+                    }
+                    else
+                    {
+                        _secondSelectedPlayer = playerOfMatch;
+                    }
+                    SubsInSelectedPlayerLabel.Text = (_secondSelectedPlayer?.Number + " " + _secondSelectedPlayer?.FirstName + " " + _secondSelectedPlayer?.LastName)?.Trim();
                 }
-                SecondSelectedPlayerLabel.Text = (_secondSelectedPlayer?.FirstName + " " + _secondSelectedPlayer?.LastName)?.Trim();
             }
         }
 
@@ -399,6 +419,21 @@ namespace DystirXamarin.Views
                 case 2:
                     //if (subIN != null && subIN > -1) return 1;
                     return 2;
+                case 0:
+                    return 3;
+                default:
+                    return 4;
+            }
+        }
+
+        private object GetSubstitutionOrder(bool isSubOut, int? playingStatus)
+        {
+            switch (playingStatus)
+            {
+                case 1:
+                    return isSubOut ? 1 : 2;
+                case 2:
+                    return isSubOut ? 2 : 1;
                 case 0:
                     return 3;
                 default:
