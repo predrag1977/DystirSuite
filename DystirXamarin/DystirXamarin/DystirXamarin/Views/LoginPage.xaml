@@ -15,15 +15,15 @@
         <StackLayout x:Name="LogInView" IsVisible="False" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand">
             <StackLayout Margin="20,50,20,10" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
                 <Label Text="User name" TextColor="White"  HorizontalOptions="FillAndExpand"/>
-                <Entry x:Name="UserNameEntry" Placeholder="Enter user name..." HorizontalOptions="FillAndExpand"/>
+                <Entry x:Name="UserNameEntry" HeightRequest="50" Placeholder="Enter user name..." HorizontalOptions="FillAndExpand"/>
             </StackLayout>
             <StackLayout Margin="20,0,20,20" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
                 <Label Text="Password" TextColor="White" HorizontalOptions="FillAndExpand"/>
-                <Entry x:Name="PasswordEntry" Placeholder="Enter password..." IsPassword="True" HorizontalOptions="FillAndExpand"/>
+                <Entry x:Name="PasswordEntry" HeightRequest="50" Placeholder="Enter password..." IsPassword="True" HorizontalOptions="FillAndExpand"/>
             </StackLayout>
             <StackLayout>
                 <ContentView Padding="1" Margin="20,0,20,20" HorizontalOptions="Fill">
-                    <Button x:Name="LogInBtn"  Text="LOG IN" BackgroundColor="Gray"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Clicked="LogIn_Tapped" />
+                    <Button x:Name="LogInBtn" HeightRequest="50" Text="LOG IN" BackgroundColor="Gray"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Clicked="LogIn_Tapped" />
                     <!--<ContentView.GestureRecognizers>
                         <TapGestureRecognizer Tapped="LogIn_Tapped" CommandParameter="{Binding HomeTeamID}" NumberOfTapsRequired="1" />
                     </ContentView.GestureRecognizers>-->

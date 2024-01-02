@@ -338,8 +338,8 @@
 
                 <Grid Grid.Row="0" Grid.Column="0" Padding="1" >
                     <StackLayout Padding="4" Orientation="Vertical">
-                        <Label x:Name="SubsOutEventNameLabel" FontSize="13" HorizontalOptions="Start" VerticalOptions="Start" TextColor="Red" />
-                        <Label x:Name="SubsOutSelectedPlayerLabel" FontSize="13" HorizontalOptions="StartAndExpand" VerticalOptions="Start" TextColor="White" />
+                        <Label x:Name="SubsOutEventNameLabel" FontSize="13" HorizontalOptions="Start" VerticalOptions="StartAndExpand" TextColor="Red" />
+                        <Label x:Name="SubsOutSelectedPlayerLabel" FontSize="13" HorizontalOptions="StartAndExpand" VerticalOptions="StartAndExpand" TextColor="White" />
                     </StackLayout>
                 </Grid>
 
