@@ -52,8 +52,9 @@
             </Style>
 
             <Style TargetType="Entry">
-                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontSize" Value="15" />
                 <Setter Property="BackgroundColor" Value="DimGray"/>
+                <Setter Property="PlaceholderColor" Value="LightGray" />
                 <Setter Property="TextColor" Value="White" />
             </Style>
 
