@@ -73,7 +73,7 @@ export class Standings extends Component {
     }
 
     render() {
-        const standings = this.state.standings;
+        const standings = this.state.standings ?? [];
         const competitions = [];
         standings.map((group) => {
             competitions.push(group.standingCompetitionName);
@@ -93,7 +93,7 @@ export class Standings extends Component {
                     <div className="loading-spinner-parent spinner-border" />
                 }
                 {
-                    this.renderStandings(this.state.standings)
+                    this.renderStandings(standings)
                 }
                 </div>
             </>
