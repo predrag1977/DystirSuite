@@ -12,9 +12,11 @@ export class MatchDetailsInfo extends Component {
 
     render() {
         const match = this.props.match;
-        if (match == undefined) {
-            return
-        }
+        let matchTime = match?.time != null ? new MatchDate(Date.parse(match.time)).dateLocale().toDateTimeString() : "";
+        let matchTypeName = (match?.matchTypeName ?? "").trim();
+        let hasMatchTypeName = (matchTypeName !== undefined && matchTypeName !== "") ? " - " : "";
+        let homeTeamLogo = match?.homeTeamLogo != null ? "team_logos/" + match.homeTeamLogo : "team_logos/empty.png";
+        let awayTeamLogo = match?.homeTeamLogo != null ? "team_logos/" + match.awayTeamLogo : "team_logos/empty.png";
         let contents =
         <>
             <div style={{ backgroundColor: "rgba(24, 24, 24, 0.85)", height: "150px" }}>
@@ -23,9 +25,7 @@ export class MatchDetailsInfo extends Component {
                         <tr>
                             <td className="match_info text-center" style={{ paddingTop: "4px" }}>
                             {
-                                (new MatchDate(Date.parse(match.time)).dateLocale().toDateTimeString()) + 
-                                ((match.matchTypeName?.trim() !== undefined && match.matchTypeName?.trim() !== "") && " - ") +
-                                match.matchTypeName
+                                matchTime + hasMatchTypeName + matchTypeName
                             }
                             </td>
                         </tr>
@@ -36,25 +36,25 @@ export class MatchDetailsInfo extends Component {
                         <tr>
                             <td></td>
                             <td style={{ width: "50px"}}>
-                                <img src={"team_logos/" + match.homeTeamLogo} width="50" height="50" />
+                                <img src={homeTeamLogo} width="50" height="50" />
                             </td>
                             <td className="football_field text-center" style={{ width: "270px", height: "90px", paddingTop: "8px", backgroundImage: "url(images/football_field.svg)" }}>
                                 <div>
                                     {
-                                        (match.homeTeamPenaltiesScore > 0 || match.awayTeamPenaltiesScore > 0) &&
-                                        <div className="d-inline-block" style={{ fontSize: "22px", marginRight: "5px", color: "beige" }}>{"( " + match.homeTeamPenaltiesScore + " )"}</div>
+                                        (match?.homeTeamPenaltiesScore > 0 || match?.awayTeamPenaltiesScore > 0) &&
+                                        <div className="d-inline-block" style={{ fontSize: "22px", marginRight: "5px", color: "beige" }}>{"( " + match?.homeTeamPenaltiesScore + " )"}</div>
                                     }
-                                    <div className="d-inline-block">{(match.homeTeamScore ?? 0) - (match.homeTeamPenaltiesScore ?? 0)}</div>
+                                    <div className="d-inline-block">{(match?.homeTeamScore ?? 0) - (match?.homeTeamPenaltiesScore ?? 0)}</div>
                                     <div className="d-inline-block" style={{ width: "40px" }}>:</div>
-                                    <div className="d-inline-block">{(match.awayTeamScore ?? 0) - (match.awayTeamPenaltiesScore ?? 0)}</div>
+                                    <div className="d-inline-block">{(match?.awayTeamScore ?? 0) - (match?.awayTeamPenaltiesScore ?? 0)}</div>
                                     {
-                                        (match.homeTeamPenaltiesScore > 0 || match.awayTeamPenaltiesScore > 0) &&
-                                        <div className="d-inline-block" style={{ fontSize: "22px", marginLeft: "5px", color: "beige" }}>{"( " + match.awayTeamPenaltiesScore + " )"}</div>
+                                        (match?.homeTeamPenaltiesScore > 0 || match?.awayTeamPenaltiesScore > 0) &&
+                                        <div className="d-inline-block" style={{ fontSize: "22px", marginLeft: "5px", color: "beige" }}>{"( " + match?.awayTeamPenaltiesScore + " )"}</div>
                                     }
                                 </div>
                             </td>
                             <td style={{ width: "50px" }}>
-                                <img src={"team_logos/" + match.awayTeamLogo} width="50" height="50" />
+                                <img src={awayTeamLogo} width="50" height="50" />
                             </td>
                             <td></td>
                         </tr>
@@ -64,16 +64,15 @@ export class MatchDetailsInfo extends Component {
                     <tbody>
                         <tr>
                             <td className="match_info text-center" style={{ paddingBottom: "4px" }}>
-                                <span>{match.roundName}</span>
+                                <span>{match?.roundName}</span>
                                 {
-                                    (match.location?.trim() !== undefined && match.location?.trim() !== "") && <span> - </span>
+                                    (match?.location?.trim() !== undefined && match?.location?.trim() !== "") && <span> - </span>
                                 }
-                                <span>{match.location}</span>
+                                <span>{match?.location}</span>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <div style={{ borderBottom: "1px #404040 solid" }} />
             </div>
         </>
             

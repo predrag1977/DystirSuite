@@ -4,6 +4,8 @@ export class DystirWebClientService {
     static instance: DystirWebClientService
 
     constructor() {
+        this.selectedPage = "";
+
         this.matchesData = {
             matches: [],
             selectedPeriod: "",
@@ -190,32 +192,35 @@ export class DystirWebClientService {
         const response = await fetch('api/matchdetails/' + matchId);
         const matchDetails = await response.json();
         var match = matchDetails['match'];
-        match.matchDetails = matchDetails;
 
+        if (match != null) {
+            match.matchDetails = matchDetails;
+        }
         this.state.matchDetailsData = {
             matches: this.state.matchesData.matches,
             match: match,
             matchId: matchId,
             selectedTab: selectedTab
         }
-        
+
         this.onUpdateMatchDetails(matchDetails);
+
     }
 
     onUpdateMatchDetails(matchDetails) {
         var match = matchDetails['match'];
-        match.matchDetails = matchDetails;
-
+        if (match != null) {
+            match.matchDetails = matchDetails;
+        }
         this.onUpdateMatch(match);
-        this.onUpdateStandings(match.matchDetails.standings);
+        this.onUpdateStandings(match?.matchDetails?.standings);
 
-        var isMatchIdEqual = this.state.matchDetailsData.matchId == match.matchID;
-        console.log(isMatchIdEqual);
+        var isMatchIdEqual = this.state.matchDetailsData.matchId == match?.matchID;
 
         this.state.matchDetailsData = {
             matches: this.state.matchesData.matches,
             match: isMatchIdEqual ? match : this.state.matchDetailsData.match,
-            matchId: isMatchIdEqual ? match.matchID : this.state.matchDetailsData.matchId,
+            matchId: isMatchIdEqual ? match?.matchID : this.state.matchDetailsData.matchId,
             selectedTab: this.state.matchDetailsData.selectedTab
         }
 
@@ -223,8 +228,10 @@ export class DystirWebClientService {
     }
 
     onUpdateMatch(match) {
-        const list = this.state.matchesData.matches.filter((item) => item.matchID !== match.matchID);
-        list.push(match);
+        const list = this.state.matchesData.matches.filter((item) => item.matchID !== match?.matchID);
+        if (match != null) {
+            list.push(match);
+        }
 
         const sortedMatches = list.sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)));
 

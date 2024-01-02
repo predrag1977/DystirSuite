@@ -166,10 +166,13 @@ namespace DystirWeb.Services
 
         public void SetTeamLogoInMatch(Matches match)
         {
-            var homeTeamLogo = AllTeams?.FirstOrDefault(x => x.TeamId == match?.HomeTeamID)?.TeamLogo ?? "";
-            match.HomeTeamLogo = homeTeamLogo;
-            var awayTeamLogo = AllTeams?.FirstOrDefault(x => x.TeamId == match?.AwayTeamID)?.TeamLogo ?? "";
-            match.AwayTeamLogo = awayTeamLogo;
+            if(match != null)
+            {
+                var homeTeamLogo = AllTeams?.FirstOrDefault(x => x.TeamId == match?.HomeTeamID)?.TeamLogo ?? "";
+                match.HomeTeamLogo = homeTeamLogo;
+                var awayTeamLogo = AllTeams?.FirstOrDefault(x => x.TeamId == match?.AwayTeamID)?.TeamLogo ?? "";
+                match.AwayTeamLogo = awayTeamLogo;
+            }
         }
 
         public async Task Refresh()

@@ -91,7 +91,9 @@ export class MatchDetails extends Component {
             selectedTab: selectedTabParameter
         });
         var mainContainer = document.getElementsByClassName('main_container_match_details')[0];
-        mainContainer.scrollTo(0, 0);
+        if (mainContainer !== undefined) {
+            mainContainer.scrollTo(0, 0);
+        }
     }
 
     render() {

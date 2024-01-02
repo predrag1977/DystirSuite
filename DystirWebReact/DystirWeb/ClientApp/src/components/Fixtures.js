@@ -14,6 +14,9 @@ export class Fixtures extends Component {
 
     constructor(props) {
         super(props);
+
+        dystirWebClientService.selectedPage = "fixtures";
+
         let fixturesData = dystirWebClientService.state.fixturesData;
         if (fixturesData.selectedFixturesCompetitionId !== undefined && fixturesData.selectedFixturesCompetitionId !== "") {
             window.history.replaceState(null, null, "/fixtures/" + fixturesData.selectedFixturesCompetitionId);

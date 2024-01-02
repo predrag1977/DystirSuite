@@ -14,6 +14,9 @@ export class Results extends Component {
 
     constructor(props) {
         super(props);
+
+        dystirWebClientService.selectedPage = "results";
+
         let resultsData = dystirWebClientService.state.resultsData;
         if (resultsData.selectedResultsCompetitionId !== undefined && resultsData.selectedResultsCompetitionId !== "") {
             window.history.replaceState(null, null, "/results/" + resultsData.selectedResultsCompetitionId);
