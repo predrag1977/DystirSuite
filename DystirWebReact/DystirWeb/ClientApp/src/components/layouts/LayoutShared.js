@@ -3,7 +3,6 @@ import { Container } from 'reactstrap';
 import { Route, Routes } from 'react-router-dom';
 
 export class LayoutShared extends Component {
-    static displayName = LayoutShared.name;
 
     constructor(props) {
         super(props);
@@ -11,9 +10,11 @@ export class LayoutShared extends Component {
 
     render() {
         return (
-            <Container>
-                {this.props.children}
-            </Container>
+            <>
+                <Container>
+                    {this.props.children}
+                </Container>
+            </>
         );
     }
 }

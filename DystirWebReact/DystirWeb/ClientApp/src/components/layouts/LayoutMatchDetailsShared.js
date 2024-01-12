@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Container } from 'reactstrap';
-import { HeaderMatchDetails } from '../HeaderMatchDetails';
+import { HeaderMatchDetailsShared } from '../HeaderMatchDetailsShared';
 
-export class LayoutMatchDetails extends Component {
-    static displayName = LayoutMatchDetails.name;
+export class LayoutMatchDetailsShared extends Component {
+    static displayName = LayoutMatchDetailsShared.name;
 
     constructor(props) {
         super(props);
@@ -13,7 +13,7 @@ export class LayoutMatchDetails extends Component {
     render() {
         return (
             <>
-                <HeaderMatchDetails match={this.props.match} />
+                <HeaderMatchDetailsShared match={this.props.match} />
                 <Container tag="main">
                     {this.props.children}
                 </Container>

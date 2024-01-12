@@ -3,6 +3,7 @@
     "@microsoft/signalr": "^7.0.10",
     "core-js": "^3.32.1",
     "moment": "^2.29.4",
+    "react-helmet": "^6.1.0",
     "react-string-format": "^1.0.1"
   }
 }

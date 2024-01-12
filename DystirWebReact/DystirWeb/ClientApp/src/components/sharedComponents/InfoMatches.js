@@ -1,41 +1,41 @@
 import React, { Component } from 'react';
-import { DystirWebClientService, SelectPeriodName, PageName } from '../services/dystirWebClientService';
-import MatchDate from '../extentions/matchDate';
-import { MatchView } from "./views/MatchView";
-import { ChooseDays } from './ChooseDays';
+import { DystirWebClientService, SelectPeriodName, PageName } from '../../services/dystirWebClientService';
+import MatchDate from '../../extentions/matchDate';
+import { MatchView } from "./../views/MatchView";
+import { ChooseDays } from './../ChooseDays';
 import { groupBy } from "core-js/actual/array/group-by";
 import { groupByToMap } from "core-js/actual/array/group-by-to-map";
-import { LayoutDystir } from './layouts/LayoutDystir';
+import { LayoutShared } from './../layouts/LayoutShared';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
-export class Matches extends Component {
-    static displayName = Matches.name;
+export class InfoMatches extends Component {
+    static displayName = InfoMatches.name;
 
     constructor(props) {
         super(props);
         let matchesData = dystirWebClientService.state.matchesData;
-        if (matchesData.selectedPeriod !== undefined && matchesData.selectedPeriod !== "") {
-            window.history.replaceState(null, null, "/matches/" + matchesData.selectedPeriod);
-        } else {
-            matchesData.selectedPeriod = window.location.pathname.split("/").pop();
-        }
+        //if (matchesData.selectedPeriod !== undefined && matchesData.selectedPeriod !== "") {
+        //    window.history.replaceState(null, null, "/matches/" + matchesData.selectedPeriod);
+        //} else {
+        //    matchesData.selectedPeriod = window.location.pathname.split("/").pop();
+        //}
         this.state = {
             matches: matchesData.matches,
             selectedPeriod: matchesData.selectedPeriod,
             isLoading: false
         }
-        if (this.state.selectedPeriod !== undefined && this.state.selectedPeriod !== "") {
-            window.history.replaceState(null, null, "/matches/" + this.state.selectedPeriod);
-        }
+        //if (this.state.selectedPeriod !== undefined && this.state.selectedPeriod !== "") {
+        //    window.history.replaceState(null, null, "/matches/" + this.state.selectedPeriod);
+        //}
         if (this.state.matches.length === 0) {
             this.state.isLoading = true;
             dystirWebClientService.loadMatchesDataAsync(this.state.selectedPeriod);
         }
 
-        window.onpopstate = () => {
-            this.onClickPeriod();
-        }
+        //window.onpopstate = () => {
+        //    this.onClickPeriod();
+        //}
     }
 
     componentDidMount() {
@@ -83,7 +83,6 @@ export class Matches extends Component {
     render() {
         let contents =
         <>
-            <ChooseDays onClickPeriod={() => this.onClickPeriod()} selectedPeriod={this.state.selectedPeriod} />
             <div className="main_container">
             {
                 this.state.isLoading &&
@@ -96,11 +95,9 @@ export class Matches extends Component {
             </div>
         </>
         return (
-            <LayoutDystir page={PageName.MATCHES}>
-            {
+            <LayoutShared>
                 contents
-            }
-            </LayoutDystir>
+            </LayoutShared>
         );
     }
 
