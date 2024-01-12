@@ -5,7 +5,7 @@ import { MatchView } from "./views/MatchView";
 import { ChooseDays } from './ChooseDays';
 import { groupBy } from "core-js/actual/array/group-by";
 import { groupByToMap } from "core-js/actual/array/group-by-to-map";
-import { LayoutDystir } from './layouts/LayoutDystir';
+import { LayoutShared } from './layouts/LayoutShared';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
@@ -96,11 +96,11 @@ export class Matches extends Component {
             </div>
         </>
         return (
-            <LayoutDystir page={PageName.MATCHES}>
+            <LayoutShared>
             {
                 contents
             }
-            </LayoutDystir>
+            </LayoutShared>
         );
     }
 

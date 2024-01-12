@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import { Header } from '../Header';
-import '../../css/dystir.css?version=4';
 
 export class LayoutDystir extends Component {
     static displayName = LayoutDystir.name;

@@ -1,11 +1,11 @@
-import { Counter } from "./components/Counter";
-import { FetchData } from "./components/FetchData";
 import { Fixtures } from "./components/Fixtures";
 import { Matches } from "./components/Matches";
 import { Results } from "./components/Results";
 import { Standings } from "./components/Standings";
 import { Statistics } from "./components/Statistics";
 import { MatchDetails } from "./components/MatchDetails";
+import { InfoMatches } from "./components/sharedComponents/InfoMatches";
+import { MatchDetailsShared } from "./components/sharedComponents/MatchDetailsShared";
 
 const AppRoutes = [
     {
@@ -53,16 +53,24 @@ const AppRoutes = [
         element: <MatchDetails />
     },
     {
-        path: '/info/fetch-data',
-        element: <FetchData />
+        path: '/info/matches',
+        element: <InfoMatches />
     },
     {
-        path: '/portal',
-        element: <Counter />
+        path: '/portal/matches',
+        element: <InfoMatches />
     },
     {
-        path: '/info/*',
-        element: <Counter />
+        path: '/info/standings',
+        element: <Standings />
+    },
+    {
+        path: '/info/matchdetails/*',
+        element: <MatchDetailsShared />
+    },
+    {
+        path: '/portal/matchdetails/*',
+        element: <MatchDetailsShared />
     }
 ];
 
