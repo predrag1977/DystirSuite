@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Container } from 'reactstrap';
-import { HeaderMatchDetailsShared } from '../HeaderMatchDetailsShared';
+import { HeaderMatchDetailsShared } from '../sharedComponents/HeaderMatchDetailsShared';
 
 export class LayoutMatchDetailsShared extends Component {
     static displayName = LayoutMatchDetailsShared.name;

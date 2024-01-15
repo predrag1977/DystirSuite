@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ThreeDots } from 'react-loading-icons';
 import { DystirWebClientService, SelectPeriodName, PageName } from '../services/dystirWebClientService';
 import MatchDate from '../extentions/matchDate';
 import { MatchView } from "./views/MatchView";
@@ -28,7 +29,7 @@ export class Matches extends Component {
         if (this.state.selectedPeriod !== undefined && this.state.selectedPeriod !== "") {
             window.history.replaceState(null, null, "/matches/" + this.state.selectedPeriod);
         }
-        if (this.state.matches.length === 0) {
+        if (!this.state.isMatchesLoaded) {
             this.state.isLoading = true;
             dystirWebClientService.loadMatchesDataAsync(this.state.selectedPeriod);
         }
@@ -88,7 +89,7 @@ export class Matches extends Component {
             {
                 this.state.isLoading &&
 
-                <div className="loading-spinner-parent spinner-border" />
+                <ThreeDots className="loading-spinner-parent" fill= 'dimGray' height="50" width="50" />
             }
             {
                 this.renderMatches(this.filterMatches(this.state.matches))

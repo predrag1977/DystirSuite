@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { DystirWebClientService, PageName } from '../services/dystirWebClientService';
+import { DystirWebClientService, PageName } from '../../services/dystirWebClientService';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaArrowsRotate } from "react-icons/fa6";
-import MatchTimeAndColor from '../extentions/matchTimeAndColor';
-import '../css/nav-menu.css';
+import MatchTimeAndColor from '../../extentions/matchTimeAndColor';
+//import '../../css/nav-menu.css';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ThreeDots } from 'react-loading-icons'
 import { DystirWebClientService, SelectPeriodName, PageName } from '../../services/dystirWebClientService';
 import MatchDate from '../../extentions/matchDate';
 import { MatchView } from "./../views/MatchView";
@@ -87,7 +88,7 @@ export class InfoMatches extends Component {
             {
                 this.state.isLoading &&
 
-                <div className="loading-spinner-parent spinner-border" />
+                <ThreeDots className="loading-spinner-parent" fill= 'dimGray' height="50" width="50" />
             }
             {
                 this.renderMatches(this.filterMatches(this.state.matches))

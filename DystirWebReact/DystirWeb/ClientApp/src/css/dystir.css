@@ -33,6 +33,11 @@ body {
     font-weight: bold;
 }
 
+.field_background {
+    background-color: rgba(24, 24, 24, 0.85);
+    height: 150px;
+}
+
 #header {
     position: fixed;
     width: 100%;
@@ -166,7 +171,10 @@ table, tbody, tr {
     margin-right:0 5px;
 }
 
-
+.match_details_field_text {
+    display: inline-block;
+    color: white;
+}
 
 
 #dystir_icon_button img {
@@ -272,7 +280,7 @@ table, tbody, tr {
     color: #a6a6a6;
     font-size: 0.8rem;
     font-weight: 800;
-    height: 58px;
+    height: 59px;
     text-align: center;
 }
 
@@ -304,10 +312,6 @@ table, tbody, tr {
 
 #match-details_static_part .tab {
     margin: 15px 0 0 0;
-}
-
-.selected_tab {
-    color: #00be14;
 }
 
 .match_info {

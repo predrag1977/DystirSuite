@@ -14,6 +14,11 @@ export class MatchDetailsTabs extends Component {
         const match = this.props.match;
         let matchID = match?.matchID != null ? match.matchID : 0;
         const selectedTab = this.props.selectedTab !== undefined && this.props.selectedTab !== "" ? this.props.selectedTab : TabName.SUMMARY;
+        let page = "/" + this.props.page;
+        if (this.props.page === undefined) {
+            page = "";
+        }
+        let fullUrl = page + "/matchdetails/" + matchID + "/";
         return (
             <>
                 <div style={{ borderBottom: "1px #404040 solid" }} />
@@ -23,7 +28,7 @@ export class MatchDetailsTabs extends Component {
                             onClick={() => this.props.onClickTab()}>
                             <NavLink
                                 tag={Link}
-                                to={"/matchdetails/" + matchID + "/" + TabName.SUMMARY}>
+                                to={fullUrl + TabName.SUMMARY}>
                                 <span>Úrtak</span>
                             </NavLink>
                         </div>
@@ -31,7 +36,7 @@ export class MatchDetailsTabs extends Component {
                             onClick={() => this.props.onClickTab()}>
                             <NavLink
                                 tag={Link}
-                                to={"/matchdetails/" + matchID + "/" + TabName.LINEUPS}>
+                                to={fullUrl + TabName.LINEUPS}>
                                 <span>Leikarar</span>
                             </NavLink>
                         </div>
@@ -39,7 +44,7 @@ export class MatchDetailsTabs extends Component {
                             onClick={() => this.props.onClickTab()}>
                             <NavLink
                                 tag={Link}
-                                to={"/matchdetails/" + matchID + "/" + TabName.COMMENTARY}>
+                                to={fullUrl + TabName.COMMENTARY}>
                                 <span>Hendingar</span>
                             </NavLink>
                         </div>
@@ -47,7 +52,7 @@ export class MatchDetailsTabs extends Component {
                             onClick={() => this.props.onClickTab()}>
                             <NavLink
                                 tag={Link}
-                                to={"/matchdetails/" + matchID + "/" + TabName.STATISTICS}>
+                                to={fullUrl + TabName.STATISTICS}>
                                 <span>Hagtøl</span>
                             </NavLink>
                         </div>
@@ -55,7 +60,7 @@ export class MatchDetailsTabs extends Component {
                             onClick={() => this.props.onClickTab()}>
                             <NavLink
                                 tag={Link}
-                                to={"/matchdetails/" + matchID + "/" + TabName.STANDINGS}>
+                                to={fullUrl + TabName.STANDINGS}>
                                 <span>Støðan</span>
                             </NavLink>
                         </div>

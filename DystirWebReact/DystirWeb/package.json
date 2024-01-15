@@ -4,6 +4,7 @@
     "core-js": "^3.32.1",
     "moment": "^2.29.4",
     "react-helmet": "^6.1.0",
+    "react-loading-icons": "^1.1.0",
     "react-string-format": "^1.0.1"
   }
 }

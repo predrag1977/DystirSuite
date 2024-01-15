@@ -9,6 +9,7 @@ export class DystirWebClientService {
         this.matchesData = {
             matches: [],
             selectedPeriod: "",
+            isMatchesLoaded: false
         };
         this.resultsData = {
             matches: [],
@@ -46,7 +47,7 @@ export class DystirWebClientService {
             connection: new signalR.HubConnectionBuilder()
                 .withUrl('../dystirhub')
                 //.withUrl('https://www.dystir.fo/dystirhub')
-                .withAutomaticReconnect([0, 1000, 2000, 3000, 5000, 10000])
+                .withAutomaticReconnect([0, 1000, 1000, 2000, 3000])
                 .configureLogging(signalR.LogLevel.Information)
                 .build()
         };
@@ -118,6 +119,7 @@ export class DystirWebClientService {
             selectedPeriod: selectedPeriod
         };
         document.body.dispatchEvent(new CustomEvent("onReloadData"));
+        this.state.isMatchesLoaded = true;
     }
 
     async loadResultDataAsync(selectedResultsCompetitionId) {
