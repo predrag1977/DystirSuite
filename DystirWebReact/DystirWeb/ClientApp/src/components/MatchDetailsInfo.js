@@ -19,7 +19,7 @@ export class MatchDetailsInfo extends Component {
         let awayTeamLogo = match?.homeTeamLogo != null ? "team_logos/" + match.awayTeamLogo : "team_logos/empty.png";
         let contents =
         <>
-            <div style={{ backgroundColor: "rgba(24, 24, 24, 0.85)", height: "150px" }}>
+            <div className="field_background">
                 <table className="w-100" >
                     <tbody>
                         <tr>
@@ -44,9 +44,9 @@ export class MatchDetailsInfo extends Component {
                                         (match?.homeTeamPenaltiesScore > 0 || match?.awayTeamPenaltiesScore > 0) &&
                                         <div className="d-inline-block" style={{ fontSize: "22px", marginRight: "5px", color: "beige" }}>{"( " + match?.homeTeamPenaltiesScore + " )"}</div>
                                     }
-                                    <div className="d-inline-block">{(match?.homeTeamScore ?? 0) - (match?.homeTeamPenaltiesScore ?? 0)}</div>
-                                    <div className="d-inline-block" style={{ width: "40px" }}>:</div>
-                                    <div className="d-inline-block">{(match?.awayTeamScore ?? 0) - (match?.awayTeamPenaltiesScore ?? 0)}</div>
+                                    <div className="match_details_field_text">{(match?.homeTeamScore ?? 0) - (match?.homeTeamPenaltiesScore ?? 0)}</div>
+                                    <div className="match_details_field_text" style={{ width: "40px" }}>:</div>
+                                    <div className="match_details_field_text">{(match?.awayTeamScore ?? 0) - (match?.awayTeamPenaltiesScore ?? 0)}</div>
                                     {
                                         (match?.homeTeamPenaltiesScore > 0 || match?.awayTeamPenaltiesScore > 0) &&
                                         <div className="d-inline-block" style={{ fontSize: "22px", marginLeft: "5px", color: "beige" }}>{"( " + match?.awayTeamPenaltiesScore + " )"}</div>

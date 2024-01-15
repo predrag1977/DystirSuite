@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ThreeDots } from 'react-loading-icons';
 import { DystirWebClientService, PageName, TabName } from '../../services/dystirWebClientService';
 import { LayoutMatchDetailsShared } from './../layouts/LayoutMatchDetailsShared';
 import { Lineups } from './../Lineups';
@@ -16,8 +17,8 @@ export class MatchDetailsShared extends Component {
 
     constructor(props) {
         super(props);
-        let matchDetailsData = dystirWebClientService.state.matchDetailsData;
         const lenght = window.location.pathname.split("/").length;
+        let matchDetailsData = dystirWebClientService.state.matchDetailsData;
         matchDetailsData.matchId = window.location.pathname.split("/")[3];
         if (lenght > 4) {
             matchDetailsData.selectedTab = window.location.pathname.split("/")[4];
@@ -80,8 +81,8 @@ export class MatchDetailsShared extends Component {
     onClickTab() {
         let selectedTabParameter = "";
         const lenght = window.location.pathname.split("/").length;
-        if (lenght > 3) {
-            selectedTabParameter = window.location.pathname.split("/")[3];
+        if (lenght > 4) {
+            selectedTabParameter = window.location.pathname.split("/")[4];
         }
         if (selectedTabParameter.length == 0) {
             selectedTabParameter = TabName.SUMMARY
@@ -97,6 +98,11 @@ export class MatchDetailsShared extends Component {
     }
 
     render() {
+        let page = ""
+        let url = window.location.href.toLowerCase();
+        if (url.includes("info")) {
+            page = "info";
+        }
         var eventsOfMatch = this.state.match?.matchDetails?.eventsOfMatch ?? [];
         var playersOfMatch = this.state.match?.matchDetails?.playersOfMatch ?? [];
         var statistic = this.state.match?.matchDetails?.statistic ?? null;
@@ -104,11 +110,11 @@ export class MatchDetailsShared extends Component {
         let contents =
             <>
                 <MatchDetailsInfo match={this.state.match} />
-                <MatchDetailsTabs onClickTab={() => this.onClickTab()} match={this.state.match} selectedTab={this.state.selectedTab} />
+                <MatchDetailsTabs onClickTab={() => this.onClickTab()} match={this.state.match} selectedTab={this.state.selectedTab} page={page} />
                 <div className="main_container_match_details">
                 {
                     this.state.isLoading &&
-                    <div className="loading-spinner-parent spinner-border" />
+                    <ThreeDots className="loading-spinner-parent" fill= 'dimGray' height="50" width="50" />
                 }
                 {
                     <>

@@ -88,7 +88,7 @@ export class Matches extends Component {
             {
                 this.state.isLoading &&
 
-                <div className="loading-spinner-parent spinner-border" />
+                <ThreeDots className="loading-spinner-parent" fill= 'dimGray' height="50" width="50" />
             }
             {
                 this.renderMatches(this.filterMatches(this.state.matches))

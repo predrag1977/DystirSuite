@@ -1,10 +1,10 @@
-﻿@import url('https://fonts.googleapis.com/css?family=Nunito');
+﻿@import url("dystir.css");
+@import url('https://fonts.googleapis.com/css?family=SourceSansPro');
 
 html, body {
     font-family: 'Source Sans Pro', sans-serif;
     background-color: white;
 }
-
 
 html, body {
     height: 100%;
@@ -14,8 +14,7 @@ html, body {
 }
 
 body {
-    font-family: 'Nunito', sans-serif;
-    color: white;
+    color: black;
     overflow: hidden;
     background-color: white;
     -webkit-touch-callout: none;
@@ -32,18 +31,25 @@ body {
 }
 
 .main_container, .main_container_match_details {
-    overflow-x: hidden;
-    overflow-y: auto;
-    height: 100vh;
-    padding: 0 10px;
     background-color: white;
-    width: 100%;
 }
 
 .container {
     padding: 0;
 }
 
+.field_background {
+    background-color: white;
+    height: 150px;
+}
+
+#header {
+    background-color: white;
+}
+
+.goal_icon, .owngoal_icon {
+    color: white;
+}
 
 
 #main_share {
@@ -75,17 +81,17 @@ body {
     margin: 0 auto;
 }
 
-#horizontal_menu_days {
-    height:50px;
-    border-top: 0px solid lightgray;
-    border-bottom: 0px solid lightgray;
-    background-color: rgb(223, 240, 216);
-    margin: 0;
+#days_selection, #competitions_selection {
+    background-color: white;
 }
 
-#match-details_static_part #horizontal_menu_days {
-    border-bottom: 1px solid transparent;
+#horizontal_menu_days {
+    background-color: white;
 }
+
+/*#match-details_static_part #horizontal_menu_days {
+    border-bottom: 1px solid transparent;
+}*/
 
 #competitions_selection {
     background-color: rgb(223, 240, 216);
@@ -215,15 +221,14 @@ body {
     background-color: lightgray;
 }
 
-.tab {
-    color: gray;
-    margin: 15px 8px 0 8px;
-    font-weight: 700;
+.selected_tab {
+    color: yellowgreen;
+    border-bottom: 3px solid yellowgreen;
 }
 
-.selected_tab {
-    color: black;
-}
+    .selected_tab .nav-link {
+        color: yellowgreen;
+    }
 
 .big_chance {
     color: cornflowerblue;

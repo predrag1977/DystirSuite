@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ThreeDots } from 'react-loading-icons'
 import { DystirWebClientService, PageName } from '../services/dystirWebClientService';
 import MatchDate from '../extentions/matchDate';
 import { MatchView } from "./views/MatchView";
@@ -89,7 +90,7 @@ export class Statistics extends Component {
                 <div className="main_container">
                     {
                         this.state.isLoading &&
-                        <div className="loading-spinner-parent spinner-border" />
+                        <ThreeDots className="loading-spinner-parent" fill= 'dimGray' height="50" width="50" />
                     }
                     {
                         this.renderStatistics(this.state.statistics)
