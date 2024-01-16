@@ -177,11 +177,22 @@ table, tbody, tr {
 }
 
 
-#dystir_icon_button img {
+#dystir_icon_button img, #dystir_icon_button_shared img {
     border-radius: 50%;
     height: 60px;
     width: 60px;
-    margin-left: 15px;
+    margin-left: 10px;
+}
+
+#dystir_icon_button_shared {
+    width: 120px;
+    text-align:right;
+}
+
+#logo_icon_button img {
+    border-radius: 0%;
+    width: 120px;
+    margin: 5px 0 5px 10px;
 }
 
 #store_buttons img {
@@ -236,10 +247,6 @@ table, tbody, tr {
     #horizontal_menu div {
         display: inline-block;
     }
-
-#horizontal_menu_wrapper {
-    height: 60px;
-}
 
 #scroll_button_left, #scroll_button_right, #back_button {
     height: 40px;
@@ -872,8 +879,12 @@ a, .btn-link, .nav-link {
         width: 100%;
     }
 
-    .header_item, #dystir_icon_button img {
+    .header_item, #dystir_icon_button img, #logo_icon_button img, #dystir_icon_button_shared img {
         display: none;
+    }
+
+    #dystir_icon_button_shared {
+        width: 0px;
     }
 
     .sponsors_below_matches, #header_title {

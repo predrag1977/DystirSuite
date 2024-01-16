@@ -116,10 +116,10 @@ export class DystirWebClientService {
         });
         this.state.matchesData = {
             matches: matchesList,
-            selectedPeriod: selectedPeriod
+            selectedPeriod: selectedPeriod,
+            isMatchesLoaded: true
         };
         document.body.dispatchEvent(new CustomEvent("onReloadData"));
-        this.state.isMatchesLoaded = true;
     }
 
     async loadResultDataAsync(selectedResultsCompetitionId) {
@@ -239,7 +239,8 @@ export class DystirWebClientService {
 
         this.state.matchesData = {
             matches: sortedMatches,
-            selectedPeriod: this.state.matchesData.selectedPeriod
+            selectedPeriod: this.state.matchesData.selectedPeriod,
+            isMatchesLoaded: this.state.matchesData.isMatchesLoaded
         };
         document.body.dispatchEvent(new CustomEvent("onUpdateMatch"));
     }

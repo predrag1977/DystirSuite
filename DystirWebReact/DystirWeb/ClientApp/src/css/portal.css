@@ -1,13 +1,55 @@
-﻿html, body {
+﻿@import url("dystir.css");
+
+html, body {
     font-family: Arial,sans-serif;
     background-color: white;
 }
 
-body {
-    background-color: #fff;
-    user-select: text;
-    color: black;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    min-width: 370px;
 }
+
+body {
+    color: black;
+    overflow: hidden;
+    background-color: white;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: text;
+    background-image: none;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    background-position: center;
+    visibility: visible;
+}
+
+.main_container, .main_container_match_details {
+    background-color: white;
+}
+
+.container {
+    padding: 0;
+}
+
+.field_background {
+    background-color: white;
+    height: 150px;
+}
+
+#header {
+    background-color: white;
+}
+
+.goal_icon, .owngoal_icon {
+    color: white;
+}
+
 
 #main_share {
     position: absolute;
@@ -38,6 +80,21 @@ body {
     margin: 0 auto;
 }
 
+#days_selection, #competitions_selection {
+    background-color: white;
+}
+
+#horizontal_menu_days {
+    background-color: white;
+}
+
+#competitions_selection {
+    border-top: 0px solid lightgray;
+    border-bottom: 0px solid lightgray !important;
+    margin: 0;
+    height: 50px;
+}
+
 #main_container_vertical_list, #main_container_vertical_list_standings {
     overflow-x: hidden;
     overflow-y: auto;
@@ -51,46 +108,6 @@ body {
 #main_container_vertical_list_standings {
     height: calc(100vh - 50px);
     background-color: white;
-}
-
-#horizontal_menu_days {
-    height: 50px;
-    border-top: 0px solid lightgray;
-    border-bottom: 0px solid lightgray;
-    background-color: rgba(17,24,39,.05);
-    margin: 0;
-}
-
-#match-details_static_part #horizontal_menu_days {
-    border-bottom: 1px solid transparent;
-}
-
-#competitions_selection {
-    background-color: rgba(17,24,39,.05);
-    border-top: 0px solid lightgray;
-    border-bottom: 0px solid lightgray !important;
-    margin: 0;
-    height: 50px;
-}
-
-#horizontal_menu_wrapper {
-    height: 50px;
-}
-
-#horizontal_menu_bottom {
-    white-space: nowrap;
-    overflow: auto;
-    float: left;
-    width: calc(100% - 80px);
-    text-align: center;
-}
-
-    #horizontal_menu_bottom div {
-        display: inline-block;
-    }
-
-#horizontal_menu_wrapper_bottom {
-    height: 50px;
 }
 
 #scroll_button_left_bottom, #scroll_button_right_bottom {
@@ -194,6 +211,15 @@ body {
         color: black;
     }
 
+.selected_tab {
+    color: cornflowerblue;
+    border-bottom: 3px solid cornflowerblue;
+}
+
+    .selected_tab .nav-link {
+        color: cornflowerblue;
+    }
+
 .score {
     color: white;
 }
@@ -251,10 +277,6 @@ body {
 .tab {
     color: #999999;
     font-weight:700;
-}
-
-.selected_tab {
-    color: black;
 }
 
 .big_chance {

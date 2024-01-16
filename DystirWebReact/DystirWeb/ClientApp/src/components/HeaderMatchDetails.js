@@ -31,20 +31,26 @@ export class HeaderMatchDetails extends Component {
 
     onMatchTime() {
         var matchTime = this.matchTimeAndColor.getMatchTime(this.props.match);
-        this.setState({ matchTime: matchTime, statusColor: this.matchTimeAndColor.getStatusColor(this.props.match?.statusID) });
+        this.setState({
+            matchTime: matchTime,
+            statusColor: this.matchTimeAndColor.getStatusColor(this.props.match?.statusID)
+        });
     }
 
     render() {
         const match = this.props.match;
+        var matchTime = this.matchTimeAndColor.getMatchTime(this.props.match);
+        this.state.matchTime = matchTime;
+        this.state.statusColor = this.matchTimeAndColor.getStatusColor(match?.statusID);
         return (
             <div id="header" className="navbar">
                 <div id="header_match_details_wrapper">
                     <table id="horizontal_navigation_bar" className="w-100">
                         <tbody>
                             <tr>
-                                <td style={{ width: '50px' }} >
+                                <td style={{ width: '0px' }} >
                                     <span id="back_button">
-                                        <NavLink tag={Link} to={"/" + dystirWebClientService.selectedPage}> <FaArrowLeft /></NavLink>
+                                        <NavLink tag={Link} to={"/" + dystirWebClientService.selectedPage}><FaArrowLeft /></NavLink>
                                     </span>
                                 </td>
                                 <td style={{verticalAlign: "middle"}}>
@@ -72,7 +78,7 @@ export class HeaderMatchDetails extends Component {
                                         </tbody>
                                     </table>
                                 </td>
-                                <td style={{ width: '50px' }}>
+                                <td style={{ width: '0px' }}>
                                     <span id="back_button" onClick={() => window.location.reload(false)}>
                                         <FaArrowsRotate />
                                     </span>

@@ -140,7 +140,8 @@ export class SummaryTab extends Component {
         let goalEvent = this.props.eventsOfMatch.find((e) => e.eventOfMatchId == event.eventOfMatchId);
         let indexGoalEvent = this.props.eventsOfMatch.indexOf(goalEvent);
         let assistEvent = this.props.eventsOfMatch.filter((e) => e.eventName == EventName.ASSIST && this.props.eventsOfMatch.indexOf(e) > indexGoalEvent)[0];
-        return assistEvent?.mainPlayerOfMatchId ?? 0;
+        let assistPlayerId = assistEvent?.mainPlayerOfMatchId ?? 0
+        return assistPlayerId != goalEvent.mainPlayerOfMatchId ? assistPlayerId : 0;
     }
 
 }

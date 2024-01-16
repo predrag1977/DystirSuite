@@ -39,7 +39,9 @@ export class MatchDetailsInfo extends Component {
                                 <img src={homeTeamLogo} width="50" height="50" />
                             </td>
                             <td className="football_field text-center" style={{ width: "270px", height: "90px", paddingTop: "8px", backgroundImage: "url(images/football_field.svg)" }}>
-                                <div>
+                            {
+                                (match?.statusID > 1 && match?.statusID < 14) &&
+                                <>
                                     {
                                         (match?.homeTeamPenaltiesScore > 0 || match?.awayTeamPenaltiesScore > 0) &&
                                         <div className="d-inline-block" style={{ fontSize: "22px", marginRight: "5px", color: "beige" }}>{"( " + match?.homeTeamPenaltiesScore + " )"}</div>
@@ -51,7 +53,13 @@ export class MatchDetailsInfo extends Component {
                                         (match?.homeTeamPenaltiesScore > 0 || match?.awayTeamPenaltiesScore > 0) &&
                                         <div className="d-inline-block" style={{ fontSize: "22px", marginLeft: "5px", color: "beige" }}>{"( " + match?.awayTeamPenaltiesScore + " )"}</div>
                                     }
-                                </div>
+                                </> ||
+                                <>
+                                    <div className="match_details_field_text">-</div>
+                                    <div className="match_details_field_text" style={{ width: "40px" }}>:</div>
+                                    <div className="match_details_field_text">-</div>
+                                </>
+                            }
                             </td>
                             <td style={{ width: "50px" }}>
                                 <img src={awayTeamLogo} width="50" height="50" />

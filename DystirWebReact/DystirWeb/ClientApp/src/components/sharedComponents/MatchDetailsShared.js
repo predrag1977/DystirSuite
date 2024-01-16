@@ -102,6 +102,8 @@ export class MatchDetailsShared extends Component {
         let url = window.location.href.toLowerCase();
         if (url.includes("info")) {
             page = "info";
+        } else if (url.includes("portal")) {
+            page = "portal";
         }
         var eventsOfMatch = this.state.match?.matchDetails?.eventsOfMatch ?? [];
         var playersOfMatch = this.state.match?.matchDetails?.playersOfMatch ?? [];
