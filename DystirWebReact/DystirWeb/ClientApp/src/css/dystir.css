@@ -76,10 +76,6 @@ main {
     padding: 0;
 }
 
-.background {
-    
-}
-
 #header_container {
     min-width: 290px;
     max-width: 1000px;
@@ -176,6 +172,9 @@ table, tbody, tr {
     color: white;
 }
 
+.line {
+    border-bottom: 1px #404040 solid;
+}
 
 #dystir_icon_button img, #dystir_icon_button_shared img {
     border-radius: 50%;

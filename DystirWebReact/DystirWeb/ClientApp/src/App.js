@@ -24,10 +24,20 @@ export default class App extends Component {
         let url = window.location.href.toLowerCase();
         if (url.includes("info")) {
             import('./css/info.css?version=6');
+            this.setTitle("Info - Dystir");
+            this.setFavicon("https://www.in.fo/favicon.ico");
         } else if (url.includes("portal")) {
             import('./css/portal.css?version=6');
+            this.setTitle("Portal - Dystir");
+            this.setFavicon("https://e02e3c2e19a06eec1e84-9a0707245afee0d6f567aa2987845a0f.ssl.cf1.rackcdn.com/myfiles/1385390388_portal_favicon.ico");
+        } else if (url.includes("roysni")) {
+            import('./css/roysni.css?version=6');
+            this.setTitle("Roysni - Dystir");
+            this.setFavicon("https://roysni.fo/icons/favicon.ico");
         } else {
             import('./css/dystir.css?version=6');
+            this.setTitle("Dystir");
+            this.setFavicon("../favicon.ico");
         }
         return (
             <Layout>
@@ -41,5 +51,13 @@ export default class App extends Component {
                 </Routes>
             </Layout>
         );
+    }
+
+    setTitle(title) {
+        document.title = title;
+    }
+
+    setFavicon(favicon) {
+        document.querySelector('[rel=icon]').href = favicon;
     }
 }

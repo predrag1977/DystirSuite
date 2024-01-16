@@ -37,7 +37,7 @@ export class MatchView extends Component {
                         <tbody>
                             <tr>
                                 <td className="match_info text-start">
-                                    <span>{(new MatchDate(Date.parse(match.time)).dateLocale().toDateTimeString())}</span>
+                                    <span>{(new MatchDate(Date.parse(match.time)).toDateTimeString())}</span>
                                     {
                                         (match.matchTypeName?.trim() !== undefined && match.matchTypeName?.trim() !== "") && <span> - </span>
                                     }
@@ -146,7 +146,7 @@ export class MatchView extends Component {
                         <tbody>
                             <tr>
                                 <td className="match_info text-start">
-                                    <span>{(new MatchDate(Date.parse(match.time)).dateLocale().toDateTimeString())}</span>
+                                    <span>{(new MatchDate(Date.parse(match.time)).toDateTimeString())}</span>
                                     {
                                         (match.matchTypeName?.trim() !== undefined && match.matchTypeName?.trim() !== "") && <span> - </span>
                                     }

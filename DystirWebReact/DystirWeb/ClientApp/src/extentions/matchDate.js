@@ -11,8 +11,16 @@ export default class MatchDate extends Date {
     }
 
     toDateTimeString() {
-        const dateTimeString = moment(this).locale("fo").format("ddd DD.MM. HH:mm");
+        let pattern = "ddd DD.MM. HH:mm";
+        if (this.toTimeString() === "00:00") {
+            pattern = "ddd DD.MM.";
+        }
+        const dateTimeString = moment(this.dateLocale()).locale("fo").format(pattern);
         return dateTimeString.charAt(0).toUpperCase() + dateTimeString.slice(1);
+    }
+
+    toTimeString() {
+        return moment(this).locale("fo").format("HH:mm");
     }
 
     dateLocale() {

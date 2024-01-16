@@ -21,7 +21,7 @@ export class MatchDetailsTabs extends Component {
         let fullUrl = page + "/matchdetails/" + matchID + "/";
         return (
             <>
-                <div style={{ borderBottom: "1px #404040 solid" }} />
+                <div className="line" />
                 <div id="days_selection">
                     <div id="horizontal_menu_days">
                         <div className={"tab " + (selectedTab == TabName.SUMMARY ? "selected_tab" : "")}
