@@ -29,7 +29,7 @@ export class Matches extends Component {
         if (this.state.selectedPeriod !== undefined && this.state.selectedPeriod !== "") {
             window.history.replaceState(null, null, "/matches/" + this.state.selectedPeriod);
         }
-        if (!this.state.isMatchesLoaded) {
+        if (matchesData.isMatchesLoaded === false) {
             this.state.isLoading = true;
             dystirWebClientService.loadMatchesDataAsync(this.state.selectedPeriod);
         }

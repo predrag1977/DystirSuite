@@ -1,8 +1,8 @@
 ﻿@import url("dystir.css");
-@import url('https://fonts.googleapis.com/css?family=SourceSansPro');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
 
 html, body {
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: Arial, sans-serif;
     background-color: white;
 }
 
@@ -51,7 +51,6 @@ body {
     color: white;
 }
 
-
 #main_share {
     position: absolute;
     background-color: #f9fafb;
@@ -89,19 +88,10 @@ body {
     background-color: white;
 }
 
-/*#match-details_static_part #horizontal_menu_days {
-    border-bottom: 1px solid transparent;
-}*/
-
 #competitions_selection {
-    background-color: rgb(223, 240, 216);
     border-top: 0px solid lightgray;
     border-bottom: 0px solid lightgray;
     margin: 0;
-    height: 50px;
-}
-
-#horizontal_menu_wrapper {
     height: 50px;
 }
 
