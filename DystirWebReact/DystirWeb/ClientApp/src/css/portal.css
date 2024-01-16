@@ -44,12 +44,16 @@ body {
 
 #header {
     background-color: white;
+    border-bottom: 1px solid lightgray;
 }
 
 .goal_icon, .owngoal_icon {
     color: white;
 }
 
+.line {
+    border-bottom: 1px solid lightgray;
+}
 
 #main_share {
     position: absolute;
@@ -86,6 +90,7 @@ body {
 
 #horizontal_menu_days {
     background-color: white;
+    border-bottom: 1px solid lightgray;
 }
 
 #competitions_selection {
@@ -212,12 +217,12 @@ body {
     }
 
 .selected_tab {
-    color: cornflowerblue;
-    border-bottom: 3px solid cornflowerblue;
+    color: gray;
+    border-bottom: 3px solid gray;
 }
 
     .selected_tab .nav-link {
-        color: cornflowerblue;
+        color: gray;
     }
 
 .score {

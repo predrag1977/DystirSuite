@@ -12,7 +12,7 @@ export class MatchDetailsInfo extends Component {
 
     render() {
         const match = this.props.match;
-        let matchTime = match?.time != null ? new MatchDate(Date.parse(match.time)).dateLocale().toDateTimeString() : "";
+        let matchTime = match?.time != null ? new MatchDate(Date.parse(match.time)).toDateTimeString() : "";
         let matchTypeName = (match?.matchTypeName ?? "").trim();
         let hasMatchTypeName = (matchTypeName !== undefined && matchTypeName !== "") ? " - " : "";
         let homeTeamLogo = match?.homeTeamLogo != null ? "team_logos/" + match.homeTeamLogo : "team_logos/empty.png";
