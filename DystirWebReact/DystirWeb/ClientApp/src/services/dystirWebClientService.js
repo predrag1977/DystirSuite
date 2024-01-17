@@ -158,7 +158,7 @@ export class DystirWebClientService {
 
         const sortedMatches = this.state.matchesData.matches
             .sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)))
-            .sort((a, b) => b.roundID - a.roundID)
+            .sort((a, b) => a.roundID - b.roundID)
             .sort((a, b) => a.matchTypeID - b.matchTypeID);
 
         this.state.fixturesData = {
