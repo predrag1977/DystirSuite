@@ -51,24 +51,24 @@ body {
 }
 
 main {
-    height: calc(100vh - 80px);
-    
     width: 100%;
     margin: 80px auto 0 auto;
     max-width: 1000px !important;
 }
 
 .main_container, .main_container_match_details {
+    position: fixed;
+    max-width: 1000px !important;
     overflow-x: hidden;
     overflow-y: auto;
-    height: calc(100vh - 140px);
+    height: calc(100% - 140px);
     padding: 0 10px;
     background-color: rgba(24, 24, 24, 0.85);
     width: 100%;
 }
 
 .main_container_match_details {
-    height: calc(100vh - 290px);
+    height: calc(100% - 290px);
 }
 
 
@@ -221,6 +221,7 @@ table, tbody, tr {
     position: fixed;
     width: 100%;
     top: 90px;
+    z-index:1;
 }
 
     #navigation_menu .nav-item {
