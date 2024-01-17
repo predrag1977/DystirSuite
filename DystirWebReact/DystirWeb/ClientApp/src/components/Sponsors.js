@@ -10,6 +10,10 @@ export class Sponsors extends Component {
         this.state = {
             sponsors: dystirWebClientService.state.sponsorsData.sponsors
         }
+        
+        if (dystirWebClientService.state.sponsorsData.sponsors.length == 0) {
+            dystirWebClientService.loadSponsorsDataAsync();
+        }
     }
 
     componentDidMount() {
@@ -23,7 +27,7 @@ export class Sponsors extends Component {
     }
 
     onLoadedSponsorsData() {
-        let sponsors = this.state.sponsors.sort(() => 0.5 - Math.random());
+        let sponsors = dystirWebClientService.state.sponsorsData.sponsors.sort(() => 0.5 - Math.random());
         this.setState({
             sponsors: sponsors
         });

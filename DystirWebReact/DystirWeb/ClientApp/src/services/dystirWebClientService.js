@@ -100,7 +100,6 @@ export class DystirWebClientService {
         this.hubConnection.connection.start()
             .then(() => {
                 document.body.dispatchEvent(new CustomEvent("onConnected"));
-                this.loadSponsorsDataAsync();
             })
             .catch(err => {
                 setTimeout(() => {
@@ -220,6 +219,7 @@ export class DystirWebClientService {
         this.state.sponsorsData = {
             sponsors: sponsors
         };
+        console.log("loadSponsorsDataAsync");
         document.body.dispatchEvent(new CustomEvent("onLoadedSponsorsData"));
     }
 
