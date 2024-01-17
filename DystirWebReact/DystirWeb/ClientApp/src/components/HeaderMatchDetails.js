@@ -48,7 +48,7 @@ export class HeaderMatchDetails extends Component {
                     <table id="horizontal_navigation_bar" className="w-100">
                         <tbody>
                             <tr>
-                                <td style={{ width: '0px' }} >
+                                <td style={{ width: '50px' }} >
                                     <span id="back_button">
                                         <NavLink tag={Link} to={"/" + dystirWebClientService.selectedPage}><FaArrowLeft /></NavLink>
                                     </span>
@@ -78,10 +78,10 @@ export class HeaderMatchDetails extends Component {
                                         </tbody>
                                     </table>
                                 </td>
-                                <td style={{ width: '0px' }}>
-                                    <span id="back_button" onClick={() => window.location.reload(false)}>
+                                <td style={{ width: '50px' }}>
+                                    <div id="back_button" onClick={() => window.location.reload(false)}>
                                         <FaArrowsRotate />
-                                    </span>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
