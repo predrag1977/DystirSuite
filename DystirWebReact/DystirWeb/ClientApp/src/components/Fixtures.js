@@ -7,6 +7,7 @@ import { groupBy } from "core-js/actual/array/group-by";
 import { groupByToMap } from "core-js/actual/array/group-by-to-map";
 import { LayoutDystir } from './layouts/LayoutDystir';
 import { ChooseCompetitions } from './ChooseCompetitions';
+import { Sponsors } from './Sponsors';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
@@ -98,6 +99,7 @@ export class Fixtures extends Component {
                     competitions.length > 0 &&
                     this.renderFixtures(matchesGroup, competitions[selectedFixturesCompetitionId])
                 }
+                <Sponsors />
                 </div>
             </>
         

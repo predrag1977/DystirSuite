@@ -8,6 +8,7 @@ import { groupByToMap } from "core-js/actual/array/group-by-to-map";
 import { LayoutDystir } from './layouts/LayoutDystir';
 import { ChooseCompetitions } from './ChooseCompetitions';
 import { StandingView } from './views/StandingView';
+import { Sponsors } from './Sponsors';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
@@ -96,6 +97,7 @@ export class Standings extends Component {
                 {
                     this.renderStandings(standings)
                 }
+                <Sponsors />
                 </div>
             </>
         return (

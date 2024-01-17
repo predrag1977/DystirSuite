@@ -11,6 +11,7 @@ const context = [
     "/api/standings",
     "/api/statistics",
     "/api/matchdetails",
+    "/api/sponsors",
     "/data/request/numberofmatches",
     "/data/request/countmatches",
 

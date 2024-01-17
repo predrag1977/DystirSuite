@@ -15,9 +15,9 @@ namespace DystirWeb.Services
         internal IEnumerable<Standing> GetStandings()
         {
             var fromDate = new DateTime(DateTime.UtcNow.Year, 1, 1);
-            var matchesList = _dystirService.AllMatches.Where(y => y.Time > fromDate
-                && y.MatchActivation != 1
-                && y.MatchActivation != 2);
+            var matchesList = _dystirService.AllMatches.Where(x => x.Time > fromDate
+                && x.MatchActivation != 1
+                && x.MatchActivation != 2);
             var teamsList = _dystirService.AllTeams;
 
             List<Standing> standingsList = new List<Standing>();
@@ -107,10 +107,10 @@ namespace DystirWeb.Services
             {
                 teamStanding.IsLive = (match.StatusID > 1 && match.StatusID < 6);
             }
-            //if (match.StatusId < 2 || match.StatusId > 13)
-            //{
-            //    return;
-            //}
+            if (match.StatusID < 2 || match.StatusID > 13)
+            {
+                return;
+            }
             //if (match.StatusID != 12 && match.StatusID != 13)
             //{
             //    return;

@@ -7,6 +7,7 @@ import { groupBy } from "core-js/actual/array/group-by";
 import { groupByToMap } from "core-js/actual/array/group-by-to-map";
 import { LayoutDystir } from './layouts/LayoutDystir';
 import { ChooseCompetitions } from './ChooseCompetitions';
+import { Sponsors } from './Sponsors';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
@@ -83,22 +84,23 @@ export class Results extends Component {
         const selectedResultsCompetitionId = this.state.selectedResultsCompetitionId !== ""
             ? this.state.selectedResultsCompetitionId : (competitions.length > 0 ? 0 : "");
         let contents =
-            <>
-                <ChooseCompetitions onClickCompetition={() => this.onClickCompetition()}
-                    competitions={competitions}
-                    page="results"
-                    selectedCompetition={competitions[selectedResultsCompetitionId]} />
-                <div className="main_container">
-                    {
-                        this.state.isLoading &&
-                        <ThreeDots className="loading-spinner-parent" fill= 'dimGray' height="50" width="50" />
-                    }
-                    {
-                        competitions.length > 0 &&
-                        this.renderResults(matchesGroup, competitions[selectedResultsCompetitionId])
-                    }
-                </div>
-            </>
+        <>
+            <ChooseCompetitions onClickCompetition={() => this.onClickCompetition()}
+                competitions={competitions}
+                page="results"
+                selectedCompetition={competitions[selectedResultsCompetitionId]} />
+            <div className="main_container">
+                {
+                    this.state.isLoading &&
+                    <ThreeDots className="loading-spinner-parent" fill='dimGray' height="50" width="50" />
+                }
+                {
+                    competitions.length > 0 &&
+                    this.renderResults(matchesGroup, competitions[selectedResultsCompetitionId])
+                }
+                <Sponsors />
+            </div>
+        </>
         return (
             <LayoutDystir page={PageName.RESULTS}>
             {

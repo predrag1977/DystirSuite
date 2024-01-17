@@ -63,7 +63,8 @@ namespace DystirWeb.Services
             var allTeamsTask = GetAllTeamsAsync();
             var allPlayersOfMatchesTask = GetPlayersOfMatchesAsync();
             var allCompetitionTask = GetAllCompetitionAsync();
-            await Task.WhenAll(allTeamsTask, allPlayersOfMatchesTask, allCompetitionTask);
+            var allSponsorsTask = GetAllSponsorsAsync();
+            await Task.WhenAll(allTeamsTask, allPlayersOfMatchesTask, allCompetitionTask, allSponsorsTask);
             foreach (Matches match in AllMatches)
             {
                 SetTeamLogoInMatch(match);

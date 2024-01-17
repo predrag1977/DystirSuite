@@ -33,6 +33,9 @@ export class DystirWebClientService {
             matchId: "",
             selectedTab: ""
         };
+        this.sponsorsData = {
+            sponsors: []
+        };
 
         this.state = {
             matchesData: this.matchesData,
@@ -40,7 +43,8 @@ export class DystirWebClientService {
             fixturesData: this.fixturesData,
             standingsData: this.standingsData,
             statisticsData: this.statisticsData,
-            matchDetailsData: this.matchDetailsData
+            matchDetailsData: this.matchDetailsData,
+            sponsorsData: this.sponsorsData
         };
 
         this.hubConnection = {
@@ -96,6 +100,7 @@ export class DystirWebClientService {
         this.hubConnection.connection.start()
             .then(() => {
                 document.body.dispatchEvent(new CustomEvent("onConnected"));
+                this.loadSponsorsDataAsync();
             })
             .catch(err => {
                 setTimeout(() => {
@@ -206,7 +211,16 @@ export class DystirWebClientService {
         }
 
         this.onUpdateMatchDetails(matchDetails);
+    }
 
+    async loadSponsorsDataAsync() {
+        const response = await fetch('api/sponsors');
+        const sponsors = await response.json();
+
+        this.state.sponsorsData = {
+            sponsors: sponsors
+        };
+        document.body.dispatchEvent(new CustomEvent("onLoadedSponsorsData"));
     }
 
     onUpdateMatchDetails(matchDetails) {
