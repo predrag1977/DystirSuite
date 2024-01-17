@@ -1,8 +1,7 @@
 ﻿export default class TimeService {
-
     constructor() {
-        this.intervalID = setInterval(this.startMatchTime, 1000);
-        this.intervalSponsorsID = setInterval(this.startSponsorsTime, 10000);
+        let intervalID = setInterval(this.startMatchTime, 1000);
+        let intervalSponsorsID = setInterval(this.startSponsorsTime, 10000);
     }
 
     startMatchTime() {
