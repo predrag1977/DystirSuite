@@ -248,6 +248,10 @@ table, tbody, tr {
         display: inline-block;
     }
 
+#horizontal_menu_wrapper a {
+    padding: 20px 15px 0 15px;
+}
+
 #scroll_button_left, #scroll_button_right, #back_button {
     height: 40px;
     cursor: pointer;
@@ -299,7 +303,7 @@ table, tbody, tr {
     .tab .nav-link, .selected_tab .nav-link {
         color: #a6a6a6;
         height: 58px;
-        padding: 20px 15px 0 15px;
+        padding-top: 20px;
     }
 
 .selected_tab {
@@ -379,7 +383,6 @@ table, tbody, tr {
 
 .content_table {
     table-layout: fixed;
-    white-space: nowrap;
     height: 100%;
     width: 100%;
 }

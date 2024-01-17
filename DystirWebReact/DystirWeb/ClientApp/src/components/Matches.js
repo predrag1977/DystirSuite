@@ -7,6 +7,7 @@ import { ChooseDays } from './ChooseDays';
 import { groupBy } from "core-js/actual/array/group-by";
 import { groupByToMap } from "core-js/actual/array/group-by-to-map";
 import { LayoutDystir } from './layouts/LayoutDystir';
+import { Sponsors } from './Sponsors';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
@@ -86,14 +87,14 @@ export class Matches extends Component {
         <>
             <ChooseDays onClickPeriod={() => this.onClickPeriod()} selectedPeriod={this.state.selectedPeriod} />
             <div className="main_container">
-            {
-                this.state.isLoading &&
-
-                <ThreeDots className="loading-spinner-parent" fill= 'dimGray' height="50" width="50" />
-            }
-            {
-                this.renderMatches(this.filterMatches(this.state.matches))
-            }
+                {
+                    this.state.isLoading &&
+                    <ThreeDots className="loading-spinner-parent" fill='dimGray' height="50" width="50" />
+                }
+                {
+                    this.renderMatches(this.filterMatches(this.state.matches))
+                }
+                <Sponsors />
             </div>
         </>
         return (

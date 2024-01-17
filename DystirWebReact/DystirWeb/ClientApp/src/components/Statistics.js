@@ -8,6 +8,7 @@ import { groupByToMap } from "core-js/actual/array/group-by-to-map";
 import { LayoutDystir } from './layouts/LayoutDystir';
 import { ChooseCompetitions } from './ChooseCompetitions';
 import { StatisticView } from './views/StatisticView';
+import { Sponsors } from './Sponsors';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
@@ -90,11 +91,12 @@ export class Statistics extends Component {
                 <div className="main_container">
                     {
                         this.state.isLoading &&
-                        <ThreeDots className="loading-spinner-parent" fill= 'dimGray' height="50" width="50" />
+                        <ThreeDots className="loading-spinner-parent" fill='dimGray' height="50" width="50" />
                     }
                     {
                         this.renderStatistics(this.state.statistics)
                     }
+                    <Sponsors />
                 </div>
             </>
         return (
