@@ -21,14 +21,7 @@ namespace DystirXamarin.Views
             InitializeComponent();
             _viewModel = viewModel;
             _viewModel.PropertyChanged += _viewModel_PropertyChanged;
-            //(Application.Current as App).OnResumeApplication += OnResumeApplication;
             BindingContext = _viewModel;
-        }
-
-        private void OnResumeApplication()
-        {
-            //_viewModel.IsLoading = true;
-            //Populate();
         }
 
         protected override void OnAppearing()
@@ -54,7 +47,7 @@ namespace DystirXamarin.Views
                 NewMatchButton.IsVisible = false;
             }
             //TODO Change this
-            VersionLabel.Text = "4.0.0.57";
+            VersionLabel.Text = "4.0.0.59";
         }
 
         private void PopulateMatchList()
@@ -67,14 +60,19 @@ namespace DystirXamarin.Views
             {
                 case MatchListType.Before:
                     BeforeLayout.BackgroundColor = Color.White;
+                    NoMatchesLabel.Text = "No previous match";
                     break;
                 case MatchListType.Today:
                     TodayLayout.BackgroundColor = Color.White;
+                    NoMatchesLabel.Text = "No today's match";
                     break;
                 case MatchListType.Next:
                     NextLayout.BackgroundColor = Color.White;
+                    NoMatchesLabel.Text = "No next match";
                     break;
             }
+
+            NoMatchesLayout.IsVisible = !_viewModel.IsLoading && _viewModel.Matches.Count == 0;
         }
 
         private void MatchesListView_Refreshing(object sender, EventArgs e)
