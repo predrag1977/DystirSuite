@@ -9,6 +9,8 @@ import { StandingsTab } from './StandingsTab';
 import { StatisticsTab } from './StatisticsTab';
 import { MatchDetailsTabs } from './MatchDetailsTabs';
 import { MatchDetailsInfo } from './MatchDetailsInfo';
+import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
@@ -34,7 +36,8 @@ export class MatchDetails extends Component {
             match: match,
             matchId: matchDetailsData.matchId,
             selectedTab: matchDetailsData.selectedTab,
-            isLoading: true
+            isLoading: true,
+            collapsed: true
         }
         dystirWebClientService.loadMatchDetailsDataAsync(this.state.matchId, this.state.selectedTab);
 
@@ -97,6 +100,12 @@ export class MatchDetails extends Component {
         }
     }
 
+    onMoreLiveMatchClick() {
+        this.setState({
+            collapsed: !this.state.collapsed
+        });
+    }
+
     render() {
         var eventsOfMatch = this.state.match?.matchDetails?.eventsOfMatch ?? [];
         var playersOfMatch = this.state.match?.matchDetails?.playersOfMatch ?? [];
@@ -104,32 +113,52 @@ export class MatchDetails extends Component {
         var standings = this.state.match?.matchDetails?.standings ?? [];
         let contents =
             <>
-                <MatchDetailsInfo match={this.state.match} />
-                <MatchDetailsTabs onClickTab={() => this.onClickTab()} match={this.state.match} selectedTab={this.state.selectedTab} />
+                <MatchDetailsTabs onClickTab={() => this.onClickTab()} onMoreLiveMatchClick={() => this.onMoreLiveMatchClick()} match={this.state.match} selectedTab={this.state.selectedTab} />
                 <div className="main_container_match_details">
-                {
-                    this.state.isLoading &&
-                    <ThreeDots className="loading-spinner-parent" fill= 'dimGray' height="50" width="50" />
-                }
-                {
-                    <>
-                        <div className={this.state.selectedTab === TabName.SUMMARY ? "active_tab" : "no_active_tab"}>
-                            <SummaryTab match={this.state.match} eventsOfMatch={eventsOfMatch} playersOfMatch={playersOfMatch} />
-                        </div>
-                        <div className={this.state.selectedTab === TabName.LINEUPS ? "active_tab" : "no_active_tab"}>
-                            <Lineups match={this.state.match} playersOfMatch={playersOfMatch} />
-                        </div>
-                        <div className={this.state.selectedTab === TabName.COMMENTARY ? "active_tab" : "no_active_tab"}>
-                            <CommentaryTab match={this.state.match} eventsOfMatch={eventsOfMatch} />
-                        </div>
-                        <div className={this.state.selectedTab === TabName.STATISTICS ? "active_tab" : "no_active_tab"}>
-                            <StatisticsTab match={this.state.match} statistic={statistic} />
-                        </div>
-                        <div className={this.state.selectedTab === TabName.STANDINGS ? "active_tab" : "no_active_tab"}>
-                            <StandingsTab match={this.state.match} standings={standings} />
-                        </div>
-                    </>
-                }
+                    <MatchDetailsInfo match={this.state.match} />
+                    {
+                        this.state.isLoading &&
+                        <ThreeDots className="loading-spinner-parent" fill= 'dimGray' height="50" width="50" />
+                    }
+                    {
+                        <>
+                            <div className={this.state.selectedTab === TabName.SUMMARY ? "active_tab" : "no_active_tab"}>
+                                <SummaryTab match={this.state.match} eventsOfMatch={eventsOfMatch} playersOfMatch={playersOfMatch} />
+                            </div>
+                            <div className={this.state.selectedTab === TabName.LINEUPS ? "active_tab" : "no_active_tab"}>
+                                <Lineups match={this.state.match} playersOfMatch={playersOfMatch} />
+                            </div>
+                            <div className={this.state.selectedTab === TabName.COMMENTARY ? "active_tab" : "no_active_tab"}>
+                                <CommentaryTab match={this.state.match} eventsOfMatch={eventsOfMatch} />
+                            </div>
+                            <div className={this.state.selectedTab === TabName.STATISTICS ? "active_tab" : "no_active_tab"}>
+                                <StatisticsTab match={this.state.match} statistic={statistic} />
+                            </div>
+                            <div className={this.state.selectedTab === TabName.STANDINGS ? "active_tab" : "no_active_tab"}>
+                                <StandingsTab match={this.state.match} standings={standings} />
+                            </div>
+                        </>
+                    }
+                </div>
+
+                <div id="navigation_menu" style={{ top: "150px"} } className={this.state.collapsed ? "collapse" : ""} >
+                    <ul className="nav flex-column">
+                        <li className="nav-item">
+                            <NavLink tag={Link} className={(this.props.page == PageName.MATCHES ? "active" : "") + " text-dark nav-link"} to="/">{PageName.MATCHES}</NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink tag={Link} className={(this.props.page == PageName.RESULTS ? "active" : "") + " text-dark nav-link"} to="/results">{PageName.RESULTS}</NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink tag={Link} className={(this.props.page == PageName.FIXTURES ? "active" : "") + " text-dark nav-link"} to="/fixtures">{PageName.FIXTURES}</NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink tag={Link} className={(this.props.page == PageName.STANDINGS ? "active" : "") + " text-dark nav-link"} to="/standings">{PageName.STANDINGS}</NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink tag={Link} className={(this.props.page == PageName.STATISTICS ? "active" : "") + " text-dark nav-link"} to="/statistics">{PageName.STATISTICS}</NavLink>
+                        </li>
+                    </ul>
                 </div>
             </>
         return (
