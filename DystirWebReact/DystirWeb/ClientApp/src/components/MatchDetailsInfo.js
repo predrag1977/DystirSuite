@@ -80,8 +80,9 @@ export class MatchDetailsInfo extends Component {
                             </td>
                         </tr>
                     </tbody>
-                </table>
+                    </table>
             </div>
+            <div className="line" />
         </>
             
         return contents
