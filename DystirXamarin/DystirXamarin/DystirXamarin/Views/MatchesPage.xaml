@@ -201,6 +201,9 @@
                     <Label x:Name="VersionLabel" Text="1.0.0" HorizontalOptions="Center" VerticalOptions="Center" TextColor="White" FontAttributes="Bold" />
                 </StackLayout>
             </StackLayout>
+            <ContentView x:Name="NoMatchesLayout" Grid.Row="2" IsVisible="False" VerticalOptions="Center" HorizontalOptions="Fill" Margin="20,0" Padding="15">
+                <Label x:Name="NoMatchesLabel" Text="" LineBreakMode="WordWrap" TextColor="LightGray" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+            </ContentView>
             <ContentView x:Name="ErrorLayout2" Grid.Row="2" IsVisible="False" VerticalOptions="Center" HorizontalOptions="Fill" Margin="20,0" Padding="15" BackgroundColor="LightGray">
                 <Label Text="{Binding MainException.Message}" LineBreakMode="WordWrap" TextColor="Black" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
             </ContentView>

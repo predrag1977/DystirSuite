@@ -13,8 +13,8 @@ namespace DystirXamarin
 {
     public partial class App : Application
     {
-        public event Action OnResumeApplication;
-        public void ResumeApplication() => OnResumeApplication?.Invoke();
+        //public event Action OnResumeApplication;
+        //public void ResumeApplication() => OnResumeApplication?.Invoke();
 
         public App()
         {
@@ -50,7 +50,7 @@ namespace DystirXamarin
 
         protected override void OnResume()
         {
-            OnResumeApplication();
+            //OnResumeApplication();
         }
     }
 }
