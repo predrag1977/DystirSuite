@@ -43,6 +43,7 @@ namespace DystirWeb.Services
                         .ThenBy(x => x.EventOfMatchId).ToList(),
                         PlayersOfMatch = playersOfMatch?.Where(x => x.PlayingStatus != 3).ToList(),
                         Standings = _standingService.GetStandings().ToList(),
+                        Matches = _dystirService.AllMatches.Where(x => x.StatusID < 14).ToList()
                     };
                     matchDetails.Statistic = _matchStatisticService.GetStatistic(matchDetails.EventsOfMatch, matchDetails.Match);
                     _dystirService.UpdateDataAsync(matchDetails);

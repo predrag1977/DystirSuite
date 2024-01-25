@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
-using DystirWeb.Services;
+﻿using DystirWeb.Services;
 using DystirWeb.Shared;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,7 +37,7 @@ namespace DystirWeb.Controllers
 
         private List<Matches> GetMatchesList()
         {
-            var fromDate = DateTime.Now.AddHours(1).Date.AddDays(0);
+            var fromDate = DateTime.UtcNow.Date.AddDays(0);
             var toDate = fromDate.AddDays(0);
             var matchesList = _dystirService.AllMatches?
                 .Where(x => x.Time.Value.Date >= fromDate && x.Time.Value.Date <= toDate)
@@ -52,7 +48,7 @@ namespace DystirWeb.Controllers
 
         private List<Matches> GetMatchesListForPortal()
         {
-            var fromDate = DateTime.Now.AddHours(1).Date.AddDays(0);
+            var fromDate = DateTime.UtcNow.Date.AddDays(0);
             var toDate = fromDate.AddDays(0);
             var matchesList = _dystirService.AllMatches?
                 .Where(x => x.Time.Value.Date >= fromDate

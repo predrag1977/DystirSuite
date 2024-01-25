@@ -13,6 +13,7 @@ export class MatchDetailsTabs extends Component {
 
     render() {
         const match = this.props.match;
+        var liveMatchCount = (this.props.liveMatches ?? []).length;
         let matchID = match?.matchID != null ? match.matchID : 0;
         const selectedTab = this.props.selectedTab !== undefined && this.props.selectedTab !== "" ? this.props.selectedTab : TabName.SUMMARY;
         let page = "/" + this.props.page;
@@ -63,10 +64,13 @@ export class MatchDetailsTabs extends Component {
                             <span>Støðan</span>
                         </NavLink>
                     </div>
-                    <div className="live_matches" onClick={() => this.props.onMoreLiveMatchClick()}>
-                        <GiSoccerField className="live_matches_icon" />
-                        <div className="live_matches_number">5</div>
-                    </div>
+                    {
+                        liveMatchCount > 0 &&
+                        <div className="live_matches" onClick={(e) => this.props.onMoreLiveMatchClick(e)}>
+                            <GiSoccerField className="live_matches_icon" />
+                            <div className="live_matches_number">{liveMatchCount}</div>
+                        </div>
+                    }
                 </div>
             </div>
         );

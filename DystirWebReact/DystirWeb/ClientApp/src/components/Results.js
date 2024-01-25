@@ -130,12 +130,12 @@ export class Results extends Component {
     }
 
     filterMatches(matches) {
-        var fromDate = new MatchDate(new MatchDate().getFullYear(), 1, 1);
+        var fromDate = new MatchDate(new MatchDate().getFullYear(), 0, 1);
         var toDate = new MatchDate().dateUtc();
 
         return matches.filter((match) =>
             MatchDate.parse(match.time) > MatchDate.parse(fromDate)
             && MatchDate.parse(match.time) < MatchDate.parse(toDate)
-            && match.statusID >= 12);
+            && (match.statusID == 12 || match.statusID == 13));
     }
 }

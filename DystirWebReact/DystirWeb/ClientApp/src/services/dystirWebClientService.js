@@ -28,7 +28,6 @@ export class DystirWebClientService {
             selectedStatisticsCompetitionId: ""
         };
         this.matchDetailsData = {
-            matches: [],
             match: "",
             matchId: "",
             selectedTab: ""
@@ -203,7 +202,6 @@ export class DystirWebClientService {
             match.matchDetails = matchDetails;
         }
         this.state.matchDetailsData = {
-            matches: this.state.matchesData.matches,
             match: match,
             matchId: matchId,
             selectedTab: selectedTab

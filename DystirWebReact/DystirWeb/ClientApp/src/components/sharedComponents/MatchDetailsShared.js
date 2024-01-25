@@ -9,6 +9,9 @@ import { StandingsTab } from './../StandingsTab';
 import { StatisticsTab } from './../StatisticsTab';
 import { MatchDetailsTabs } from './../MatchDetailsTabs';
 import { MatchDetailsInfo } from './../MatchDetailsInfo';
+import { LiveMatchView } from "../views/LiveMatchView";
+import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
@@ -17,8 +20,8 @@ export class MatchDetailsShared extends Component {
 
     constructor(props) {
         super(props);
-        const lenght = window.location.pathname.split("/").length;
         let matchDetailsData = dystirWebClientService.state.matchDetailsData;
+        const lenght = window.location.pathname.split("/").length;
         matchDetailsData.matchId = window.location.pathname.split("/")[3];
         if (lenght > 4) {
             matchDetailsData.selectedTab = window.location.pathname.split("/")[4];
@@ -30,11 +33,11 @@ export class MatchDetailsShared extends Component {
         let match = dystirWebClientService.state.matchesData.matches.find((m) => m.matchID == matchDetailsData.matchId);
 
         this.state = {
-            matches: matchDetailsData.matches,
             match: match,
             matchId: matchDetailsData.matchId,
             selectedTab: matchDetailsData.selectedTab,
-            isLoading: true
+            isLoading: true,
+            collapsed: true
         }
         dystirWebClientService.loadMatchDetailsDataAsync(this.state.matchId, this.state.selectedTab);
 
@@ -60,11 +63,11 @@ export class MatchDetailsShared extends Component {
     onReloadData() {
         let matchDetailsData = dystirWebClientService.state.matchDetailsData;
         this.setState({
-            matches: matchDetailsData.matches,
             match: matchDetailsData.match,
             matchId: matchDetailsData.matchId,
             selectedTab: matchDetailsData.selectedTab,
-            isLoading: false
+            isLoading: false,
+            collapsed: true
         });
     }
 
@@ -97,6 +100,19 @@ export class MatchDetailsShared extends Component {
         }
     }
 
+    onMoreLiveMatchClick(e) {
+        this.setState({
+            collapsed: !this.state.collapsed
+        });
+        e.stopPropagation();
+    }
+
+    onCloseMoreLiveMatches() {
+        this.setState({
+            collapsed: true
+        });
+    }
+
     render() {
         let page = ""
         let url = window.location.href.toLowerCase();
@@ -109,36 +125,61 @@ export class MatchDetailsShared extends Component {
         var playersOfMatch = this.state.match?.matchDetails?.playersOfMatch ?? [];
         var statistic = this.state.match?.matchDetails?.statistic ?? null;
         var standings = this.state.match?.matchDetails?.standings ?? [];
+        var liveMatches = this.state.match?.matchDetails?.matches ?? [];
+        var liveMatchesGroup = liveMatches.groupBy(match => { return match.matchTypeName ?? "" });
         let contents =
-            <>
-                <MatchDetailsInfo match={this.state.match} />
-                <MatchDetailsTabs onClickTab={() => this.onClickTab()} match={this.state.match} selectedTab={this.state.selectedTab} page={page} />
+            <div onClick={() => { this.onCloseMoreLiveMatches() }}>
+                <MatchDetailsTabs onClickTab={() => this.onClickTab()}
+                    onMoreLiveMatchClick={(e) => this.onMoreLiveMatchClick(e)}
+                    match={this.state.match}
+                    selectedTab={this.state.selectedTab}
+                    page={page} />
                 <div className="main_container_match_details">
-                {
-                    this.state.isLoading &&
-                    <ThreeDots className="loading-spinner-parent" fill= 'dimGray' height="50" width="50" />
-                }
-                {
-                    <>
-                        <div className={this.state.selectedTab === TabName.SUMMARY ? "active_tab" : "no_active_tab"}>
-                            <SummaryTab match={this.state.match} eventsOfMatch={eventsOfMatch} playersOfMatch={playersOfMatch} />
-                        </div>
-                        <div className={this.state.selectedTab === TabName.LINEUPS ? "active_tab" : "no_active_tab"}>
-                            <Lineups match={this.state.match} playersOfMatch={playersOfMatch} />
-                        </div>
-                        <div className={this.state.selectedTab === TabName.COMMENTARY ? "active_tab" : "no_active_tab"}>
-                            <CommentaryTab match={this.state.match} eventsOfMatch={eventsOfMatch} />
-                        </div>
-                        <div className={this.state.selectedTab === TabName.STATISTICS ? "active_tab" : "no_active_tab"}>
-                            <StatisticsTab match={this.state.match} statistic={statistic} />
-                        </div>
-                        <div className={this.state.selectedTab === TabName.STANDINGS ? "active_tab" : "no_active_tab"}>
-                            <StandingsTab match={this.state.match} standings={standings} />
-                        </div>
-                    </>
-                }
+                    <MatchDetailsInfo match={this.state.match} />
+                    {
+                        this.state.isLoading &&
+                        <ThreeDots className="loading-spinner-parent" fill='dimGray' height="50" width="50" />
+                    }
+                    {
+                        <>
+                            <div className={this.state.selectedTab === TabName.SUMMARY ? "active_tab" : "no_active_tab"}>
+                                <SummaryTab match={this.state.match} eventsOfMatch={eventsOfMatch} playersOfMatch={playersOfMatch} />
+                            </div>
+                            <div className={this.state.selectedTab === TabName.LINEUPS ? "active_tab" : "no_active_tab"}>
+                                <Lineups match={this.state.match} playersOfMatch={playersOfMatch} />
+                            </div>
+                            <div className={this.state.selectedTab === TabName.COMMENTARY ? "active_tab" : "no_active_tab"}>
+                                <CommentaryTab match={this.state.match} eventsOfMatch={eventsOfMatch} />
+                            </div>
+                            <div className={this.state.selectedTab === TabName.STATISTICS ? "active_tab" : "no_active_tab"}>
+                                <StatisticsTab match={this.state.match} statistic={statistic} />
+                            </div>
+                            <div className={this.state.selectedTab === TabName.STANDINGS ? "active_tab" : "no_active_tab"}>
+                                <StandingsTab match={this.state.match} standings={standings} />
+                            </div>
+                        </>
+                    }
                 </div>
-            </>
+
+                <div id="more_live_matches_menu" className={this.state.collapsed ? "collapse" : ""} >
+                    <div className="more_live_matches_container">
+                        <div className="more_live_matches_content">
+                            {
+                                Object.keys(liveMatchesGroup).map(group =>
+                                    <div key={group}>
+                                        <div className="match-group-competition-name text-start">{group}</div>
+                                        {
+                                            liveMatchesGroup[group].map(match =>
+                                                <LiveMatchView key={match.matchID} match={match} />
+                                            )
+                                        }
+                                    </div>
+                                )
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
         return (
             <LayoutMatchDetailsShared match={this.state.match}>
             {
