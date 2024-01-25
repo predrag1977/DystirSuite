@@ -56,7 +56,7 @@ main {
     max-width: 1000px !important;
 }
 
-.main_container, .main_container_match_details {
+.main_container, .main_container_match_details, .more_live_matches_container {
     position: fixed;
     max-width: 1000px !important;
     overflow-x: hidden;
@@ -67,9 +67,19 @@ main {
     width: 100%;
 }
 
-.main_container_match_details {
-    height: calc(100% - 140px);
+.more_live_matches_container {
+    height: 100%;
+    max-width: 100% !important;
+    height:100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
+
+    .main_container_match_details {
+        height: calc(100% - 140px);
+    }
 
 
 .container {
@@ -232,9 +242,27 @@ table, tbody, tr {
             padding: 12px;
         }
 
-#competitions_selection {
-    border-bottom: 1px solid dimgray;
+#more_live_matches_menu {
+    background-color: rgba(24, 24, 24, 0.92);
+    position: fixed;
+    max-width: 1000px !important;
+    top: 0px;
+    z-index: 1;
 }
+
+.more_live_matches_content {
+    margin: auto;
+    max-width: 600px;
+    padding: 0 10px 20px 10px;
+    border: 1px solid #404040;
+    border-radius: 15px;
+    margin-top: 80px;
+    background-color: rgba(24, 24, 24, 1);
+}
+
+    #competitions_selection {
+        border-bottom: 1px solid dimgray;
+    }
 
 #horizontal_menu {
     white-space: nowrap;
@@ -393,7 +421,7 @@ table, tbody, tr {
     cursor: pointer;
 }
 
-    .match_item:hover, .match_item_mobile:hover, .match_item_same_day:hover {
+    .match_item:hover, .match_item_mobile:hover, .match_details_item:hover, .match_item_same_day:hover {
         background-color: rgba(92, 92, 92, 0.7);
         color: white;
     }

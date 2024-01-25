@@ -29,14 +29,14 @@ namespace DystirWeb.Controllers
                 {
                     matchesCount = GetMatchesListForPortal().Count;
                 }
-                value = String.Format("{0}:{1}", GetMatchesList().FirstOrDefault()?.MatchTypeName ?? "Competition", matchesCount.ToString());
+                value = string.Format("{0}:{1}", GetMatchesList().FirstOrDefault()?.MatchTypeName ?? "Competition", matchesCount.ToString());
             }
             return Ok(value);
         }
 
         private List<Matches> GetMatchesList()
         {
-            var fromDate = DateTime.Now.AddHours(1).Date.AddDays(0);
+            var fromDate = DateTime.UtcNow.Date.AddDays(0);
             var toDate = fromDate.AddDays(0);
             var matchesList = _dystirService.AllMatches?
                 .Where(x => x.Time.Value.Date >= fromDate && x.Time.Value.Date <= toDate)
@@ -47,7 +47,7 @@ namespace DystirWeb.Controllers
 
         private List<Matches> GetMatchesListForPortal()
         {
-            var fromDate = DateTime.Now.AddHours(1).Date.AddDays(0);
+            var fromDate = DateTime.UtcNow.Date.AddDays(0);
             var toDate = fromDate.AddDays(0);
             var matchesList = _dystirService.AllMatches?
                 .Where(x => x.Time.Value.Date >= fromDate
