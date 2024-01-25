@@ -1,9 +1,11 @@
-﻿using DystirWeb.Shared;
+﻿using System;
+using DystirWeb.Shared;
 public class MatchFullTime
 {
     public int MatchID { get; private set; }
     public string HomeTeam { get; private set; }
     public string AwayTeam { get; private set; }
+    public DateTime TimeUTC { get; private set; }
     public string Location { get; private set; }
     public string HomeTeamScore { get; private set; }
     public string AwayTeamScore { get; private set; }
@@ -20,6 +22,7 @@ public class MatchFullTime
         MatchID = match.MatchID;
         HomeTeam = $"{match.HomeTeam} {match.HomeSquadName} {match.HomeCategoriesName}".Trim();
         AwayTeam = $"{match.AwayTeam} {match.AwaySquadName} {match.AwayCategoriesName}".Trim();
+        TimeUTC = match.Time ?? new DateTime();
         Location = match.Location;
         HomeTeamScore = ((match.StatusID ?? 0) == 12 || (match.StatusID ?? 0) == 13) ? ((match.HomeTeamScore ?? 0) - (match.HomeTeamPenaltiesScore ?? 0)).ToString() : "";
         AwayTeamScore = ((match.StatusID ?? 0) == 12 || (match.StatusID ?? 0) == 13) ? ((match.AwayTeamScore ?? 0) - (match.AwayTeamPenaltiesScore ?? 0)).ToString() : "";
