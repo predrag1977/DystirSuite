@@ -4,6 +4,7 @@ import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from '
 import { Link } from 'react-router-dom';
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaArrowsRotate } from "react-icons/fa6";
+import MatchDate from '../extentions/matchDate';
 import MatchTimeAndColor from '../extentions/matchTimeAndColor';
 import '../css/nav-menu.css';
 
@@ -14,34 +15,16 @@ export class HeaderMatchDetails extends Component {
 
     constructor(props) {
         super(props);
-        this.matchTimeAndColor = new MatchTimeAndColor();
-        this.state = {
-            matchTime: this.matchTimeAndColor.getMatchTime(this.props.match),
-            statusColor: this.matchTimeAndColor.getStatusColor(this.props.match?.statusID)
-        };
-    }
-
-    componentDidMount() {
-        document.body.addEventListener('onMatchTime', this.onMatchTime.bind(this));
-    }
-
-    componentWillUnmount() {
-        document.body.removeEventListener('onMatchTime', this.onMatchTime.bind(this));
-    }
-
-    onMatchTime() {
-        var matchTime = this.matchTimeAndColor.getMatchTime(this.props.match);
-        this.setState({
-            matchTime: matchTime,
-            statusColor: this.matchTimeAndColor.getStatusColor(this.props.match?.statusID)
-        });
+        
     }
 
     render() {
         const match = this.props.match;
-        var matchTime = this.matchTimeAndColor.getMatchTime(this.props.match);
-        this.state.matchTime = matchTime;
-        this.state.statusColor = this.matchTimeAndColor.getStatusColor(match?.statusID);
+        let matchDateTime = match?.time != null ? new MatchDate(Date.parse(match.time)).toDateTimeString() : "";
+        let matchLocation = (match?.location ?? "").trim();
+        let hasMatchLocation = (matchLocation !== undefined && matchLocation !== "") ? " - " : "";
+
+        
         return (
             <div id="header" className="navbar">
                 <div id="header_match_details_wrapper">
@@ -56,24 +39,21 @@ export class HeaderMatchDetails extends Component {
                                 <td style={{verticalAlign: "middle"}}>
                                     <table className="w-100 text-center">
                                         <tbody>
-                                            <tr style={{ fontSize: "18px" }}>
+                                            <tr style={{ fontSize: "1.1rem" }}>
                                                 <td className="match_item_team_name text-end">{match?.homeTeam}</td>
                                                 <td style={{ width: "20px" }}>-</td>
                                                 <td className="match_item_team_name text-start">{match?.awayTeam}</td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <table className="w-100 text-center">
+                                    <table className="w-100" >
                                         <tbody>
-                                            <tr style={{ fontSize: "16px" }}>
-                                                <td></td>
-                                                <td className="match_time" style={{ whiteSpace: 'nowrap' }}>
+                                            <tr style={{ fontSize: "0.9rem" }}>
+                                                <td className="match_info text-center" style={{ paddingTop: "4px" }}>
                                                 {
-                                                    match?.statusID < 14 &&
-                                                    <div style={{ color: this.state.statusColor }}>{this.state.matchTime}</div>
+                                                    matchDateTime + hasMatchLocation + matchLocation
                                                 }
                                                 </td>
-                                                <td></td>
                                             </tr>
                                         </tbody>
                                     </table>
