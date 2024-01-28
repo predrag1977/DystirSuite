@@ -49,8 +49,7 @@ namespace DystirWeb.Services
         public async Task LoadDataAsync()
         {
             AllMatchesDetails = new ObservableCollection<MatchDetails>();
-            var allMatchesTask = GetAllMatchesAsync();
-            await Task.WhenAll(allMatchesTask);
+            await GetAllMatchesAsync();
         }
 
         public async Task GetAllMatchesAsync()
@@ -64,7 +63,8 @@ namespace DystirWeb.Services
             var allPlayersOfMatchesTask = GetPlayersOfMatchesAsync();
             var allCompetitionTask = GetAllCompetitionAsync();
             var allSponsorsTask = GetAllSponsorsAsync();
-            await Task.WhenAll(allTeamsTask, allPlayersOfMatchesTask, allCompetitionTask, allSponsorsTask);
+            var allRequestorsTask = GetAllRequestorsAsync();
+            await Task.WhenAll(allTeamsTask, allPlayersOfMatchesTask, allCompetitionTask, allSponsorsTask, allRequestorsTask);
             foreach (Matches match in AllMatches)
             {
                 SetTeamLogoInMatch(match);

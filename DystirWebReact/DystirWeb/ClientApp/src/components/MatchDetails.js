@@ -83,7 +83,6 @@ export class MatchDetails extends Component {
     }
 
     onClickTab() {
-        console.log("TEST");
         let selectedTabParameter = "";
         const lenght = window.location.pathname.split("/").length;
         if (lenght > 3) {
@@ -96,13 +95,15 @@ export class MatchDetails extends Component {
         this.setState({
             selectedTab: selectedTabParameter
         });
-        var mainContainer = document.getElementsByClassName('main_container_match_details')[0];
-        if (mainContainer !== undefined) {
-            mainContainer.scrollTo(0, 0);
-        }
+        this.scrollToTop();
+        
+        this.setState({
+            collapsed: true
+        });
     }
 
     onMoreLiveMatchClick(e) {
+        this.scrollToTop();
         this.setState({
             collapsed: !this.state.collapsed
         });
@@ -115,6 +116,22 @@ export class MatchDetails extends Component {
         });
     }
 
+    onLiveMatchClick(matchID) {
+        this.onCloseMoreLiveMatches();
+        this.setState({
+            isLoading: true
+        });
+        this.scrollToTop();
+        dystirWebClientService.loadMatchDetailsDataAsync(matchID, this.state.selectedTab);
+    }
+
+    scrollToTop() {
+        var mainContainer = document.getElementsByClassName('main_container_match_details')[0];
+        if (mainContainer !== undefined) {
+            mainContainer.scrollTo(0, 0);
+        }
+    }
+
     render() {
         var eventsOfMatch = this.state.match?.matchDetails?.eventsOfMatch ?? [];
         var playersOfMatch = this.state.match?.matchDetails?.playersOfMatch ?? [];
@@ -123,30 +140,26 @@ export class MatchDetails extends Component {
         var liveMatches = this.state.match?.matchDetails?.matches ?? [];
         var liveMatchesGroup = liveMatches.groupBy(match => { return match.matchTypeName ?? "" });
         let contents =
-            <div onClick={() => { this.onCloseMoreLiveMatches() }}>
+            <>
                 <MatchDetailsTabs onClickTab={() => this.onClickTab()}
                     onMoreLiveMatchClick={(e) => this.onMoreLiveMatchClick(e)}
                     match={this.state.match}
                     liveMatches={liveMatches}
                     selectedTab={this.state.selectedTab} />
                 <div className="main_container_match_details">
-                    <div id="more_live_matches_menu" className={this.state.collapsed ? "collapse" : ""} >
-                        <div className="more_live_matches_container">
-                            <div className="more_live_matches_content">
-                                {
-                                    Object.keys(liveMatchesGroup).map(group =>
-                                        <div key={group}>
-                                            <div className="match-group-competition-name text-start">{group}</div>
-                                            {
-                                                liveMatchesGroup[group].map(match =>
-                                                    <LiveMatchView key={match.matchID} match={match} />
-                                                )
-                                            }
-                                        </div>
-                                    )
-                                }
-                            </div>
-                        </div>
+                    <div className={this.state.collapsed ? "collapse" : ""} style={{padding: "0 50px"}} >
+                        {
+                            Object.keys(liveMatchesGroup).map(group =>
+                                <div key={group}>
+                                    <div  className="match-group-competition-name text-start">{group}</div>
+                                    {
+                                        liveMatchesGroup[group].map(match =>
+                                            <LiveMatchView key={match.matchID} match={match} onLiveMatchClick={(matchID) => this.onLiveMatchClick(matchID)} />
+                                        )
+                                    }
+                                </div>
+                            )
+                        }
                     </div>
                     <MatchDetailsInfo match={this.state.match} />
                     {
@@ -173,7 +186,7 @@ export class MatchDetails extends Component {
                         </>
                     }
                 </div>
-            </div>
+            </>
         return (
             <LayoutMatchDetails match={this.state.match}>
             {
