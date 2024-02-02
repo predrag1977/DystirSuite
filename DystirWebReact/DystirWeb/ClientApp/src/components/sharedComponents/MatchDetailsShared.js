@@ -12,6 +12,7 @@ import { MatchDetailsInfo } from './../MatchDetailsInfo';
 import { LiveMatchView } from "../views/LiveMatchView";
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { BsCaretLeftFill, BsCaretRightFill } from "react-icons/bs";
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
@@ -20,6 +21,9 @@ export class MatchDetailsShared extends Component {
 
     constructor(props) {
         super(props);
+
+
+
         let matchDetailsData = dystirWebClientService.state.matchDetailsData;
         const lenght = window.location.pathname.split("/").length;
         matchDetailsData.matchId = window.location.pathname.split("/")[3];
@@ -135,6 +139,23 @@ export class MatchDetailsShared extends Component {
                     selectedTab={this.state.selectedTab}
                     page={page} />
                 <div className="main_container_match_details">
+                    <div>
+                        <div id="scroll_button_left" onClick={() => this.scrollOnClick('left')}>
+                            <BsCaretLeftFill />
+                        </div>
+                        <div id="match_details_horizontal_menu">
+                            <div id="match_details_horizontal_menu_wrapper">
+                                {
+                                    liveMatches.map(match =>
+                                        <LiveMatchView key={match.matchID} match={match} onClick={() => this.onLiveMatchClick(match.matchID)} />
+                                    )
+                                }
+                            </div>
+                        </div>
+                        <div id="scroll_button_right" onClick={() => this.scrollOnClick('right')}>
+                            <BsCaretRightFill />
+                        </div>
+                    </div>
                     <MatchDetailsInfo match={this.state.match} />
                     {
                         this.state.isLoading &&

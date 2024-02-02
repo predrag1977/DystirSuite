@@ -66,11 +66,11 @@ const AppRoutes = [
     },
     {
         path: '/info/matchdetails/*',
-        element: <MatchDetailsShared />
+        element: <MatchDetails />
     },
     {
         path: '/portal/matchdetails/*',
-        element: <MatchDetailsShared />
+        element: <MatchDetails />
     }
 ];
 

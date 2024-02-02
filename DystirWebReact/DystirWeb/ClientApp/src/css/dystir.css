@@ -34,7 +34,6 @@ body {
 }
 
 .field_background {
-    background-color: rgba(24, 24, 24, 0.85);
     padding: 7px 0;
 }
 
@@ -79,6 +78,7 @@ main {
 
     .main_container_match_details {
         height: calc(100% - 140px);
+        top:140px;
     }
 
 
@@ -92,11 +92,21 @@ main {
     margin: 0 auto;
 }
 
-#days_selection, #competitions_selection {
+#live_matches_container {
     height: 60px;
     background-color: rgba(24, 24, 24, 0.85);
+    border-bottom: 1px solid #404040;
+    user-select: none;
+}
+
+#days_selection, #competitions_selection, #tabs_details_selection {
+    height: 60px;
     user-select: none;
     padding: 0 10px;
+}
+
+#days_selection, #competitions_selection {
+    background-color: rgba(24, 24, 24, 0.85);
 }
 
 .border-bottom {
@@ -264,7 +274,7 @@ table, tbody, tr {
         border-bottom: 1px solid dimgray;
     }
 
-#horizontal_menu {
+#horizontal_menu, #match_details_horizontal_menu {
     white-space: nowrap;
     overflow: auto;
     float: left;
@@ -272,11 +282,15 @@ table, tbody, tr {
     text-align: center;
 }
 
-    #horizontal_menu div {
-        display: inline-block;
-    }
+#horizontal_menu div {
+    display: inline-block;
+}
 
-#horizontal_menu_wrapper a {
+#match_details_horizontal_menu_wrapper {
+    display: inline;
+}
+
+#horizontal_menu_wrapper a, #match_details_horizontal_menu_wrapper a {
     padding: 20px 15px 0 15px;
 }
 
@@ -427,12 +441,13 @@ table, tbody, tr {
     }
 
 .match_item_same_day {
-    padding: 2px;
-    border-radius: 3px;
-    margin: 0;
-    font-size: 0.7rem;
+    padding: 2px 5px;
+    border-radius: 10px;
+    margin: 2px;
+    font-size: 10px;
     width: calc(20% - 5px);
     display: inline-block;
+    height:57px;
 }
 
 .content_table {
@@ -468,7 +483,6 @@ table, tbody, tr {
     overflow: hidden;
     max-width: 1px;
     text-align: left;
-    padding: 0 5px;
 }
 
 .match_item_team_name {
