@@ -97,7 +97,9 @@ export class InfoMatches extends Component {
         </>
         return (
             <LayoutShared>
+            {
                 contents
+            } 
             </LayoutShared>
         );
     }

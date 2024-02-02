@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ThreeDots } from 'react-loading-icons';
 import { DystirWebClientService, PageName, TabName } from '../services/dystirWebClientService';
 import { LayoutMatchDetails } from './layouts/LayoutMatchDetails';
+import { LayoutMatchDetailsShared } from './layouts/LayoutMatchDetailsShared';
 import { Lineups } from './Lineups';
 import { SummaryTab } from './SummaryTab';
 import { CommentaryTab } from './CommentaryTab';
@@ -13,6 +14,7 @@ import { LiveMatchView } from "./views/LiveMatchView";
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import MatchDate from '../extentions/matchDate';
+import { BsCaretLeftFill, BsCaretRightFill } from "react-icons/bs";
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
@@ -21,11 +23,17 @@ export class MatchDetails extends Component {
 
     constructor(props) {
         super(props);
+        this.url = window.location.href.toLowerCase();
+        this.parameterIndex = 3;
+        if (this.url.includes("info") || this.url.includes("portal")) {
+            this.parameterIndex = 4
+        }
+
         let matchDetailsData = dystirWebClientService.state.matchDetailsData;
         const lenght = window.location.pathname.split("/").length;
-        matchDetailsData.matchId = window.location.pathname.split("/")[2];
-        if (lenght > 3) {
-            matchDetailsData.selectedTab = window.location.pathname.split("/")[3];
+        matchDetailsData.matchId = window.location.pathname.split("/")[this.parameterIndex - 1];
+        if (lenght > this.parameterIndex) {
+            matchDetailsData.selectedTab = window.location.pathname.split("/")[this.parameterIndex];
         }
         if (matchDetailsData.selectedTab.length == 0) {
             matchDetailsData.selectedTab = TabName.SUMMARY;
@@ -52,6 +60,7 @@ export class MatchDetails extends Component {
         document.body.addEventListener('onConnected', this.onConnected.bind(this));
         document.body.addEventListener('onDisconnected', this.onDisconnected.bind(this));
         document.body.addEventListener('onUpdateMatchDetails', this.onReloadData.bind(this));
+        window.addEventListener('resize', this.scrollButtonVisibility);
     }
 
     componentWillUnmount() {
@@ -59,6 +68,11 @@ export class MatchDetails extends Component {
         document.body.removeEventListener('onConnected', this.onConnected.bind(this));
         document.body.removeEventListener('onDisconnected', this.onDisconnected.bind(this));
         document.body.removeEventListener('onUpdateMatchDetails', this.onReloadData.bind(this));
+        window.removeEventListener('resize', this.scrollButtonVisibility);
+    }
+
+    componentDidUpdate() {
+        this.scrollButtonVisibility();
     }
 
     onReloadData() {
@@ -85,8 +99,8 @@ export class MatchDetails extends Component {
     onClickTab() {
         let selectedTabParameter = "";
         const lenght = window.location.pathname.split("/").length;
-        if (lenght > 3) {
-            selectedTabParameter = window.location.pathname.split("/")[3];
+        if (lenght > this.parameterIndex) {
+            selectedTabParameter = window.location.pathname.split("/")[this.parameterIndex];
         }
         if (selectedTabParameter.length == 0) {
             selectedTabParameter = TabName.SUMMARY
@@ -133,35 +147,45 @@ export class MatchDetails extends Component {
     }
 
     render() {
+        let page = ""
+        if (this.url.includes("info")) {
+            page = "info";
+        } else if (this.url.includes("portal")) {
+            page = "portal";
+        }
         var eventsOfMatch = this.state.match?.matchDetails?.eventsOfMatch ?? [];
         var playersOfMatch = this.state.match?.matchDetails?.playersOfMatch ?? [];
         var statistic = this.state.match?.matchDetails?.statistic ?? null;
         var standings = this.state.match?.matchDetails?.standings ?? [];
         var liveMatches = this.state.match?.matchDetails?.matches ?? [];
-        var liveMatchesGroup = liveMatches.groupBy(match => { return match.matchTypeName ?? "" });
         let contents =
             <>
-                <MatchDetailsTabs onClickTab={() => this.onClickTab()}
-                    onMoreLiveMatchClick={(e) => this.onMoreLiveMatchClick(e)}
-                    match={this.state.match}
-                    liveMatches={liveMatches}
-                    selectedTab={this.state.selectedTab} />
-                <div className="main_container_match_details">
-                    <div className={this.state.collapsed ? "collapse" : ""} style={{padding: "0 50px"}} >
-                        {
-                            Object.keys(liveMatchesGroup).map(group =>
-                                <div key={group}>
-                                    <div  className="match-group-competition-name text-start">{group}</div>
-                                    {
-                                        liveMatchesGroup[group].map(match =>
-                                            <LiveMatchView key={match.matchID} match={match} onLiveMatchClick={(matchID) => this.onLiveMatchClick(matchID)} />
-                                        )
-                                    }
-                                </div>
-                            )
-                        }
+                <div id="live_matches_container">
+                    <div id="scroll_button_left" onClick={() => this.scrollOnClick('left')}>
+                        <BsCaretLeftFill />
                     </div>
+                    <div id="match_details_horizontal_menu">
+                        <div id="match_details_horizontal_menu_wrapper">
+                            {
+                                liveMatches.map(match =>
+                                    <div key={match.matchID} className="match_item_same_day" onClick={() => this.onLiveMatchClick(match.matchID)}>
+                                        <LiveMatchView match={match} page={page} />
+                                    </div>
+                                )
+                            }
+                        </div>
+                    </div>
+                    <div id="scroll_button_right" onClick={() => this.scrollOnClick('right')}>
+                        <BsCaretRightFill />
+                    </div>
+                </div>
+                <div className="main_container_match_details">
                     <MatchDetailsInfo match={this.state.match} />
+                    <MatchDetailsTabs onClickTab={() => this.onClickTab()}
+                        onMoreLiveMatchClick={(e) => this.onMoreLiveMatchClick(e)}
+                        match={this.state.match}
+                        selectedTab={this.state.selectedTab}
+                        page={page} />
                     {
                         this.state.isLoading &&
                         <ThreeDots className="loading-spinner-parent" fill='dimGray' height="50" width="50" />
@@ -188,6 +212,12 @@ export class MatchDetails extends Component {
                 </div>
             </>
         return (
+            (this.url.includes("info") || this.url.includes("portal")) &&
+            <LayoutMatchDetailsShared match={this.state.match}>
+            {
+                contents
+            }
+            </LayoutMatchDetailsShared> ||
             <LayoutMatchDetails match={this.state.match}>
             {
                 contents
@@ -212,5 +242,37 @@ export class MatchDetails extends Component {
             .sort((a, b) => a.matchID - b.matchID)
             .sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)))
             .sort((a, b) => a.matchTypeID - b.matchTypeID);
+    }
+
+    scrollButtonVisibility() {
+        var position = "";
+        var horizontalMenu = document.getElementById('match_details_horizontal_menu' + position);
+        var horizontalMenuScroll = document.getElementById('match_details_horizontal_menu_wrapper' + position);
+        if (horizontalMenu == null) {
+            return;
+        }
+        var scrollButtonLeft = document.getElementById('scroll_button_left' + position);
+        var scrollButtonRight = document.getElementById('scroll_button_right' + position);
+
+        console.log(horizontalMenu.offsetWidth);
+        console.log(horizontalMenuScroll.offsetWidth);
+
+        if (horizontalMenu.offsetWidth >= horizontalMenuScroll.offsetWidth) {
+            scrollButtonLeft.style.visibility = "hidden";
+            scrollButtonRight.style.visibility = "hidden";
+        }
+        else {
+            scrollButtonLeft.style.visibility = "visible";
+            scrollButtonRight.style.visibility = "visible";
+        }
+    }
+
+    scrollOnClick(direction) {
+        var horizontalMenu = document.getElementById('match_details_horizontal_menu');
+        if (direction == 'left') {
+            horizontalMenu.scrollLeft -= horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
+        } else {
+            horizontalMenu.scrollLeft += horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
+        }
     }
 }

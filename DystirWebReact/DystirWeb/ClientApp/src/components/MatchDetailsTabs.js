@@ -16,13 +16,10 @@ export class MatchDetailsTabs extends Component {
         var liveMatchCount = (this.props.liveMatches ?? []).length;
         let matchID = match?.matchID != null ? match.matchID : 0;
         const selectedTab = this.props.selectedTab !== undefined && this.props.selectedTab !== "" ? this.props.selectedTab : TabName.SUMMARY;
-        let page = "/" + this.props.page;
-        if (this.props.page === undefined) {
-            page = "";
-        }
+        const page = this.props.page == "" ? "" : "/" + this.props.page;
         let fullUrl = page + "/matchdetails/" + matchID + "/";
         return (
-            <div id="days_selection">
+            <div id="tabs_details_selection">
                 <div id="horizontal_menu_days">
                     <div className={"tab " + (selectedTab == TabName.SUMMARY ? "selected_tab" : "")}
                         onClick={() => this.props.onClickTab()}>
