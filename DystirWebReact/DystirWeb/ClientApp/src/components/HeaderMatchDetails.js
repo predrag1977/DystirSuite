@@ -20,10 +20,6 @@ export class HeaderMatchDetails extends Component {
 
     render() {
         const match = this.props.match;
-        let matchDateTime = match?.time != null ? new MatchDate(Date.parse(match.time)).toDateTimeString() : "";
-        let matchLocation = (match?.location ?? "").trim();
-        let hasMatchLocation = (matchLocation !== undefined && matchLocation !== "") ? " - " : "";
-
         
         return (
             <div id="header" className="navbar">
@@ -46,17 +42,7 @@ export class HeaderMatchDetails extends Component {
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <table className="w-100" >
-                                        <tbody>
-                                            <tr style={{ fontSize: "0.9rem" }}>
-                                                <td className="match_info text-center" style={{ paddingTop: "4px" }}>
-                                                {
-                                                    matchDateTime + hasMatchLocation + matchLocation
-                                                }
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    
                                 </td>
                                 <td style={{ width: '50px' }}>
                                     <div id="back_button" onClick={() => window.location.reload(false)}>

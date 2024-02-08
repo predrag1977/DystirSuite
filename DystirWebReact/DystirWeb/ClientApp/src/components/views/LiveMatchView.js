@@ -82,9 +82,9 @@ export class LiveMatchView extends Component {
                                         </td>
                                     </>
                                     ||
-                                    <>
-                                        <td className="score_match_view">-</td>
-                                    </>
+                                    <td style={{ whiteSpace: "nowrap", width: "0px" }}>
+                                        <div className="score_match_view">-</div>
+                                    </td>
                                 }
                             </tr>
                         </tbody>
@@ -122,9 +122,9 @@ export class LiveMatchView extends Component {
                                         </td>
                                     </>
                                     ||
-                                    <>
-                                        <td className="score_match_view">-</td>
-                                    </>
+                                    <td style={{ whiteSpace: "nowrap", width: "0px" }}>
+                                        <div className="score_match_view">-</div>
+                                    </td>
                                 }
                             </tr>
                         </tbody>
