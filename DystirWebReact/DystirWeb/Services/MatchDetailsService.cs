@@ -1,4 +1,5 @@
-﻿using DystirWeb.DystirDB;
+﻿using System.Text.RegularExpressions;
+using DystirWeb.DystirDB;
 using DystirWeb.Shared;
 
 namespace DystirWeb.Services
@@ -32,6 +33,7 @@ namespace DystirWeb.Services
                 {
                     var eventsOfMatch = GetEventsOfMatches(matchID);
                     var playersOfMatch = GetPlayersOfMatches(matchID);
+                    
                     matchDetails = new MatchDetails()
                     {
                         MatchDetailsID = matchID,
@@ -42,11 +44,21 @@ namespace DystirWeb.Services
                         .ThenBy(x => x.EventMinute)
                         .ThenBy(x => x.EventOfMatchId).ToList(),
                         PlayersOfMatch = playersOfMatch?.Where(x => x.PlayingStatus != 3).ToList(),
-                        Standings = _standingService.GetStandings().ToList(),
-                        Matches = _dystirService.AllMatches.Where(x => x.StatusID < 14).ToList()
+                        
                     };
+                    var findMatch = _dystirService.AllMatches.FirstOrDefault(x => x.MatchID == matchID);
+                    if (findMatch != null)
+                    {
+                        _dystirService.AllMatches.Remove(findMatch);
+                    }
+                    _dystirService.AllMatches.Add(matchDetails.Match);
+                    matchDetails.Standings = _standingService.GetStandings().ToList();
+                    matchDetails.Matches = _dystirService.AllMatches.Where(x =>
+                        x.Time > DateTime.UtcNow.AddDays(-2) &&
+                        x.Time < DateTime.UtcNow.AddDays(2) &&
+                        x.StatusID < 14
+                    ).ToList();
                     matchDetails.Statistic = _matchStatisticService.GetStatistic(matchDetails.EventsOfMatch, matchDetails.Match);
-                    _dystirService.UpdateDataAsync(matchDetails);
                 }
                 return matchDetails;
             }

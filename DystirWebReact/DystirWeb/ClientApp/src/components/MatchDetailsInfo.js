@@ -48,6 +48,9 @@ export class MatchDetailsInfo extends Component {
         this.state.matchTime = matchTime;
         this.state.statusColor = this.matchTimeAndColor.getStatusColor(match?.statusID);
 
+        let matchLocation = (match?.location ?? "").trim();
+        let hasMatchLocation = (matchLocation !== undefined && matchLocation !== "") ? " - " : "";
+
         let contents =
         <>
             <div className="field_background">
@@ -104,10 +107,21 @@ export class MatchDetailsInfo extends Component {
                 </table>
                 <table className="w-100">
                     <tbody>
-                        <tr style={{ fontSize: "0.9rem" }}>
-                            <td className="match_info text-center" style={{ paddingTop: "4px" }}>
+                        <tr style={{ fontSize: "16px" }}>
+                            <td className="match_info text-center" style={{ paddingTop: "2px" }}>
                             {
-                                matchTypeName + hasMatchTypeName + matchRoundName
+                                matchDateTime
+                            }
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table className="w-100" >
+                    <tbody>
+                        <tr style={{ fontSize: "16px" }}>
+                            <td className="match_info text-center" style={{ paddingTop: "2px", whiteSpace: "normal" }}>
+                            {
+                                matchTypeName + hasMatchTypeName + matchRoundName + hasMatchLocation + matchLocation
                             }
                             </td>
                         </tr>

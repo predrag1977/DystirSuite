@@ -77,8 +77,8 @@ main {
 }
 
     .main_container_match_details {
-        height: calc(100% - 140px);
-        top:140px;
+        height: calc(100% - 80px);
+        top:80px;
     }
 
 
@@ -97,6 +97,7 @@ main {
     background-color: rgba(24, 24, 24, 0.85);
     border-bottom: 1px solid #404040;
     user-select: none;
+    visibility: hidden;
 }
 
 #days_selection, #competitions_selection, #tabs_details_selection {
@@ -314,7 +315,7 @@ table, tbody, tr {
 
 #back_button {
     margin: 0;
-    padding-top: 3px;
+    padding-top: 2px;
     font-size: 20px;
     visibility: visible;
     height: 50px;

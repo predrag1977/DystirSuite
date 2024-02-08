@@ -60,7 +60,7 @@ export class PlayerView extends Component {
                                 }
 
                                 {
-                                    player.subIn > -1 &&
+                                    (player.subIn ?? -1) > -1 &&
                                     <>
                                         <span className="sub_in">&#9650;</span>
                                         <span className="player_statistic_lineups_text">{player.subIn}'</span>
@@ -68,7 +68,7 @@ export class PlayerView extends Component {
                                 }
 
                                 {
-                                    player.subOut > -1 &&
+                                    (player.subOut ?? -1) > -1 &&
                                     <>
                                         <span className="sub_out">&#9660;</span>
                                         <span className="player_statistic_lineups_text">{player.subOut}'</span>

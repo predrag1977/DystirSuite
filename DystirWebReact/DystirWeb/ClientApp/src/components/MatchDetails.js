@@ -42,6 +42,7 @@ export class MatchDetails extends Component {
         let match = dystirWebClientService.state.matchesData.matches.find((m) => m.matchID == matchDetailsData.matchId);
 
         this.state = {
+            matches: matchDetailsData.matches,
             match: match,
             matchId: matchDetailsData.matchId,
             selectedTab: matchDetailsData.selectedTab,
@@ -78,6 +79,7 @@ export class MatchDetails extends Component {
     onReloadData() {
         let matchDetailsData = dystirWebClientService.state.matchDetailsData;
         this.setState({
+            matches: matchDetailsData.matches,
             match: matchDetailsData.match,
             matchId: matchDetailsData.matchId,
             selectedTab: matchDetailsData.selectedTab,
@@ -157,7 +159,15 @@ export class MatchDetails extends Component {
         var playersOfMatch = this.state.match?.matchDetails?.playersOfMatch ?? [];
         var statistic = this.state.match?.matchDetails?.statistic ?? null;
         var standings = this.state.match?.matchDetails?.standings ?? [];
-        var liveMatches = this.state.match?.matchDetails?.matches ?? [];
+        var liveMatches = this.filterMatches(this.state.matches ?? []);
+        let noLiveMatches = liveMatches.length == 0 ||
+            (liveMatches.length == 1 && liveMatches[0].matchID == this.state.match.matchID) ||
+            (this.state.match?.statusID ?? 0) > 13;
+        if (noLiveMatches) {
+            liveMatches = [];
+        }
+        this.liveMatchesHeight(noLiveMatches);
+
         let contents =
             <>
                 <div id="live_matches_container">
@@ -166,13 +176,13 @@ export class MatchDetails extends Component {
                     </div>
                     <div id="match_details_horizontal_menu">
                         <div id="match_details_horizontal_menu_wrapper">
-                            {
-                                liveMatches.map(match =>
-                                    <div key={match.matchID} className="match_item_same_day" onClick={() => this.onLiveMatchClick(match.matchID)}>
-                                        <LiveMatchView match={match} page={page} />
-                                    </div>
-                                )
-                            }
+                        {
+                            liveMatches.map(match =>
+                                <div key={match.matchID} className="match_item_same_day" onClick={() => this.onLiveMatchClick(match.matchID)}>
+                                    <LiveMatchView match={match} page={page} />
+                                </div>
+                            )
+                        }
                         </div>
                     </div>
                     <div id="scroll_button_right" onClick={() => this.scrollOnClick('right')}>
@@ -226,18 +236,33 @@ export class MatchDetails extends Component {
         );
     }
 
+    liveMatchesHeight(noLiveMatches) {
+        console.log(noLiveMatches);
+        var liveMatchesContainerID = document.getElementById('live_matches_container');
+        if (liveMatchesContainerID !== null && liveMatchesContainerID !== undefined) {
+            liveMatchesContainerID.style.visibility = noLiveMatches ? "hidden" : "visible";
+        }
+        var fromTop = noLiveMatches ? "80px" : "140px";
+        var matchDetailsID = document.getElementsByClassName('main_container_match_details')[0];
+        if (matchDetailsID !== undefined) {
+            matchDetailsID.style.top = fromTop;
+            matchDetailsID.style.height = "calc(100% - " + fromTop + ")";
+        }
+    }
+
     filterMatches(matches) {
-        
+        console.log(matches)
         var now = new MatchDate();
         now.setHours(0, 0, 0, 0);
 
-        var fromDate = now.addDays(0);
-        var toDate = now.addDays(1);
+        var fromDate = now.addDays(-1);
+        var toDate = now.addDays(2);
 
         var list = matches.filter((match) =>
-            (new MatchDate(Date.parse(match.time))).dateLocale() > MatchDate.parse(fromDate)
-            && (new MatchDate(Date.parse(match.time))).dateLocale() < MatchDate.parse(toDate)
+            (new MatchDate(Date.parse(match.time))).dateLocale() > MatchDate.parse(fromDate) &&
+            (new MatchDate(Date.parse(match.time))).dateLocale() < MatchDate.parse(toDate)
         );
+
         return list
             .sort((a, b) => a.matchID - b.matchID)
             .sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)))
@@ -253,9 +278,6 @@ export class MatchDetails extends Component {
         }
         var scrollButtonLeft = document.getElementById('scroll_button_left' + position);
         var scrollButtonRight = document.getElementById('scroll_button_right' + position);
-
-        console.log(horizontalMenu.offsetWidth);
-        console.log(horizontalMenuScroll.offsetWidth);
 
         if (horizontalMenu.offsetWidth >= horizontalMenuScroll.offsetWidth) {
             scrollButtonLeft.style.visibility = "hidden";

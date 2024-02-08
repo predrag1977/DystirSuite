@@ -232,7 +232,7 @@ export class DystirWebClientService {
         var isMatchIdEqual = this.state.matchDetailsData.matchId == match?.matchID;
 
         this.state.matchDetailsData = {
-            matches: this.state.matchesData.matches,
+            matches: matchDetails.matches,
             match: isMatchIdEqual ? match : this.state.matchDetailsData.match,
             matchId: isMatchIdEqual ? match?.matchID : this.state.matchDetailsData.matchId,
             selectedTab: this.state.matchDetailsData.selectedTab
