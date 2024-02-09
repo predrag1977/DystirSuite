@@ -1,0 +1,305 @@
+﻿@import url("dystir.css");
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+
+html, body {
+    font-family: Source, sans-serif;
+    background-color: white;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    min-width: 370px;
+}
+
+body {
+    color: black;
+    overflow: hidden;
+    background-color: white;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: text;
+    background-image: none;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    background-position: center;
+    visibility: visible;
+}
+
+main {
+    margin: 0 auto;
+}
+
+.main_container, .main_container_match_details, .main_container_shared {
+    background-color: white;
+}
+
+.main_container_shared {
+    height: calc(100% - 80px);
+}
+
+.container {
+    padding: 0;
+}
+
+.field_background {
+    background-color: white;
+}
+
+#header {
+    background-color: white;
+    border-bottom: 1px solid lightgray;
+}
+
+.goal_icon, .owngoal_icon {
+    color: white;
+}
+
+.line {
+    border-bottom: 1px solid lightgray;
+}
+
+#main_share {
+    position: absolute;
+    background-color: #f9fafb;
+    height: 100%;
+    width: 100%;
+}
+
+#background_share {
+    position: absolute;
+    background-color: #f9fafb;
+    height: 100%;
+    width: 100%;
+}
+
+#header_container_share {
+    background-color: white;
+    width: 100%;
+    height: 80px;
+    margin: 0 auto;
+    border-bottom: 1px solid lightgray;
+    min-width: 290px;
+}
+
+#container_share {
+    background-color: white;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+#days_selection, #competitions_selection {
+    background-color: white;
+}
+
+#horizontal_menu_days {
+    background-color: white;
+    border-bottom: 1px solid lightgray;
+}
+
+#live_matches_container {
+    background-color: white;
+    border-bottom: 1px solid lightGray;
+}
+
+#competitions_selection {
+    border-top: 0px solid lightgray;
+    border-bottom: 0px solid lightgray;
+    margin: 0;
+    height: 50px;
+}
+
+#scroll_button_left, #scroll_button_right, #back_button {
+    background-color: lightgray;
+    color: gray;
+    margin-top:5px;
+}
+
+    #scroll_button_left:hover, #scroll_button_right:hover, #back_button:hover {
+        background-color: rgba(211,211,211,0.7);
+    }
+
+#selected_match_details {
+    border-top: 0px solid lightgray;
+}
+
+.match_item, .match_item_mobile {
+    background-color: white;
+    margin: 0 5px 5px 5px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    color: black;
+    cursor: pointer;
+    border: 1px solid lightGray;
+}
+
+    .match_item:hover, .match_item_mobile:hover {
+        background-color: white;
+        color: black;
+    }
+
+.match_details_item {
+    background-color: white;
+    margin: 0 5px;
+    color: black;
+}
+
+#matches_same_day {
+    border-bottom: 1px solid lightgray;
+}
+
+#matches_same_day_share {
+    text-align: center;
+    background-color:white;
+}
+
+    #matches_same_day_share a {
+        text-decoration: none;
+    }
+
+.match_item_same_day_share {
+    padding: 2px;
+    border-radius: 3px;
+    margin: 0;
+    font-size: 12px;
+    width: calc(20% - 4px);
+    display: inline-block;
+    border: 1px solid #999999;
+    background-color: white;
+    color: black;
+    max-width: 400px;
+}
+
+    .match_item_same_day_share:hover {
+        background-color: white;
+        color: black;
+    }
+
+.match_item_same_day {
+    border: 1px solid #999999;
+    background-color: white;
+    color: black;
+}
+
+    .match_item_same_day:hover {
+        background-color: white;
+        color: black;
+    }
+
+.match_item_same_day_share_details {
+    padding: 2px;
+    border-radius: 3px;
+    margin: 0;
+    font-size: 12px !important;
+    display: inline-block;
+    box-shadow: rgba(0, 0, 0, 0.22) 0 0 2px 0;
+    background-color: #fff;
+    color: black;
+}
+
+    .match_item_same_day_share_details:hover {
+        background-color: white;
+        color: black;
+    }
+
+.score {
+    color: white;
+}
+
+.score_match_view, .score_match_same_day {
+    background-color: lightgray;
+    color: black;
+}
+
+.score_match_view_for_list, .score_match_view_for_list_details {
+    color: black;
+    width: 25px;
+    background-color: lightgray;
+    color: black;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.match_info, .standings_cell {
+    color: gray;
+}
+
+.standings_cell_team_name, .text-white {
+    color: black !important;
+}
+
+.minutes_summary {
+    color: darkorange;
+}
+
+.statistic-home {
+    background-color: yellowgreen;
+}
+
+.statistic-away {
+    background-color: lightgray;
+}
+
+.selected_tab {
+    color: gray;
+    border-bottom: 3px solid gray;
+}
+
+    .selected_tab .nav-link {
+        color: gray;
+    }
+
+.big_chance {
+    color: cornflowerblue;
+}
+
+.main_player {
+    color: black;
+}
+
+.second_player, .owngoal_player {
+    color: gray
+}
+
+.goal {
+    color: black;
+}
+
+.penalty_missed {
+    color: red;
+}
+
+.event_list_item {
+    border-bottom: 1px lightgray solid;
+}
+
+.player-list-item {
+    border-bottom: 1px lightgray solid;
+}
+
+.live_standings_team_number {
+    background-color: lightgray;
+}
+
+.player_number, .player_name {
+    color: black;
+}
+
+.goal_icon, .owngoal_icon {
+    padding: 0.2rem;
+}
+
+.no-matches {
+    line-height: 130px;
+    height: 130px;
+    background-color: white;
+}
+
+.match_item_same_day_team_name {
+    text-overflow: clip;
+    color: black;
+}

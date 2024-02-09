@@ -55,7 +55,7 @@ main {
     max-width: 1000px !important;
 }
 
-.main_container, .main_container_match_details, .more_live_matches_container {
+.main_container, .main_container_match_details, .more_live_matches_container, .main_container_shared {
     position: fixed;
     max-width: 1000px !important;
     overflow-x: hidden;
@@ -788,6 +788,7 @@ a, .btn-link, .nav-link {
 
 .active_tab {
     display: block;
+    padding-bottom:20px;
 }
 
 .no_active_tab {
@@ -951,12 +952,8 @@ a, .btn-link, .nav-link {
         width: 100%;
     }
 
-    .header_item, #dystir_icon_button img, #logo_icon_button img, #dystir_icon_button_shared img {
+    .header_item, #dystir_icon_button img {
         display: none;
-    }
-
-    #dystir_icon_button_shared {
-        width: 0px;
     }
 
     .sponsors_below_matches, #header_title {

@@ -11,7 +11,7 @@ export class LayoutShared extends Component {
     render() {
         return (
             <>
-                <Container>
+                <Container tag="main">
                     {this.props.children}
                 </Container>
             </>

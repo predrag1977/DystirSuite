@@ -15,7 +15,6 @@ export class HeaderMatchDetails extends Component {
 
     constructor(props) {
         super(props);
-        
     }
 
     render() {

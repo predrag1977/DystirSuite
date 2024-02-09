@@ -47,6 +47,9 @@ export class HeaderMatchDetailsShared extends Component {
         } else if (url.includes("portal")) {
             logo = "https://www.dystir.fo/images/icons/portal_icon.png";
             link = "https://www.portal.fo";
+        } else if (url.includes("roysni")) {
+            logo = "https://www.dystir.fo/images/icons/roysni_icon.png";
+            link = "https://www.roysni.fo";
         }
         const match = this.props.match;
         var matchTime = this.matchTimeAndColor.getMatchTime(this.props.match);
@@ -72,20 +75,6 @@ export class HeaderMatchDetailsShared extends Component {
                                                 <td className="match_item_team_name text-end">{match?.homeTeam}</td>
                                                 <td style={{ width: "20px" }}>-</td>
                                                 <td className="match_item_team_name text-start">{match?.awayTeam}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <table className="w-100 text-center">
-                                        <tbody>
-                                            <tr style={{ fontSize: "16px" }}>
-                                                <td></td>
-                                                <td className="match_time" style={{ whiteSpace: 'nowrap' }}>
-                                                {
-                                                    match?.statusID < 14 &&
-                                                    <div style={{ color: this.state.statusColor }}>{this.state.matchTime}</div>
-                                                }
-                                                </td>
-                                                <td></td>
                                             </tr>
                                         </tbody>
                                     </table>
