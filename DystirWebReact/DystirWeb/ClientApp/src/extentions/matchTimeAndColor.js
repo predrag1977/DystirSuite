@@ -93,6 +93,8 @@ export default class MatchTimeAndColor {
     }
 
     getStatusColor(statusId) {
+        let url = window.location.href.toLowerCase();
+        let isSharedPage = url.includes("info") || url.includes("portal") || url.includes("roysni");
         switch (statusId) {
             case 2:
             case 3:
@@ -109,7 +111,7 @@ export default class MatchTimeAndColor {
             case 13:
                 return "salmon";
             default:
-                return "khaki";
+                return isSharedPage ? "darkKhaki" : "khaki";
         }
     }
 }

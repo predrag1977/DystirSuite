@@ -83,23 +83,29 @@ export class InfoMatches extends Component {
 
     render() {
         let contents =
-        <>
-            <div className="main_container">
-            {
-                this.state.isLoading &&
-
-                <ThreeDots className="loading-spinner-parent" fill= 'dimGray' height="50" width="50" />
-            }
-            {
-                this.renderMatches(this.filterMatches(this.state.matches))
-            }
-            </div>
-        </>
+            <>
+                <div id="competitions_selection">
+                    <div id="horizontal_menu">
+                        <div id="horizontal_menu_wrapper">
+                            <span>DYSTIR</span>
+                        </div>
+                    </div>
+                </div>
+                <div className="main_container_shared">
+                    {
+                        this.state.isLoading &&
+                        <ThreeDots className="loading-spinner-parent" fill='dimGray' height="50" width="50" />
+                    }
+                    {
+                        this.renderMatches(this.filterMatches(this.state.matches))
+                    }
+                </div>
+            </>
         return (
             <LayoutShared>
-            {
-                contents
-            } 
+                {
+                    contents
+                }
             </LayoutShared>
         );
     }
@@ -110,7 +116,6 @@ export class InfoMatches extends Component {
         return (
             Object.keys(matchesGroup).map(group =>
                 <div key={group}>
-                    <div className="match-group-competition-name">{group}</div>
                     {
                         matchesGroup[group].map(match =>
                             <MatchView key={match.matchID} match={match} />
@@ -125,25 +130,8 @@ export class InfoMatches extends Component {
         var now = new MatchDate();
         now.setHours(0, 0, 0, 0);
 
-        var fromDate = now.addDays(0);
-        var toDate = now.addDays(1);
-
-        if (this.state.selectedPeriod === SelectPeriodName.BEFORE) {
-            fromDate = now.addDays(-10);
-            toDate = now.addDays(0);
-        } else if (this.state.selectedPeriod === SelectPeriodName.YESTERDAY) {
-            fromDate = now.addDays(-1);
-            toDate = now.addDays(0);
-        } else if (this.state.selectedPeriod === SelectPeriodName.TODAY) {
-            fromDate = now.addDays(0);
-            toDate = now.addDays(1);
-        } else if (this.state.selectedPeriod === SelectPeriodName.TOMORROW) {
-            fromDate = now.addDays(1);
-            toDate = now.addDays(2);
-        } else if (this.state.selectedPeriod === SelectPeriodName.NEXT) {
-            fromDate = now.addDays(0);
-            toDate = now.addDays(10);
-        }
+        var fromDate = now.addDays(-10);
+        var toDate = now.addDays(0);
 
         var list = matches.filter((match) =>
             (new MatchDate(Date.parse(match.time))).dateLocale() > MatchDate.parse(fromDate)

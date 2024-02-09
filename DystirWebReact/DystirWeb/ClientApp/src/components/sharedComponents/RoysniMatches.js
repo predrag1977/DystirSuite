@@ -10,8 +10,8 @@ import { LayoutShared } from './../layouts/LayoutShared';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
-export class PortalMatches extends Component {
-    static displayName = PortalMatches.name;
+export class RoysniMatches extends Component {
+    static displayName = RoysniMatches.name;
 
     constructor(props) {
         super(props);
@@ -92,20 +92,20 @@ export class PortalMatches extends Component {
                     </div>
                 </div>
                 <div className="main_container_shared">
-                    {
-                        this.state.isLoading &&
-                        <ThreeDots className="loading-spinner-parent" fill='dimGray' height="50" width="50" />
-                    }
-                    {
-                        this.renderMatches(this.filterMatches(this.state.matches))
-                    }
+                {
+                    this.state.isLoading &&
+                    <ThreeDots className="loading-spinner-parent" fill='dimGray' height="50" width="50" />
+                }
+                {
+                    this.renderMatches(this.filterMatches(this.state.matches))
+                }
                 </div>
             </>
         return (
             <LayoutShared>
-                {
-                    contents
-                }
+            {
+                contents
+            }
             </LayoutShared>
         );
     }
@@ -116,11 +116,11 @@ export class PortalMatches extends Component {
         return (
             Object.keys(matchesGroup).map(group =>
                 <div key={group}>
-                    {
-                        matchesGroup[group].map(match =>
-                            <MatchView key={match.matchID} match={match} />
-                        )
-                    }
+                {
+                    matchesGroup[group].map(match =>
+                        <MatchView key={match.matchID} match={match} />
+                    )
+                }
                 </div>
             )
         );

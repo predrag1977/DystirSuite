@@ -5,7 +5,8 @@ import { Standings } from "./components/Standings";
 import { Statistics } from "./components/Statistics";
 import { MatchDetails } from "./components/MatchDetails";
 import { InfoMatches } from "./components/sharedComponents/InfoMatches";
-import { MatchDetailsShared } from "./components/sharedComponents/MatchDetailsShared";
+import { PortalMatches } from "./components/sharedComponents/PortalMatches";
+import { RoysniMatches } from "./components/sharedComponents/RoysniMatches";
 
 const AppRoutes = [
     {
@@ -58,7 +59,11 @@ const AppRoutes = [
     },
     {
         path: '/portal/matches',
-        element: <InfoMatches />
+        element: <PortalMatches />
+    },
+    {
+        path: '/roysni/matches',
+        element: <RoysniMatches />
     },
     {
         path: '/info/standings',
@@ -70,6 +75,10 @@ const AppRoutes = [
     },
     {
         path: '/portal/matchdetails/*',
+        element: <MatchDetails />
+    },
+    {
+        path: '/roysni/matchdetails/*',
         element: <MatchDetails />
     }
 ];

@@ -177,7 +177,7 @@ export class MatchView extends Component {
                                 <td>
                                     <img onError={(ev) => ev.target.src = "team_logos/empty.png"} src={("team_logos/" + match.homeTeamLogo)} width="25" height="25" />
                                 </td>
-                                <td className="match_item_same_day_team_name" style={{ padding: "0 5px" }}>
+                                <td className="match_item_same_day_team_name" style={{ padding: "2px 5px" }}>
                                     <span>{format('{0} {1} {2}', match.homeTeam, match.homeSquadName, match.homeCategoriesName)} </span>
                                 </td>
                                 {
@@ -218,7 +218,7 @@ export class MatchView extends Component {
                                 <td>
                                     <img onError={(ev) => ev.target.src = "team_logos/empty.png"} src={("team_logos/" + match.awayTeamLogo)} width="25" height="25" />
                                 </td>
-                                <td className="match_item_same_day_team_name">
+                                <td className="match_item_same_day_team_name" style={{ padding: "2px 5px" }}>
                                     <span>{format('{0} {1} {2}', match.awayTeam, match.awaySquadName, match.awayCategoriesName)}</span>
                                 </td>
                                 {

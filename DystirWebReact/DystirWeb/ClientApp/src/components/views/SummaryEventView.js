@@ -39,6 +39,8 @@ export class SummaryEventView extends Component {
                                 <span className="penalty_missed">Brotsspark brent</span> ||
                             event.eventName == EventName.BIGCHANCE &&
                                 <span className="big_chance">Stórur møguleiki</span> ||
+                            event.eventName == EventName.PENALTY &&
+                                <span className="big_chance">Brotsspark</span> ||
                             event.eventName == EventName.YELLOW &&
                                 <span className="yellow_card"></span> ||
                             event.eventName == EventName.RED &&
@@ -92,6 +94,8 @@ export class SummaryEventView extends Component {
                                 <span className="penalty_missed">Brotsspark brent</span> ||
                             event.eventName == EventName.BIGCHANCE &&
                                 <span className="big_chance">Stórur møguleiki</span> ||
+                            event.eventName == EventName.PENALTY &&
+                                <span className="big_chance">Brotsspark</span> ||
                             event.eventName == EventName.YELLOW &&
                                 <span className="yellow_card"></span> ||
                             event.eventName == EventName.RED &&

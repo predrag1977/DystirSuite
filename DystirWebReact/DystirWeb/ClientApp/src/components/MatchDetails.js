@@ -25,7 +25,10 @@ export class MatchDetails extends Component {
         super(props);
         this.url = window.location.href.toLowerCase();
         this.parameterIndex = 3;
-        if (this.url.includes("info") || this.url.includes("portal")) {
+        if (this.url.includes("info") ||
+            this.url.includes("portal") ||
+            this.url.includes("roysni")
+        ) {
             this.parameterIndex = 4
         }
 
@@ -107,7 +110,7 @@ export class MatchDetails extends Component {
         if (selectedTabParameter.length == 0) {
             selectedTabParameter = TabName.SUMMARY
         }
-        dystirWebClientService.state.matchesData.selectedTab = selectedTabParameter;
+        dystirWebClientService.state.matchDetailsData.selectedTab = selectedTabParameter;
         this.setState({
             selectedTab: selectedTabParameter
         });
@@ -154,6 +157,8 @@ export class MatchDetails extends Component {
             page = "info";
         } else if (this.url.includes("portal")) {
             page = "portal";
+        } else if (this.url.includes("roysni")) {
+            page = "roysni";
         }
         var eventsOfMatch = this.state.match?.matchDetails?.eventsOfMatch ?? [];
         var playersOfMatch = this.state.match?.matchDetails?.playersOfMatch ?? [];
@@ -198,7 +203,7 @@ export class MatchDetails extends Component {
                         page={page} />
                     {
                         this.state.isLoading &&
-                        <ThreeDots className="loading-spinner-parent" fill='dimGray' height="50" width="50" />
+                        <ThreeDots className="loading-spinner-parent" fill='khaki' height="50" width="50" />
                     }
                     {
                         <>
@@ -222,7 +227,7 @@ export class MatchDetails extends Component {
                 </div>
             </>
         return (
-            (this.url.includes("info") || this.url.includes("portal")) &&
+            (this.url.includes("info") || this.url.includes("portal") || this.url.includes("roysni")) &&
             <LayoutMatchDetailsShared match={this.state.match}>
             {
                 contents
@@ -237,7 +242,6 @@ export class MatchDetails extends Component {
     }
 
     liveMatchesHeight(noLiveMatches) {
-        console.log(noLiveMatches);
         var liveMatchesContainerID = document.getElementById('live_matches_container');
         if (liveMatchesContainerID !== null && liveMatchesContainerID !== undefined) {
             liveMatchesContainerID.style.visibility = noLiveMatches ? "hidden" : "visible";
@@ -251,12 +255,11 @@ export class MatchDetails extends Component {
     }
 
     filterMatches(matches) {
-        console.log(matches)
         var now = new MatchDate();
         now.setHours(0, 0, 0, 0);
 
-        var fromDate = now.addDays(-1);
-        var toDate = now.addDays(2);
+        var fromDate = now.addDays(-2);
+        var toDate = now.addDays(0);
 
         var list = matches.filter((match) =>
             (new MatchDate(Date.parse(match.time))).dateLocale() > MatchDate.parse(fromDate) &&

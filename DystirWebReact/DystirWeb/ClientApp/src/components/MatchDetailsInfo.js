@@ -72,7 +72,7 @@ export class MatchDetailsInfo extends Component {
                     <tbody>
                         <tr>
                             <td></td>
-                            <td style={{ width: "50px"}}>
+                            <td style={{ width: "50px", paddingTop: "8px"}}>
                                 <img src={homeTeamLogo} width="50" height="50" />
                             </td>
                             <td className="football_field text-center" style={{ width: "270px", height: "90px", paddingTop: "8px", backgroundImage: "url(images/football_field.svg)" }}>
@@ -98,7 +98,7 @@ export class MatchDetailsInfo extends Component {
                                 </>
                                 }
                             </td>
-                            <td style={{ width: "50px" }}>
+                            <td style={{ width: "50px", paddingTop: "8px" }}>
                                 <img src={awayTeamLogo} width="50" height="50" />
                             </td>
                             <td></td>

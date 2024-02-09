@@ -217,7 +217,6 @@ export class DystirWebClientService {
         this.state.sponsorsData = {
             sponsors: sponsors
         };
-        console.log("loadSponsorsDataAsync");
         document.body.dispatchEvent(new CustomEvent("onLoadedSponsorsData"));
     }
 
@@ -230,7 +229,6 @@ export class DystirWebClientService {
         this.onUpdateStandings(match?.matchDetails?.standings);
 
         var isMatchIdEqual = this.state.matchDetailsData.matchId == match?.matchID;
-
         this.state.matchDetailsData = {
             matches: matchDetails.matches,
             match: isMatchIdEqual ? match : this.state.matchDetailsData.match,
@@ -295,6 +293,7 @@ export const EventName = {
     OWNGOAL: "OWNGOAL",
     PENALTYSCORED: "PENALTYSCORED",
     PENALTYMISSED: "PENALTYMISSED",
+    PENALTY: "PENALTY",
     PLAYEROFTHEMATCH: "PLAYEROFTHEMATCH",
     BIGCHANCE: "BIGCHANCE",
     YELLOW: "YELLOW",
