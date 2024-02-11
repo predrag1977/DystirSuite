@@ -19,7 +19,6 @@ export class HeaderMatchDetails extends Component {
 
     render() {
         const match = this.props.match;
-        
         return (
             <div id="header" className="navbar">
                 <div id="header_match_details_wrapper">
@@ -28,7 +27,9 @@ export class HeaderMatchDetails extends Component {
                             <tr>
                                 <td style={{ width: '50px' }} >
                                     <span id="back_button">
-                                        <NavLink tag={Link} to={"/" + dystirWebClientService.selectedPage}><FaArrowLeft /></NavLink>
+                                        <NavLink tag={Link} to={"/" + dystirWebClientService.selectedPage}>
+                                            <FaArrowLeft fill="#a6a6a6" />
+                                        </NavLink>
                                     </span>
                                 </td>
                                 <td style={{verticalAlign: "middle"}}>
@@ -45,7 +46,7 @@ export class HeaderMatchDetails extends Component {
                                 </td>
                                 <td style={{ width: '50px' }}>
                                     <div id="back_button" onClick={() => window.location.reload(false)}>
-                                        <FaArrowsRotate />
+                                        <FaArrowsRotate fill="#a6a6a6" />
                                     </div>
                                 </td>
                             </tr>

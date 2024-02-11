@@ -5,3 +5,11 @@ html, body {
     font-family: Source, sans-serif;
     background-color: white;
 }
+
+#competitions_selection, #horizontal_menu_days {
+    background-color: rgb(223, 240, 216);
+}
+
+.statistic-home {
+    background-color: yellowgreen;
+}

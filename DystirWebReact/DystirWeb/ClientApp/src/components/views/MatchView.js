@@ -30,8 +30,13 @@ export class MatchView extends Component {
 
     render() {
         const match = this.props.match;
+        const page = this.props.page;
+        var link = "/" + page + "/matchdetails/";
+        if (page == "" || page == undefined) {
+            link = "/matchdetails/";
+        }
         return (
-            <NavLink tag={Link} to={"/matchdetails/" + match.matchID}>
+            <NavLink tag={Link} to={link + match.matchID}>
                 <div key={match.matchID} className="match_item">
                     <table className="w-100">
                         <tbody>

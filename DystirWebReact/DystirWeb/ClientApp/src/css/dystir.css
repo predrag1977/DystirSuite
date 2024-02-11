@@ -103,7 +103,7 @@ main {
 #days_selection, #competitions_selection, #tabs_details_selection {
     height: 60px;
     user-select: none;
-    padding: 0 10px;
+    padding: 0;
 }
 
 #days_selection, #competitions_selection {
