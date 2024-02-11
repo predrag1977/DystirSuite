@@ -39,7 +39,8 @@ main {
 }
 
 .main_container_shared {
-    height: calc(100% - 80px);
+    height: calc(100% - 50px);
+    padding:10px 0;
 }
 
 .container {
@@ -53,6 +54,7 @@ main {
 #header {
     background-color: white;
     border-bottom: 1px solid lightgray;
+    position:relative;
 }
 
 .goal_icon, .owngoal_icon {
@@ -86,6 +88,10 @@ main {
     min-width: 290px;
 }
 
+#logo_icon_button {
+    line-height: 60px;
+}
+
 #container_share {
     background-color: white;
     max-width: 1000px;
@@ -98,7 +104,12 @@ main {
 
 #horizontal_menu_days {
     background-color: white;
-    border-bottom: 1px solid lightgray;
+    border: 0px;
+}
+
+#horizontal_menu {
+    width: 100%;
+    line-height:50px;
 }
 
 #live_matches_container {
@@ -185,8 +196,8 @@ main {
     color: black;
 }
 
-    .match_item_same_day:hover {
-        background-color: white;
+    .match_item:hover, .match_item_mobile:hover, .match_item_same_day:hover {
+        background-color: rgba(92, 92, 92, 0.1);
         color: black;
     }
 

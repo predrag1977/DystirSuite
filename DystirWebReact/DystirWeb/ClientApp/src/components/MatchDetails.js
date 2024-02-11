@@ -203,7 +203,7 @@ export class MatchDetails extends Component {
                         page={page} />
                     {
                         this.state.isLoading &&
-                        <ThreeDots className="loading-spinner-parent" fill='khaki' height="50" width="50" />
+                        <ThreeDots className="loading-spinner-parent" fill={page == "" ? 'khaki' : 'dimGray'} height="50" width="50" />
                     }
                     {
                         <>
@@ -258,12 +258,13 @@ export class MatchDetails extends Component {
         var now = new MatchDate();
         now.setHours(0, 0, 0, 0);
 
-        var fromDate = now.addDays(-2);
+        var fromDate = now.addDays(-1);
         var toDate = now.addDays(0);
 
         var list = matches.filter((match) =>
             (new MatchDate(Date.parse(match.time))).dateLocale() > MatchDate.parse(fromDate) &&
-            (new MatchDate(Date.parse(match.time))).dateLocale() < MatchDate.parse(toDate)
+            (new MatchDate(Date.parse(match.time))).dateLocale() < MatchDate.parse(toDate) &&
+            match.statusID < 13
         );
 
         return list

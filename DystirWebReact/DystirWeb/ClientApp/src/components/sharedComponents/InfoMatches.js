@@ -118,7 +118,7 @@ export class InfoMatches extends Component {
                 <div key={group}>
                     {
                         matchesGroup[group].map(match =>
-                            <MatchView key={match.matchID} match={match} />
+                            <MatchView key={match.matchID} match={match} page={"info"} />
                         )
                     }
                 </div>

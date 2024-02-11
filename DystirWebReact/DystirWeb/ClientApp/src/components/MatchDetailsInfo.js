@@ -108,7 +108,7 @@ export class MatchDetailsInfo extends Component {
                 <table className="w-100">
                     <tbody>
                         <tr style={{ fontSize: "16px" }}>
-                            <td className="match_info text-center" style={{ paddingTop: "2px" }}>
+                            <td className="match_info text-center">
                             {
                                 matchDateTime
                             }
@@ -119,7 +119,7 @@ export class MatchDetailsInfo extends Component {
                 <table className="w-100" >
                     <tbody>
                         <tr style={{ fontSize: "16px" }}>
-                            <td className="match_info text-center" style={{ paddingTop: "2px", whiteSpace: "normal" }}>
+                            <td className="match_info text-center" style={{whiteSpace: "normal" }}>
                             {
                                 matchTypeName + hasMatchTypeName + matchRoundName + hasMatchLocation + matchLocation
                             }
@@ -128,7 +128,6 @@ export class MatchDetailsInfo extends Component {
                     </tbody>
                 </table>
             </div>
-            <div className="line" />
         </>
             
         return contents

@@ -4,3 +4,11 @@ html, body {
     font-family: Arial,sans-serif;
     background-color: white;
 }
+
+#competitions_selection, #horizontal_menu_days {
+    background-color: #fceeec;
+}
+
+.statistic-home {
+    background-color: #f14d33;
+}

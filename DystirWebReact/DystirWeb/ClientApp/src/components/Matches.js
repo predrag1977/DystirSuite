@@ -16,6 +16,8 @@ export class Matches extends Component {
 
     constructor(props) {
         super(props);
+        dystirWebClientService.selectedPage = "matches";
+
         let matchesData = dystirWebClientService.state.matchesData;
         if (matchesData.selectedPeriod !== undefined && matchesData.selectedPeriod !== "") {
             window.history.replaceState(null, null, "/matches/" + matchesData.selectedPeriod);
