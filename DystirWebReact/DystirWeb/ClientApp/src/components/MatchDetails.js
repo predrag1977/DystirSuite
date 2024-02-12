@@ -195,7 +195,7 @@ export class MatchDetails extends Component {
                     </div>
                 </div>
                 <div className="main_container_match_details">
-                    <MatchDetailsInfo match={this.state.match} />
+                    <MatchDetailsInfo match={this.state.match} page={page} />
                     <MatchDetailsTabs onClickTab={() => this.onClickTab()}
                         onMoreLiveMatchClick={(e) => this.onMoreLiveMatchClick(e)}
                         match={this.state.match}

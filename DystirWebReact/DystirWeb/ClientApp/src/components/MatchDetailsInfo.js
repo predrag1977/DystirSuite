@@ -68,6 +68,18 @@ export class MatchDetailsInfo extends Component {
                         </tr>
                     </tbody>
                 </table>
+                {
+                    this.props.page != "" &&
+                    <table className="w-100 text-center">
+                        <tbody>
+                            <tr style={{ fontSize: "18px" }}>
+                                <td className="match_item_team_name text-end">{match?.homeTeam}</td>
+                                <td style={{ width: "20px" }}>-</td>
+                                <td className="match_item_team_name text-start">{match?.awayTeam}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
                 <table className="w-100">
                     <tbody>
                         <tr>

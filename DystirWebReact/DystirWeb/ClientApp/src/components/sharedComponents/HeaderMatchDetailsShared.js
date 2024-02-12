@@ -69,15 +69,7 @@ export class HeaderMatchDetailsShared extends Component {
                                     </div>
                                 </td>
                                 <td style={{verticalAlign: "middle"}}>
-                                    <table className="w-100 text-center">
-                                        <tbody>
-                                            <tr style={{ fontSize: "18px" }}>
-                                                <td className="match_item_team_name text-end">{match?.homeTeam}</td>
-                                                <td style={{ width: "20px" }}>-</td>
-                                                <td className="match_item_team_name text-start">{match?.awayTeam}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    
                                 </td>
                                 <td style={{ width: '0px' }}>
                                     <div id="dystir_icon_button_shared" className="navbar-dark">
