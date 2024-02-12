@@ -36,6 +36,7 @@ main {
 
 .main_container, .main_container_match_details, .main_container_shared {
     background-color: white;
+    padding: 0;
 }
 
 .main_container_shared {

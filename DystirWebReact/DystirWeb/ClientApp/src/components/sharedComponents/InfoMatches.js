@@ -3,10 +3,12 @@ import { ThreeDots } from 'react-loading-icons'
 import { DystirWebClientService, SelectPeriodName, PageName } from '../../services/dystirWebClientService';
 import MatchDate from '../../extentions/matchDate';
 import { MatchView } from "./../views/MatchView";
-import { ChooseDays } from './../ChooseDays';
+import { ChooseCompetitions } from './../ChooseCompetitions';
 import { groupBy } from "core-js/actual/array/group-by";
 import { groupByToMap } from "core-js/actual/array/group-by-to-map";
 import { LayoutShared } from './../layouts/LayoutShared';
+import { MatchHorizontalView } from "./../views/MatchHorizontalView";
+import { BsCaretLeftFill, BsCaretRightFill } from "react-icons/bs";
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
@@ -70,59 +72,56 @@ export class InfoMatches extends Component {
         });
     }
 
-    onClickPeriod() {
-        let periodParameter = window.location.pathname.split("/").pop();
-        if (periodParameter.length == 0) {
-            periodParameter = SelectPeriodName.TODAY
-        }
-        dystirWebClientService.state.matchesData.selectedPeriod = periodParameter;
-        this.setState({
-            selectedPeriod: periodParameter
-        });
+    onClickCompetition() {
+
     }
 
     render() {
+        const matches = this.filterMatches(this.state.matches);
+        if (matches == null) return;
+        const matchesGroup = matches.groupBy(match => { return match.matchTypeName });
+        const competitions = [];
+        Object.keys(matchesGroup).map((group) => {
+            competitions.push(group);
+        });
+        let selectedTab = "VFF Cup";
         let contents =
             <>
-                <div id="competitions_selection">
-                    <div id="horizontal_menu">
-                        <div id="horizontal_menu_wrapper">
-                            <span>DYSTIR</span>
+            {
+                this.state.isLoading &&
+                <ThreeDots className="loading-spinner-parent" fill='dimGray' height="50" width="50" />
+            }
+            {
+                Object.keys(matchesGroup).map(group =>
+                <>
+                    <div id="horizontal_matches">
+                        <div className={"tab " + (selectedTab == group ? "selected_tab" : "")} onClick={() => this.props.onClickTab()}>
+                            <div className="nav-link">
+                            {
+                                group
+                            }
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="main_container_shared">
+                    <div key={group} id="horizontal_matches" style={{backgroundColor: "white"}} >
                     {
-                        this.state.isLoading &&
-                        <ThreeDots className="loading-spinner-parent" fill='dimGray' height="50" width="50" />
+                        matchesGroup[group].map(match =>
+                            <div key={match.matchID} className="match_item_same_day">
+                                <MatchHorizontalView match={match} page={"info"} />
+                            </div>
+                        )
                     }
-                    {
-                        this.renderMatches(this.filterMatches(this.state.matches))
-                    }
-                </div>
+                    </div>
+                </>
+                )
+            }
             </>
         return (
             <LayoutShared>
-                {
-                    contents
-                }
+            {
+                contents
+            }
             </LayoutShared>
-        );
-    }
-
-    renderMatches(matches) {
-        if (matches == null) return;
-        const matchesGroup = matches.groupBy(match => { return match.matchTypeName ?? "" });
-        return (
-            Object.keys(matchesGroup).map(group =>
-                <div key={group}>
-                    {
-                        matchesGroup[group].map(match =>
-                            <MatchView key={match.matchID} match={match} page={"info"} />
-                        )
-                    }
-                </div>
-            )
         );
     }
 
@@ -130,8 +129,8 @@ export class InfoMatches extends Component {
         var now = new MatchDate();
         now.setHours(0, 0, 0, 0);
 
-        var fromDate = now.addDays(-10);
-        var toDate = now.addDays(0);
+        var fromDate = now.addDays(0);
+        var toDate = now.addDays(30);
 
         var list = matches.filter((match) =>
             (new MatchDate(Date.parse(match.time))).dateLocale() > MatchDate.parse(fromDate)

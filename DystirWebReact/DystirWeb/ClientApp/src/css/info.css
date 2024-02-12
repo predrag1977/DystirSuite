@@ -6,9 +6,18 @@ html, body {
     background-color: white;
 }
 
-#competitions_selection, #horizontal_menu_days {
+#competitions_selection, #horizontal_matches, #horizontal_menu_days {
     background-color: rgb(223, 240, 216);
 }
+
+    #horizontal_matches .tab {
+        height: 50px;
+        padding: 0 15px;
+    }
+
+    #horizontal_matches .nav-link {
+        padding-top: 15px;
+    }
 
 .statistic-home {
     background-color: yellowgreen;
