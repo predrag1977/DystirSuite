@@ -37,10 +37,21 @@ export class MatchHorizontalView extends Component {
                     <table>
                         <tbody>
                             <tr>
-                                <td className="match_info pl-1">
-                                    <span>{match.location}</span>
+                                <td className="match_info text-center">
+                                    <div style={{ color: this.state.statusColor }}>{this.state.matchTime}</div> 
                                 </td>
-                                <td/>
+                                <td />
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td className="match_info text-center">
+                                    <div>{match.location}</div>
+                                </td>
+                                <td />
                             </tr>
                         </tbody>
                     </table>
@@ -121,21 +132,6 @@ export class MatchHorizontalView extends Component {
                                         <div className="score_match_view">-</div>
                                     </td>
                                 }
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td className="match_info pl-1">
-                                </td>
-                                <td className="match_time" style={{ whiteSpace: "nowrap", width: "0px" }}>
-                                    {
-                                        match.statusID < 14 &&
-                                        <div style={{ color: this.state.statusColor }}>{this.state.matchTime}</div>
-                                    }
-                                </td>
                             </tr>
                         </tbody>
                     </table>

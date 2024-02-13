@@ -22,3 +22,8 @@ html, body {
 .statistic-home {
     background-color: yellowgreen;
 }
+
+.match_item_same_day_horizontal {
+    height: 85px;
+    font-size: 11px;
+}

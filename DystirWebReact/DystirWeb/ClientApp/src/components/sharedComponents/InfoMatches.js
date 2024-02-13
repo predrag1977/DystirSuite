@@ -93,26 +93,22 @@ export class InfoMatches extends Component {
             }
             {
                 Object.keys(matchesGroup).map(group =>
-                <>
+                <div key={group}>
                     <div id="horizontal_matches">
                         <div className={"tab " + (selectedTab == group ? "selected_tab" : "")} onClick={() => this.props.onClickTab()}>
-                            <div className="nav-link">
-                            {
-                                group
-                            }
-                            </div>
+                            <div className="nav-link">{group}</div>
                         </div>
                     </div>
-                    <div key={group} id="horizontal_matches" style={{backgroundColor: "white"}} >
+                    <div id="horizontal_matches" style={{backgroundColor: "white"}} >
                     {
                         matchesGroup[group].map(match =>
-                            <div key={match.matchID} className="match_item_same_day">
+                            <div key={match.matchID} className="match_item_same_day match_item_same_day_horizontal">
                                 <MatchHorizontalView match={match} page={"info"} />
                             </div>
                         )
                     }
                     </div>
-                </>
+                </div>
                 )
             }
             </>
@@ -130,11 +126,11 @@ export class InfoMatches extends Component {
         now.setHours(0, 0, 0, 0);
 
         var fromDate = now.addDays(0);
-        var toDate = now.addDays(30);
+        var toDate = now.addDays(2);
 
         var list = matches.filter((match) =>
-            (new MatchDate(Date.parse(match.time))).dateLocale() > MatchDate.parse(fromDate)
-            && (new MatchDate(Date.parse(match.time))).dateLocale() < MatchDate.parse(toDate)
+            (new MatchDate(Date.parse(match.time))).dateLocale() > MatchDate.parse(fromDate) &&
+            (new MatchDate(Date.parse(match.time))).dateLocale() < MatchDate.parse(toDate)
         );
 
         return list

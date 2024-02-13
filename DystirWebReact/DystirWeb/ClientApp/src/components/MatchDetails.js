@@ -165,12 +165,21 @@ export class MatchDetails extends Component {
         var statistic = this.state.match?.matchDetails?.statistic ?? null;
         var standings = this.state.match?.matchDetails?.standings ?? [];
         var liveMatches = this.filterMatches(this.state.matches ?? []);
-        let noLiveMatches = liveMatches.length == 0 ||
-            (liveMatches.length == 1 && liveMatches[0].matchID == this.state.match.matchID) ||
-            (this.state.match?.statusID ?? 0) > 13;
-        if (noLiveMatches) {
-            liveMatches = [];
+
+        let noLiveMatches = liveMatches.length < 0;
+        if (page == "") {
+            liveMatches = liveMatches.filter((match) => 
+                match.statusID < 14
+            );
+
+            noLiveMatches = liveMatches.length == 0 ||
+                (liveMatches.length == 1 && liveMatches[0].matchID == this.state.match.matchID) ||
+                (this.state.match?.statusID ?? 0) > 13;
+            if (noLiveMatches) {
+                liveMatches = [];
+            }
         }
+        
         this.liveMatchesHeight(noLiveMatches);
 
         let contents =
@@ -258,15 +267,13 @@ export class MatchDetails extends Component {
         var now = new MatchDate();
         now.setHours(0, 0, 0, 0);
 
-        var fromDate = now.addDays(-1);
-        var toDate = now.addDays(0);
+        var fromDate = now.addDays(0);
+        var toDate = now.addDays(2);
 
         var list = matches.filter((match) =>
             (new MatchDate(Date.parse(match.time))).dateLocale() > MatchDate.parse(fromDate) &&
-            (new MatchDate(Date.parse(match.time))).dateLocale() < MatchDate.parse(toDate) &&
-            match.statusID < 13
+            (new MatchDate(Date.parse(match.time))).dateLocale() < MatchDate.parse(toDate)
         );
-
         return list
             .sort((a, b) => a.matchID - b.matchID)
             .sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)))

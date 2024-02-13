@@ -41,10 +41,7 @@ export class LiveMatchView extends Component {
                                     <span>{match.matchTypeName}</span>
                                 </td>
                                 <td className="match_time" style={{ whiteSpace: "nowrap", width: "0px" }}>
-                                    {
-                                        match.statusID < 14 &&
-                                        <div style={{ color: this.state.statusColor }}>{this.state.matchTime}</div>
-                                    }
+                                    <div style={{ color: this.state.statusColor }}>{this.state.matchTime}</div>
                                 </td>
                             </tr>
                         </tbody>

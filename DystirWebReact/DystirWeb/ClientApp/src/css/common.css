@@ -128,7 +128,7 @@ main {
 #scroll_button_left, #scroll_button_right, #back_button {
     background-color: lightgray;
     color: gray;
-    margin-top:5px;
+    margin-top: 10px;
 }
 
     #scroll_button_left:hover, #scroll_button_right:hover, #back_button:hover {
@@ -180,7 +180,7 @@ main {
     font-size: 12px;
     width: calc(20% - 4px);
     display: inline-block;
-    border: 1px solid #999999;
+    border: 1px solid #a6a6a6;
     background-color: white;
     color: black;
     max-width: 400px;
@@ -192,7 +192,7 @@ main {
     }
 
 .match_item_same_day {
-    border: 1px solid #999999;
+    border: 1px solid #a6a6a6;
     background-color: white;
     color: black;
 }
@@ -299,10 +299,6 @@ main {
 
 .player_number, .player_name {
     color: black;
-}
-
-.goal_icon, .owngoal_icon {
-    padding: 0.2rem;
 }
 
 .no-matches {
