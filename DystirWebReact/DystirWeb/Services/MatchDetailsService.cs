@@ -55,8 +55,7 @@ namespace DystirWeb.Services
                     matchDetails.Standings = _standingService.GetStandings().ToList();
                     matchDetails.Matches = _dystirService.AllMatches.Where(x =>
                         x.Time > DateTime.UtcNow.AddDays(-2) &&
-                        x.Time < DateTime.UtcNow.AddDays(2) &&
-                        x.StatusID < 14
+                        x.Time < DateTime.UtcNow.AddDays(2) 
                     ).ToList();
                     matchDetails.Statistic = _matchStatisticService.GetStatistic(matchDetails.EventsOfMatch, matchDetails.Match);
                 }
