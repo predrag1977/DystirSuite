@@ -25,7 +25,7 @@ export class InfoMatches extends Component {
         //}
         this.state = {
             matches: matchesData.matches,
-            selectedPeriod: matchesData.selectedPeriod,
+            selectedCompetition: "",
             isLoading: false
         }
         //if (this.state.selectedPeriod !== undefined && this.state.selectedPeriod !== "") {
@@ -33,7 +33,7 @@ export class InfoMatches extends Component {
         //}
         if (this.state.matches.length === 0) {
             this.state.isLoading = true;
-            dystirWebClientService.loadMatchesDataAsync(this.state.selectedPeriod);
+            dystirWebClientService.loadMatchesDataAsync();
         }
 
         //window.onpopstate = () => {
@@ -72,19 +72,23 @@ export class InfoMatches extends Component {
         });
     }
 
-    onClickCompetition() {
-
+    onClickCompetition(competition) {
+        //this.state.selectedCompetition = competition;
     }
 
     render() {
         const matches = this.filterMatches(this.state.matches);
         if (matches == null) return;
         const matchesGroup = matches.groupBy(match => { return match.matchTypeName });
+        console.log(matchesGroup);
         const competitions = [];
         Object.keys(matchesGroup).map((group) => {
             competitions.push(group);
         });
-        let selectedTab = "VFF Cup";
+        
+        if (this.state.selectedCompetition == "" && competitions.length > 0) {
+            this.state.selectedCompetition = competitions[0];
+        }
         let contents =
             <>
             {
@@ -93,22 +97,22 @@ export class InfoMatches extends Component {
             }
             {
                 Object.keys(matchesGroup).map(group =>
-                <div key={group}>
-                    <div id="horizontal_matches">
-                        <div className={"tab " + (selectedTab == group ? "selected_tab" : "")} onClick={() => this.props.onClickTab()}>
-                            <div className="nav-link">{group}</div>
+                    <div key={group}>
+                        <div id="horizontal_matches">
+                            <div className={"tab " + (this.state.selectedCompetition == group ? "selected_tab" : "")} onClick={() => this.onClickCompetition(group)}>
+                                <div className="nav-link">{group}</div>
+                            </div>
+                        </div>
+                        <div id="horizontal_matches" style={{ backgroundColor: "white" }} >
+                        {
+                            matchesGroup[group].map(match =>
+                                <div key={match.matchID} className="match_item_same_day match_item_same_day_horizontal">
+                                    <MatchHorizontalView match={match} page={"info"} />
+                                </div>
+                            )
+                        }
                         </div>
                     </div>
-                    <div id="horizontal_matches" style={{backgroundColor: "white"}} >
-                    {
-                        matchesGroup[group].map(match =>
-                            <div key={match.matchID} className="match_item_same_day match_item_same_day_horizontal">
-                                <MatchHorizontalView match={match} page={"info"} />
-                            </div>
-                        )
-                    }
-                    </div>
-                </div>
                 )
             }
             </>
@@ -125,8 +129,8 @@ export class InfoMatches extends Component {
         var now = new MatchDate();
         now.setHours(0, 0, 0, 0);
 
-        var fromDate = now.addDays(0);
-        var toDate = now.addDays(2);
+        var fromDate = now.addDays(-1);
+        var toDate = now.addDays(32);
 
         var list = matches.filter((match) =>
             (new MatchDate(Date.parse(match.time))).dateLocale() > MatchDate.parse(fromDate) &&

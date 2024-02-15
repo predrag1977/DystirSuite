@@ -225,6 +225,7 @@ main {
 .score_match_view, .score_match_same_day {
     background-color: lightgray;
     color: black;
+    font-weight: 700;
 }
 
 .score_match_view_for_list, .score_match_view_for_list_details {
