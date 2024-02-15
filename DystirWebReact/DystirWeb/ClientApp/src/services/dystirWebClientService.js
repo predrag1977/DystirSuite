@@ -109,7 +109,7 @@ export class DystirWebClientService {
     }
 
     async loadMatchesDataAsync(selectedPeriod) {
-        const response = await fetch('api/matches/matches');
+        const response = await fetch('api/matches/fixtures');
         const data = await response.json();
 
         var matchesList = this.state.matchesData.matches;
