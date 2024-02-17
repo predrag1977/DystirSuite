@@ -88,8 +88,9 @@ namespace DystirWeb.Services
 
         public async Task LoadAllMatchesAsync()
         {
+            var fromDate = new DateTime(DateTime.UtcNow.Year, 1, 1);
             var matches = await _httpClient.GetFromJsonAsync<Matches[]>("api/matches");
-            AllMatches = matches?.ToList() ?? new List<Matches>();
+            AllMatches = matches?.Where(x => x.Time > fromDate).ToList() ?? new List<Matches>();
             AllMatchesDetails = new List<MatchDetails>();
             _timeService.StartTimer();
         }

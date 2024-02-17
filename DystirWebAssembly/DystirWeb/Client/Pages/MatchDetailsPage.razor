@@ -4,58 +4,61 @@
 @implements IDisposable
 
 <div id="match-details_static_part">
-    
+
 </div>
 
 <div id="match_details_container">
-    <div id="matches_same_day">
+    @if (SelectedMatch != null)
+    {
+        <div id="matches_same_day">
         @foreach (Matches match in MatchesListSameDay ?? new List<Matches>())
         {
-            <a style="cursor:pointer;" @onclick="@(()=>isLoading = true)" href="@("football/matchdetails/" + match.MatchID)">
+            <a style="cursor:pointer;" @onclick="@(() => isLoading = true)" href="@("football/matchdetails/" + match.MatchID)">
                 <MatchView MatchItem="@match" TimeZoneOffset="@timeZoneOffset" IsMatchForSameDayList="@true" />
             </a>
         }
-    </div>
+        </div>
 
-    <div id="selected_match_details">
-        <MatchView MatchItem="@SelectedMatch" TimeZoneOffset="@timeZoneOffset" ShowMatchType="@true" IsMatchInDetails="@true" />
-    </div>
+        <div id="selected_match_details">
+            <MatchView MatchItem="@SelectedMatch" TimeZoneOffset="@timeZoneOffset" ShowMatchType="@true" IsMatchInDetails="@true" />
+        </div>
 
-    @if (SelectedMatch != null)
-    {
+
         <div id="horizontal_menu_days">
             <MatchDetailsTabs TabOnClick="OnTabClick" Match="@(SelectedMatch)" />
         </div>
-    }
 
-    <div class="@(selectedTab == "0" ? "active_tab" : "no_active_tab")">
-        <SummaryView SummaryEventsOfMatch="@(fullMatchDetails?.Summary)" />
-    </div>
-    <div class="@(selectedTab == "1" ? "active_tab" : "no_active_tab")">
-        <LineupsView PlayersOfMatch="@(fullMatchDetails?.MatchDetails?.PlayersOfMatch)" Match="@(fullMatchDetails?.MatchDetails?.Match)" />
-    </div>
-    <div class="@(selectedTab == "2" ? "active_tab" : "no_active_tab")">
-        <CommentariesView Commentaries="@(fullMatchDetails?.Commentary)" />
-    </div>
-    @if (SelectedMatch?.StatusID <= 12)
-    {
-        <div class="@(selectedTab == "3" ? "active_tab" : "no_active_tab")">
-            <StatisticView StatisticOfMatch="@(fullMatchDetails?.Statistics)" />
+
+        <div class="@(selectedTab == "0" ? "active_tab" : "no_active_tab")">
+            <SummaryView SummaryEventsOfMatch="@(fullMatchDetails?.Summary)" />
         </div>
-    }
-    @if (ShowLiveStandings())
-    {
-        <div class="@(selectedTab == "4" ? "active_tab" : "no_active_tab")">
-            <LiveStandingView Standing="@(standing)" Match="@(SelectedMatch)" />
+        <div class="@(selectedTab == "1" ? "active_tab" : "no_active_tab")">
+            <LineupsView PlayersOfMatch="@(fullMatchDetails?.MatchDetails?.PlayersOfMatch)" Match="@(fullMatchDetails?.MatchDetails?.Match)" />
         </div>
+        <div class="@(selectedTab == "2" ? "active_tab" : "no_active_tab")">
+            <CommentariesView Commentaries="@(fullMatchDetails?.Commentary)" />
+        </div>
+        @if (SelectedMatch?.StatusID <= 12)
+        {
+            <div class="@(selectedTab == "3" ? "active_tab" : "no_active_tab")">
+                <StatisticView StatisticOfMatch="@(fullMatchDetails?.Statistics)" />
+            </div>
+        }
+        @if (ShowLiveStandings())
+        {
+            <div class="@(selectedTab == "4" ? "active_tab" : "no_active_tab")">
+                <LiveStandingView Standing="@(standing)" Match="@(SelectedMatch)" />
+            </div>
+        }
     }
 </div>
 
+
 @if (isLoading)
 {
-    <div class="loading-spinner-parent">
-        <i class="fas fa-spin fa-spinner fa-2x" style="color: darkgrey"></i>
-    </div>
+<div class="loading-spinner-parent">
+    <i class="fas fa-spin fa-spinner fa-2x" style="color: darkgrey"></i>
+</div>
 }
 
 @code {
@@ -160,8 +163,8 @@
     private bool ShowLiveStandings()
     {
         var competititionNamesArray = DystirWebClientService?.AllCompetitions?
-            .Where(x=>x.CompetitionID > 0)?
-            .Select(x=>x.MatchTypeName);
+            .Where(x => x.CompetitionID > 0)?
+            .Select(x => x.MatchTypeName);
         return competititionNamesArray?.Any(x => x == SelectedMatch?.MatchTypeName) == true;
     }
 }
