@@ -14,74 +14,76 @@
             <div id="header_container_share">
                 <PageWebSiteShareHeader Page="@(page?.ToLower())" />
             </div>
-            
-            <div id="container_share">
-                <div id="match-details_static_part">
-                    @if (ShowMatchList)
-                    {
-                    <div id="competitions_selection">
-                        <ChooseCompetitions CompetitionsList="@(CompetitionsList)"
-                                            SelectedCompetition="@(SelectedCompetition)"
-                                            CompetitionsOnClick="@(CompetitionsOnClick)" />
-                    </div>
-                    <div id="matches_same_day_share">
-                        @foreach (var matchesGroup in SelectedMatchListGroup)
-                        {
-                            if (SelectedCompetition == matchesGroup.Key)
-                            {
-                                var matches = matchesGroup.Select(x => x);
-                                @foreach (Matches match in matches)
-                                {
-                                    <NavLink style="cursor:pointer;" @onclick="@(() => isLoading = SelectedMatch?.MatchID != match.MatchID)" href="@(page + "/matchdetails/" + match.MatchID)">
-                                        <div class="match_item_same_day_share_details">
-                                            <PagesWebSiteShareMatchForSameDayList MatchItem="@match" TimeZoneOffset="@timeZoneOffset" />
-                                        </div>
-                                    </NavLink>
-                                }
-                            }
-                        }
-                    </div>
-                    }
-                </div>
-                <div id="match_details_container">
-                    <div id="selected_match_details">
-                        <PagesWebSiteShareMatch MatchItem="@SelectedMatch"
-                                                TimeZoneOffset="@timeZoneOffset"
-                                                ShowMatchType="@true"
-                                                Page="@(page?.ToLower())" />
-                    </div>
 
-                    @if (SelectedMatch != null)
-                    {
+            @if (SelectedMatch != null)
+            {
+                <div id="container_share">
+                    <div id="match-details_static_part">
+                        @if (ShowMatchList)
+                            {
+                            <div id="competitions_selection">
+                                <ChooseCompetitions CompetitionsList="@(CompetitionsList)"
+                                                    SelectedCompetition="@(SelectedCompetition)"
+                                                    CompetitionsOnClick="@(CompetitionsOnClick)" />
+                            </div>
+                            <div id="matches_same_day_share">
+                                @foreach (var matchesGroup in SelectedMatchListGroup)
+                                    {
+                                        if (SelectedCompetition == matchesGroup.Key)
+                                        {
+                                            var matches = matchesGroup.Select(x => x);
+                                        @foreach (Matches match in matches)
+                                            {
+                                            <NavLink style="cursor:pointer;" @onclick="@(() => isLoading = SelectedMatch?.MatchID != match.MatchID)" href="@(page + "/matchdetails/" + match.MatchID)">
+                                                <div class="match_item_same_day_share_details">
+                                                    <PagesWebSiteShareMatchForSameDayList MatchItem="@match" TimeZoneOffset="@timeZoneOffset" />
+                                                </div>
+                                            </NavLink>
+                                            }
+                                        }
+                                    }
+                            </div>
+                            }
+                    </div>
+                    <div id="match_details_container">
+
+                        <div id="selected_match_details">
+                            <PagesWebSiteShareMatch MatchItem="@SelectedMatch"
+                                                    TimeZoneOffset="@timeZoneOffset"
+                                                    ShowMatchType="@true"
+                                                    Page="@(page?.ToLower())" />
+                        </div>
+
                         <div id="horizontal_menu_days">
                             <MatchDetailsTabs TabOnClick="OnTabClick" Match="@(SelectedMatch)" />
                         </div>
-                    }
-                    <div>
-                        <div class="@(selectedTab == "0" ? "active_tab" : "no_active_tab")">
-                            <SummaryView SummaryEventsOfMatch="@(fullMatchDetails?.Summary)" />
-                        </div>
-                        <div class="@(selectedTab == "1" ? "active_tab" : "no_active_tab")">
-                            <LineupsView PlayersOfMatch="@(fullMatchDetails?.MatchDetails?.PlayersOfMatch)" Match="@(fullMatchDetails?.MatchDetails?.Match)" />
-                        </div>
-                        <div class="@(selectedTab == "2" ? "active_tab" : "no_active_tab")">
-                            <CommentariesView Commentaries="@(fullMatchDetails?.Commentary)" />
-                        </div>
-                        @if (SelectedMatch?.StatusID <= 12)
-                        {
-                            <div class="@(selectedTab == "3" ? "active_tab" : "no_active_tab")">
-                                <StatisticView StatisticOfMatch="@(fullMatchDetails?.Statistics)" />
+
+                        <div>
+                            <div class="@(selectedTab == "0" ? "active_tab" : "no_active_tab")">
+                                <SummaryView SummaryEventsOfMatch="@(fullMatchDetails?.Summary)" />
                             </div>
-                        }
-                        @if (ShowLiveStandings(SelectedMatch))
-                        {
-                            <div class="@(selectedTab == "4" ? "active_tab" : "no_active_tab")">
-                                <LiveStandingView Standing="@(standing)" Match="@(SelectedMatch)" />
+                            <div class="@(selectedTab == "1" ? "active_tab" : "no_active_tab")">
+                                <LineupsView PlayersOfMatch="@(fullMatchDetails?.MatchDetails?.PlayersOfMatch)" Match="@(fullMatchDetails?.MatchDetails?.Match)" />
                             </div>
-                        }
+                            <div class="@(selectedTab == "2" ? "active_tab" : "no_active_tab")">
+                                <CommentariesView Commentaries="@(fullMatchDetails?.Commentary)" />
+                            </div>
+                            @if (SelectedMatch?.StatusID <= 12)
+                                {
+                                <div class="@(selectedTab == "3" ? "active_tab" : "no_active_tab")">
+                                    <StatisticView StatisticOfMatch="@(fullMatchDetails?.Statistics)" />
+                                </div>
+                                }
+                            @if (ShowLiveStandings(SelectedMatch))
+                                {
+                                <div class="@(selectedTab == "4" ? "active_tab" : "no_active_tab")">
+                                    <LiveStandingView Standing="@(standing)" Match="@(SelectedMatch)" />
+                                </div>
+                                }
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         </div>
     </div>
 

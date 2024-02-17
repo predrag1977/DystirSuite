@@ -107,8 +107,8 @@ namespace DystirWeb.Controllers
                 {
                     matches.StatusTime = DateTime.UtcNow.AddMinutes(-matches.ExtraMinutes).AddSeconds(-matches.ExtraSeconds);
                 }
-                matches.HomeTeamPenaltiesScore = matchInDB.HomeTeamPenaltiesScore;
-                matches.AwayTeamPenaltiesScore = matchInDB.AwayTeamPenaltiesScore;
+                matches.HomeTeamPenaltiesScore = matchInDB.HomeTeamPenaltiesScore ?? 0;
+                matches.AwayTeamPenaltiesScore = matchInDB.AwayTeamPenaltiesScore ?? 0;
 
                 _dystirDBContext.Entry(matchInDB).CurrentValues.SetValues(matches);
                 _dystirDBContext.Entry(matchInDB).State = EntityState.Modified;

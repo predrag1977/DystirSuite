@@ -104,7 +104,7 @@
         {
             var allResultMatchByCompetition = DystirWebClientService.AllMatches?
                 .Where(x => (x.StatusID == 12 || x.StatusID == 13)
-                && x.MatchTypeID != 3 && x.MatchTypeID != 4 && x.MatchTypeID != 100 && x.MatchTypeID != 103)
+                && x.MatchTypeID != 3 && x.MatchTypeID != 4 && x.MatchTypeID != 100)
                 .OrderBy(x => GetOrder(x.MatchTypeID))
                 .ThenByDescending(x => x.Time).ThenByDescending(x => x.RoundID).ThenBy(x => x.MatchID)
                 .GroupBy(x => x.MatchTypeName)?.ToList();
