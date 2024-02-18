@@ -45,7 +45,7 @@ export class MatchDetails extends Component {
         let match = dystirWebClientService.state.matchesData.matches.find((m) => m.matchID == matchDetailsData.matchId);
 
         this.state = {
-            matches: matchDetailsData.matches,
+            matches: dystirWebClientService.state.matchesData.matches,
             match: match,
             matchId: matchDetailsData.matchId,
             selectedTab: matchDetailsData.selectedTab,
@@ -166,7 +166,7 @@ export class MatchDetails extends Component {
         var standings = this.state.match?.matchDetails?.standings ?? [];
         var liveMatches = this.filterMatches(this.state.matches ?? []);
 
-        let noLiveMatches = liveMatches.length < 0;
+        let noLiveMatches = liveMatches.length == 0;
         if (page == "") {
             liveMatches = liveMatches.filter((match) => 
                 match.statusID < 14
@@ -252,7 +252,9 @@ export class MatchDetails extends Component {
 
     liveMatchesHeight(noLiveMatches) {
         var liveMatchesContainerID = document.getElementById('live_matches_container');
+        console.log(liveMatchesContainerID);
         if (liveMatchesContainerID !== null && liveMatchesContainerID !== undefined) {
+            console.log(noLiveMatches);
             liveMatchesContainerID.style.visibility = noLiveMatches ? "hidden" : "visible";
         }
         var fromTop = noLiveMatches ? "80px" : "140px";
@@ -268,7 +270,7 @@ export class MatchDetails extends Component {
         now.setHours(0, 0, 0, 0);
 
         var fromDate = now.addDays(0);
-        var toDate = now.addDays(2);
+        var toDate = now.addDays(1);
 
         var list = matches.filter((match) =>
             (new MatchDate(Date.parse(match.time))).dateLocale() > MatchDate.parse(fromDate) &&

@@ -10,9 +10,12 @@ html, body {
     background-color: rgb(223, 240, 216);
 }
 
+#horizontal_matches {
+    height: 63px;
+}
+
     #horizontal_matches .tab {
-        height: 50px;
-        padding: 0 15px;
+        padding: 5px 12px 0 12px;
     }
 
     #horizontal_matches .nav-link {

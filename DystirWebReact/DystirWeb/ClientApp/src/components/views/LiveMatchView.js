@@ -31,6 +31,7 @@ export class LiveMatchView extends Component {
     render() {
         const match = this.props.match;
         const page = this.props.page == "" ? "" : "/" + this.props.page;
+
         return (
             <NavLink tag={Link} to={page + "/matchdetails/" + match.matchID} style={{padding:"0px"}}>
                 <div >
@@ -62,13 +63,13 @@ export class LiveMatchView extends Component {
                                     <>
                                         {
                                             ((match.homeTeamPenaltiesScore ?? 0) > 0 || (match.awayTeamPenaltiesScore ?? 0) > 0) &&
-                                            <td className="text-end" style={{ pading: "0 3px" }}>
+                                            <td className="penalty_score text-end">
                                             {
-                                                format("( {0} )", match.homeTeamPenaltiesScore)
+                                                match.homeTeamPenaltiesScore
                                             }
                                             </td>
                                             || match.statusID == 10 &&
-                                            <td className="text-end" style={{ pading: "0 3px" }}>( 0 )</td>
+                                            <td className="text-end" style={{ padding: "0 3px" }}>0</td>
                                         }
                                         <td style={{ whiteSpace: "nowrap", width: "0px" }}>
                                             <div className="score_match_view">
@@ -102,13 +103,13 @@ export class LiveMatchView extends Component {
                                     <>
                                         {
                                             ((match.homeTeamPenaltiesScore ?? 0) > 0 || (match.awayTeamPenaltiesScore ?? 0) > 0) &&
-                                            <td className="text-start" style={{ pading: "0 3px" }}>
+                                            <td className="penalty_score text-start">
                                             {
-                                                format("( {0} )", match.awayTeamPenaltiesScore)
+                                                match.awayTeamPenaltiesScore
                                             }
                                             </td>
                                             || match.statusID == 10 &&
-                                            <td className="text-start" style={{ pading: "0 3px" }}>( 0 )</td>
+                                            <td className="text-start" style={{ padding: "0 3px" }}>0</td>
                                         }
                                         <td style={{ whiteSpace: "nowrap", width: "0px" }}>
                                             <div className="score_match_view">

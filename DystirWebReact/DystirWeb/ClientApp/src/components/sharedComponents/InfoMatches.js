@@ -46,6 +46,7 @@ export class InfoMatches extends Component {
         document.body.addEventListener('onConnected', this.onConnected.bind(this));
         document.body.addEventListener('onDisconnected', this.onDisconnected.bind(this));
         document.body.addEventListener('onUpdateMatch', this.onReloadData.bind(this));
+        window.addEventListener('resize', this.scrollButtonVisibility);
     }
 
     componentWillUnmount() {
@@ -53,6 +54,18 @@ export class InfoMatches extends Component {
         document.body.removeEventListener('onConnected', this.onConnected.bind(this));
         document.body.removeEventListener('onDisconnected', this.onDisconnected.bind(this));
         document.body.removeEventListener('onUpdateMatch', this.onReloadData.bind(this));
+        window.removeEventListener('resize', this.scrollButtonVisibility);
+    }
+
+    componentWillUnmount() {
+        document.body.removeEventListener('onReloadData', this.onReloadData.bind(this));
+        document.body.removeEventListener('onConnected', this.onConnected.bind(this));
+        document.body.removeEventListener('onDisconnected', this.onDisconnected.bind(this));
+        document.body.removeEventListener('onUpdateMatchDetails', this.onReloadData.bind(this));
+    }
+
+    componentDidUpdate() {
+        this.scrollButtonVisibility();
     }
 
     onReloadData() {
@@ -73,7 +86,9 @@ export class InfoMatches extends Component {
     }
 
     onClickCompetition(competition) {
-        //this.state.selectedCompetition = competition;
+        this.setState({
+            selectedCompetition: competition
+        });
     }
 
     render() {
@@ -95,26 +110,36 @@ export class InfoMatches extends Component {
                 this.state.isLoading &&
                 <ThreeDots className="loading-spinner-parent" fill='dimGray' height="50" width="50" />
             }
-            {
-                Object.keys(matchesGroup).map(group =>
-                    <div key={group}>
-                        <div id="horizontal_matches">
-                            <div className={"tab " + (this.state.selectedCompetition == group ? "selected_tab" : "")} onClick={() => this.onClickCompetition(group)}>
-                                <div className="nav-link">{group}</div>
-                            </div>
-                        </div>
-                        <div id="horizontal_matches" style={{ backgroundColor: "white" }} >
+                <div id="horizontal_matches">
+                    <div id="scroll_button_left" onClick={() => this.scrollOnClick('left')}>
+                        <BsCaretLeftFill />
+                    </div>
+                    <div id="match_details_horizontal_menu">
+                        <div id="match_details_horizontal_menu_wrapper">
                         {
-                            matchesGroup[group].map(match =>
-                                <div key={match.matchID} className="match_item_same_day match_item_same_day_horizontal">
-                                    <MatchHorizontalView match={match} page={"info"} />
+                            competitions.map(competition =>
+                                <div className={"cometition_item tab " + (this.state.selectedCompetition == competition ? "selected_tab" : "")}
+                                    onClick={() => this.onClickCompetition(competition)}>
+                                    <div className="nav-link">{competition}</div>
                                 </div>
                             )
                         }
                         </div>
                     </div>
-                )
-            }
+                    <div id="scroll_button_right" onClick={() => this.scrollOnClick('right')}>
+                        <BsCaretRightFill />
+                    </div>
+                </div>
+                
+                <div id="horizontal_matches" style={{ backgroundColor: "white" }} >
+                {
+                    matchesGroup[this.state.selectedCompetition]?.map(match =>
+                        <div key={match.matchID} className="match_item_same_day match_item_same_day_horizontal">
+                            <MatchHorizontalView match={match} page={"info"} />
+                        </div>
+                    )
+                }
+                </div>
             </>
         return (
             <LayoutShared>
@@ -129,8 +154,8 @@ export class InfoMatches extends Component {
         var now = new MatchDate();
         now.setHours(0, 0, 0, 0);
 
-        var fromDate = now.addDays(-1);
-        var toDate = now.addDays(32);
+        var fromDate = now.addDays(0);
+        var toDate = now.addDays(1);
 
         var list = matches.filter((match) =>
             (new MatchDate(Date.parse(match.time))).dateLocale() > MatchDate.parse(fromDate) &&
@@ -141,5 +166,34 @@ export class InfoMatches extends Component {
             .sort((a, b) => a.matchID - b.matchID)
             .sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)))
             .sort((a, b) => a.matchTypeID - b.matchTypeID);
+    }
+
+    scrollButtonVisibility() {
+        var position = "";
+        var horizontalMenu = document.getElementById('match_details_horizontal_menu' + position);
+        var horizontalMenuScroll = document.getElementById('match_details_horizontal_menu_wrapper' + position);
+        if (horizontalMenu == null) {
+            return;
+        }
+        var scrollButtonLeft = document.getElementById('scroll_button_left' + position);
+        var scrollButtonRight = document.getElementById('scroll_button_right' + position);
+
+        if (horizontalMenu.offsetWidth >= horizontalMenuScroll.offsetWidth) {
+            scrollButtonLeft.style.visibility = "hidden";
+            scrollButtonRight.style.visibility = "hidden";
+        }
+        else {
+            scrollButtonLeft.style.visibility = "visible";
+            scrollButtonRight.style.visibility = "visible";
+        }
+    }
+
+    scrollOnClick(direction) {
+        var horizontalMenu = document.getElementById('match_details_horizontal_menu');
+        if (direction == 'left') {
+            horizontalMenu.scrollLeft -= horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
+        } else {
+            horizontalMenu.scrollLeft += horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
+        }
     }
 }
