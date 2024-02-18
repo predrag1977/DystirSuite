@@ -87,20 +87,28 @@ export class MatchDetailsInfo extends Component {
                             <td style={{ width: "50px", paddingTop: "8px"}}>
                                 <img src={homeTeamLogo} width="50" height="50" />
                             </td>
-                            <td className="football_field text-center" style={{ width: "270px", height: "90px", paddingTop: "8px", backgroundImage: "url(images/football_field.svg)" }}>
-                                {
+                            <td className="football_field text-center">
+                            {
                                 (match?.statusID > 1 && match?.statusID < 14) &&
                                 <>
                                     {
                                         (match?.homeTeamPenaltiesScore > 0 || match?.awayTeamPenaltiesScore > 0) &&
-                                        <div className="d-inline-block" style={{ fontSize: "22px", marginRight: "5px", color: "beige" }}>{"( " + match?.homeTeamPenaltiesScore + " )"}</div>
+                                            <div className="d-inline-block" style={{ fontSize: "22px", marginRight: "17px", color: "gold" }}>
+                                            {
+                                                match?.homeTeamPenaltiesScore
+                                            }
+                                            </div>
                                     }
                                     <div className="match_details_field_text">{(match?.homeTeamScore ?? 0) - (match?.homeTeamPenaltiesScore ?? 0)}</div>
                                     <div className="match_details_field_text" style={{ width: "40px" }}>:</div>
                                     <div className="match_details_field_text">{(match?.awayTeamScore ?? 0) - (match?.awayTeamPenaltiesScore ?? 0)}</div>
                                     {
                                         (match?.homeTeamPenaltiesScore > 0 || match?.awayTeamPenaltiesScore > 0) &&
-                                        <div className="d-inline-block" style={{ fontSize: "22px", marginLeft: "5px", color: "beige" }}>{"( " + match?.awayTeamPenaltiesScore + " )"}</div>
+                                            <div className="d-inline-block" style={{ fontSize: "22px", marginLeft: "17px", color: "gold" }}>
+                                            {
+                                                match?.awayTeamPenaltiesScore
+                                            }
+                                            </div>
                                     }
                                 </> ||
                                 <>
@@ -108,7 +116,7 @@ export class MatchDetailsInfo extends Component {
                                     <div className="match_details_field_text" style={{ width: "40px" }}>:</div>
                                     <div className="match_details_field_text">-</div>
                                 </>
-                                }
+                            }
                             </td>
                             <td style={{ width: "50px", paddingTop: "8px" }}>
                                 <img src={awayTeamLogo} width="50" height="50" />

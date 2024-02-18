@@ -102,13 +102,13 @@ export class MatchView extends Component {
                                     <>
                                         {
                                             ((match.homeTeamPenaltiesScore ?? 0) > 0 || (match.awayTeamPenaltiesScore ?? 0) > 0) &&
-                                            <td className="text-end" style={{ pading: "0 3px" }}>
+                                            <td className="text-end" style={{ padding: "0 3px" }}>
                                             {
-                                                format("( {0} )", match.homeTeamPenaltiesScore)
+                                                match.homeTeamPenaltiesScore
                                             }
                                             </td>
                                             || match.statusID == 10 &&
-                                            <td className="text-end" style={{ pading: "0 3px" }}>( 0 )</td>
+                                            <td className="text-end" style={{ padding: "0 3px" }}>( 0 )</td>
                                         }
 
                                         <td className="score_match_view">
@@ -124,13 +124,13 @@ export class MatchView extends Component {
                                         </td>
                                         {
                                             ((match.homeTeamPenaltiesScore ?? 0) > 0 || (match.awayTeamPenaltiesScore ?? 0) > 0) &&
-                                            <td className="text-start" style={{ pading: "0 3px" }}>
+                                            <td className="text-start" style={{ padding: "0 3px" }}>
                                             {
-                                                format("( {0} )", match.awayTeamPenaltiesScore)
+                                                match.awayTeamPenaltiesScore
                                             }
                                             </td>
                                             || match.statusID == 10 &&
-                                            <td className="text-start" style={{ pading: "0 3px" }}>( 0 )</td>
+                                            <td className="text-start" style={{ padding: "0 3px" }}>( 0 )</td>
                                         }
                                     </>
                                     ||
@@ -188,14 +188,13 @@ export class MatchView extends Component {
                                 {
                                     (match.statusID < 14 && match.statusID > 1) &&
                                     <td style={{ width: '0px' }, { whiteSpace: 'nowrap' }}>
-                                        <div style={{ padding: '0 1px' }}>
-                                            {
-                                                ((match.homeTeamPenaltiesScore ?? 0) > 0 || (match.awayTeamPenaltiesScore ?? 0) > 0) &&
-                                                format("( {0} )", match.homeTeamPenaltiesScore)
-
-                                                || match.statusID == 10 &&
-                                                "(0)"
-                                            }
+                                        <div style={{ padding: '0 3px' }}>
+                                        {
+                                            ((match.homeTeamPenaltiesScore ?? 0) > 0 || (match.awayTeamPenaltiesScore ?? 0) > 0) &&
+                                            match.homeTeamPenaltiesScore
+                                            || match.statusID == 10 &&
+                                            "(0)"
+                                        }
                                         </div>
                                     </td>
                                 }
@@ -204,9 +203,9 @@ export class MatchView extends Component {
                                         {
                                             (match.statusID < 14 && match.statusID > 1) &&
                                             <>
-                                                {
-                                                    (match.homeTeamScore ?? 0) - (match.homeTeamPenaltiesScore ?? 0)
-                                                }
+                                            {
+                                                (match.homeTeamScore ?? 0) - (match.homeTeamPenaltiesScore ?? 0)
+                                            }
                                             </>
                                             ||
                                             "-"
@@ -229,13 +228,13 @@ export class MatchView extends Component {
                                 {
                                     (match.statusID < 14 && match.statusID > 1) &&
                                     <td style={{ width: '0px' }, { whiteSpace: 'nowrap' }}>
-                                        <div style={{ padding: '0 1px' }}>
-                                            {
-                                                ((match.homeTeamPenaltiesScore ?? 0) > 0 || (match.awayTeamPenaltiesScore ?? 0) > 0) &&
-                                                format("( {0} )", match.awayTeamPenaltiesScore)
-                                                || match.statusID == 10 &&
-                                                "(0)"
-                                            }
+                                        <div style={{ padding: '0 3px' }}>
+                                        {
+                                            ((match.homeTeamPenaltiesScore ?? 0) > 0 || (match.awayTeamPenaltiesScore ?? 0) > 0) &&
+                                            match.awayTeamPenaltiesScore
+                                            || match.statusID == 10 &&
+                                            "(0)"
+                                        }
                                         </div>
                                     </td>
                                 }
@@ -244,9 +243,9 @@ export class MatchView extends Component {
                                         {
                                             (match.statusID < 14 && match.statusID > 1) &&
                                             <>
-                                                {
-                                                    (match.awayTeamScore ?? 0) - (match.awayTeamPenaltiesScore ?? 0)
-                                                }
+                                            {
+                                                (match.awayTeamScore ?? 0) - (match.awayTeamPenaltiesScore ?? 0)
+                                            }
                                             </>
                                             ||
                                             "-"

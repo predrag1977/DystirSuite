@@ -237,6 +237,10 @@ main {
     text-align: center;
 }
 
+.penalty_score {
+    color: black;
+}
+
 .match_info, .standings_cell {
     color: gray;
 }

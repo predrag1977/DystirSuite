@@ -1,5 +1,6 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Nunito');
 
+
 html, body {
     height: 100%;
     margin: 0;
@@ -11,7 +12,7 @@ body {
     font-family: 'Nunito', sans-serif;
     color: white;
     overflow: hidden;
-    background-color: #19191a;
+    background-color: #19191a; 
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -31,6 +32,10 @@ body {
     background-position: center;
     font-size: 30px;
     font-weight: bold;
+    width: 270px;
+    height: 90px;
+    padding-top: 8px;
+    background-image: url('football_field.svg');
 }
 
 .field_background {
@@ -310,7 +315,7 @@ table, tbody, tr {
     width: 40px;
     visibility: hidden;
     border-radius: 20px;
-    line-height: 40px;
+    line-height: 38px;
     margin-top: 10px;
 }
 
@@ -390,6 +395,11 @@ table, tbody, tr {
     top: 20px;
 }
 
+.penalty_score {
+    color: white;
+    padding: 1px 4px 0 4px;
+}
+
 #match-details_static_part #horizontal_menu_days {
     height: 50px;
     border-bottom: 1px solid #404040;
@@ -451,9 +461,13 @@ table, tbody, tr {
     border-radius: 10px;
     margin: 2px;
     font-size: 10px;
-    width: calc(20% - 5px);
+    width: calc(20% - 4px);
     display: inline-block;
     height:57px;
+}
+
+.cometition_item {
+    display: inline-block;
 }
 
 .content_table {
@@ -677,8 +691,6 @@ table, tbody, tr {
     color: red;
 }
 
-
-
 .statistics_goal, .statistics_asist {
     width: 2.5rem;
     vertical-align: middle;
@@ -765,7 +777,7 @@ a, .btn-link, .nav-link {
     width: 23px;
 }
 
-.match_item_same_day .score_match_view {
+.score_match_view {
     width: 25px;
     border-radius: 3px;
 }
@@ -947,7 +959,7 @@ a, .btn-link, .nav-link {
 /*-----------------------*/
 @media (max-width: 999.98px) {
     .match_item_same_day {
-        width: calc(20% - 5px);
+        width: calc(20% - 4px);
     }
 }
 
@@ -1013,13 +1025,13 @@ a, .btn-link, .nav-link {
 
 @media (max-width: 599.98px) {
     .match_item_same_day {
-        width: calc(33% - 3px);
+        width: calc(33.33% - 4px);
     }
 }
 
 @media (max-width: 400px) {
     .match_item_same_day {
-        width: calc(50% - 3px);
+        width: calc(50% - 4px);
     }
 }
 
