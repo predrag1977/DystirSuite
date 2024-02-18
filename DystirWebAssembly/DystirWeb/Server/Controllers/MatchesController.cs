@@ -62,7 +62,8 @@ namespace DystirWeb.Controllers
                     matches = _dystirService.AllMatches?.Where(y => y.MatchActivation == 1);
                     break;
                 default:
-                    matches = _dystirService.AllMatches;
+                    fromDate = new DateTime(DateTime.UtcNow.Year, 1, 1);
+                    matches = _dystirService.AllMatches?.Where(x => x.Time > fromDate);
                     break;
             }
             Debug.WriteLine("Finished:" + DateTime.Now.ToString("hh:mm:ss:ff"));
