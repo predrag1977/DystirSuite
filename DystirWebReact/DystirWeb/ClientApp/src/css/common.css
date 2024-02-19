@@ -174,20 +174,21 @@ main {
     }
 
 .match_item_same_day_share {
-    padding: 2px;
-    border-radius: 3px;
-    margin: 0;
-    font-size: 12px;
-    width: calc(20% - 4px);
+    padding: 2px 5px;
+    border-radius: 10px;
+    margin: 1px;
+    width: calc(20% - 2px);
     display: inline-block;
     border: 1px solid #a6a6a6;
     background-color: white;
     color: black;
     max-width: 400px;
+    height: 85px;
+    font-size: 11px;
 }
 
     .match_item_same_day_share:hover {
-        background-color: white;
+        background-color: rgba(92, 92, 92, 0.1);
         color: black;
     }
 

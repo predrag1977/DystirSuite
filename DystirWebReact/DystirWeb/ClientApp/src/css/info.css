@@ -6,16 +6,21 @@ html, body {
     background-color: white;
 }
 
-#competitions_selection, #horizontal_matches, #horizontal_menu_days {
+#competitions_selection, #horizontal_matches, #horizontal_menu_days, #horizontal_matches_header {
     background-color: rgb(223, 240, 216);
 }
 
 #horizontal_matches {
-    height: 63px;
+    background-color: white;
 }
 
-    #horizontal_matches .tab {
-        padding: 5px 12px 0 12px;
+#horizontal_matches_header {
+    height: 55px;
+}
+
+    #horizontal_matches_header .tab {
+        padding: 0px 12px;
+        height: 55px;
     }
 
     #horizontal_matches .nav-link {
@@ -24,9 +29,4 @@ html, body {
 
 .statistic-home {
     background-color: yellowgreen;
-}
-
-.match_item_same_day_horizontal {
-    height: 85px;
-    font-size: 11px;
 }

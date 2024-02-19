@@ -59,6 +59,9 @@ export class MatchHorizontalView extends Component {
                     <table>
                         <tbody>
                             <tr>
+                                <td>
+                                    <img onError={(ev) => ev.target.src = "team_logos/empty.png"} src={"team_logos/" + match.homeTeamLogo} width="13" height="13" />
+                                </td>
                                 <td className="match_item_same_day_team_name">
                                     <span>
                                     {
@@ -99,6 +102,9 @@ export class MatchHorizontalView extends Component {
                     <table>
                         <tbody>
                             <tr>
+                                <td>
+                                    <img onError={(ev) => ev.target.src = "team_logos/empty.png"} src={"team_logos/" + match.awayTeamLogo} width="13" height="13" />
+                                </td>
                                 <td className="match_item_same_day_team_name">
                                     <span>
                                     {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ThreeDots } from 'react-loading-icons'
+import { PuffLoader } from 'react-spinners';
 import { DystirWebClientService, SelectPeriodName, PageName } from '../../services/dystirWebClientService';
 import MatchDate from '../../extentions/matchDate';
 import { MatchView } from "./../views/MatchView";
@@ -16,27 +16,15 @@ export class RoysniMatches extends Component {
     constructor(props) {
         super(props);
         let matchesData = dystirWebClientService.state.matchesData;
-        //if (matchesData.selectedPeriod !== undefined && matchesData.selectedPeriod !== "") {
-        //    window.history.replaceState(null, null, "/matches/" + matchesData.selectedPeriod);
-        //} else {
-        //    matchesData.selectedPeriod = window.location.pathname.split("/").pop();
-        //}
         this.state = {
             matches: matchesData.matches,
             selectedPeriod: matchesData.selectedPeriod,
             isLoading: false
         }
-        //if (this.state.selectedPeriod !== undefined && this.state.selectedPeriod !== "") {
-        //    window.history.replaceState(null, null, "/matches/" + this.state.selectedPeriod);
-        //}
         if (this.state.matches.length === 0) {
             this.state.isLoading = true;
             dystirWebClientService.loadMatchesDataAsync(this.state.selectedPeriod);
         }
-
-        //window.onpopstate = () => {
-        //    this.onClickPeriod();
-        //}
     }
 
     componentDidMount() {
@@ -94,7 +82,7 @@ export class RoysniMatches extends Component {
                 <div className="main_container_shared">
                 {
                     this.state.isLoading &&
-                    <ThreeDots className="loading-spinner-parent" fill='dimGray' height="50" width="50" />
+                    <PuffLoader className="loading-spinner-parent" color="lightGray" height="50" width="50" />
                 }
                 {
                     this.renderMatches(this.filterMatches(this.state.matches))
@@ -130,8 +118,8 @@ export class RoysniMatches extends Component {
         var now = new MatchDate();
         now.setHours(0, 0, 0, 0);
 
-        var fromDate = now.addDays(-10);
-        var toDate = now.addDays(0);
+        var fromDate = now.addDays(0);
+        var toDate = now.addDays(1);
 
         var list = matches.filter((match) =>
             (new MatchDate(Date.parse(match.time))).dateLocale() > MatchDate.parse(fromDate)

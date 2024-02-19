@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ThreeDots } from 'react-loading-icons'
+import { PuffLoader } from 'react-spinners';
 import { DystirWebClientService, PageName } from '../services/dystirWebClientService';
 import MatchDate from '../extentions/matchDate';
 import { MatchView } from "./views/MatchView";
@@ -92,7 +92,7 @@ export class Results extends Component {
             <div className="main_container">
                 {
                     this.state.isLoading &&
-                    <ThreeDots className="loading-spinner-parent" fill='dimGray' height="50" width="50" />
+                    <PuffLoader className="loading-spinner-parent" color="lightGray" height="50" width="50" />
                 }
                 {
                     competitions.length > 0 &&
