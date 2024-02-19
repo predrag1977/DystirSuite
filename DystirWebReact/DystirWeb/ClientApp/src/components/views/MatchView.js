@@ -102,7 +102,7 @@ export class MatchView extends Component {
                                     <>
                                         {
                                             ((match.homeTeamPenaltiesScore ?? 0) > 0 || (match.awayTeamPenaltiesScore ?? 0) > 0) &&
-                                            <td className="text-end" style={{ padding: "0 3px" }}>
+                                            <td className="text-end" style={{ padding: "0 10px 0 3px" }}>
                                             {
                                                 match.homeTeamPenaltiesScore
                                             }
@@ -124,7 +124,7 @@ export class MatchView extends Component {
                                         </td>
                                         {
                                             ((match.homeTeamPenaltiesScore ?? 0) > 0 || (match.awayTeamPenaltiesScore ?? 0) > 0) &&
-                                            <td className="text-start" style={{ padding: "0 3px" }}>
+                                            <td className="text-start" style={{ padding: "0 3px 0 10px" }}>
                                             {
                                                 match.awayTeamPenaltiesScore
                                             }
@@ -188,7 +188,7 @@ export class MatchView extends Component {
                                 {
                                     (match.statusID < 14 && match.statusID > 1) &&
                                     <td style={{ width: '0px' }, { whiteSpace: 'nowrap' }}>
-                                        <div style={{ padding: '0 3px' }}>
+                                        <div style={{ padding: '0 5px' }}>
                                         {
                                             ((match.homeTeamPenaltiesScore ?? 0) > 0 || (match.awayTeamPenaltiesScore ?? 0) > 0) &&
                                             match.homeTeamPenaltiesScore
@@ -228,7 +228,7 @@ export class MatchView extends Component {
                                 {
                                     (match.statusID < 14 && match.statusID > 1) &&
                                     <td style={{ width: '0px' }, { whiteSpace: 'nowrap' }}>
-                                        <div style={{ padding: '0 3px' }}>
+                                        <div style={{ padding: '0 5px' }}>
                                         {
                                             ((match.homeTeamPenaltiesScore ?? 0) > 0 || (match.awayTeamPenaltiesScore ?? 0) > 0) &&
                                             match.awayTeamPenaltiesScore

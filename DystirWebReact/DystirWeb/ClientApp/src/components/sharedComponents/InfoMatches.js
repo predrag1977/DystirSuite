@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ThreeDots } from 'react-loading-icons'
+import { PuffLoader } from 'react-spinners';
 import { DystirWebClientService, SelectPeriodName, PageName } from '../../services/dystirWebClientService';
 import MatchDate from '../../extentions/matchDate';
 import { MatchView } from "./../views/MatchView";
@@ -18,27 +18,15 @@ export class InfoMatches extends Component {
     constructor(props) {
         super(props);
         let matchesData = dystirWebClientService.state.matchesData;
-        //if (matchesData.selectedPeriod !== undefined && matchesData.selectedPeriod !== "") {
-        //    window.history.replaceState(null, null, "/matches/" + matchesData.selectedPeriod);
-        //} else {
-        //    matchesData.selectedPeriod = window.location.pathname.split("/").pop();
-        //}
         this.state = {
             matches: matchesData.matches,
             selectedCompetition: "",
             isLoading: false
         }
-        //if (this.state.selectedPeriod !== undefined && this.state.selectedPeriod !== "") {
-        //    window.history.replaceState(null, null, "/matches/" + this.state.selectedPeriod);
-        //}
         if (this.state.matches.length === 0) {
             this.state.isLoading = true;
             dystirWebClientService.loadMatchesDataAsync();
         }
-
-        //window.onpopstate = () => {
-        //    this.onClickPeriod();
-        //}
     }
 
     componentDidMount() {
@@ -46,7 +34,7 @@ export class InfoMatches extends Component {
         document.body.addEventListener('onConnected', this.onConnected.bind(this));
         document.body.addEventListener('onDisconnected', this.onDisconnected.bind(this));
         document.body.addEventListener('onUpdateMatch', this.onReloadData.bind(this));
-        window.addEventListener('resize', this.scrollButtonVisibility);
+        window.addEventListener('resize', this.onResize.bind(this));
     }
 
     componentWillUnmount() {
@@ -54,7 +42,7 @@ export class InfoMatches extends Component {
         document.body.removeEventListener('onConnected', this.onConnected.bind(this));
         document.body.removeEventListener('onDisconnected', this.onDisconnected.bind(this));
         document.body.removeEventListener('onUpdateMatch', this.onReloadData.bind(this));
-        window.removeEventListener('resize', this.scrollButtonVisibility);
+        window.removeEventListener('resize', this.onResize.bind(this));
     }
 
     componentWillUnmount() {
@@ -66,6 +54,7 @@ export class InfoMatches extends Component {
 
     componentDidUpdate() {
         this.scrollButtonVisibility();
+        this.sizeOfMatchItem();
     }
 
     onReloadData() {
@@ -91,11 +80,16 @@ export class InfoMatches extends Component {
         });
     }
 
+    onResize() {
+        this.scrollButtonVisibility();
+        this.sizeOfMatchItem();
+    }
+
     render() {
         const matches = this.filterMatches(this.state.matches);
         if (matches == null) return;
         const matchesGroup = matches.groupBy(match => { return match.matchTypeName });
-        console.log(matchesGroup);
+
         const competitions = [];
         Object.keys(matchesGroup).map((group) => {
             competitions.push(group);
@@ -108,9 +102,9 @@ export class InfoMatches extends Component {
             <>
             {
                 this.state.isLoading &&
-                <ThreeDots className="loading-spinner-parent" fill='dimGray' height="50" width="50" />
+                <PuffLoader className="loading-spinner-parent" color="lightGray" height="50" width="50" />
             }
-                <div id="horizontal_matches">
+                <div id="horizontal_matches_header">
                     <div id="scroll_button_left" onClick={() => this.scrollOnClick('left')}>
                         <BsCaretLeftFill />
                     </div>
@@ -118,7 +112,8 @@ export class InfoMatches extends Component {
                         <div id="match_details_horizontal_menu_wrapper">
                         {
                             competitions.map(competition =>
-                                <div className={"cometition_item tab " + (this.state.selectedCompetition == competition ? "selected_tab" : "")}
+                                <div key={competition}
+                                    className={"cometition_item tab " + (this.state.selectedCompetition == competition ? "selected_tab" : "")}
                                     onClick={() => this.onClickCompetition(competition)}>
                                     <div className="nav-link">{competition}</div>
                                 </div>
@@ -131,10 +126,10 @@ export class InfoMatches extends Component {
                     </div>
                 </div>
                 
-                <div id="horizontal_matches" style={{ backgroundColor: "white" }} >
+                <div id="horizontal_matches">
                 {
                     matchesGroup[this.state.selectedCompetition]?.map(match =>
-                        <div key={match.matchID} className="match_item_same_day match_item_same_day_horizontal">
+                        <div key={match.matchID} className="match_item_same_day_share">
                             <MatchHorizontalView match={match} page={"info"} />
                         </div>
                     )
@@ -169,14 +164,13 @@ export class InfoMatches extends Component {
     }
 
     scrollButtonVisibility() {
-        var position = "";
-        var horizontalMenu = document.getElementById('match_details_horizontal_menu' + position);
-        var horizontalMenuScroll = document.getElementById('match_details_horizontal_menu_wrapper' + position);
+        var horizontalMenu = document.getElementById('match_details_horizontal_menu');
+        var horizontalMenuScroll = document.getElementById('match_details_horizontal_menu_wrapper');
         if (horizontalMenu == null) {
             return;
         }
-        var scrollButtonLeft = document.getElementById('scroll_button_left' + position);
-        var scrollButtonRight = document.getElementById('scroll_button_right' + position);
+        var scrollButtonLeft = document.getElementById('scroll_button_left');
+        var scrollButtonRight = document.getElementById('scroll_button_right');
 
         if (horizontalMenu.offsetWidth >= horizontalMenuScroll.offsetWidth) {
             scrollButtonLeft.style.visibility = "hidden";
@@ -194,6 +188,25 @@ export class InfoMatches extends Component {
             horizontalMenu.scrollLeft -= horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
         } else {
             horizontalMenu.scrollLeft += horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
+        }
+    }
+
+    sizeOfMatchItem() {
+        var elements = document.getElementsByClassName('match_item_same_day_share');
+        var matchItemSameDayTeamNames = document.getElementsByClassName('match_item_same_day_team_name');
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].style.width = "calc(" + 100 / elements.length + "% - 2px)";
+            if (elements[i].offsetWidth > 200) {
+                elements[i].style.width = "200px";
+            }
+
+            for (let j = 0; j < matchItemSameDayTeamNames.length; j++) {
+                if (elements[i].offsetWidth < 85) {
+                    matchItemSameDayTeamNames[j].style.visibility = "hidden";
+                } else {
+                    matchItemSameDayTeamNames[j].style.visibility = "visible";
+                }
+            }
         }
     }
 }

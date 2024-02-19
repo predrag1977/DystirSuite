@@ -98,7 +98,6 @@ main {
 }
 
 #live_matches_container {
-    height: 60px;
     background-color: rgba(24, 24, 24, 0.85);
     border-bottom: 1px solid #404040;
     user-select: none;
@@ -165,7 +164,7 @@ table, tbody, tr {
     line-height: 80px;
 }
 
-#horizontal_menu_days, #horizontal_matches {
+#horizontal_menu_days, #horizontal_matches, #horizontal_matches_header {
     display: flex;
     height: 60px;
     text-align: center;
@@ -181,7 +180,7 @@ table, tbody, tr {
         width: 20%;
     }
 
-#horizontal_matches {
+#horizontal_matches, #horizontal_matches_header {
     border-bottom: 0px;
     height: 50px;
 }
@@ -447,7 +446,7 @@ table, tbody, tr {
     margin: 0 5px 5px 5px;
     padding: 5px 10px;
     border-radius: 10px;
-    color:white;
+    color: white;
     cursor: pointer;
 }
 
@@ -735,7 +734,7 @@ a, .btn-link, .nav-link {
 }
 
 .loading-spinner-parent {
-    position: fixed;
+    position: fixed !important;
     top: calc(50% - 1.3rem);
     left: calc(50% - 1.3rem);
     color: darkgrey;

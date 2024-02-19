@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ThreeDots } from 'react-loading-icons';
+import { PuffLoader } from 'react-spinners';
 import { DystirWebClientService, PageName, TabName } from '../services/dystirWebClientService';
 import { LayoutMatchDetails } from './layouts/LayoutMatchDetails';
 import { LayoutMatchDetailsShared } from './layouts/LayoutMatchDetailsShared';
@@ -164,6 +164,7 @@ export class MatchDetails extends Component {
         var playersOfMatch = this.state.match?.matchDetails?.playersOfMatch ?? [];
         var statistic = this.state.match?.matchDetails?.statistic ?? null;
         var standings = this.state.match?.matchDetails?.standings ?? [];
+        console.log(this.state.matches);
         var liveMatches = this.filterMatches(this.state.matches ?? []);
 
         let noLiveMatches = liveMatches.length == 0;
@@ -204,16 +205,16 @@ export class MatchDetails extends Component {
                     </div>
                 </div>
                 <div className="main_container_match_details">
+                    {
+                        this.state.isLoading &&
+                        <PuffLoader className="loading-spinner-parent" color="lightGray" height="50" width="50" />
+                    }
                     <MatchDetailsInfo match={this.state.match} page={page} />
                     <MatchDetailsTabs onClickTab={() => this.onClickTab()}
                         onMoreLiveMatchClick={(e) => this.onMoreLiveMatchClick(e)}
                         match={this.state.match}
                         selectedTab={this.state.selectedTab}
                         page={page} />
-                    {
-                        this.state.isLoading &&
-                        <ThreeDots className="loading-spinner-parent" fill={page == "" ? 'khaki' : 'dimGray'} height="50" width="50" />
-                    }
                     {
                         <>
                             <div className={this.state.selectedTab === TabName.SUMMARY ? "active_tab" : "no_active_tab"}>
@@ -252,9 +253,7 @@ export class MatchDetails extends Component {
 
     liveMatchesHeight(noLiveMatches) {
         var liveMatchesContainerID = document.getElementById('live_matches_container');
-        console.log(liveMatchesContainerID);
         if (liveMatchesContainerID !== null && liveMatchesContainerID !== undefined) {
-            console.log(noLiveMatches);
             liveMatchesContainerID.style.visibility = noLiveMatches ? "hidden" : "visible";
         }
         var fromTop = noLiveMatches ? "80px" : "140px";
