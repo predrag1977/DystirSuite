@@ -164,7 +164,6 @@ export class MatchDetails extends Component {
         var playersOfMatch = this.state.match?.matchDetails?.playersOfMatch ?? [];
         var statistic = this.state.match?.matchDetails?.statistic ?? null;
         var standings = this.state.match?.matchDetails?.standings ?? [];
-        console.log(this.state.matches);
         var liveMatches = this.filterMatches(this.state.matches ?? []);
 
         let noLiveMatches = liveMatches.length == 0;
