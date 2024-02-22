@@ -213,6 +213,7 @@ export class MatchDetails extends Component {
                         onMoreLiveMatchClick={(e) => this.onMoreLiveMatchClick(e)}
                         match={this.state.match}
                         selectedTab={this.state.selectedTab}
+                        standings={standings}
                         page={page} />
                     {
                         <>

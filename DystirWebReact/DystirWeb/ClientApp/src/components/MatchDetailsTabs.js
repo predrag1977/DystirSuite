@@ -13,6 +13,7 @@ export class MatchDetailsTabs extends Component {
 
     render() {
         const match = this.props.match;
+        const standings = this.props.standings;
         var liveMatchCount = (this.props.liveMatches ?? []).length;
         let matchID = match?.matchID != null ? match.matchID : 0;
         const selectedTab = this.props.selectedTab !== undefined && this.props.selectedTab !== "" ? this.props.selectedTab : TabName.SUMMARY;
@@ -45,22 +46,29 @@ export class MatchDetailsTabs extends Component {
                             <span>Hendingar</span>
                         </NavLink>
                     </div>
-                    <div className={"tab " + (selectedTab == TabName.STATISTICS ? "selected_tab" : "")}
-                        onClick={() => this.props.onClickTab()}>
-                        <NavLink
-                            tag={Link}
-                            to={fullUrl + TabName.STATISTICS}>
-                            <span>Hagtøl</span>
-                        </NavLink>
-                    </div>
-                    <div className={"tab " + (selectedTab == TabName.STANDINGS ? "selected_tab" : "")}
-                        onClick={() => this.props.onClickTab()}>
-                        <NavLink
-                            tag={Link}
-                            to={fullUrl + TabName.STANDINGS}>
-                            <span>Støðan</span>
-                        </NavLink>
-                    </div>
+                    {
+                        (match?.statusID < 14 && match?.statusID > 1) &&
+                        <div className={"tab " + (selectedTab == TabName.STATISTICS ? "selected_tab" : "")}
+                            onClick={() => this.props.onClickTab()}>
+                            <NavLink
+                                tag={Link}
+                                to={fullUrl + TabName.STATISTICS}>
+                                <span>Hagtøl</span>
+                            </NavLink>
+                        </div>
+                    }
+                    {
+                        standings.filter((standing) => standing.standingCompetitionName == match?.matchTypeName).length > 0 &&
+                        <div className={"tab " + (selectedTab == TabName.STANDINGS ? "selected_tab" : "")}
+                            onClick={() => this.props.onClickTab()}>
+                            <NavLink
+                                tag={Link}
+                                to={fullUrl + TabName.STANDINGS}>
+                                <span>Støðan</span>
+                            </NavLink>
+                        </div>
+                    }
+                    
                     {
                         liveMatchCount > 0 &&
                         <div className="live_matches" onClick={(e) => this.props.onMoreLiveMatchClick(e)}>
