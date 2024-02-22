@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { PuffLoader } from 'react-spinners';
 import { DystirWebClientService, SelectPeriodName, PageName } from '../../services/dystirWebClientService';
+import { scrollButtonVisibility, scrollOnClick } from '../../extentions/scrolling';
 import MatchDate from '../../extentions/matchDate';
 import { MatchView } from "./../views/MatchView";
 import { ChooseCompetitions } from './../ChooseCompetitions';
@@ -53,7 +54,7 @@ export class InfoMatches extends Component {
     }
 
     componentDidUpdate() {
-        this.scrollButtonVisibility();
+        scrollButtonVisibility();
         this.sizeOfMatchItem();
     }
 
@@ -81,7 +82,7 @@ export class InfoMatches extends Component {
     }
 
     onResize() {
-        this.scrollButtonVisibility();
+        scrollButtonVisibility();
         this.sizeOfMatchItem();
     }
 
@@ -105,7 +106,7 @@ export class InfoMatches extends Component {
                 <PuffLoader className="loading-spinner-parent" color="lightGray" height="50" width="50" />
             }
                 <div id="horizontal_matches_header">
-                    <div id="scroll_button_left" onClick={() => this.scrollOnClick('left')}>
+                    <div id="scroll_button_left" onClick={() => scrollOnClick('left')}>
                         <BsCaretLeftFill />
                     </div>
                     <div id="match_details_horizontal_menu">
@@ -121,7 +122,7 @@ export class InfoMatches extends Component {
                         }
                         </div>
                     </div>
-                    <div id="scroll_button_right" onClick={() => this.scrollOnClick('right')}>
+                    <div id="scroll_button_right" onClick={() => scrollOnClick('right')}>
                         <BsCaretRightFill />
                     </div>
                 </div>
@@ -161,34 +162,6 @@ export class InfoMatches extends Component {
             .sort((a, b) => a.matchID - b.matchID)
             .sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)))
             .sort((a, b) => a.matchTypeID - b.matchTypeID);
-    }
-
-    scrollButtonVisibility() {
-        var horizontalMenu = document.getElementById('match_details_horizontal_menu');
-        var horizontalMenuScroll = document.getElementById('match_details_horizontal_menu_wrapper');
-        if (horizontalMenu == null) {
-            return;
-        }
-        var scrollButtonLeft = document.getElementById('scroll_button_left');
-        var scrollButtonRight = document.getElementById('scroll_button_right');
-
-        if (horizontalMenu.offsetWidth >= horizontalMenuScroll.offsetWidth) {
-            scrollButtonLeft.style.visibility = "hidden";
-            scrollButtonRight.style.visibility = "hidden";
-        }
-        else {
-            scrollButtonLeft.style.visibility = "visible";
-            scrollButtonRight.style.visibility = "visible";
-        }
-    }
-
-    scrollOnClick(direction) {
-        var horizontalMenu = document.getElementById('match_details_horizontal_menu');
-        if (direction == 'left') {
-            horizontalMenu.scrollLeft -= horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
-        } else {
-            horizontalMenu.scrollLeft += horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
-        }
     }
 
     sizeOfMatchItem() {

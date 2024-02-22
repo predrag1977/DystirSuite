@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { PuffLoader } from 'react-spinners';
 import { DystirWebClientService, PageName, TabName } from '../services/dystirWebClientService';
+import { scrollButtonVisibility, scrollOnClick } from '../extentions/scrolling';
 import { LayoutMatchDetails } from './layouts/LayoutMatchDetails';
 import { LayoutMatchDetailsShared } from './layouts/LayoutMatchDetailsShared';
 import { Lineups } from './Lineups';
@@ -64,7 +65,7 @@ export class MatchDetails extends Component {
         document.body.addEventListener('onConnected', this.onConnected.bind(this));
         document.body.addEventListener('onDisconnected', this.onDisconnected.bind(this));
         document.body.addEventListener('onUpdateMatchDetails', this.onReloadData.bind(this));
-        window.addEventListener('resize', this.scrollButtonVisibility);
+        window.addEventListener('resize', this.onResize.bind(this));
     }
 
     componentWillUnmount() {
@@ -72,11 +73,11 @@ export class MatchDetails extends Component {
         document.body.removeEventListener('onConnected', this.onConnected.bind(this));
         document.body.removeEventListener('onDisconnected', this.onDisconnected.bind(this));
         document.body.removeEventListener('onUpdateMatchDetails', this.onReloadData.bind(this));
-        window.removeEventListener('resize', this.scrollButtonVisibility);
+        window.removeEventListener('resize', this.onResize.bind(this));
     }
 
     componentDidUpdate() {
-        this.scrollButtonVisibility();
+        scrollButtonVisibility();
     }
 
     onReloadData() {
@@ -99,6 +100,10 @@ export class MatchDetails extends Component {
         this.setState({
             isLoading: true
         });
+    }
+
+    onResize() {
+        scrollButtonVisibility();
     }
 
     onClickTab() {
@@ -185,7 +190,7 @@ export class MatchDetails extends Component {
         let contents =
             <>
                 <div id="live_matches_container">
-                    <div id="scroll_button_left" onClick={() => this.scrollOnClick('left')}>
+                    <div id="scroll_button_left" onClick={() => scrollOnClick('left')}>
                         <BsCaretLeftFill />
                     </div>
                     <div id="match_details_horizontal_menu">
@@ -199,7 +204,7 @@ export class MatchDetails extends Component {
                         }
                         </div>
                     </div>
-                    <div id="scroll_button_right" onClick={() => this.scrollOnClick('right')}>
+                    <div id="scroll_button_right" onClick={() => scrollOnClick('right')}>
                         <BsCaretRightFill />
                     </div>
                 </div>

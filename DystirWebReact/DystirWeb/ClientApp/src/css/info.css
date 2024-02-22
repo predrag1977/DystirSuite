@@ -27,6 +27,10 @@ html, body {
         padding-top: 15px;
     }
 
+.selected_tab .nav-link, .tab .nav-link {
+    height: auto;
+}
+
 .statistic-home {
     background-color: yellowgreen;
 }
