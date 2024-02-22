@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { DystirWebClientService, EventName, PageName } from '../services/dystirWebClientService';
 import MatchDate from '../extentions/matchDate';
 import MatchTimeAndColor from '../extentions/matchTimeAndColor';
+import { format } from 'react-string-format';
 
 export class MatchDetailsInfo extends Component {
     static displayName = MatchDetailsInfo.name;
@@ -73,9 +74,17 @@ export class MatchDetailsInfo extends Component {
                     <table className="w-100 text-center">
                         <tbody>
                             <tr style={{ fontSize: "18px" }}>
-                                <td className="match_item_team_name text-end">{match?.homeTeam}</td>
+                                <td className="match_item_team_name text-end">
+                                {
+                                    format('{0} {1} {2}', match?.homeTeam, match?.homeSquadName, match?.homeCategoriesName)
+                                }
+                                </td>
                                 <td style={{ width: "20px" }}>-</td>
-                                <td className="match_item_team_name text-start">{match?.awayTeam}</td>
+                                <td className="match_item_team_name text-start">
+                                {
+                                    format('{0} {1} {2}', match?.awayTeam, match?.awaySquadName, match?.awayCategoriesName)
+                                }
+                                </td>
                             </tr>
                         </tbody>
                     </table>
