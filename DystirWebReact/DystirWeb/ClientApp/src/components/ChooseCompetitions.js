@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { SelectPeriodName } from '../services/dystirWebClientService';
+import { scrollButtonVisibility, scrollOnClick } from '../extentions/scrolling';
 import MatchDate from '../extentions/matchDate';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
@@ -13,22 +14,26 @@ export class ChooseCompetitions extends Component {
     }
 
     componentDidMount() {
-        window.addEventListener('resize', this.scrollButtonVisibility);
+        window.addEventListener('resize', this.onResize.bind(this));
     }
 
     componentWillUnmount() {
-        window.removeEventListener('resize', this.scrollButtonVisibility);
+        window.removeEventListener('resize', this.onResize.bind(this));
     }
 
     componentDidUpdate() {
-        this.scrollButtonVisibility();
+        scrollButtonVisibility();
+    }
+
+    onResize() {
+        scrollButtonVisibility();
     }
 
     render() {
         var page = this.props.page;
         return (
             <div id="competitions_selection">
-                <div id="scroll_button_left" onClick={() => this.scrollOnClick('left')}>
+                <div id="scroll_button_left" onClick={() => scrollOnClick('left')}>
                     <BsCaretLeftFill />
                 </div>
                 <div id="horizontal_menu">
@@ -48,7 +53,7 @@ export class ChooseCompetitions extends Component {
                     }
                     </div>
                 </div>
-                <div id="scroll_button_right" onClick={() => this.scrollOnClick('right')}>
+                <div id="scroll_button_right" onClick={() => scrollOnClick('right')}>
                     <BsCaretRightFill />
                 </div>
             </div>
@@ -78,9 +83,17 @@ export class ChooseCompetitions extends Component {
     scrollOnClick(direction) {
         var horizontalMenu = document.getElementById('horizontal_menu');
         if (direction == 'left') {
-            horizontalMenu.scrollLeft -= horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
+            horizontalMenu.scrollTo({
+                top: 0,
+                left: horizontalMenu.scrollLeft - 80,
+                behavior: 'smooth'
+            });
         } else {
-            horizontalMenu.scrollLeft += horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
+            horizontalMenu.scrollTo({
+                top: 0,
+                left: horizontalMenu.scrollLeft + 80,
+                behavior: 'smooth'
+            });
         }
     }
 }
