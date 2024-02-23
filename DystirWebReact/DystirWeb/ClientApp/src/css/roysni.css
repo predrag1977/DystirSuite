@@ -5,10 +5,46 @@ html, body {
     background-color: white;
 }
 
-#competitions_selection, #horizontal_menu_days {
+#horizontal_matches {
+    background-color: white;
+}
+
+#horizontal_matches_header {
+    height: 55px;
+    border-bottom: 5px solid #fceeec;
+}
+
+    #horizontal_matches_header .tab {
+        padding: 0px 12px;
+        height: 100%;
+    }
+
+#horizontal_matches .nav-link {
+    padding-top: 15px;
+}
+
+.selected_tab .nav-link, .tab .nav-link {
+    height: 100%;
+    padding-top: 17px;
+}
+
+#competitions_selection, #horizontal_matches, #horizontal_menu_days, #horizontal_matches_header {
     background-color: #fceeec;
+}
+
+#standings_header {
+    border-top: 0px;
+    border-bottom: 1px solid dimgray;
 }
 
 .statistic-home {
     background-color: #f14d33;
+}
+
+#competitions_selection {
+    background-color: white;
+    border-top: 0px solid lightgray;
+    border-bottom: 7px solid #fceeec !important;
+    margin: 0;
+    height: 60px;
 }

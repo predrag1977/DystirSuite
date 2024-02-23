@@ -29,6 +29,7 @@ namespace DystirWeb.Services
                 Standing standing = new Standing()
                 {
                     StandingCompetitionId = competititionsArray.IndexOf(competitition).ToString(),
+                    StandingTypeID = competitition.CompetitionID ?? 0,
                     StandingCompetitionName = competitition.MatchTypeName,
                     TeamStandings = GetStandings(competitition.MatchTypeName, teamsList, matchesList)
                 };
