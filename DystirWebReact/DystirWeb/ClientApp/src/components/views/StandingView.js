@@ -20,11 +20,11 @@ export class StandingView extends Component {
                     <div className="match-group-competition-name">{standing.standingCompetitionName ?? ""}</div>
                 }
                 <div>
-                    <div className="standings_table" style={{ margin: "5px 5px " + (isSharedPage ? "2px" : "15px") + " 5px" }}>
+                    <div className="standings_table" style={{ margin: "5px 5px " + (isSharedPage ? "2px 5px" : "15px 5px") }}>
                         <table className="content_table">
                             <tbody>
-                                <tr id="standings_header">
-                                    <td className="standings_cell standings_cell_number">Nr</td>
+                                <tr id="standings_header" style={{ borderTop: (isSharedPage ? "0px" : "1px solid dimGray") }}>
+                                    <td className="standings_cell standings_cell_number" style={{ padding: (isSharedPage ? "7.8px 0px" : "10px 0px")}}>Nr</td>
                                     <td className="standings_cell standings_cell_team_name_title">LIÐ</td>
                                     <td className="standings_cell fw-bold">ST</td>
                                     <td className="standings_cell">DS</td>
@@ -38,7 +38,7 @@ export class StandingView extends Component {
                                 {
                                     standing.teamStandings.map(teamStanding =>
                                         <tr key={teamStanding.teamID} style={{ borderBottom: "1px solid " + (isSharedPage ? "lightGray" : teamStanding.positionColor) }}>
-                                            <td className="standings_cell standings_cell_number">{teamStanding.position + "."}</td>
+                                            <td className="standings_cell standings_cell_number" style={{ padding: (isSharedPage ? "7.8px 0px" : "10px 0px") }}>{teamStanding.position + "."}</td>
                                             <td className="standings_cell standings_cell_team_name">
                                                 <div className={teamStanding.isLive == true ? "border border-success rounded-circle live_standings_indicator" : ""}></div>
                                                 <span>{teamStanding.team}</span>
