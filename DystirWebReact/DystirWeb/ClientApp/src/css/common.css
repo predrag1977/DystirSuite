@@ -106,6 +106,7 @@ main {
 #horizontal_menu_days {
     background-color: white;
     border: 0px;
+    height: 55px;
 }
 
 #horizontal_menu {
@@ -316,4 +317,8 @@ main {
 .match_item_same_day_team_name {
     text-overflow: clip;
     color: black;
+}
+
+.tab, .selected_tab {
+    height: 54px;
 }

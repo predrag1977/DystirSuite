@@ -38,7 +38,7 @@ export class StandingView extends Component {
                                 {
                                     standing.teamStandings.map(teamStanding =>
                                         <tr key={teamStanding.teamID} style={{ borderBottom: "1px solid " + (isSharedPage ? "lightGray" : teamStanding.positionColor) }}>
-                                            <td className="standings_cell standings_cell_number" style={{ padding: (isSharedPage ? "7.8px 0px" : "10px 0px") }}>{teamStanding.position + "."}</td>
+                                            <td className="standings_cell standings_cell_number" style={{ padding: (isSharedPage ? "7.8px 0px" : "12px 0px") }}>{teamStanding.position + "."}</td>
                                             <td className="standings_cell standings_cell_team_name">
                                                 <div className={teamStanding.isLive == true ? "border border-success rounded-circle live_standings_indicator" : ""}></div>
                                                 <span>{teamStanding.team}</span>
