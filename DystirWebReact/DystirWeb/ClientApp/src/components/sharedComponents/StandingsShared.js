@@ -67,7 +67,6 @@ export class StandingsShared extends Component {
     render() {
         var standings = (this.state.standings ?? []).filter((standing) => standing.standingTypeID == 2);
         var competitions = [];
-        console.log(standings);
         standings.map((group) => {
             competitions.push(group.standingCompetitionName);
         });

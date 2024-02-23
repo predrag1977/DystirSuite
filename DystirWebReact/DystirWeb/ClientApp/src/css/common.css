@@ -247,7 +247,7 @@ main {
 }
 
 .standings_cell_team_name, .text-white {
-    color: black !important;
+    color: gray !important;
 }
 
 .minutes_summary {
