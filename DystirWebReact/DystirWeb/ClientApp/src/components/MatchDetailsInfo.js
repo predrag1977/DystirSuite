@@ -102,7 +102,7 @@ export class MatchDetailsInfo extends Component {
                                 <>
                                     {
                                         (match?.homeTeamPenaltiesScore > 0 || match?.awayTeamPenaltiesScore > 0) &&
-                                            <div className="d-inline-block" style={{ fontSize: "22px", marginRight: "17px", color: "gold" }}>
+                                            <div className="d-inline-block" style={{ fontSize: "22px", marginRight: "17px", color: "#f8f8a4" }}>
                                             {
                                                 match?.homeTeamPenaltiesScore
                                             }
@@ -113,7 +113,7 @@ export class MatchDetailsInfo extends Component {
                                     <div className="match_details_field_text">{(match?.awayTeamScore ?? 0) - (match?.awayTeamPenaltiesScore ?? 0)}</div>
                                     {
                                         (match?.homeTeamPenaltiesScore > 0 || match?.awayTeamPenaltiesScore > 0) &&
-                                            <div className="d-inline-block" style={{ fontSize: "22px", marginLeft: "17px", color: "gold" }}>
+                                            <div className="d-inline-block" style={{ fontSize: "22px", marginLeft: "17px", color: "#f8f8a4" }}>
                                             {
                                                 match?.awayTeamPenaltiesScore
                                             }
