@@ -114,7 +114,7 @@ export class InfoMatches extends Component {
                         {
                             competitions.map(competition =>
                                 <div key={competition}
-                                    className={"cometition_item tab " + (this.state.selectedCompetition == competition ? "selected_tab" : "")}
+                                    className={"competition_item tab " + (this.state.selectedCompetition == competition ? "selected_tab" : "")}
                                     onClick={() => this.onClickCompetition(competition)}>
                                     <div className="nav-link">{competition}</div>
                                 </div>

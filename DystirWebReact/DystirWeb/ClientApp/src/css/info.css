@@ -28,7 +28,7 @@ html, body {
     }
 
 .selected_tab .nav-link, .tab .nav-link {
-    height: auto;
+    height: 50px;
 }
 
 .statistic-home {

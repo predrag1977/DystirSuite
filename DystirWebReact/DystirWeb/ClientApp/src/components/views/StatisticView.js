@@ -12,7 +12,7 @@ export class StatisticView extends Component {
         const goalPlayers = statistic.goalPlayers ?? [];
         const assistPlayers = statistic.assistPlayers ?? [];
         return (
-            <div id="main_container">
+            <div>
                 <table className="lineups content_table">
                     <tbody>
                         <tr>
