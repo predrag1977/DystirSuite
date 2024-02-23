@@ -260,6 +260,7 @@ export class MatchDetails extends Component {
         var liveMatchesContainerID = document.getElementById('live_matches_container');
         if (liveMatchesContainerID !== null && liveMatchesContainerID !== undefined) {
             liveMatchesContainerID.style.visibility = noLiveMatches ? "hidden" : "visible";
+            liveMatchesContainerID.style.height = noLiveMatches ? "0px" : "60px";
         }
         var fromTop = noLiveMatches ? "80px" : "140px";
         var matchDetailsID = document.getElementsByClassName('main_container_match_details')[0];
