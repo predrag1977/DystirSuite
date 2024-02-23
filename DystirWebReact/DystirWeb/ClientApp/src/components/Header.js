@@ -85,19 +85,19 @@ export class Header extends Component {
 
                 <div id="navigation_menu" className={this.state.collapsed ? "collapse" : ""} >
                     <ul className="nav flex-column">
-                        <li className="nav-item">
+                        <li className="nav-item" onClick={this.toggleNavbar}>
                             <NavLink tag={Link} className={(this.props.page == PageName.MATCHES ? "active" : "") + " text-dark nav-link"} to="/">{PageName.MATCHES}</NavLink>
                         </li>
-                        <li className="nav-item">
+                        <li className="nav-item" onClick={this.toggleNavbar}>
                             <NavLink tag={Link} className={(this.props.page == PageName.RESULTS ? "active" : "") + " text-dark nav-link"} to="/results">{PageName.RESULTS}</NavLink>
                         </li>
-                        <li className="nav-item">
+                        <li className="nav-item" onClick={this.toggleNavbar}>
                             <NavLink tag={Link} className={(this.props.page == PageName.FIXTURES ? "active" : "") + " text-dark nav-link"} to="/fixtures">{PageName.FIXTURES}</NavLink>
                         </li>
-                        <li className="nav-item">
+                        <li className="nav-item" onClick={this.toggleNavbar}>
                             <NavLink tag={Link} className={(this.props.page == PageName.STANDINGS ? "active" : "") + " text-dark nav-link"} to="/standings">{PageName.STANDINGS}</NavLink>
                         </li>
-                        <li className="nav-item">
+                        <li className="nav-item" onClick={this.toggleNavbar}>
                             <NavLink tag={Link} className={(this.props.page == PageName.STATISTICS ? "active" : "") + " text-dark nav-link"} to="/statistics">{PageName.STATISTICS}</NavLink>
                         </li>
                     </ul>
