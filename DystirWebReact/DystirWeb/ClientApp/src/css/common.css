@@ -248,7 +248,7 @@ main {
 }
 
 .standings_cell_team_name, .text-white {
-    color: gray !important;
+    color: black !important;
 }
 
 .minutes_summary {
@@ -269,7 +269,7 @@ main {
 }
 
     .selected_tab .nav-link {
-        color: gray;
+        color: black;
     }
 
 .big_chance {
