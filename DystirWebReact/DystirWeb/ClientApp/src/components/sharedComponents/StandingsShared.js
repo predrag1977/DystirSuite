@@ -78,22 +78,22 @@ export class StandingsShared extends Component {
                 <div id="horizontal_matches_header" style={{ backgroundColor: "white" }}>
                     <div id="match_details_horizontal_menu" style={{ width: "100%" }}>
                         <div id="match_details_horizontal_menu_wrapper">
-                            {
-                                competitions.map(competition =>
-                                    <div key={competition}
-                                        className={"competition_item tab " + (this.state.selectedCompetition == competition ? "selected_tab" : "")}
-                                        onClick={() => this.onClickCompetition(competition)}>
-                                        <div className="nav-link">{competition}</div>
-                                    </div>
-                                )
-                            }
+                        {
+                            competitions.map(competition =>
+                                <div key={competition}
+                                    className={"competition_item tab " + (this.state.selectedCompetition == competition ? "selected_tab" : "")}
+                                    onClick={() => this.onClickCompetition(competition)}>
+                                    <div className="nav-link">{competition}</div>
+                                </div>
+                            )
+                        }
                         </div>
                     </div>
                 </div>
                 <div className="main_container" style={{ height: "calc(100% - 53px)", maxWidth: "100%" }}>
                 {
                     this.state.isLoading &&
-                    <ClipLoader className="loading-spinner-parent" color="lightGray" height="50" width="50" />
+                    <ClipLoader className="loading-spinner-parent" color="gray" height="50" width="50" />
                 }
                 {
                     this.renderStandings(standings)

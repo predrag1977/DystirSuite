@@ -15,6 +15,7 @@ const context = [
     "/data/request/numberofmatches",
     "/data/request/countmatches",
     "/data/request/datapackage",
+    "/data/request/matches",
 
     //API for DystirManager
     "/api/Login",
