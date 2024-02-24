@@ -32,6 +32,7 @@
     <None Remove="ClientApp\src\components\layouts\" />
     <None Remove="ClientApp\public\team_logos\nsí.png" />
     <None Remove="ClientApp\src\components\sharedComponents\" />
+    <None Remove="ClientApp\public\scripts\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +42,7 @@
     <Folder Include="ClientApp\src\css\" />
     <Folder Include="ClientApp\src\components\layouts\" />
     <Folder Include="ClientApp\src\components\sharedComponents\" />
+    <Folder Include="ClientApp\public\scripts\" />
   </ItemGroup>
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
