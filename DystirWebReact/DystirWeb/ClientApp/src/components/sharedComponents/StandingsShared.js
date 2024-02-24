@@ -76,7 +76,7 @@ export class StandingsShared extends Component {
         return (
             <div className="matches_and_competition_selection">
                 <div id="horizontal_matches_header" style={{ backgroundColor: "white" }}>
-                    <div id="match_details_horizontal_menu" style={{ width: "100%" }}>
+                    <div id="match_details_horizontal_menu" className="scroll-container" style={{ width: "100%"}}>
                         <div id="match_details_horizontal_menu_wrapper">
                         {
                             competitions.map(competition =>
