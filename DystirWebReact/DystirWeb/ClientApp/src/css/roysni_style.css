@@ -48,3 +48,29 @@ html, body {
     margin: 0;
     height: 60px;
 }
+
+.scroll-container {
+    scrollbar-color: lightgray;
+    scrollbar-width: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+    background: lightgray;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background: lightgray;
+}
+
+    .scroll-container::-webkit-scrollbar-thumb:hover {
+        background: lightgray;
+    }
+
+.scroll-container::-webkit-scrollbar-button {
+    display: none;
+} 

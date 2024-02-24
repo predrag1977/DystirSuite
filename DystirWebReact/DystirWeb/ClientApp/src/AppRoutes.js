@@ -81,7 +81,11 @@ const AppRoutes = [
     {
         path: '/roysni/matchdetails/*',
         element: <MatchDetails />
-    }
+    },
+    {
+        path: '/football/*',
+        element: <Matches />
+    },
 ];
 
 export default AppRoutes;
