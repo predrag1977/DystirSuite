@@ -54,7 +54,7 @@ export class InfoMatches extends Component {
     }
 
     componentDidUpdate() {
-        scrollButtonVisibility();
+        scrollButtonVisibility("match_details");
         this.sizeOfMatchItem();
     }
 
@@ -82,7 +82,7 @@ export class InfoMatches extends Component {
     }
 
     onResize() {
-        scrollButtonVisibility();
+        scrollButtonVisibility("match_details");
         this.sizeOfMatchItem();
     }
 
@@ -106,7 +106,7 @@ export class InfoMatches extends Component {
                 <PuffLoader className="loading-spinner-parent" color="lightGray" height="50" width="50" />
             }
                 <div id="horizontal_matches_header">
-                    <div id="scroll_button_left" onClick={() => scrollOnClick('left')}>
+                    <div id="scroll_button_left" onClick={() => scrollOnClick('left', "match_details")}>
                         <BsCaretLeftFill />
                     </div>
                     <div id="match_details_horizontal_menu">
@@ -122,7 +122,7 @@ export class InfoMatches extends Component {
                         }
                         </div>
                     </div>
-                    <div id="scroll_button_right" onClick={() => scrollOnClick('right')}>
+                    <div id="scroll_button_right" onClick={() => scrollOnClick('right', "match_details")}>
                         <BsCaretRightFill />
                     </div>
                 </div>

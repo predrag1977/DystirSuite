@@ -1,6 +1,7 @@
-﻿ export function scrollButtonVisibility() {
-    var horizontalMenu = document.getElementById('horizontal_menu');
-    var horizontalMenuScroll = document.getElementById('horizontal_menu_wrapper');
+﻿export function scrollButtonVisibility(elementPrefix) {
+    var prefix = elementPrefix == undefined ? "" : elementPrefix + "_";
+    var horizontalMenu = document.getElementById(prefix + 'horizontal_menu');
+    var horizontalMenuScroll = document.getElementById(prefix + 'horizontal_menu_wrapper');
     if (horizontalMenu == null) {
         return;
     }
@@ -17,8 +18,9 @@
     }
 }
 
-export function scrollOnClick(direction) {
-    var horizontalMenu = document.getElementById('horizontal_menu');
+export function scrollOnClick(direction, elementPrefix) {
+    var prefix = elementPrefix == undefined ? "" : elementPrefix + "_";
+    var horizontalMenu = document.getElementById(prefix + 'horizontal_menu');
     if (direction == 'left') {
         horizontalMenu.scrollTo({
             top: 0,

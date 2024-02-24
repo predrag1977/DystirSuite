@@ -77,7 +77,7 @@ export class MatchDetails extends Component {
     }
 
     componentDidUpdate() {
-        scrollButtonVisibility();
+        scrollButtonVisibility("match_details");
     }
 
     onReloadData() {
@@ -103,7 +103,7 @@ export class MatchDetails extends Component {
     }
 
     onResize() {
-        scrollButtonVisibility();
+        scrollButtonVisibility("match_details");
     }
 
     onClickTab() {
@@ -190,7 +190,7 @@ export class MatchDetails extends Component {
         let contents =
             <>
                 <div id="live_matches_container">
-                    <div id="scroll_button_left" onClick={() => scrollOnClick('left')}>
+                    <div id="scroll_button_left" onClick={() => scrollOnClick('left', "match_details")}>
                         <BsCaretLeftFill />
                     </div>
                     <div id="match_details_horizontal_menu">
@@ -204,7 +204,7 @@ export class MatchDetails extends Component {
                         }
                         </div>
                     </div>
-                    <div id="scroll_button_right" onClick={() => scrollOnClick('right')}>
+                    <div id="scroll_button_right" onClick={() => scrollOnClick("right", "match_details")}>
                         <BsCaretRightFill />
                     </div>
                 </div>
@@ -285,34 +285,5 @@ export class MatchDetails extends Component {
             .sort((a, b) => a.matchID - b.matchID)
             .sort((a, b) => Date.parse(new Date(a.time)) - Date.parse(new Date(b.time)))
             .sort((a, b) => a.matchTypeID - b.matchTypeID);
-    }
-
-    scrollButtonVisibility() {
-        var position = "";
-        var horizontalMenu = document.getElementById('match_details_horizontal_menu' + position);
-        var horizontalMenuScroll = document.getElementById('match_details_horizontal_menu_wrapper' + position);
-        if (horizontalMenu == null) {
-            return;
-        }
-        var scrollButtonLeft = document.getElementById('scroll_button_left' + position);
-        var scrollButtonRight = document.getElementById('scroll_button_right' + position);
-
-        if (horizontalMenu.offsetWidth >= horizontalMenuScroll.offsetWidth) {
-            scrollButtonLeft.style.visibility = "hidden";
-            scrollButtonRight.style.visibility = "hidden";
-        }
-        else {
-            scrollButtonLeft.style.visibility = "visible";
-            scrollButtonRight.style.visibility = "visible";
-        }
-    }
-
-    scrollOnClick(direction) {
-        var horizontalMenu = document.getElementById('match_details_horizontal_menu');
-        if (direction == 'left') {
-            horizontalMenu.scrollLeft -= horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
-        } else {
-            horizontalMenu.scrollLeft += horizontalMenu.scrollWidth / (horizontalMenu.scrollWidth / horizontalMenu.offsetWidth + 1);
-        }
     }
 }

@@ -1103,22 +1103,28 @@ a, .btn-link, .nav-link {
 /*-----------------------*/
 /*    SCROLLBAR STYLE    */
 /*-----------------------*/
-/*::-webkit-scrollbar {
-    width: 15px;
-}*/
+#horizontal_menu, #match_details_horizontal_menu {
+    scrollbar-color: lightgray;
+    scrollbar-width: none;
+}
 
-/* Track */
-/*::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px grey;
-    border-radius: 10px;
-}*/
-/* Handle */
-/*::-webkit-scrollbar-thumb {
-    background: red;
-    border-radius: 10px;
-}*/
+#horizontal_menu::-webkit-scrollbar, #match_details_horizontal_menu::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
 
-    /* Handle on hover */
-    /*::-webkit-scrollbar-thumb:hover {
-        background: #b30000;
-    }*/
+#horizontal_menu::-webkit-scrollbar-track, #match_details_horizontal_menu::-webkit-scrollbar-track {
+    background: lightgray;
+}
+
+#horizontal_menu::-webkit-scrollbar-thumb, #match_details_horizontal_menu::-webkit-scrollbar-thumb {
+    background: lightgray;
+}
+
+#horizontal_menu::-webkit-scrollbar-thumb:hover, #match_details_horizontal_menu::-webkit-scrollbar-thumb:hover {
+    background: lightgray;
+}
+
+#horizontal_menu::-webkit-scrollbar-button, #match_details_horizontal_menu::-webkit-scrollbar-button {
+    display: none;
+} 
