@@ -39,7 +39,7 @@ namespace DystirWeb.Controllers
 
         private List<Matches> GetMatchesListForPortal()
         {
-            var date = DateTime.Now.AddHours(0).Date;
+            var date = DateTime.UtcNow.AddHours(0).Date;
             var matchesList = _dystirService.AllMatches?
                 .Where(x => x.Time.Value.Date == date && x.MatchTypeID != 5 && x.MatchTypeID != 6)
                 .OrderBy(x => x.MatchTypeID)
@@ -51,7 +51,7 @@ namespace DystirWeb.Controllers
 
         private List<Matches> GetMatchesListForRoysni()
         {
-            var fromDate = DateTime.Now.AddDays(-2).AddHours(0).Date;
+            var fromDate = DateTime.UtcNow.AddDays(-2).AddHours(0).Date;
             var toDate = fromDate.AddDays(5).Date;
             var matchesList = _dystirService.AllMatches?
                 .Where(x => x.Time.Value.Date > fromDate && x.Time.Value.Date < toDate  && x.MatchTypeID != 5 && x.MatchTypeID != 6)
