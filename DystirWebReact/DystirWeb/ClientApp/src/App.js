@@ -23,21 +23,22 @@ export default class App extends Component {
     render() {
         let url = window.location.href.toLowerCase();
         if (url.includes("info")) {
-            import('./css/info_style.css?version=7');
+            import('./css/info_style.css?400');
             this.setTitle("Info - Dystir");
             this.setFavicon("https://www.in.fo/favicon.ico");
         } else if (url.includes("portal")) {
-            import('./css/portal_style.css?version=7');
+            import('./css/portal_style.css?400');
             this.setTitle("Portal - Dystir");
             this.setFavicon("https://e02e3c2e19a06eec1e84-9a0707245afee0d6f567aa2987845a0f.ssl.cf1.rackcdn.com/myfiles/1385390388_portal_favicon.ico");
         } else if (url.includes("roysni")) {
-            import('./css/roysni_style.css?version=7');
+            import('./css/roysni_style.css?400');
             this.setTitle("Roysni - Dystir");
             this.setFavicon("https://roysni.fo/icons/favicon.ico");
         } else {
-            import('./css/dystir_style.css?version=7');
+            import('./css/dystir_style.css?400');
             this.setTitle("Dystir");
-            this.setFavicon("../favicon.ico");
+            this.setFavicon("../favicon.ico?400");
+            window.loadGoogleAnalytics('DWCGT486L9');
         }
         return (
             <Layout>
