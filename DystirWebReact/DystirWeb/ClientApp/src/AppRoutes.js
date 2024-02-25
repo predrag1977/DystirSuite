@@ -59,6 +59,10 @@ const AppRoutes = [
         element: <InfoMatches />
     },
     {
+        path: '/info/todaymatches',
+        element: <InfoMatches />
+    },
+    {
         path: '/portal/matches',
         element: <PortalMatches />
     },
