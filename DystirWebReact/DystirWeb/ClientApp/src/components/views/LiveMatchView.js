@@ -53,9 +53,9 @@ export class LiveMatchView extends Component {
                             <tr>
                                 <td className="match_item_same_day_team_name">
                                     <span>
-                                        {
-                                            format('{0} {1} {2}', match.homeTeam, match.homeSquadName, match.homeCategoriesName)
-                                        }
+                                    {
+                                        format('{0} {1} {2}', match.homeTeam, match.homeSquadName, match.homeCategoriesName)
+                                    }
                                     </span>
                                 </td>
                                 {

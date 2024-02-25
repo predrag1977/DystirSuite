@@ -66,19 +66,6 @@ namespace DystirWeb.Controllers
             return await Task.FromResult(matches);
         }
 
-        //// GET: api/Matches/5
-        //[HttpGet("{id}", Name = "GetMatch")]
-        //public IActionResult GetMatches(int id)
-        //{
-        //    Matches matches = _dystirDBContext.Matches.Find(id);
-        //    if (matches == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(matches);
-        //}
-
         // PUT: api/Matches/5
         [HttpPut("{id}/{token}")]
         public IActionResult PutMatches(int id, string token, [FromBody] Matches matches)
@@ -185,7 +172,6 @@ namespace DystirWeb.Controllers
 
         private void HubSend(Matches match)
         {
-            match.Time = match.Time.Value.ToUniversalTime();
             HubSender hubSender = new HubSender();
             hubSender.SendMatch(_hubContext, match);
             HubSendMatchDetails(hubSender, match);

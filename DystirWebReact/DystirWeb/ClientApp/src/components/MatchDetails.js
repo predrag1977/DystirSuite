@@ -46,8 +46,8 @@ export class MatchDetails extends Component {
         let match = dystirWebClientService.state.matchesData.matches.find((m) => m.matchID == matchDetailsData.matchId);
 
         this.state = {
-            matches: dystirWebClientService.state.matchesData.matches,
-            match: match,
+            matches: matchDetailsData.matches,
+            match: matchDetailsData.match,
             matchId: matchDetailsData.matchId,
             selectedTab: matchDetailsData.selectedTab,
             isLoading: true,
@@ -176,13 +176,10 @@ export class MatchDetails extends Component {
             liveMatches = liveMatches.filter((match) => 
                 match.statusID < 14
             );
-
-            noLiveMatches = liveMatches.length == 0 ||
-                (liveMatches.length == 1 && liveMatches[0].matchID == this.state.match.matchID) ||
-                (this.state.match?.statusID ?? 0) > 13;
-            if (noLiveMatches) {
-                liveMatches = [];
-            }
+        }
+        noLiveMatches = liveMatches.length == 0 || (liveMatches.length == 1 && liveMatches[0].matchID == this.state.match.matchID);
+        if (noLiveMatches) {
+            liveMatches = [];
         }
         
         this.liveMatchesHeight(noLiveMatches);
@@ -278,8 +275,8 @@ export class MatchDetails extends Component {
         var toDate = now.addDays(1);
 
         var list = matches.filter((match) =>
-            (new MatchDate(Date.parse(match.time))).dateLocale() > MatchDate.parse(fromDate) &&
-            (new MatchDate(Date.parse(match.time))).dateLocale() < MatchDate.parse(toDate)
+            MatchDate.parse(match.time) > MatchDate.parse(fromDate)
+            && MatchDate.parse(match.time) < MatchDate.parse(toDate)
         );
         return list
             .sort((a, b) => a.matchID - b.matchID)

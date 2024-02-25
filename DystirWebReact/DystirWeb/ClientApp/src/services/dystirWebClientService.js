@@ -8,7 +8,7 @@ export class DystirWebClientService {
 
         this.matchesData = {
             matches: [],
-            selectedPeriod: "today",
+            selectedPeriod: "",
             isMatchesLoaded: false
         };
         this.resultsData = {
@@ -233,7 +233,7 @@ export class DystirWebClientService {
         this.state.matchDetailsData = {
             matches: matchDetails.matches,
             match: isMatchIdEqual ? match : this.state.matchDetailsData.match,
-            matchId: isMatchIdEqual ? match?.matchID : this.state.matchDetailsData.matchId,
+            matchId: this.state.matchDetailsData.matchId,
             selectedTab: this.state.matchDetailsData.selectedTab
         }
 

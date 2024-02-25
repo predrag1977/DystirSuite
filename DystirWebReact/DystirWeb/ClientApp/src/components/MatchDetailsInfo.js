@@ -4,6 +4,7 @@ import MatchDate from '../extentions/matchDate';
 import MatchTimeAndColor from '../extentions/matchTimeAndColor';
 import { format } from 'react-string-format';
 
+const matchDate = new MatchDate();
 export class MatchDetailsInfo extends Component {
     static displayName = MatchDetailsInfo.name;
 
@@ -34,7 +35,7 @@ export class MatchDetailsInfo extends Component {
 
     render() {
         const match = this.props.match;
-        let matchDateTime = match?.time != null ? new MatchDate(match.time.replace('Z', '') ?? 0).toDateTimeString() : "";
+        let matchDateTime = matchDate.toDateTimeLocale(match.time);
 
         let matchRoundName = (match?.roundName ?? "").trim();
         let hasMatchRoundName = matchRoundName !== undefined && matchRoundName !== "";

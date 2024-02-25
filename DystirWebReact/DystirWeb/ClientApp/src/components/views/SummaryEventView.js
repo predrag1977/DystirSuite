@@ -69,7 +69,11 @@ export class SummaryEventView extends Component {
                         {
                             event.eventName == EventName.PLAYEROFTHEMATCH &&
                                 <div className="player_of_the_match">Dagsins leikari</div> ||
-                                <div>{event.eventMinute}</div>
+                                <div>
+                                {
+                                    event.eventPeriodId < 12 && event.eventMinute || ""
+                                }
+                                </div>
                         }
                         </td>
 

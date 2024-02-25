@@ -154,8 +154,8 @@ export class InfoMatches extends Component {
         var toDate = now.addDays(1);
 
         var list = matches.filter((match) =>
-            (new MatchDate(Date.parse(match.time))).dateLocale() > MatchDate.parse(fromDate) &&
-            (new MatchDate(Date.parse(match.time))).dateLocale() < MatchDate.parse(toDate)
+            MatchDate.parse(match.time) > MatchDate.parse(fromDate)
+            && MatchDate.parse(match.time) < MatchDate.parse(toDate)
         );
 
         return list
