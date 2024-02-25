@@ -1,0 +1,37 @@
+﻿@import url("common.css");
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+
+html, body {
+    font-family: Source, sans-serif;
+    background-color: white;
+}
+
+#competitions_selection, #horizontal_matches, #horizontal_menu_days, #horizontal_matches_header {
+    background-color: rgb(223, 240, 216);
+}
+
+#horizontal_matches {
+    background-color: white;
+}
+
+#horizontal_matches_header {
+    height: 55px;
+    margin-bottom: 5px;
+}
+
+    #horizontal_matches_header .tab {
+        padding: 0px 10px;
+        height: 55px;
+    }
+
+    #horizontal_matches .nav-link {
+        padding-top: 15px;
+    }
+
+.selected_tab .nav-link, .tab .nav-link {
+    height: 50px;
+}
+
+.statistic-home {
+    background-color: yellowgreen;
+}

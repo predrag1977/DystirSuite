@@ -19,18 +19,21 @@ export class Matches extends Component {
         dystirWebClientService.selectedPage = "matches";
 
         let matchesData = dystirWebClientService.state.matchesData;
+        
         if (matchesData.selectedPeriod !== undefined && matchesData.selectedPeriod !== "") {
             window.history.replaceState(null, null, "/matches/" + matchesData.selectedPeriod);
         } else {
             matchesData.selectedPeriod = window.location.pathname.split("/").pop();
         }
+
+        if (matchesData.selectedPeriod == undefined || matchesData.selectedPeriod == "") {
+            matchesData.selectedPeriod = "today";
+            window.history.replaceState(null, null, "/matches/" + matchesData.selectedPeriod);
+        }
         this.state = {
             matches: matchesData.matches,
             selectedPeriod: matchesData.selectedPeriod,
             isLoading: false
-        }
-        if (this.state.selectedPeriod !== undefined && this.state.selectedPeriod !== "") {
-            window.history.replaceState(null, null, "/matches/" + this.state.selectedPeriod);
         }
         if (matchesData.isMatchesLoaded === false) {
             this.state.isLoading = true;
@@ -150,8 +153,8 @@ export class Matches extends Component {
         }
 
         var list = matches.filter((match) =>
-            (new MatchDate(Date.parse(match.time))).dateLocale() > MatchDate.parse(fromDate)
-            && (new MatchDate(Date.parse(match.time))).dateLocale() < MatchDate.parse(toDate)
+            MatchDate.parse(match.time) > MatchDate.parse(fromDate)
+            && MatchDate.parse(match.time) < MatchDate.parse(toDate)
         );
 
         return list

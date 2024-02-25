@@ -5,6 +5,7 @@ import { NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import MatchTimeAndColor from '../../extentions/matchTimeAndColor';
 
+const matchDate = new MatchDate();
 export class MatchView extends Component {
     constructor(props) {
         super(props);
@@ -30,6 +31,7 @@ export class MatchView extends Component {
 
     render() {
         const match = this.props.match;
+        var date = match.time;
         const page = this.props.page;
         var link = "/" + page + "/matchdetails/";
         if (page == "" || page == undefined) {
@@ -42,7 +44,7 @@ export class MatchView extends Component {
                         <tbody>
                             <tr>
                                 <td className="match_info text-start">
-                                    <span>{(new MatchDate(match?.time?.replace('Z', '') ?? 0).toDateTimeString())}</span>
+                                    <span>{matchDate.toDateTimeLocale(match.time)}</span>
                                     {
                                         (match.matchTypeName?.trim() !== undefined && match.matchTypeName?.trim() !== "") && <span> - </span>
                                     }
@@ -151,7 +153,7 @@ export class MatchView extends Component {
                         <tbody>
                             <tr>
                                 <td className="match_info text-start">
-                                    <span>{(new MatchDate(Date.parse(match.time)).toDateTimeString())}</span>
+                                    <span>{matchDate.toDateTimeLocale(match.time)}</span>
                                     {
                                         (match.matchTypeName?.trim() !== undefined && match.matchTypeName?.trim() !== "") && <span> - </span>
                                     }

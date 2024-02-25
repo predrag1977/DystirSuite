@@ -16,6 +16,7 @@ html, body {
 
 #horizontal_matches_header {
     height: 55px;
+    margin-bottom: 5px;
 }
 
     #horizontal_matches_header .tab {

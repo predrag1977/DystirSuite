@@ -5,6 +5,7 @@ import { NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import MatchTimeAndColor from '../../extentions/matchTimeAndColor';
 
+const matchDate = new MatchDate();
 export class MatchHorizontalView extends Component {
     constructor(props) {
         super(props);
@@ -29,8 +30,13 @@ export class MatchHorizontalView extends Component {
     }
 
     render() {
-        const match = this.props.match;
-        const page = this.props.page == "" ? "" : "/" + this.props.page;
+        var match = this.props.match;
+        var matchTime = matchDate.timeLocale(match.time);
+        var timeAndLocation = matchTime + " - " + match.location;
+        if (matchTime == "") {
+            timeAndLocation = match.location;
+        }
+        var page = this.props.page == "" ? "" : "/" + this.props.page;
         return (
             <NavLink tag={Link} to={page + "/matchdetails/" + match.matchID} target="_parent" style={{ padding: "0px" }}>
                 <div>
@@ -49,7 +55,7 @@ export class MatchHorizontalView extends Component {
                         <tbody>
                             <tr>
                                 <td className="match_info text-center">
-                                    <div>{match.location}</div>
+                                    <div>{timeAndLocation}</div>
                                 </td>
                                 <td />
                             </tr>

@@ -1,10 +1,12 @@
 ﻿import MatchDate from './matchDate';
 
+const matchDate = new MatchDate();
+
 export default class MatchTimeAndColor {
     getMatchTime(match) {
-        var timeNow = new MatchDate().dateUtc().getTime();
-        var matchTime = new MatchDate(match?.statusTime?.replace('Z','') ?? 0).getTime();
-        var matchStart = new MatchDate(match?.time?.replace('Z', '') ?? 0).getTime();
+        var timeNow = matchDate.toDateTimeUtc();
+        var matchTime = matchDate.toDateTimeUtc(match.statusTime);
+        var matchStart = matchDate.toDateTimeUtc(match.time);
 
         var totalMiliseconds = timeNow - matchTime;
         var seconds = Math.floor(totalMiliseconds / 1000);

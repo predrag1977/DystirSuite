@@ -23,21 +23,21 @@ export default class App extends Component {
     render() {
         let url = window.location.href.toLowerCase();
         if (url.includes("info")) {
-            import('./css/info_style.css?400');
+            this.includeCss("info_style");
             this.setTitle("Info - Dystir");
             this.setFavicon("https://www.in.fo/favicon.ico");
         } else if (url.includes("portal")) {
-            import('./css/portal_style.css?400');
+            this.includeCss("portal_style");
             this.setTitle("Portal - Dystir");
             this.setFavicon("https://e02e3c2e19a06eec1e84-9a0707245afee0d6f567aa2987845a0f.ssl.cf1.rackcdn.com/myfiles/1385390388_portal_favicon.ico");
         } else if (url.includes("roysni")) {
-            import('./css/roysni_style.css?400');
+            this.includeCss("roysni_style");
             this.setTitle("Roysni - Dystir");
             this.setFavicon("https://roysni.fo/icons/favicon.ico");
         } else {
-            import('./css/dystir_style.css?400');
+            this.includeCss("dystir_style");
             this.setTitle("Dystir");
-            this.setFavicon("../favicon.ico?400");
+            this.setFavicon("../favicon.ico?401");
             window.loadGoogleAnalytics('DWCGT486L9');
         }
         return (
@@ -60,5 +60,12 @@ export default class App extends Component {
 
     setFavicon(favicon) {
         document.querySelector('[rel=icon]').href = favicon;
+    }
+
+    includeCss(page) {
+        var version = new Date().getTime();
+        document.getElementsByTagName("head")[0].insertAdjacentHTML(
+            "beforeend",
+            "<link rel=\"stylesheet\" href=\"css/" + page + ".css?" + version + "\" />");
     }
 }
