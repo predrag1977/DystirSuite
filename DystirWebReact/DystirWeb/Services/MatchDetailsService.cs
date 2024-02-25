@@ -53,6 +53,7 @@ namespace DystirWeb.Services
                     }
                     _dystirService.AllMatches.Add(matchDetails.Match);
                     matchDetails.Standings = _standingService.GetStandings().ToList();
+
                     matchDetails.Matches = _dystirService.AllMatches.Where(x =>
                         x.Time > DateTime.UtcNow.AddDays(-2) &&
                         x.Time < DateTime.UtcNow.AddDays(2) 

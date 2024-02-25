@@ -71,7 +71,7 @@ export class SummaryEventView extends Component {
                                 <div className="player_of_the_match">Dagsins leikari</div> ||
                                 <div>
                                 {
-                                    event.eventPeriodId < 12 && event.eventMinute || ""
+                                    this.getEventMinute(event)
                                 }
                                 </div>
                         }
@@ -127,5 +127,28 @@ export class SummaryEventView extends Component {
                 </tbody>
             </table>
         return contents
+    }
+
+    getEventMinute(event) {
+        switch (event.eventPeriodId) {
+            case 1:
+                return "";
+            case 3:
+                return "46'";
+            case 5:
+                return "91'";
+            case 7:
+                return "106'";
+            case 9:
+                return "121'";
+            case 10:
+                return "brotsspark";
+            case 11:
+            case 12:
+            case 13:
+                return "";
+            default:
+                return event.eventMinute;
+        }
     }
 }

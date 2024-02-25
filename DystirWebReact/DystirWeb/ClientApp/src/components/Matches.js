@@ -153,7 +153,7 @@ export class Matches extends Component {
         }
 
         var list = matches.filter((match) =>
-            MatchDate.parse(match.time) > MatchDate.parse(fromDate)
+            MatchDate.parse(match.time) >= MatchDate.parse(fromDate)
             && MatchDate.parse(match.time) < MatchDate.parse(toDate)
         );
 

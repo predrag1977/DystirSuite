@@ -102,21 +102,22 @@ namespace DystirWeb.Services
             await Task.CompletedTask;
         }
 
-        public async void UpdateDataAsync(MatchDetails matchDetails)
+        public async Task UpdateDataAsync(MatchDetails matchDetails)
         {
             Matches match = matchDetails.Match;
             if (match == null) return;
 
-            var updateAllMatchesTask = UpdateAllMatchesAsync(match);
+            var updateAllMatchesTask = UpdateAllMatchesAsync(matchDetails);
             var updateAllMatchesDetailsTask = UpdateAllMatchesDetailsAsync(matchDetails);
             var updateAllPlayersOfMatchesTask = UpdateAllPlayersOfMatchesAsync(matchDetails);
             await Task.WhenAll(updateAllMatchesTask, updateAllMatchesDetailsTask, updateAllPlayersOfMatchesTask);
         }
 
-        public async Task UpdateAllMatchesAsync(Matches match)
+        public async Task UpdateAllMatchesAsync(MatchDetails matchDetails)
         {
             lock (lockUpdateAllMatches)
             {
+                Matches match = matchDetails.Match;
                 var findMatch = AllMatches.FirstOrDefault(x => x.MatchID == match.MatchID);
                 if (findMatch != null)
                 {
@@ -124,6 +125,10 @@ namespace DystirWeb.Services
                 }
                 SetTeamLogoInMatch(match);
                 AllMatches.Add(match);
+                matchDetails.Matches = AllMatches.Where(x =>
+                    x.Time > DateTime.UtcNow.AddDays(-2) &&
+                    x.Time < DateTime.UtcNow.AddDays(2)
+                ).ToList();
             }
             await Task.CompletedTask;
         }
