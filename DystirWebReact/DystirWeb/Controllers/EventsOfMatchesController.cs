@@ -479,11 +479,11 @@ namespace DystirWeb.Controllers
             HubSendMatchDetails(hubSender, match);
         }
 
-        private void HubSendMatchDetails(HubSender hubSender, Matches match)
+        private async void HubSendMatchDetails(HubSender hubSender, Matches match)
         {
             MatchDetails matchDetails = _matchDetailsService.GetMatchDetails(match.MatchID, true);
             matchDetails.Match = match;
-            _dystirService.UpdateDataAsync(matchDetails);
+            await _dystirService.UpdateDataAsync(matchDetails);
             hubSender.SendMatchDetails(_hubContext, matchDetails);
         }
     }
