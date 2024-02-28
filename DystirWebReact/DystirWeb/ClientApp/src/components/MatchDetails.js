@@ -120,7 +120,7 @@ export class MatchDetails extends Component {
             selectedTab: selectedTabParameter
         });
         this.scrollToTop();
-        
+
         this.setState({
             collapsed: true
         });

@@ -87,8 +87,10 @@ export class InfoMatches extends Component {
     }
 
     render() {
-        const matches = this.filterMatches(this.state.matches);
-        if (matches == null) return;
+        const matches = this.filterMatches(this.state.matches) ?? [];
+        if (matches.length == 0) {
+            return;
+        }
         const matchesGroup = matches.groupBy(match => { return match.matchTypeName });
 
         const competitions = [];

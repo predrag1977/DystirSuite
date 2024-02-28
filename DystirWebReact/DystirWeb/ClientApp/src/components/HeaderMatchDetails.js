@@ -7,7 +7,6 @@ import { FaArrowsRotate } from "react-icons/fa6";
 import MatchDate from '../extentions/matchDate';
 import MatchTimeAndColor from '../extentions/matchTimeAndColor';
 import { format } from 'react-string-format';
-import '../css/nav-menu.css';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 

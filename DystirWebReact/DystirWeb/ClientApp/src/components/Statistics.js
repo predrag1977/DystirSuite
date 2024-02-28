@@ -18,21 +18,26 @@ export class Statistics extends Component {
     constructor(props) {
         super(props);
         let statisticsData = dystirWebClientService.state.statisticsData;
-        if (statisticsData.selectedStatisticsCompetitionId !== undefined && statisticsData.selectedStatisticsCompetitionId !== "") {
-            window.history.replaceState(null, null, "/statistics/" + statisticsData.selectedStatisticsCompetitionId);
-        } else {
-            statisticsData.selectedStatisticsCompetitionId = window.location.pathname.split("/statistics").pop().replace('/', '');
+
+        if (statisticsData.selectedStatisticsCompetitionId == "") {
+            statisticsData.selectedStatisticsCompetitionId = window.location.pathname.split("/").pop();
         }
+        if (isNaN(statisticsData.selectedStatisticsCompetitionId) || statisticsData.selectedStatisticsCompetitionId == "") {
+            statisticsData.selectedStatisticsCompetitionId = 0
+        }
+        window.history.replaceState(null, null, "/statistics/" + statisticsData.selectedStatisticsCompetitionId);
         
         this.state = {
             statistics: statisticsData.statistics,
             selectedStatisticsCompetitionId: statisticsData.selectedStatisticsCompetitionId,
             isLoading: true
         }
-        if (this.state.selectedStatisticsCompetitionId !== undefined && this.state.selectedStatisticsCompetitionId !== "") {
-            window.history.replaceState(null, null, "/statistics/" + this.state.selectedStatisticsCompetitionId);
-        }
+
         dystirWebClientService.loadStatisticsDataAsync(this.state.selectedStatisticsCompetitionId);
+
+        window.onpopstate = () => {
+            this.onClickCompetition();
+        }
     }
 
     componentDidMount() {
@@ -67,10 +72,10 @@ export class Statistics extends Component {
     }
 
     onClickCompetition() {
-        let periodParameter = window.location.pathname.split("/").pop();
-        dystirWebClientService.state.statisticsData.selectedStatisticsCompetitionId = periodParameter;
+        let competitionId = window.location.pathname.split("/").pop();
+        dystirWebClientService.state.statisticsData.selectedStatisticsCompetitionId = competitionId;
         this.setState({
-            selectedStatisticsCompetitionId: periodParameter
+            selectedStatisticsCompetitionId: competitionId
         });
     }
 

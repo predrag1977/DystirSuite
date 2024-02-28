@@ -20,21 +20,26 @@ export class Results extends Component {
         dystirWebClientService.selectedPage = "results";
 
         let resultsData = dystirWebClientService.state.resultsData;
-        if (resultsData.selectedResultsCompetitionId !== undefined && resultsData.selectedResultsCompetitionId !== "") {
-            window.history.replaceState(null, null, "/results/" + resultsData.selectedResultsCompetitionId);
-        } else {
-            resultsData.selectedResultsCompetitionId = window.location.pathname.split("/results").pop().replace('/','');
+        
+        if(resultsData.selectedResultsCompetitionId == "") {
+            resultsData.selectedResultsCompetitionId = window.location.pathname.split("/").pop();
         }
+        if (isNaN(resultsData.selectedResultsCompetitionId) || resultsData.selectedResultsCompetitionId == "") {
+            resultsData.selectedResultsCompetitionId = 0
+        }
+        window.history.replaceState(null, null, "/results/" + resultsData.selectedResultsCompetitionId);
 
         this.state = {
             matches: resultsData.matches,
             selectedResultsCompetitionId: resultsData.selectedResultsCompetitionId,
             isLoading: true
         }
-        if (this.state.selectedResultsCompetitionId !== undefined && this.state.selectedResultsCompetitionId !== "") {
-            window.history.replaceState(null, null, "/results/" + this.state.selectedResultsCompetitionId);
-        }
+        
         dystirWebClientService.loadResultDataAsync(this.state.selectedResultsCompetitionId);
+
+        window.onpopstate = () => {
+            this.onClickCompetition();
+        }
     }
 
     componentDidMount() {
@@ -67,10 +72,10 @@ export class Results extends Component {
     }
 
     onClickCompetition() {
-        let periodParameter = window.location.pathname.split("/").pop();
-        dystirWebClientService.state.resultsData.selectedResultsCompetitionId = periodParameter;
+        let competitionId = window.location.pathname.split("/").pop();
+        dystirWebClientService.state.resultsData.selectedResultsCompetitionId = competitionId;
         this.setState({
-            selectedResultsCompetitionId: periodParameter
+            selectedResultsCompetitionId: competitionId
         });
     }
 

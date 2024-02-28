@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PuffLoader } from 'react-spinners';
-import { DystirWebClientService, SelectPeriodName, PageName } from '../services/dystirWebClientService';
+import { DystirWebClientService, SelectPeriodName, PageName, TabName } from '../services/dystirWebClientService';
 import MatchDate from '../extentions/matchDate';
 import { MatchView } from "./views/MatchView";
 import { ChooseDays } from './ChooseDays';
@@ -20,14 +20,14 @@ export class Matches extends Component {
 
         let matchesData = dystirWebClientService.state.matchesData;
         
-        if (matchesData.selectedPeriod !== undefined && matchesData.selectedPeriod !== "") {
+        if (matchesData.selectedPeriod !== "") {
             window.history.replaceState(null, null, "/matches/" + matchesData.selectedPeriod);
         } else {
             matchesData.selectedPeriod = window.location.pathname.split("/").pop();
         }
 
-        if (matchesData.selectedPeriod == undefined || matchesData.selectedPeriod == "") {
-            matchesData.selectedPeriod = "today";
+        if (matchesData.selectedPeriod == "") {
+            matchesData.selectedPeriod = SelectPeriodName.TODAY;
             window.history.replaceState(null, null, "/matches/" + matchesData.selectedPeriod);
         }
         this.state = {
@@ -77,14 +77,16 @@ export class Matches extends Component {
     }
 
     onClickPeriod() {
-        let periodParameter = window.location.pathname.split("/").pop();
-        if (periodParameter.length == 0) {
-            periodParameter = SelectPeriodName.TODAY
+        if (window.location.href.toLowerCase().includes("matches")) {
+            let periodParameter = window.location.pathname.split("/").pop();
+            if (periodParameter.length == 0) {
+                periodParameter = SelectPeriodName.TODAY
+            }
+            dystirWebClientService.state.matchesData.selectedPeriod = periodParameter;
+            this.setState({
+                selectedPeriod: periodParameter
+            });
         }
-        dystirWebClientService.state.matchesData.selectedPeriod = periodParameter;
-        this.setState({
-            selectedPeriod: periodParameter
-        });
     }
 
     render() {

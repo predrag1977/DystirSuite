@@ -6,7 +6,7 @@ import { Layout } from './components/layouts/Layout';
 import { LayoutShared } from './components/layouts/LayoutShared';
 import { DystirWebClientService } from './services/dystirWebClientService';
 import TimeService from './services/timeService';
-import './css/app.css?version=6';
+import './css/app.css?version=400';
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { PageName } from '../services/dystirWebClientService';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import '../css/nav-menu.css';
 
 export class Header extends Component {
     static displayName = Header.name;
