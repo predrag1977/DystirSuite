@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { PageName } from '../services/dystirWebClientService';
 import { Collapse, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import { FaArrowsRotate } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 
 export class Header extends Component {
@@ -57,18 +58,13 @@ export class Header extends Component {
                         <tbody>
                             <tr>
                                 <td>
-                                    <div id="store_buttons">
-                                        <span>
-                                            <a href='https://play.google.com/store/apps/details?id=fo.Dystir&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
-                                                <img alt='Get it on Google Play' src="images/icons/google-play-square.png" />
-                                            </a>
-                                        </span>
-                                        <span>
-                                            <a href='https://apps.apple.com/us/app/dystir/id1460781430?ls=1'>
-                                                <img alt='Download on Apple Store' src="images/icons/apple-store-square.png" />
-                                            </a>
-                                        </span>
+                                    <div style={{ height: "53px", margin: "10px 0"}}>
+                                        <div id="back_button" 
+                                            onClick={() => window.location.reload(false)}>
+                                            <FaArrowsRotate fill="#a6a6a6" />
+                                        </div>
                                     </div>
+                                    
                                 </td>
                                 <td>
                                     <div id="dystir_icon_button" className="navbar-dark">

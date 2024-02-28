@@ -47,7 +47,7 @@ export class MatchDetails extends Component {
 
         this.state = {
             matches: matchDetailsData.matches,
-            match: matchDetailsData.match,
+            match: match,
             matchId: matchDetailsData.matchId,
             selectedTab: matchDetailsData.selectedTab,
             isLoading: true,
