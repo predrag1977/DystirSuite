@@ -1,5 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { DystirWebClientService } from '../services/dystirWebClientService';
+import { MdEmail } from "react-icons/md";
+import { FaFacebook } from "react-icons/fa";
 
 const dystirWebClientService = DystirWebClientService.getInstance();
 
@@ -50,25 +52,37 @@ export class Sponsors extends Component {
                 </div>
                 <div className="box" style={{padding: "0.3rem 0"}} >
                     <div className="matches_list_same_day" style={{ backgroundColor: "transparent", textAlign: "center" }} >
-                        {
-                            sponsors.map((sponsor) =>
-                                <a key={sponsor.sponsorId} href={sponsor.sponsorWebSite} target="_blank">
-                                    <img className="sponsors-img" src={sponsor.sponsorsName} />
-                                </a>
-                            )
-                        }
+                    {
+                        sponsors.map((sponsor) =>
+                            <a key={sponsor.sponsorId} href={sponsor.sponsorWebSite} target="_blank">
+                                <img className="sponsors-img" src={sponsor.sponsorsName} />
+                            </a>
+                        )
+                    }
                     </div>
                 </div>
-                <div style={{ cursor: "pointer", font: "bold", padding: "15px 0", textAlign: "center" }} >
+                <div id="store_buttons" style={{ cursor: "pointer", font: "bold", padding: "25px 0 15px 0", textAlign: "center" }}>
+                    <span>
+                        <a href='https://play.google.com/store/apps/details?id=fo.Dystir&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+                            <img alt='Get it on Google Play' src="images/icons/google-play-square.png" />
+                        </a>
+                    </span>
+                    <span>
+                        <a href='https://apps.apple.com/us/app/dystir/id1460781430?ls=1'>
+                            <img alt='Download on Apple Store' src="images/icons/apple-store-square.png" />
+                        </a>
+                    </span>
+                </div>
+                <div style={{ cursor: "pointer", font: "bold", padding: "15px 0", textAlign: "center" }}>
                     <a style={{ color: "white", textDecoration: "none" }} target="_blank" href="https://www.facebook.com/profile.php?id=100041392795765">
-                        <span className="fa fa-facebook p-1" style={{ padding: "5px", color: "white", fontSize: "1.3em" }} aria-hidden="true" />
-                        <span style={{ fontSize: "1em", textDecoration: "underline" }}>facebook - dystir</span>
+                        <FaFacebook />
+                        <span style={{ fontSize: "1em", textDecoration: "underline", paddingLeft: "4px"  }}>facebook - dystir</span>
                     </a>
                 </div>
                 <div style={{ cursor: "pointer", font: "bold", padding: "0 0 10px 0", textAlign: "center" }} >
                     <a style={{ color: "white", textDecoration: "none" }} href="mailto: dystir@dystir.fo">
-                        <span className="fa fa-envelope p-1" style={{ color: "white", fontSize: "1.2em" }} aria-hidden="true" />
-                        <span style={{ fontSize: "1em", textDecoration: "underline" }} >dystir@dystir.fo</span>
+                        <MdEmail />
+                        <span style={{ fontSize: "1em", textDecoration: "underline", paddingLeft: "4px" }}>dystir@dystir.fo</span>
                     </a>
                 </div>
             </div>
