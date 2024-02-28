@@ -68,7 +68,6 @@ export class MatchDetailsTabs extends Component {
                             </NavLink>
                         </div>
                     }
-                    
                     {
                         liveMatchCount > 0 &&
                         <div className="live_matches" onClick={(e) => this.props.onMoreLiveMatchClick(e)}>

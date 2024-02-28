@@ -20,21 +20,26 @@ export class Fixtures extends Component {
         dystirWebClientService.selectedPage = "fixtures";
 
         let fixturesData = dystirWebClientService.state.fixturesData;
-        if (fixturesData.selectedFixturesCompetitionId !== undefined && fixturesData.selectedFixturesCompetitionId !== "") {
-            window.history.replaceState(null, null, "/fixtures/" + fixturesData.selectedFixturesCompetitionId);
-        } else {
-            fixturesData.selectedFixturesCompetitionId = window.location.pathname.split("/fixtures").pop().replace('/', '');
+
+        if (fixturesData.selectedFixturesCompetitionId == "") {
+            fixturesData.selectedFixturesCompetitionId = window.location.pathname.split("/").pop();
         }
+        if (isNaN(fixturesData.selectedFixturesCompetitionId) || fixturesData.selectedFixturesCompetitionId == "") {
+            fixturesData.selectedFixturesCompetitionId = 0
+        }
+        window.history.replaceState(null, null, "/fixtures/" + fixturesData.selectedFixturesCompetitionId);
         
         this.state = {
             matches: fixturesData.matches,
             selectedFixturesCompetitionId: fixturesData.selectedFixturesCompetitionId,
             isLoading: true
         }
-        if (this.state.selectedFixturesCompetitionId !== undefined && this.state.selectedFixturesCompetitionId !== "") {
-            window.history.replaceState(null, null, "/fixtures/" + this.state.selectedFixturesCompetitionId);
-        }
+
         dystirWebClientService.loadFixturesDataAsync(this.state.selectedFixturesCompetitionId);
+
+        window.onpopstate = () => {
+            this.onClickCompetition();
+        }
     }
 
     componentDidMount() {
@@ -67,10 +72,10 @@ export class Fixtures extends Component {
     }
 
     onClickCompetition() {
-        let periodParameter = window.location.pathname.split("/").pop();
-        dystirWebClientService.state.fixturesData.selectedFixturesCompetitionId = periodParameter;
+        let competitionId = window.location.pathname.split("/").pop();
+        dystirWebClientService.state.fixturesData.selectedFixturesCompetitionId = competitionId;
         this.setState({
-            selectedFixturesCompetitionId: periodParameter
+            selectedFixturesCompetitionId: competitionId
         });
     }
 

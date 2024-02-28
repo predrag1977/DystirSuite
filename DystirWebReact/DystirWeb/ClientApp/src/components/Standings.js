@@ -18,21 +18,26 @@ export class Standings extends Component {
     constructor(props) {
         super(props);
         let standingsData = dystirWebClientService.state.standingsData;
-        if (standingsData.selectedStandingsCompetitionId !== undefined && standingsData.selectedStandingsCompetitionId !== "") {
-            window.history.replaceState(null, null, "/standings/" + standingsData.selectedStandingsCompetitionId);
-        } else {
-            standingsData.selectedStandingsCompetitionId = window.location.pathname.split("/standings").pop().replace('/', '');
+
+        if (standingsData.selectedStandingsCompetitionId == "") {
+            standingsData.selectedStandingsCompetitionId = window.location.pathname.split("/").pop();
         }
+        if (isNaN(standingsData.selectedStandingsCompetitionId) || standingsData.selectedStandingsCompetitionId == "") {
+            standingsData.selectedStandingsCompetitionId = 0
+        }
+        window.history.replaceState(null, null, "/standings/" + standingsData.selectedStandingsCompetitionId);
         
         this.state = {
             standings: standingsData.standings,
             selectedStandingsCompetitionId: standingsData.selectedStandingsCompetitionId,
             isLoading: true
         }
-        if (this.state.selectedStandingsCompetitionId !== undefined && this.state.selectedStandingsCompetitionId !== "") {
-            window.history.replaceState(null, null, "/standings/" + this.state.selectedStandingsCompetitionId);
-        }
+
         dystirWebClientService.loadStandingsDataAsync(this.state.selectedStandingsCompetitionId);
+
+        window.onpopstate = () => {
+            this.onClickCompetition();
+        }
     }
 
     componentDidMount() {
@@ -67,10 +72,10 @@ export class Standings extends Component {
     }
 
     onClickCompetition() {
-        let periodParameter = window.location.pathname.split("/").pop();
-        dystirWebClientService.state.standingsData.selectedStandingsCompetitionId = periodParameter;
+        let competitionId = window.location.pathname.split("/").pop();
+        dystirWebClientService.state.standingsData.selectedStandingsCompetitionId = competitionId;
         this.setState({
-            selectedStandingsCompetitionId: periodParameter
+            selectedStandingsCompetitionId: competitionId
         });
     }
 
