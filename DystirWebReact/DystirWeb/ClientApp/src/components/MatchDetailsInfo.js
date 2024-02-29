@@ -35,7 +35,7 @@ export class MatchDetailsInfo extends Component {
 
     render() {
         const match = this.props.match;
-        let matchDateTime = matchDate.toDateTimeLocale(match.time);
+        let matchDateTime = matchDate.toDateTimeLocale(match?.time);
 
         let matchRoundName = (match?.roundName ?? "").trim();
         let hasMatchRoundName = matchRoundName !== undefined && matchRoundName !== "";

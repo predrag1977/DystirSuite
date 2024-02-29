@@ -44,7 +44,6 @@ export class MatchDetails extends Component {
         }
 
         let match = dystirWebClientService.state.matchesData.matches.find((m) => m.matchID == matchDetailsData.matchId);
-
         this.state = {
             matches: matchDetailsData.matches,
             match: match,
@@ -157,6 +156,9 @@ export class MatchDetails extends Component {
     }
 
     render() {
+        if (this.state.match == undefined) {
+            return;
+        }
         let page = ""
         if (this.url.includes("info")) {
             page = "info";
