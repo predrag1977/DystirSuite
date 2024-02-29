@@ -5,8 +5,8 @@ const matchDate = new MatchDate();
 export default class MatchTimeAndColor {
     getMatchTime(match) {
         var timeNow = matchDate.toDateTimeUtc();
-        var matchTime = matchDate.toDateTimeUtc(match.statusTime);
-        var matchStart = matchDate.toDateTimeUtc(match.time);
+        var matchTime = matchDate.toDateTimeUtc(match?.statusTime);
+        var matchStart = matchDate.toDateTimeUtc(match?.time);
 
         var totalMiliseconds = timeNow - matchTime;
         var seconds = Math.floor(totalMiliseconds / 1000);
