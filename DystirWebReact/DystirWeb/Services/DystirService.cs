@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Threading;
+﻿using System.Collections.ObjectModel;
 using DystirWeb.Shared;
 using DystirWeb.DystirDB;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace DystirWeb.Services
 {
@@ -108,17 +103,16 @@ namespace DystirWeb.Services
             Matches match = matchDetails.Match;
             if (match == null) return;
 
-            var updateAllMatchesTask = UpdateAllMatchesAsync(matchDetails);
+            var updateAllMatchesTask = UpdateAllMatchesAsync(match);
             var updateAllMatchesDetailsTask = UpdateAllMatchesDetailsAsync(matchDetails);
             var updateAllPlayersOfMatchesTask = UpdateAllPlayersOfMatchesAsync(matchDetails);
             await Task.WhenAll(updateAllMatchesTask, updateAllMatchesDetailsTask, updateAllPlayersOfMatchesTask);
         }
 
-        public async Task UpdateAllMatchesAsync(MatchDetails matchDetails)
+        public async Task UpdateAllMatchesAsync(Matches match)
         {
             lock (lockUpdateAllMatches)
             {
-                Matches match = matchDetails.Match;
                 var findMatch = AllMatches.FirstOrDefault(x => x.MatchID == match.MatchID);
                 if (findMatch != null)
                 {
@@ -126,10 +120,6 @@ namespace DystirWeb.Services
                 }
                 SetTeamLogoInMatch(match);
                 AllMatches.Add(match);
-                matchDetails.Matches = AllMatches.Where(x =>
-                    x.Time > DateTime.UtcNow.AddDays(-2) &&
-                    x.Time < DateTime.UtcNow.AddDays(2)
-                ).ToList();
             }
             await Task.CompletedTask;
         }

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using DystirWeb.Models;
 
 namespace DystirWeb.Shared
 {

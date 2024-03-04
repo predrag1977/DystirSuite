@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DystirWeb.Shared
+﻿namespace DystirWeb.Shared
 {
     public partial class Administrators
     {

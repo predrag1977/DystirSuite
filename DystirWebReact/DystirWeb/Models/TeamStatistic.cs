@@ -1,11 +1,5 @@
 ﻿namespace DystirWeb.Shared
 {
-    public class Statistic
-    {
-        public TeamStatistic HomeTeamStatistic { get; set; } = new TeamStatistic();
-        public TeamStatistic AwayTeamStatistic { get; set; } = new TeamStatistic();
-    }
-
     public class TeamStatistic
     {
         public string TeamName { get; set; }
@@ -25,6 +19,5 @@
         public int OffTargetProcent { get; set; } = 50;
         public int BlockedShotProcent { get; set; } = 50;
         public int BigChanceProcent { get; set; } = 50;
-
     }
 }

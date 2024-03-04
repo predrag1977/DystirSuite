@@ -68,7 +68,7 @@ namespace DystirWeb.Controllers
 
         // PUT: api/Matches/5
         [HttpPut("{id}/{token}")]
-        public IActionResult PutMatches(int id, string token, [FromBody] Matches matches)
+        public IActionResult PutMatches(int id, string token, [FromBody] Matches match)
         {
             if (!_authService.IsAuthorized(token))
             {
@@ -80,21 +80,21 @@ namespace DystirWeb.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != matches.MatchID)
+            if (id != match.MatchID)
             {
                 return BadRequest();
             }
             try
             {
                 Matches matchInDB = _dystirDBContext.Matches.Find(id);
-                if (!(matches.ExtraMinutes == 0 && matches.ExtraSeconds == 0) || matchInDB.StatusID != matches.StatusID)
+                if (!(match.ExtraMinutes == 0 && match.ExtraSeconds == 0) || matchInDB.StatusID != match.StatusID)
                 {
-                    matches.StatusTime = DateTime.UtcNow.AddMinutes(-matches.ExtraMinutes).AddSeconds(-matches.ExtraSeconds);
+                    match.StatusTime = DateTime.UtcNow.AddMinutes(-match.ExtraMinutes).AddSeconds(-match.ExtraSeconds);
                 }
-                matches.HomeTeamPenaltiesScore = matchInDB.HomeTeamPenaltiesScore;
-                matches.AwayTeamPenaltiesScore = matchInDB.AwayTeamPenaltiesScore;
+                match.HomeTeamPenaltiesScore = matchInDB.HomeTeamPenaltiesScore;
+                match.AwayTeamPenaltiesScore = matchInDB.AwayTeamPenaltiesScore;
                 
-                _dystirDBContext.Entry(matchInDB).CurrentValues.SetValues(matches);
+                _dystirDBContext.Entry(matchInDB).CurrentValues.SetValues(match);
                 _dystirDBContext.Entry(matchInDB).State = EntityState.Modified;
                 _dystirDBContext.SaveChanges();
             }
@@ -109,9 +109,9 @@ namespace DystirWeb.Controllers
                     throw ex;
                 }
             }
-            HubSend(matches);
+            HubSend(match);
 
-            return Ok(matches);
+            return Ok(match);
         }
 
         // POST: api/Matches
@@ -179,6 +179,7 @@ namespace DystirWeb.Controllers
 
         private async void HubSendMatchDetails(HubSender hubSender, Matches match)
         {
+            await _dystirService.UpdateAllMatchesAsync(match);
             MatchDetails matchDetails = _matchDetailsService.GetMatchDetails(match.MatchID, true);
             await _dystirService.UpdateDataAsync(matchDetails);
             hubSender.SendMatchDetails(_hubContext, matchDetails);
