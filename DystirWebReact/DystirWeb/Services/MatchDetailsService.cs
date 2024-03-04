@@ -43,15 +43,14 @@ namespace DystirWeb.Services
                         .ThenBy(x => x.EventMinute)
                         .ThenBy(x => x.EventOfMatchId).ToList(),
                         PlayersOfMatch = playersOfMatch?.Where(x => x.PlayingStatus != 3).ToList(),
-                        
                     };
-                    matchDetails.Standings = _standingService.GetStandings().ToList();
-                    matchDetails.Matches = _dystirService.AllMatches.Where(x =>
-                        x.Time > DateTime.UtcNow.AddDays(-2) &&
-                        x.Time < DateTime.UtcNow.AddDays(2) 
-                    ).ToList();
-                    matchDetails.Statistic = _matchStatisticService.GetStatistic(matchDetails.EventsOfMatch, matchDetails.Match);
                 }
+                matchDetails.Standings = _standingService.GetStandings().ToList();
+                matchDetails.Matches = _dystirService.AllMatches.Where(x =>
+                    x.Time > DateTime.UtcNow.AddDays(-2) &&
+                    x.Time < DateTime.UtcNow.AddDays(2)
+                ).ToList();
+                matchDetails.Statistic = _matchStatisticService.GetStatistic(matchDetails.EventsOfMatch, matchDetails.Match);
                 return matchDetails;
             }
         }
