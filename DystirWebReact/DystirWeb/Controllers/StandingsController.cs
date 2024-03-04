@@ -1,6 +1,6 @@
-﻿using DystirWeb.Shared;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using DystirWeb.Services;
+using DystirWeb.Models;
 
 namespace DystirWeb.Controllers
 {

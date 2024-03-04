@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using DystirWeb.DystirDB;
+﻿using DystirWeb.DystirDB;
 using DystirWeb.Hubs;
 using DystirWeb.Services;
 using DystirWeb.Shared;
@@ -482,7 +479,6 @@ namespace DystirWeb.Controllers
         private async void HubSendMatchDetails(HubSender hubSender, Matches match)
         {
             MatchDetails matchDetails = _matchDetailsService.GetMatchDetails(match.MatchID, true);
-            matchDetails.Match = match;
             await _dystirService.UpdateDataAsync(matchDetails);
             hubSender.SendMatchDetails(_hubContext, matchDetails);
         }
