@@ -1,6 +1,4 @@
-﻿using System;
-using DystirXamarin.Models;
-using DystirXamarin.Services;
+﻿using DystirXamarin.Services;
 using DystirXamarin.Views;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;

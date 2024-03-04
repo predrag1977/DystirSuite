@@ -15,11 +15,12 @@ namespace DystirXamarin.Services
 {
     public class DataLoaderService : IDataLoaderService<Match>
     {
-        private const string Url = "https://www.dystir.fo/api/";
+        //private const string Url = "https://www.dystir.fo/api/";
         //private const string Url = "http://localhost:51346/api/";
         //private const string Url = "http://localhost:64974/api/";
         //private const string Url = "https://localhost:44409/api/";
-        //private const string Url = "http://localhost:44431/api/";
+        //private const string Url = "https://priceless-buck.162-250-122-185.plesk.page/api/";
+        private const string Url = "http://localhost:44431/api/";
 
         private string _token;
 
