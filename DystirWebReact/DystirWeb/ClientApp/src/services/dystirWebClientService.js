@@ -222,14 +222,12 @@ export class DystirWebClientService {
     }
 
     onUpdateMatchDetails(matchDetails) {
-        console.log(matchDetails);
         var match = matchDetails['match'];
         if (match != null) {
             match.matchDetails = matchDetails;
         }
         this.onUpdateMatch(match);
         this.onUpdateStandings(match?.matchDetails?.standings);
-        console.log(match?.matchDetails?.standings);
 
         var isMatchIdEqual = this.state.matchDetailsData.matchId == match?.matchID;
         this.state.matchDetailsData = {
