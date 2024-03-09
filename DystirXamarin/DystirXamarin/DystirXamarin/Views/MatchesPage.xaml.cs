@@ -7,6 +7,7 @@ using DystirXamarin.ViewModels;
 using DystirXamarin.Converter;
 using System.Globalization;
 using System.Collections.ObjectModel;
+using Xamarin.Essentials;
 
 namespace DystirXamarin.Views
 {
@@ -46,8 +47,10 @@ namespace DystirXamarin.Views
             {
                 NewMatchButton.IsVisible = false;
             }
-            //TODO Change this
-            VersionLabel.Text = "4.0.0.59";
+
+            Version version = AppInfo.Version;
+            string buildString = AppInfo.BuildString;
+            VersionLabel.Text = $"{version.Major}.{version.Minor}.{version.Build}.{buildString}";
         }
 
         private void PopulateMatchList()
