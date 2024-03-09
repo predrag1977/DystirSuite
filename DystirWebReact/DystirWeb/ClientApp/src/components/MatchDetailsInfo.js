@@ -25,12 +25,11 @@ export class MatchDetailsInfo extends Component {
         document.body.removeEventListener('onMatchTime', this.onMatchTime.bind(this));
     }
 
-    onMatchTime() {
+    onMatchTime(event) {
+        var connected = event.detail.connected;
         var matchTime = this.matchTimeAndColor.getMatchTime(this.props.match);
-        this.setState({
-            matchTime: matchTime,
-            statusColor: this.matchTimeAndColor.getStatusColor(this.props.match?.statusID)
-        });
+        var statusColor = this.matchTimeAndColor.getStatusColor(this.props.match.statusID);
+        this.setState({ matchTime: matchTime, statusColor: statusColor });
     }
 
     render() {

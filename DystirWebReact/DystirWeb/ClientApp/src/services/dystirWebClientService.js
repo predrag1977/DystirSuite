@@ -51,7 +51,7 @@ export class DystirWebClientService {
             connection: new signalR.HubConnectionBuilder()
                 .withUrl('../dystirhub')
                 //.withUrl('https://www.dystir.fo/dystirhub')
-                .withAutomaticReconnect([0, 1000, 1000, 2000, 3000])
+                .withAutomaticReconnect([0, 200, 300, 400, 500])
                 .configureLogging(signalR.LogLevel.Information)
                 .build()
         };
