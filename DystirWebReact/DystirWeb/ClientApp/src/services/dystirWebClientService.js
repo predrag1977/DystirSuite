@@ -51,7 +51,7 @@ export class DystirWebClientService {
             connection: new signalR.HubConnectionBuilder()
                 .withUrl('../dystirhub')
                 //.withUrl('https://www.dystir.fo/dystirhub')
-                .withAutomaticReconnect([0, 200, 300, 400, 500])
+                //.withAutomaticReconnect([0, 200, 300, 400, 500])
                 .configureLogging(signalR.LogLevel.Information)
                 .build()
         };
@@ -81,14 +81,15 @@ export class DystirWebClientService {
         });
 
         this.hubConnection.connection.on('ReceiveMessage', (match, matchJson) => {
-            //console.log('ReceiveMessage');
         });
 
         this.hubConnection.connection.onreconnected(() => {
-            //console.log('Reconnected');
+            console.log((new Date().toLocaleTimeString()) + ' - Reconnected');
+            document.body.dispatchEvent(new CustomEvent("onConnected"));
         });
 
         this.hubConnection.connection.onclose(async () => {
+            console.log((new Date().toLocaleTimeString()) + ' - Disconnected');
             document.body.dispatchEvent(new CustomEvent("onDisconnected"));
             await this.startHubConnection();
         });
@@ -97,16 +98,19 @@ export class DystirWebClientService {
     }
 
     async startHubConnection() {
-        this.hubConnection.connection.start()
-            .then(() => {
-                document.body.dispatchEvent(new CustomEvent("onConnected"));
-            })
-            .catch(err => {
-                setTimeout(() => {
-                    document.body.dispatchEvent(new CustomEvent("onDisconnected"));
-                    this.startHubConnection();
-                }, 2000);
-            });
+        setTimeout(() => {
+            this.hubConnection.connection.start()
+                .then(() => {
+                    console.log((new Date().toLocaleTimeString()) + ' - Connected');
+                    document.body.dispatchEvent(new CustomEvent("onConnected"));
+                })
+                .catch(err => {
+                    setTimeout(() => {
+                        document.body.dispatchEvent(new CustomEvent("onDisconnected"));
+                        this.startHubConnection();
+                    }, 1500);
+                });
+        }, 500);
     }
 
     async loadMatchesDataAsync(selectedPeriod) {

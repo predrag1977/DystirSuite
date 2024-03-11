@@ -17,24 +17,27 @@ namespace DystirWeb.Controllers
         private readonly AuthService _authService;
         private readonly DystirService _dystirService;
         private readonly MatchDetailsService _matchDetailsService;
+        private readonly PushNotificationService _pushNotificationService;
         private DystirDBContext _dystirDBContext;
 
         public MatchesController (IHubContext<DystirHub> hubContext,
             AuthService authService,
             DystirDBContext dystirDBContext,
             DystirService dystirService,
-            MatchDetailsService matchDetailsService)
+            MatchDetailsService matchDetailsService,
+            PushNotificationService pushNotificationService)
         {
             _hubContext = hubContext;
             _authService = authService;
             _dystirDBContext = dystirDBContext;
             _dystirService = dystirService;
             _matchDetailsService = matchDetailsService;
+            _pushNotificationService = pushNotificationService;
         }
 
         // GET: api/matches
         [HttpGet("{parameter?}")]
-        public async Task<IEnumerable<Matches>> GetMatches(string parameter)
+        public IActionResult GetMatches(string parameter)
         {
             Debug.WriteLine("Start:" + DateTime.Now.ToString("hh:mm:ss:ff"));
             IEnumerable<Matches> matches;
@@ -63,7 +66,7 @@ namespace DystirWeb.Controllers
                     break;
             }
             Debug.WriteLine("Finished:" + DateTime.Now.ToString("hh:mm:ss:ff"));
-            return await Task.FromResult(matches);
+            return Ok(matches);
         }
 
         // PUT: api/Matches/5
@@ -110,7 +113,7 @@ namespace DystirWeb.Controllers
                 }
             }
             HubSend(match);
-
+            _pushNotificationService.SendNotificationAsync();
             return Ok(match);
         }
 

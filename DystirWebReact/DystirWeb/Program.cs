@@ -13,6 +13,7 @@ services.AddDbContextPool<DystirDBContext>(options =>
 services.AddControllersWithViews();
 services.AddSignalR();
 services.AddSingleton<DystirService>();
+services.AddSingleton<PushNotificationService>();
 services.AddSingleton<StandingService>();
 services.AddSingleton<MatchStatisticService>();
 services.AddSingleton<StatisticCompetitionsService>();

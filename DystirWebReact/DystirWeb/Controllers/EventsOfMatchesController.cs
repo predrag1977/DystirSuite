@@ -17,18 +17,21 @@ namespace DystirWeb.Controllers
         private DystirDBContext _dystirDBContext;
         private readonly DystirService _dystirService;
         private readonly MatchDetailsService _matchDetailsService;
+        private readonly PushNotificationService _pushNotificationService;
 
         public EventsOfMatchesController(IHubContext<DystirHub> hubContext,
             AuthService authService,
             DystirDBContext dystirDBContext,
             DystirService dystirService,
-            MatchDetailsService matchDetailsService)
+            MatchDetailsService matchDetailsService,
+            PushNotificationService pushNotificationService)
         {
             _hubContext = hubContext;
             _authService = authService;
             _dystirDBContext = dystirDBContext;
             _dystirService = dystirService;
             _matchDetailsService = matchDetailsService;
+            _pushNotificationService = pushNotificationService;
         }
 
         // GET: api/EventsOfMatches?MatchId=5
