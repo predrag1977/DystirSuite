@@ -113,7 +113,7 @@ namespace DystirWeb.Controllers
                 }
             }
             HubSend(match);
-            _pushNotificationService.SendNotificationAsync();
+            _pushNotificationService.SendNotificationFromMatchAsync(match);
             return Ok(match);
         }
 

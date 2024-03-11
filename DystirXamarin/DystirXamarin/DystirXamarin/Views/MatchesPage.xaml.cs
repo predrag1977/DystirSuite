@@ -8,6 +8,7 @@ using DystirXamarin.Converter;
 using System.Globalization;
 using System.Collections.ObjectModel;
 using Xamarin.Essentials;
+using Plugin.FirebasePushNotification;
 
 namespace DystirXamarin.Views
 {
@@ -23,6 +24,35 @@ namespace DystirXamarin.Views
             _viewModel = viewModel;
             _viewModel.PropertyChanged += _viewModel_PropertyChanged;
             BindingContext = _viewModel;
+
+            // Token event
+            CrossFirebasePushNotification.Current.OnTokenRefresh += (s, p) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"TOKEN : {p.Token}");
+            };
+            // Push message received event
+            CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
+            {
+
+                System.Diagnostics.Debug.WriteLine("Received");
+
+            };
+            //Push message received event
+            CrossFirebasePushNotification.Current.OnNotificationOpened += (s, p) =>
+            {
+                System.Diagnostics.Debug.WriteLine("Opened");
+                foreach (var data in p.Data)
+                {
+                    ShowAlertDialog(data.Key, data.Value.ToString());
+                    System.Diagnostics.Debug.WriteLine($"{data.Key} : {data.Value}");
+                }
+
+            };
+        }
+
+        private async void ShowAlertDialog(string key, string value)
+        {
+            await DisplayAlert("NotificationData", $"{key} : {value}", "OK");
         }
 
         protected override void OnAppearing()
