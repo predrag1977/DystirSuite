@@ -231,3 +231,5 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 
+# Firebase Account Key
+serviceAccountKey.json
