@@ -24,7 +24,7 @@
             {
                 return false;
             }
-            var requestor = _dystirService.AllRequestor.FirstOrDefault(x => x.Name.Equals(name, System.StringComparison.CurrentCultureIgnoreCase));
+            var requestor = _dystirService.AllRequestor.FirstOrDefault(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
             return requestor != null && requestor.Active == 1;
         }
     }

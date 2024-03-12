@@ -29,7 +29,8 @@ const context = [
     "/api/MatchTypes",
     "/api/Squads",
     "/api/Statuses",
-    "/api/Rounds"
+    "/api/Rounds",
+    "/api/Managers"
 ];
 
 const onError = (err, req, resp, target) => {

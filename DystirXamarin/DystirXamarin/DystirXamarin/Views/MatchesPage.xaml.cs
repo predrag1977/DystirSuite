@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Collections.ObjectModel;
 using Xamarin.Essentials;
 using Plugin.FirebasePushNotification;
+using System.Collections.Generic;
 
 namespace DystirXamarin.Views
 {
@@ -25,34 +26,71 @@ namespace DystirXamarin.Views
             _viewModel.PropertyChanged += _viewModel_PropertyChanged;
             BindingContext = _viewModel;
 
-            // Token event
-            CrossFirebasePushNotification.Current.OnTokenRefresh += (s, p) =>
-            {
-                System.Diagnostics.Debug.WriteLine($"TOKEN : {p.Token}");
-            };
+            Version version = AppInfo.Version;
+            string buildString = AppInfo.BuildString;
+            VersionLabel.Text = $"{version.Major}.{version.Minor}.{version.Build}.{buildString}";
+            
+
+            AddManager(((App)Application.Current).DeviceToken);
+
             // Push message received event
             CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
             {
-
                 System.Diagnostics.Debug.WriteLine("Received");
-
+                OpenMatchAsync(p.Data, true);
             };
+
             //Push message received event
             CrossFirebasePushNotification.Current.OnNotificationOpened += (s, p) =>
             {
                 System.Diagnostics.Debug.WriteLine("Opened");
                 foreach (var data in p.Data)
                 {
-                    ShowAlertDialog(data.Key, data.Value.ToString());
                     System.Diagnostics.Debug.WriteLine($"{data.Key} : {data.Value}");
                 }
-
+                OpenMatchAsync(p.Data, false);
             };
         }
 
-        private async void ShowAlertDialog(string key, string value)
+        private void AddManager(string deviceToken)
         {
-            await DisplayAlert("NotificationData", $"{key} : {value}", "OK");
+            if (!string.IsNullOrEmpty(deviceToken))
+            {
+                var administrator = _viewModel.AdministratorLoggedIn;
+                var manager = new Manager()
+                {
+                    ManagerID = administrator.ID,
+                    Name = $"{administrator.AdministratorFirstName} {administrator.AdministratorLastName}",
+                    DeviceToken = deviceToken
+                };
+                _ = _viewModel.AddManagerAsync(manager);
+            }
+        }
+
+        private async void OpenMatchAsync(IDictionary<string, object> data, bool showAlertDialog)
+        {
+            string matchID = data["matchID"]?.ToString();
+            var selectedLiveMatch = _viewModel.AllMatches.FirstOrDefault(x => x.MatchID == int.Parse(matchID));
+            if (selectedLiveMatch == null)
+            {
+                return;
+            }
+            var eventType = data["event"]?.ToString();
+            if (showAlertDialog)
+            {
+                var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+                player.Load(eventType.Equals("GOAL") ? "crowd.mp3" : "whistle.mp3");
+                player.Play();
+                var title = data["aps.alert.title"]?.ToString();
+                var body = data["aps.alert.body"]?.ToString();
+                var answer = await DisplayAlert(title, body, "Open", "Cancel");
+                if (!answer)
+                {
+                    return;
+                }
+            }
+            _viewModel.SelectedLiveMatch = selectedLiveMatch;
+            await Navigation.PushAsync(new EventsOfMatchPage(_viewModel), false);
         }
 
         protected override void OnAppearing()
@@ -77,10 +115,6 @@ namespace DystirXamarin.Views
             {
                 NewMatchButton.IsVisible = false;
             }
-
-            Version version = AppInfo.Version;
-            string buildString = AppInfo.BuildString;
-            VersionLabel.Text = $"{version.Major}.{version.Minor}.{version.Build}.{buildString}";
         }
 
         private void PopulateMatchList()

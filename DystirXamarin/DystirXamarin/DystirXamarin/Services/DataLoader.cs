@@ -202,6 +202,24 @@ namespace DystirXamarin.Services
             return await Task.FromResult(teams);
         }
 
+        public async Task<ObservableCollection<Manager>> GetManagersAsync()
+        {
+            ObservableCollection<Manager> managers = new ObservableCollection<Manager>();
+            HttpClient client = new HttpClient();
+            List<Manager> managersList = new List<Manager>();
+            var responseManagers = await client.GetAsync(Url + "Managers" + "/" + _token);
+            if (responseManagers.IsSuccessStatusCode)
+            {
+                var resultManagers = await responseManagers.Content.ReadAsStringAsync();
+                managersList = JsonConvert.DeserializeObject<List<Manager>>(resultManagers);
+            }
+            foreach (Manager manager in managersList?.OrderBy(x => x.Name))
+            {
+                managers.Add(manager);
+            }
+            return await Task.FromResult(managers);
+        }
+
         public async Task<ObservableCollection<Categorie>> GetCategoriesAsync()
         {
             ObservableCollection<Categorie> categories = new ObservableCollection<Categorie>();
@@ -413,6 +431,53 @@ namespace DystirXamarin.Services
         {
             HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.DeleteAsync(Url + "EventsOfMatches/" + eventOfMatch.EventOfMatchID + "/" + _token);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await Task.FromResult(true);
+            }
+            else
+            {
+                return await Task.FromResult(true);
+            }
+        }
+
+        public async Task<bool> AddManagerAsync(Manager manager)
+        {
+            HttpClient client = new HttpClient();
+            StringContent content = new StringContent(JsonConvert.SerializeObject(manager), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PostAsync(Url + "Managers/" + _token, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await Task.FromResult(true);
+            }
+            else
+            {
+                return await Task.FromResult(false);
+            }
+        }
+
+        public async Task<bool> UpdateManagerAsync(Manager manager)
+        {
+            HttpClient client = new HttpClient();
+            StringContent content = new StringContent(JsonConvert.SerializeObject(manager), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PutAsync(Url + "Managers/" + manager.ID + "/" + _token, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await Task.FromResult(true);
+            }
+            else
+            {
+                return await Task.FromResult(true);
+            }
+        }
+
+        public async Task<bool> DeleteManagerAsync(Manager manager)
+        {
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = await client.DeleteAsync(Url + "Managers/" + manager.ID + "/" + _token);
 
             if (response.IsSuccessStatusCode)
             {

@@ -37,7 +37,15 @@ namespace DystirXamarin.ViewModels
                 var loadSquadsTask = GetSquads();
                 var loadStatusesTask = GetStatuses();
                 var loadRoundsTask = GetRounds();
-                await Task.WhenAll(loadMatchesTask, loadCategoriesTask, loadTeamsTask, loadMatchTypesTask, loadSquadsTask, loadStatusesTask, loadRoundsTask);
+                await Task.WhenAll(
+                    loadMatchesTask,
+                    loadCategoriesTask,
+                    loadTeamsTask,
+                    loadMatchTypesTask,
+                    loadSquadsTask,
+                    loadStatusesTask,
+                    loadRoundsTask
+                );
             }
             catch (Exception ex)
             {
@@ -61,6 +69,11 @@ namespace DystirXamarin.ViewModels
         public async Task GetTeams()
         {
             Teams = await _dataLoaderService.GetTeamsAsync();
+        }
+
+        public async Task GetManagers()
+        {
+            Managers = await _dataLoaderService.GetManagersAsync();
         }
 
         public async Task GetCategories()
@@ -311,6 +324,32 @@ namespace DystirXamarin.ViewModels
             SelectedLiveMatch.Categories = Categories;
             SelectedLiveMatch.Squads = Squads;
             SelectedLiveMatch.Rounds = Rounds;
+        }
+
+        internal async Task<bool> AddManagerAsync(Manager manager)
+        {
+            try
+            {
+                return await _dataLoaderService.AddManagerAsync(manager);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"AddManagerAsync: {ex.Message}");
+            }
+            return false;
+        }
+
+        internal async Task<bool> UpdateManagerAsync(Manager manager)
+        {
+            try
+            {
+                return await _dataLoaderService.UpdateManagerAsync(manager);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"UpdateManagerAsync: {ex.Message}");
+            }
+            return false;
         }
     }
 }
