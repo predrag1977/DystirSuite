@@ -37,6 +37,13 @@ namespace DystirXamarin.ViewModels
             set { SetProperty(ref _teams, value); }
         }
 
+        ObservableCollection<Manager> _managers = new ObservableCollection<Manager>();
+        public ObservableCollection<Manager> Managers
+        {
+            get { return _managers; }
+            set { SetProperty(ref _managers, value); }
+        }
+
         ObservableCollection<Categorie> _categories = new ObservableCollection<Categorie>();
         public ObservableCollection<Categorie> Categories
         {

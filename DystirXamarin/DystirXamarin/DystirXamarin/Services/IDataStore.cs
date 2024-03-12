@@ -14,6 +14,7 @@ namespace DystirXamarin.Services
         Task<Match> GetMatchAsync(Match match);
         Task<ObservableCollection<Match>> GetMatchesAsync(string typeOfMatches, MatchesViewModel matchesViewModel);
         Task<ObservableCollection<Team>> GetTeamsAsync();
+        Task<ObservableCollection<Manager>> GetManagersAsync();
         Task<ObservableCollection<Categorie>> GetCategoriesAsync();
         Task<ObservableCollection<MatchType>> GetMatchTypesAsync();
         Task<ObservableCollection<Squad>> GetSquadsAsync();
@@ -32,5 +33,9 @@ namespace DystirXamarin.Services
         Task<bool> UpdateEventOfMatchAsync(EventOfMatch eventOfMatch);
         Task<MatchDetails> GetMatchDetailsAsync(string matchID);
         Task<Administrator> LoginAsync(string token);
+        Task<bool> AddManagerAsync(Manager manager);
+        Task<bool> UpdateManagerAsync(Manager manager);
+        Task<bool> DeleteManagerAsync(Manager manager);
+        
     }
 }

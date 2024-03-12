@@ -3,6 +3,7 @@ using DystirXamarin.Views;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using Plugin.FirebasePushNotification;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -11,6 +12,8 @@ namespace DystirXamarin
 {
     public partial class App : Application
     {
+        public string DeviceToken = "";
+
         //public event Action OnResumeApplication;
         //public void ResumeApplication() => OnResumeApplication?.Invoke();
 
@@ -20,6 +23,14 @@ namespace DystirXamarin
             SetupServices();
             AppAnalytics();
             MainPage = new NavigationPage(new LogInPage());
+
+            // Token event
+            CrossFirebasePushNotification.Current.OnTokenRefresh += (s, p) =>
+            {
+                System.Diagnostics.Debug.WriteLine($"TOKEN : {p.Token}");
+
+                DeviceToken = p.Token;
+            };
         }
 
         private void SetupServices()

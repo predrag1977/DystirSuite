@@ -1,4 +1,5 @@
-﻿using DystirWeb.Shared;
+﻿using DystirWeb.Models;
+using DystirWeb.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace DystirWeb.DystirDB
@@ -25,6 +26,7 @@ namespace DystirWeb.DystirDB
         public virtual DbSet<Squad> Squad { get; set; }
         public virtual DbSet<Statuses> Statuses { get; set; }
         public virtual DbSet<Teams> Teams { get; set; }
+        public virtual DbSet<Manager> Managers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -334,6 +336,21 @@ namespace DystirWeb.DystirDB
                 entity.Property(e => e.TeamLogo).IsUnicode(false);
 
                 entity.Property(e => e.TeamName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Manager>(entity =>
+            {
+                entity.ToTable("Managers", "dbo");
+
+                entity.Property(e => e.ID).HasColumnName("ID");
+
+                entity.Property(e => e.ManagerID).HasColumnName("ManagerID");
+
+                entity.Property(e => e.DeviceToken).HasColumnType("DeviceToken");
+
+                entity.Property(e => e.Name).HasColumnType("Name");
+
+                entity.Property(e => e.MatchID).HasColumnType("MatchID");
             });
         }
     }

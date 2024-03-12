@@ -4,6 +4,9 @@ namespace DystirXamarin.Models
 {
     public class Administrator
     {
+        [JsonProperty("ID")]
+        public int ID { get; set; }
+
         [JsonProperty("AdministratorID")]
         public int AdministratorID { get; set; }
 
