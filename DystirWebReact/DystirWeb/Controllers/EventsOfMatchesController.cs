@@ -40,6 +40,140 @@ namespace DystirWeb.Controllers
             return _matchDetailsService.GetEventsOfMatches(matchID);
         }
 
+        // GET: api/EventsOfMatches/5
+        [HttpGet("{id}", Name = "GetEventOfMatch")]
+        public IActionResult GetEventsOfMatches(int id)
+        {
+            EventsOfMatches eventsOfMatches = _dystirDBContext.EventsOfMatches.Find(id);
+            if (eventsOfMatches == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(eventsOfMatches);
+        }
+
+        // PUT: api/EventsOfMatches/5
+        [HttpPut("{id}/{token}")]
+        public IActionResult PutEventsOfMatches(int id, string token, [FromBody] EventsOfMatches eventsOfMatches)
+        {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != eventsOfMatches?.EventOfMatchId)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                if (eventsOfMatches.EventName != null)
+                {
+                    _dystirDBContext.Entry(eventsOfMatches).State = EntityState.Modified;
+                    RemoveSecondEvent(eventsOfMatches);
+                    string sendingText = eventsOfMatches.EventText;
+                    eventsOfMatches.EventMinute = GetEventMinute(eventsOfMatches);
+                    CreateTextOfEvent(eventsOfMatches);
+                    _dystirDBContext.SaveChanges();
+                    AddSecondEvent(sendingText, eventsOfMatches);
+                    SetNewEventsList((int)eventsOfMatches.MatchId);
+                    Matches match = _dystirDBContext.Matches.Find(eventsOfMatches.MatchId);
+                    HubSend(match);
+                    _pushNotificationService.SendNotificationFromEventAsync(match, eventsOfMatches, "CORRECTION");
+                }
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!EventsOfMatchesExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok();
+        }
+
+        // POST: api/EventsOfMatches
+        [HttpPost("{token}")]
+        public IActionResult PostEventsOfMatches(string token, [FromBody] EventsOfMatches eventsOfMatches)
+        {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                if (eventsOfMatches != null && !string.IsNullOrEmpty(eventsOfMatches.EventName))
+                {
+                    string sendingText = eventsOfMatches.EventText;
+                    eventsOfMatches.EventMinute = GetEventMinute(eventsOfMatches);
+                    CreateTextOfEvent(eventsOfMatches);
+                    _dystirDBContext.EventsOfMatches.Add(eventsOfMatches);
+                    _dystirDBContext.SaveChanges();
+
+                    AddSecondEvent(sendingText, eventsOfMatches);
+                    SetNewEventsList((int)eventsOfMatches.MatchId);
+                }
+                Matches match = _dystirDBContext.Matches.Find(eventsOfMatches.MatchId);
+                _pushNotificationService.SendNotificationFromEventAsync(match, eventsOfMatches, "");
+                HubSend(match);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!EventsOfMatchesExists(eventsOfMatches?.EventOfMatchId ?? 0))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return Ok();
+        }
+
+        // DELETE: api/EventsOfMatches/5
+        [HttpDelete("{id}/{token}")]
+        public IActionResult DeleteEventsOfMatches(int id, string token)
+        {
+            if (!_authService.IsAuthorized(token))
+            {
+                return BadRequest(new UnauthorizedAccessException().Message);
+            }
+
+            EventsOfMatches eventsOfMatches = _dystirDBContext.EventsOfMatches.Find(id);
+            if (eventsOfMatches == null)
+            {
+                return NotFound();
+            }
+
+            RemoveSecondEvent(eventsOfMatches);
+            _dystirDBContext.EventsOfMatches.Remove(eventsOfMatches);
+            _dystirDBContext.SaveChanges();
+            SetNewEventsList((int)eventsOfMatches.MatchId);
+            Matches match = _dystirDBContext.Matches.Find(eventsOfMatches.MatchId);
+            HubSend(match);
+            _pushNotificationService.SendNotificationFromEventAsync(match, eventsOfMatches, "DELETE");
+            return Ok(eventsOfMatches.EventOfMatchId);
+        }
+
         private void SetPlayersListByEventsOfMatch(List<EventsOfMatches> eventsOfMatch, Matches selectedMatch)
         {
             if (selectedMatch != null)
@@ -52,7 +186,7 @@ namespace DystirWeb.Controllers
                 selectedMatch.AwayTeamCorner = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "CORNER" && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())?.Count();
                 selectedMatch.HomeTeamPenaltiesScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL" || x.EventName?.ToUpper() == "DIRECTFREEKICKGOAL")
                 && x.EventTeam?.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim()
-                && x.EventPeriodId== 10)?.Count();
+                && x.EventPeriodId == 10)?.Count();
                 selectedMatch.AwayTeamPenaltiesScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL" || x.EventName?.ToUpper() == "DIRECTFREEKICKGOAL")
                 && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim()
                 && x.EventPeriodId == 10)?.Count();
@@ -155,122 +289,6 @@ namespace DystirWeb.Controllers
             };
         }
 
-        // GET: api/EventsOfMatches/5
-        [HttpGet("{id}", Name = "GetEventOfMatch")]
-        public IActionResult GetEventsOfMatches(int id)
-        {
-            EventsOfMatches eventsOfMatches = _dystirDBContext.EventsOfMatches.Find(id);
-            if (eventsOfMatches == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(eventsOfMatches);
-        }
-
-        // PUT: api/EventsOfMatches/5
-        [HttpPut("{id}/{token}")]
-        public IActionResult PutEventsOfMatches(int id, string token, [FromBody] EventsOfMatches eventsOfMatches)
-        {
-            if (!_authService.IsAuthorized(token))
-            {
-                return BadRequest(new UnauthorizedAccessException().Message);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != eventsOfMatches?.EventOfMatchId)
-            {
-                return BadRequest();
-            }
-            try
-            {
-                if (eventsOfMatches.EventName != null)
-                {
-                    _dystirDBContext.Entry(eventsOfMatches).State = EntityState.Modified;
-                    RemoveSecondEvent(eventsOfMatches);
-                    string sendingText = eventsOfMatches.EventText;
-                    eventsOfMatches.EventMinute = GetEventMinute(eventsOfMatches);
-                    CreateTextOfEvent(eventsOfMatches);
-                    _dystirDBContext.SaveChanges();
-                    AddSecondEvent(sendingText, eventsOfMatches);
-                    SetNewEventsList((int)eventsOfMatches.MatchId);
-                    Matches match = _dystirDBContext.Matches.Find(eventsOfMatches.MatchId);
-                    HubSend(match);
-                }
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!EventsOfMatchesExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return Ok();
-        }
-
-        // POST: api/EventsOfMatches
-        [HttpPost("{token}")]
-        public IActionResult PostEventsOfMatches(string token, [FromBody] EventsOfMatches eventsOfMatches)
-        {
-            if (!_authService.IsAuthorized(token))
-            {
-                return BadRequest(new UnauthorizedAccessException().Message);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            if (eventsOfMatches != null && !string.IsNullOrEmpty(eventsOfMatches.EventName))
-            {
-                string sendingText = eventsOfMatches.EventText;
-                eventsOfMatches.EventMinute = GetEventMinute(eventsOfMatches);
-                CreateTextOfEvent(eventsOfMatches);
-                _dystirDBContext.EventsOfMatches.Add(eventsOfMatches);
-                _dystirDBContext.SaveChanges();
-
-                AddSecondEvent(sendingText, eventsOfMatches);
-                SetNewEventsList((int)eventsOfMatches.MatchId);
-            }
-            Matches match = _dystirDBContext.Matches.Find(eventsOfMatches.MatchId);
-            HubSend(match);
-
-            return Ok();
-        }
-
-        // DELETE: api/EventsOfMatches/5
-        [HttpDelete("{id}/{token}")]
-        public IActionResult DeleteEventsOfMatches(int id, string token)
-        {
-            if (!_authService.IsAuthorized(token))
-            {
-                return BadRequest(new UnauthorizedAccessException().Message);
-            }
-
-            EventsOfMatches eventsOfMatches = _dystirDBContext.EventsOfMatches.Find(id);
-            if (eventsOfMatches == null)
-            {
-                return NotFound();
-            }
-
-            RemoveSecondEvent(eventsOfMatches);
-            _dystirDBContext.EventsOfMatches.Remove(eventsOfMatches);
-            _dystirDBContext.SaveChanges();
-            SetNewEventsList((int)eventsOfMatches.MatchId);
-            Matches match = _dystirDBContext.Matches.Find(eventsOfMatches.MatchId);
-            HubSend(match);
-            return Ok(eventsOfMatches.EventOfMatchId);
-        }
-
         private string GetEventMinute(EventsOfMatches eventsOfMatches)
         {
             string liveMatchTime = string.Empty;
@@ -355,6 +373,8 @@ namespace DystirWeb.Controllers
         {
             PlayersOfMatches playersOfMatches = _dystirDBContext.PlayersOfMatches.FirstOrDefault(x => x.PlayerOfMatchId == eventsOfMatches.MainPlayerOfMatchId);
             string mainPlayerFullName = (playersOfMatches?.FirstName?.Trim() + " " + playersOfMatches?.Lastname?.Trim())?.Trim();
+            eventsOfMatches.MainPlayerOfMatchNumber = playersOfMatches?.Number?.ToString();
+            eventsOfMatches.MainPlayerFullName = mainPlayerFullName;
             switch (eventsOfMatches?.EventName?.ToUpper())
             {
                 case "GOAL":
@@ -391,6 +411,8 @@ namespace DystirWeb.Controllers
                 case "SUBSTITUTION":
                     PlayersOfMatches secondPlayersOfMatches = _dystirDBContext.PlayersOfMatches.FirstOrDefault(x => x.PlayerOfMatchId == eventsOfMatches.SecondPlayerOfMatchId);
                     string secongPlayerFullName = (secondPlayersOfMatches?.FirstName?.Trim() + " " + secondPlayersOfMatches?.Lastname?.Trim())?.Trim();
+                    eventsOfMatches.SecondPlayerOfMatchNumber = secondPlayersOfMatches?.Number?.ToString();
+                    eventsOfMatches.SecondPlayerFullName = secongPlayerFullName;
                     eventsOfMatches.EventText = "ÚTSKIFTING " + eventsOfMatches.EventTeam + ". " + (string.IsNullOrWhiteSpace(mainPlayerFullName) ? "" : "Leikari " + mainPlayerFullName + " út. ") + (string.IsNullOrWhiteSpace(secongPlayerFullName) ? "" : "Leikari " + secongPlayerFullName + " inn.");
                     break;
                 case "ASSIST":

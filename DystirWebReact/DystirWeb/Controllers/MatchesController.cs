@@ -90,6 +90,8 @@ namespace DystirWeb.Controllers
             try
             {
                 Matches matchInDB = _dystirDBContext.Matches.Find(id);
+                var isMatchTimeCorrection = match.ExtraMinutes > 0 || match.ExtraSeconds > 0;
+                var isMatchStatusChanged = matchInDB.StatusID != match.StatusID;
                 if (!(match.ExtraMinutes == 0 && match.ExtraSeconds == 0) || matchInDB.StatusID != match.StatusID)
                 {
                     match.StatusTime = DateTime.UtcNow.AddMinutes(-match.ExtraMinutes).AddSeconds(-match.ExtraSeconds);
@@ -100,6 +102,11 @@ namespace DystirWeb.Controllers
                 _dystirDBContext.Entry(matchInDB).CurrentValues.SetValues(match);
                 _dystirDBContext.Entry(matchInDB).State = EntityState.Modified;
                 _dystirDBContext.SaveChanges();
+                HubSend(match);
+                if (isMatchTimeCorrection || isMatchStatusChanged)
+                {
+                    _pushNotificationService.SendNotificationFromMatchAsync(match, isMatchTimeCorrection, isMatchStatusChanged);
+                }  
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -112,8 +119,6 @@ namespace DystirWeb.Controllers
                     throw ex;
                 }
             }
-            HubSend(match);
-            _pushNotificationService.SendNotificationFromMatchAsync(match);
             return Ok(match);
         }
 
