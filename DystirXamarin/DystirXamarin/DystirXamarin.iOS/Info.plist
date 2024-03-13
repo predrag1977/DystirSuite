@@ -35,12 +35,14 @@
 	<key>XSAppIconAssets</key>
 	<string>DystirManagerAssets.xcassets/DystirManagerIcon.appiconset</string>
 	<key>CFBundleVersion</key>
-	<string>61</string>
+	<string>62</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
 	</array>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
+	<key>Queried URL Schemes</key>
+	<string>newmcomet</string>
 </dict>
 </plist>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DystirWeb.Shared
 {
@@ -21,5 +22,7 @@ namespace DystirWeb.Shared
         public int AwayTeamScore { get; set; }
         public int HomeTeamPenaltiesScore { get; set; }
         public int AwayTeamPenaltiesScore { get; set; }
+        public string MainPlayerFullName { get; internal set; }
+        public string SecondPlayerFullName { get; internal set; }
     }
 }

@@ -128,6 +128,10 @@ namespace DystirWeb.DystirDB
                 entity.Ignore("HomeTeamPenaltiesScore");
 
                 entity.Ignore("AwayTeamPenaltiesScore");
+
+                entity.Ignore("MainPlayerFullName");
+
+                entity.Ignore("SecondPlayerFullName");
             });
 
             modelBuilder.Entity<MatchTypes>(entity =>

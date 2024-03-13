@@ -28,8 +28,7 @@ namespace DystirXamarin.Views
 
             Version version = AppInfo.Version;
             string buildString = AppInfo.BuildString;
-            VersionLabel.Text = $"{version.Major}.{version.Minor}.{version.Build}.{buildString}";
-            
+            VersionLabel.Text = $"{version.Major}.{version.Minor}.{version.Build} build {buildString}";
 
             AddManager(((App)Application.Current).DeviceToken);
 
@@ -37,6 +36,10 @@ namespace DystirXamarin.Views
             CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
             {
                 System.Diagnostics.Debug.WriteLine("Received");
+                var eventType = p.Data["event"]?.ToString();
+                var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+                player.Load(eventType.Equals("GOAL") ? "crowd.mp3" : "whistle.mp3");
+                player.Play();
                 OpenMatchAsync(p.Data, true);
             };
 
@@ -48,7 +51,7 @@ namespace DystirXamarin.Views
                 {
                     System.Diagnostics.Debug.WriteLine($"{data.Key} : {data.Value}");
                 }
-                OpenMatchAsync(p.Data, false);
+                OpenMatchAsync(p.Data, true);
             };
         }
 
@@ -75,22 +78,33 @@ namespace DystirXamarin.Views
             {
                 return;
             }
+            _viewModel.SelectedLiveMatch = selectedLiveMatch;
+            await Navigation.PushAsync(new EventsOfMatchPage(_viewModel), false);
+
             var eventType = data["event"]?.ToString();
             if (showAlertDialog)
             {
-                var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
-                player.Load(eventType.Equals("GOAL") ? "crowd.mp3" : "whistle.mp3");
-                player.Play();
                 var title = data["aps.alert.title"]?.ToString();
                 var body = data["aps.alert.body"]?.ToString();
-                var answer = await DisplayAlert(title, body, "Open", "Cancel");
+                var answer = await DisplayAlert(title, body, "Open COMET LIVE", "Cancel");
                 if (!answer)
                 {
                     return;
                 }
+                OpenCometApplication();
             }
-            _viewModel.SelectedLiveMatch = selectedLiveMatch;
-            await Navigation.PushAsync(new EventsOfMatchPage(_viewModel), false);
+        }
+
+        private async void OpenCometApplication()
+        {
+            if (Device.RuntimePlatform == Device.iOS)
+            {
+                await Launcher.OpenAsync("https://newcometmobile.page.link/redirect");
+            }
+            else if (Device.RuntimePlatform == Device.Android)
+            {
+                await Launcher.OpenAsync("https://newcometmobile.page.link/redirect");
+            }
         }
 
         protected override void OnAppearing()
