@@ -29,9 +29,10 @@ namespace DystirWeb.Services
                 { "event", eventType }
             };
             var eventTypeText = eventType.Equals(EventType.TIME) ? "" : $"{eventType}\n";
+            var statusName = GetStatusName(match.StatusID ?? 0);
             
             var title = $"{eventTypeText}{match.HomeTeam} - {match.AwayTeam}";
-            var body = $"{match.HomeTeamScore}:{match.AwayTeamScore}\n{match.StatusName}";
+            var body = $"{match.HomeTeamScore}:{match.AwayTeamScore}\n{statusName}";
             var sound = "whistle.mp3";
 
             ReadOnlyDictionary<string, string> readOnlyData= data.AsReadOnly();
@@ -42,42 +43,6 @@ namespace DystirWeb.Services
         {
             string matchID = match.MatchID.ToString();
             var sound = "whistle.mp3";
-
-            string eventType;
-            switch (eventOfMatch.EventName.ToUpper())
-            {
-                case EventType.GOAL:
-                    eventType = EventType.GOAL;
-                    sound = "crowd.mp3";
-                    break;
-                case EventType.OWN_GOAL:
-                    eventType = "OWN GOAL";
-                    break;
-                case EventType.PENALTY_SCORED:
-                    eventType = "PENALTY SCORED";
-                    break;
-                case EventType.PENALTY_MISSED:
-                    eventType = "PENALTY MISSED";
-                    break;
-                case EventType.YELLOW_CARD:
-                    eventType = "YELLOW CARD";
-                    break;
-                case EventType.RED_CARD:
-                    eventType = "RED CARD";
-                    break;
-                case EventType.SUBSTITUTION:
-                    eventType = EventType.SUBSTITUTION;
-                    break;
-                default:
-                    return;
-            }
-
-            IDictionary<string, string> data = new Dictionary<string, string>
-            {
-                { "matchID", matchID },
-                { "event", eventType }
-            };
-            var eventTypeText = $"{eventOfMatch.EventMinute} - {eventType}";
 
             var homeTeamScore = (match.HomeTeamScore ?? 0) - (match.HomeTeamPenaltiesScore ?? 0);
             var awayTeamScore = (match.AwayTeamScore ?? 0) - (match.AwayTeamPenaltiesScore ?? 0);
@@ -99,18 +64,68 @@ namespace DystirWeb.Services
                 secondPlayer = $"\n({eventOfMatch.SecondPlayerOfMatchNumber}) {eventOfMatch.SecondPlayerFullName}";
             }
 
-            if(eventOfMatch.EventName.ToUpper() == EventType.GOAL)
+            var players = mainPlayer + secondPlayer;
+            if(eventOfMatch.EventName.ToUpper() == EventType.SUBSTITUTION)
             {
-                mainPlayer = $"OUT: {mainPlayer}";
-                secondPlayer = $"IN: {secondPlayer}";
+                players = $"OUT: {mainPlayer}\nIN: {secondPlayer}";
             }
+
+            var result = $"{homeTeamPenaltiesScoreText}{homeTeamScore}:{awayTeamScore}{awayTeamPenaltiesScoreText}";
+            if (!string.IsNullOrEmpty(result))
+            {
+                result = $"{result}\n";
+            }
+
+            if (!string.IsNullOrEmpty(eventAction))
+            {
+                eventAction = $" - {eventAction}";
+            }
+
+            string eventType;
+            switch (eventOfMatch.EventName.ToUpper())
+            {
+                case EventType.GOAL:
+                    eventType = EventType.GOAL;
+                    sound = "crowd.mp3";
+                    break;
+                case EventType.OWN_GOAL:
+                    eventType = "OWN GOAL";
+                    break;
+                case EventType.PENALTY_SCORED:
+                    eventType = "PENALTY SCORED";
+                    break;
+                case EventType.PENALTY_MISSED:
+                    eventType = "PENALTY MISSED";
+                    result = "";
+                    break;
+                case EventType.YELLOW_CARD:
+                    eventType = "YELLOW CARD";
+                    result = "";
+                    break;
+                case EventType.RED_CARD:
+                    eventType = "RED CARD";
+                    result = "";
+                    break;
+                case EventType.SUBSTITUTION:
+                    eventType = EventType.SUBSTITUTION;
+                    result = "";
+                    break;
+                default:
+                    return;
+            }
+
+            IDictionary<string, string> data = new Dictionary<string, string>
+            {
+                { "matchID", matchID },
+                { "event", eventType }
+            };
+            var eventTypeText = $"{eventOfMatch.EventMinute} - {eventType}";
 
             var title = $"{eventTypeText}";
             var body = $"{match.HomeTeam} - {match.AwayTeam}\n" +
-                $"{homeTeamPenaltiesScoreText}{homeTeamScore}:{awayTeamScore}{awayTeamPenaltiesScoreText}\n" +
+                $"{result}" +
                 $"{eventOfMatch.EventTeam} {eventAction}\n" +
-                $"{mainPlayer}" +
-                $"{secondPlayer}";
+                $"{players}";
 
             ReadOnlyDictionary<string, string> readOnlyData = data.AsReadOnly();
             SendNotificationAsync(matchID, title, body, sound, readOnlyData);
@@ -179,6 +194,39 @@ namespace DystirWeb.Services
                     Console.WriteLine("Exception: " + ex.Message);
                 }
 
+            }
+        }
+
+        private string GetStatusName(int statusID)
+        {
+            switch (statusID)
+            {
+                case 1:
+                    return "START SOON";
+                case 2:
+                    return "1.HALF";
+                case 3:
+                    return "HALF TIME";
+                case 4:
+                    return "2.HALF";
+                case 5:
+                    return "FULL TIME";
+                case 6:
+                    return "1.EXTRA TIME";
+                case 7:
+                    return "EXTRA TIME PAUSE";
+                case 8:
+                    return "2.EXTRA TIME";
+                case 9:
+                    return "EXTRA TIME FINISHED";
+                case 10:
+                    return "PENALTIES";
+                case 11:
+                case 12:
+                case 13:
+                    return "FINISHED";
+                default:
+                    return "NO DEFINED";
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using DystirXamarin.Services;
+﻿using System.Collections.Generic;
+using DystirXamarin.Services;
 using DystirXamarin.Views;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
@@ -14,15 +15,19 @@ namespace DystirXamarin
     {
         public string DeviceToken = "";
 
+        public IDictionary<string, object> NotificationData;
+
         //public event Action OnResumeApplication;
         //public void ResumeApplication() => OnResumeApplication?.Invoke();
 
-        public App()
+        public App(IDictionary<string, object> notificationData = null)
         {
             InitializeComponent();
             SetupServices();
             AppAnalytics();
             MainPage = new NavigationPage(new LogInPage());
+
+            NotificationData = notificationData;
 
             // Token event
             CrossFirebasePushNotification.Current.OnTokenRefresh += (s, p) =>

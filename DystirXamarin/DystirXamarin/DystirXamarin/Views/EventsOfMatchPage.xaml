@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DystirXamarin.Views.EventsOfMatchPage"
+             xmlns:ffsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
              BackgroundColor="{StaticResource LightBackgroundColor}"
              Title="Events of match">
     <ContentPage.Resources>
@@ -40,11 +41,26 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Padding="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
+            <Grid Grid.Row="1" Grid.Column="0" Padding="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
                 <Label FontAttributes="Bold" FontSize="18" Text="{Binding HomeTeam}" />
             </Grid>
+            <ffsvg:SvgCachedImage Grid.Column="1"
+                                Grid.Row="1"
+                                WidthRequest="30" HeightRequest="28"
+                                HorizontalOptions="CenterAndExpand"
+                                VerticalOptions="CenterAndExpand"
+                                Source="{Binding HomeTeamLogo}" >
+            </ffsvg:SvgCachedImage>
             <Label Text="-" Grid.Row="1" Grid.Column="2" FontSize="18" HorizontalOptions="Center" />
-            <Grid Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2" Padding="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <ffsvg:SvgCachedImage Grid.Column="3"
+                                Grid.Row="1"
+                                WidthRequest="30"
+                                HeightRequest="28"
+                                HorizontalOptions="CenterAndExpand"
+                                VerticalOptions="CenterAndExpand"
+                                Source="{Binding AwayTeamLogo}">
+            </ffsvg:SvgCachedImage>
+            <Grid Grid.Row="1" Grid.Column="4" Padding="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Label FontAttributes="Bold" FontSize="18" Text="{Binding AwayTeam}" />
             </Grid>
 

@@ -1,5 +1,4 @@
-﻿using DystirWeb.DystirDB;
-using DystirWeb.Models;
+﻿using DystirWeb.Models;
 using DystirWeb.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,12 +10,12 @@ namespace DystirWeb.Controllers
     public class ManagersController : ControllerBase
     {
         private readonly AuthService _authService;
-        private readonly DystirDBContext _dystirDBContext;
+        private readonly DystirService _dystirService;
 
-        public ManagersController(DystirDBContext dystirDBContext, AuthService authService)
+        public ManagersController(DystirService dystirService, AuthService authService)
         {
             _authService = authService;
-            _dystirDBContext = dystirDBContext;
+            _dystirService = dystirService;
         }
 
         // GET: api/Managers/token
@@ -27,7 +26,7 @@ namespace DystirWeb.Controllers
             {
                 return BadRequest(new UnauthorizedAccessException().Message);
             }
-            return Ok(_dystirDBContext.Managers);
+            return Ok(_dystirService.AllManagers);
         }
 
         // GET: api/GetManager/5/token
@@ -38,7 +37,7 @@ namespace DystirWeb.Controllers
             {
                 return BadRequest(new UnauthorizedAccessException().Message);
             }
-            Manager manager = _dystirDBContext.Managers.Find(id);
+            Manager manager = _dystirService.AllManagers.FirstOrDefault(x => x.ID == id);
             if (manager == null)
             {
                 return NotFound();
@@ -67,11 +66,11 @@ namespace DystirWeb.Controllers
             }
             try
             {
-                Manager managerInDB = _dystirDBContext.Managers.Find(id);
+                Manager managerInDB = _dystirService.AllManagers.FirstOrDefault(x=>x.ID == id);
 
-                _dystirDBContext.Entry(managerInDB).CurrentValues.SetValues(manager);
-                _dystirDBContext.Entry(managerInDB).State = EntityState.Modified;
-                _dystirDBContext.SaveChanges();
+                _dystirService.DystirDBContext.Entry(managerInDB).CurrentValues.SetValues(manager);
+                _dystirService.DystirDBContext.Entry(managerInDB).State = EntityState.Modified;
+                _dystirService.DystirDBContext.SaveChanges();
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -102,11 +101,17 @@ namespace DystirWeb.Controllers
             }
             try
             {
-                bool existManager = _dystirDBContext.Managers.Any(x => x.DeviceToken == manager.DeviceToken);
+                bool existManager = _dystirService.AllManagers.Any(x => x.DeviceToken == manager.DeviceToken);
                 if(!existManager)
                 {
-                    _dystirDBContext.Managers.Add(manager);
-                    _dystirDBContext.SaveChanges();
+                    var managerSameID = _dystirService.AllManagers.FirstOrDefault(x => x.ManagerID == manager.ManagerID);
+                    if(managerSameID != null)
+                    {
+                        manager.MatchID = managerSameID.MatchID;
+                    }
+                    _dystirService.DystirDBContext.Managers.Add(manager);
+                    _dystirService.DystirDBContext.SaveChanges();
+                    _dystirService.AllManagers.Add(manager);
                 }
                 return Ok();
             }
@@ -125,7 +130,7 @@ namespace DystirWeb.Controllers
 
         private bool ManagerExists(int id)
         {
-            return _dystirDBContext.Managers.Any(e => e.ID == id);
+            return _dystirService.AllManagers.Any(e => e.ID == id);
         }
     }
 }

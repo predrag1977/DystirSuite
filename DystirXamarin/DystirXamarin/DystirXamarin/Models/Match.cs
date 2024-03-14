@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using DystirXamarin.Models;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 
@@ -84,6 +83,22 @@ namespace DystirXamarin.Models
 
         [JsonProperty("ExtraSeconds")]
         public int ExtraSeconds { get; set; }
+
+        private string homeTeamLogo;
+        [JsonProperty("HomeTeamLogo")]
+        public string HomeTeamLogo
+        {
+            get { return homeTeamLogo; }
+            set { homeTeamLogo = "https://www.dystir.fo/team_logos/" + value; }
+        }
+
+        private string awayTeamLogo;
+        [JsonProperty("AwayTeamLogo")]
+        public string AwayTeamLogo
+        {
+            get { return awayTeamLogo; }
+            set { awayTeamLogo = "https://www.dystir.fo/team_logos/" + value; }
+        }
 
         string _selectedTeam;
         public string SelectedTeam

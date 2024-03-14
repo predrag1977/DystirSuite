@@ -90,7 +90,7 @@ namespace DystirWeb.Controllers
             try
             {
                 Matches matchInDB = _dystirDBContext.Matches.Find(id);
-                var isMatchTimeCorrection = match.ExtraMinutes > 0 || match.ExtraSeconds > 0;
+                var isMatchTimeCorrection = match.ExtraMinutes > 0 || match.ExtraSeconds > 1;
                 var isMatchStatusChanged = matchInDB.StatusID != match.StatusID;
                 if (!(match.ExtraMinutes == 0 && match.ExtraSeconds == 0) || matchInDB.StatusID != match.StatusID)
                 {
