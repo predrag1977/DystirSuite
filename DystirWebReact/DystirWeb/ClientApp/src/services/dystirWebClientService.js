@@ -84,12 +84,12 @@ export class DystirWebClientService {
         });
 
         this.hubConnection.connection.onreconnected(() => {
-            console.log((new Date().toLocaleTimeString()) + ' - Reconnected');
+            //console.log((new Date().toLocaleTimeString()) + ' - Reconnected');
             document.body.dispatchEvent(new CustomEvent("onConnected"));
         });
 
         this.hubConnection.connection.onclose(async () => {
-            console.log((new Date().toLocaleTimeString()) + ' - Disconnected');
+            //console.log((new Date().toLocaleTimeString()) + ' - Disconnected');
             document.body.dispatchEvent(new CustomEvent("onDisconnected"));
             await this.startHubConnection();
         });
@@ -101,7 +101,7 @@ export class DystirWebClientService {
         setTimeout(() => {
             this.hubConnection.connection.start()
                 .then(() => {
-                    console.log((new Date().toLocaleTimeString()) + ' - Connected');
+                    //console.log((new Date().toLocaleTimeString()) + ' - Connected');
                     document.body.dispatchEvent(new CustomEvent("onConnected"));
                 })
                 .catch(err => {

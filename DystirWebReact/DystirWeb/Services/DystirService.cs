@@ -2,6 +2,7 @@
 using DystirWeb.Shared;
 using DystirWeb.DystirDB;
 using Microsoft.EntityFrameworkCore;
+using DystirWeb.Models;
 
 namespace DystirWeb.Services
 {
@@ -19,6 +20,7 @@ namespace DystirWeb.Services
         public ObservableCollection<Sponsors> AllSponsors = new ObservableCollection<Sponsors>();
         public ObservableCollection<PlayersOfMatches> AllPlayersOfMatches = new ObservableCollection<PlayersOfMatches>();
         public ObservableCollection<Requestor> AllRequestor = new ObservableCollection<Requestor>();
+        public ObservableCollection<Manager> AllManagers = new ObservableCollection<Manager>();
 
         public DystirService(DbContextOptions<DystirDBContext> dbContextOptions)
         {
@@ -46,8 +48,9 @@ namespace DystirWeb.Services
             AllMatchesDetails = new ObservableCollection<MatchDetails>();
             var allMatchesTask = GetAllMatchesAsync();
             var allSponsorsTask = GetAllSponsorsAsync();
-            var allRequestorTask = GetAllRequestorsAsync();
-            await Task.WhenAll(allMatchesTask, allSponsorsTask, allRequestorTask);
+            var allRequestorsTask = GetAllRequestorsAsync();
+            var allManagersTask = GetAllManagersAsync();
+            await Task.WhenAll(allMatchesTask, allSponsorsTask, allRequestorsTask, allManagersTask);
         }
 
         public async Task GetAllMatchesAsync()
@@ -88,6 +91,12 @@ namespace DystirWeb.Services
         private async Task GetAllRequestorsAsync()
         {
             AllRequestor = new ObservableCollection<Requestor>(DystirDBContext.Requestor);
+            await Task.CompletedTask;
+        }
+
+        private async Task GetAllManagersAsync()
+        {
+            AllManagers = new ObservableCollection<Manager>(DystirDBContext.Managers);
             await Task.CompletedTask;
         }
 

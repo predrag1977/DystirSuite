@@ -14,11 +14,15 @@ namespace DystirXamarin.Views
     {
         private readonly MatchesViewModel _viewModel;
 
-        public EventsOfMatchPage(MatchesViewModel viewModel)
+        public EventsOfMatchPage(MatchesViewModel viewModel, bool openFromNotification = false)
         {
             InitializeComponent();
             _viewModel = viewModel;
             BindingContext = _viewModel;
+            if(openFromNotification)
+            {
+                ShowMainEvents();
+            }
             LoadMatchData();
             PopulateMatchTime();
         }
@@ -95,6 +99,11 @@ namespace DystirXamarin.Views
                 }
             }
             
+        }
+
+        private void ShowMainEvents()
+        {
+            EventsGrid.IsVisible = false;
         }
 
         private async void MatchTime_Clicked(object sender, EventArgs e)

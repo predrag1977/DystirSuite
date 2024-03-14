@@ -1,6 +1,5 @@
-﻿
-
-using System;
+﻿using System;
+using System.Collections.Generic;
 using Foundation;
 using Plugin.FirebasePushNotification;
 using UIKit;
@@ -23,10 +22,34 @@ namespace DystirXamarin.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
 
             FirebasePushNotificationManager.Initialize(options, true);
 
-            LoadApplication(new App());
+            if (options != null)
+            {
+                NSObject result;
+                if (options.TryGetValue(UIApplication.LaunchOptionsRemoteNotificationKey, out result))
+                {
+                    var aps = ((NSDictionary)result)["aps"];
+                    var alert = ((NSDictionary)aps)["alert"];
+                    var title = ((NSDictionary)alert)["title"];
+                    var body = ((NSDictionary)alert)["body"];
+                    var matchID = ((NSDictionary)result)["matchID"];
+                    IDictionary<string, object> data = new Dictionary<string, object>
+                    {
+                        { "matchID", matchID },
+                        { "aps.alert.title", title },
+                        { "aps.alert.body", body}
+                    };
+                    LoadApplication(new App(data));
+                }
+            }
+            else
+            {
+                LoadApplication(new App());
+            }
+            
 
             return base.FinishedLaunching(app, options);
         }

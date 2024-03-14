@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using DystirXamarin.Models;
@@ -30,9 +31,7 @@ namespace DystirXamarin.Views
             string buildString = AppInfo.BuildString;
             VersionLabel.Text = $"{version.Major}.{version.Minor}.{version.Build} build {buildString}";
 
-            AddManager(((App)Application.Current).DeviceToken);
-
-            // Push message received event
+            //Push message received event
             CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
             {
                 System.Diagnostics.Debug.WriteLine("Received");
@@ -40,7 +39,7 @@ namespace DystirXamarin.Views
                 var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
                 player.Load(eventType.Equals("GOAL") ? "crowd.mp3" : "whistle.mp3");
                 player.Play();
-                OpenMatchAsync(p.Data, true);
+                OpenMatchAsync(p.Data);
             };
 
             //Push message received event
@@ -51,11 +50,20 @@ namespace DystirXamarin.Views
                 {
                     System.Diagnostics.Debug.WriteLine($"{data.Key} : {data.Value}");
                 }
-                OpenMatchAsync(p.Data, true);
+                OpenMatchAsync(p.Data);
             };
+
+            AddManagerAsync(((App)Application.Current).DeviceToken);
         }
 
-        private void AddManager(string deviceToken)
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            _viewModel.IsLoading = true;
+            Populate();
+        }
+
+        private async void AddManagerAsync(string deviceToken)
         {
             if (!string.IsNullOrEmpty(deviceToken))
             {
@@ -66,37 +74,40 @@ namespace DystirXamarin.Views
                     Name = $"{administrator.AdministratorFirstName} {administrator.AdministratorLastName}",
                     DeviceToken = deviceToken
                 };
-                _ = _viewModel.AddManagerAsync(manager);
+                await _viewModel.AddManagerAsync(manager);
             }
         }
 
-        private async void OpenMatchAsync(IDictionary<string, object> data, bool showAlertDialog)
+        private async void OpenMatchAsync(IDictionary<string, object> data)
         {
             string matchID = data["matchID"]?.ToString();
+            var title = data["aps.alert.title"]?.ToString();
+            var body = data["aps.alert.body"]?.ToString();
+
+            ((App)Application.Current).NotificationData = null;
+
             var selectedLiveMatch = _viewModel.AllMatches.FirstOrDefault(x => x.MatchID == int.Parse(matchID));
             if (selectedLiveMatch == null)
             {
                 return;
             }
             _viewModel.SelectedLiveMatch = selectedLiveMatch;
+
+            var page = Navigation.NavigationStack.Last();
+            if(page is EventsOfMatchPage)
+            {
+                await Navigation.PopAsync(false);
+            }
             await Navigation.PushAsync(new EventsOfMatchPage(_viewModel), false);
 
-            var eventType = data["event"]?.ToString();
-            if (showAlertDialog)
-            {
-                var title = data["aps.alert.title"]?.ToString();
-                var body = data["aps.alert.body"]?.ToString();
-                var answer = await DisplayAlert(title, body, "Open COMET LIVE", "Cancel");
-                if (!answer)
-                {
-                    return;
-                }
-                OpenCometApplication();
-            }
-        }
 
-        private async void OpenCometApplication()
-        {
+            var answer = await DisplayAlert(title, body, "Open COMET LIVE", "Cancel");
+            if (!answer)
+            {
+                return;
+            }
+
+            // Open Comet application
             if (Device.RuntimePlatform == Device.iOS)
             {
                 await Launcher.OpenAsync("https://newcometmobile.page.link/redirect");
@@ -105,13 +116,6 @@ namespace DystirXamarin.Views
             {
                 await Launcher.OpenAsync("https://newcometmobile.page.link/redirect");
             }
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            _viewModel.IsLoading = true;
-            Populate();
         }
 
         private async void Populate()
@@ -128,6 +132,12 @@ namespace DystirXamarin.Views
             else
             {
                 NewMatchButton.IsVisible = false;
+            }
+
+            var notificationData = ((App)Application.Current).NotificationData;
+            if (notificationData != null)
+            {
+                OpenMatchAsync(notificationData);
             }
         }
 
