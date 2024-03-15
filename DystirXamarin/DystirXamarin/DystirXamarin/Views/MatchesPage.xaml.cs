@@ -97,25 +97,26 @@ namespace DystirXamarin.Views
             {
                 await Navigation.PopAsync(false);
             }
-            await Navigation.PushAsync(new EventsOfMatchPage(_viewModel, true), false);
+            var notificationText = $"{title}\n{body}";
+            await Navigation.PushAsync(new EventsOfMatchPage(_viewModel, true, notificationText), false);
 
-            var answer = await DisplayAlert(title, body, "Open COMET LIVE", "Cancel");
-            if (answer)
-            {
-                // Open Comet application
-                if (Device.RuntimePlatform == Device.iOS)
-                {
-                    await Launcher.OpenAsync("https://newcometmobile.page.link/redirect");
-                }
-                else if (Device.RuntimePlatform == Device.Android)
-                {
-                    await Launcher.OpenAsync("https://newcometmobile.page.link/redirect");
-                }
-            }
-            else
-            {
-                return;
-            }
+            //var answer = await DisplayAlert(title, body, "Open COMET LIVE", "Cancel");
+            //if (answer)
+            //{
+            //    // Open Comet application
+            //    if (Device.RuntimePlatform == Device.iOS)
+            //    {
+            //        await Launcher.OpenAsync("https://newcometmobile.page.link/redirect");
+            //    }
+            //    else if (Device.RuntimePlatform == Device.Android)
+            //    {
+            //        await Launcher.OpenAsync("https://newcometmobile.page.link/redirect");
+            //    }
+            //}
+            //else
+            //{
+            //    return;
+            //}
         }
 
         private async void Populate()
