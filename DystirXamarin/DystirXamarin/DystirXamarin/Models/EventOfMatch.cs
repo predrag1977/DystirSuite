@@ -48,5 +48,8 @@ namespace DystirXamarin.Models
         public bool AwayTeamVisible { get; internal set; }
         public string AdditionalText { get; internal set; }
         public object EventBackgroundColor { get; internal set; }
+        public string EventIconSource { get; internal set; }
+        public int EventIconSize { get; internal set; }
+        public bool ShowEventIcon { get; internal set; }
     }
 }
