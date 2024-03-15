@@ -67,7 +67,14 @@
             <Label x:Name="HomeScore" Grid.Row="2" Grid.Column="0" Margin="10,0" FontSize="16" HorizontalOptions="End" Text="{Binding HomeTeamScore}" />
             <Label x:Name="AwayScore" Grid.Row="2" Grid.Column="4" Margin="10,0" FontSize="16" HorizontalOptions="Start" Text="{Binding AwayTeamScore}" />
             
-            <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" HorizontalOptions="Fill" VerticalOptions="Center" BackgroundColor="Goldenrod" Padding="1.5">
+            <Grid x:Name="MatchTimeGrid"
+                  Grid.Row="2"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="3"
+                  HorizontalOptions="Fill"
+                  VerticalOptions="Center"
+                  BackgroundColor="Goldenrod"
+                  Padding="1.5">
                 <StackLayout x:Name="MatchTimeLayout" Orientation="Horizontal" BackgroundColor="{StaticResource LightBackgroundColor}" Padding="2,6" >
                     <Label x:Name="MatchTimeLabel" FontSize="12" FontAttributes="Bold" TextColor="Goldenrod" BindingContext="{Binding}"
                            VerticalOptions="CenterAndExpand"  HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Margin="3,0"/>
@@ -231,14 +238,16 @@
                     <DataTemplate>
                         <ViewCell>
                             <StackLayout Orientation="Vertical" Spacing="0">
-                                <Grid BackgroundColor="{Binding EventBackgroundColor}" Padding="3" Margin="0,2">
+                                <Grid BackgroundColor="{Binding EventBackgroundColor}" Padding="0" Margin="0,2">
                                     <Grid BackgroundColor="Black" Padding="5,7" RowSpacing="2">
                                         <Grid.GestureRecognizers>
                                             <TapGestureRecognizer NumberOfTapsRequired="1" CommandParameter="{Binding}" Tapped="EditEvent_Tapped" />
                                         </Grid.GestureRecognizers>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="{Binding EventIconSize}" />
                                             <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="{Binding EventIconSize}" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
@@ -250,14 +259,24 @@
                                             <Label FontSize="11" Text="{Binding SecondPlayerOfMatchNumber}" TextColor="LightGray" />
                                             <Label FontSize="11" Text="{Binding MainPlayerOfMatchNumber}" TextColor="LightGray" />
                                         </StackLayout>
-                                        <Label Grid.Row="0" Grid.Column="1" Padding="5,0" FontSize="12" Text="{Binding EventMinute}" TextColor="Goldenrod" />
-                                        <StackLayout Grid.Row="0" Grid.Column="2" Orientation="Horizontal"
+                                        <ffsvg:SvgCachedImage Grid.Row="0" Grid.Column="1"
+                                                              IsVisible="{Binding HomeTeamVisible}"
+                                                              HeightRequest="20"
+                                                              Margin="3,0"
+                                                              Source="{Binding EventIconSource, StringFormat=resource://DystirXamarin.Resources.Images.\{0\}}"/>
+                                        <Label Grid.Row="0" Grid.Column="2" Padding="5,0" FontSize="12" Text="{Binding EventMinute}" TextColor="Goldenrod" />
+                                        <ffsvg:SvgCachedImage Grid.Row="0" Grid.Column="3"
+                                                              IsVisible="{Binding AwayTeamVisible}"
+                                                              HeightRequest="20"
+                                                              Margin="3,0"
+                                                              Source="{Binding EventIconSource, StringFormat=resource://DystirXamarin.Resources.Images.\{0\}}"/>
+                                        <StackLayout Grid.Row="0" Grid.Column="4" Orientation="Horizontal"
                                                      HorizontalOptions="StartAndExpand" IsVisible="{Binding AwayTeamVisible}">
                                             <Label FontSize="11" Text="{Binding MainPlayerOfMatchNumber}" TextColor="LightGray" />
                                             <Label FontSize="11" Text="{Binding SecondPlayerOfMatchNumber}" TextColor="LightGray" />
                                             <Label  FontSize="10" Text="{Binding AdditionalText}" TextColor="SkyBlue"  />
                                         </StackLayout>
-                                        <Label Grid.Row="1" Grid.ColumnSpan="3" FontSize="12" Text="{Binding EventText}"  MaxLines="4" />
+                                        <Label Grid.Row="1" Grid.ColumnSpan="5" FontSize="12" Text="{Binding EventText}"  MaxLines="4" />
                                     </Grid>
                                 </Grid>
                                 <BoxView HeightRequest="1" BackgroundColor="DimGray"/>

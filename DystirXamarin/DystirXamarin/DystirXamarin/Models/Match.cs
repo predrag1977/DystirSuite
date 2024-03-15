@@ -198,6 +198,26 @@ namespace DystirXamarin.Models
                         eventOfMatch.EventBackgroundColor = Application.Current.Resources["LightBackgroundColor"];
                         break;
                 }
+                switch (eventOfMatch.EventName)
+                {
+                    case "GOAL":
+                    case "OWNGOAL":
+                    case "PENALTYSCORED":
+                    case "PENALTYMISSED":
+                    case "YELLOW":
+                    case "RED":
+                    case "SUBSTITUTION":
+                        eventOfMatch.EventIconSource = (eventOfMatch.EventName + ".svg").ToLower();
+                        eventOfMatch.EventIconSize = 20;
+                        eventOfMatch.ShowEventIcon = true;
+                        break;
+                    default:
+                        eventOfMatch.EventIconSource = "noimage.svg";
+                        eventOfMatch.EventIconSize = 0;
+                        eventOfMatch.ShowEventIcon = false;
+                        break;
+                }
+                
             }
             return new ObservableCollection<EventOfMatch>(sortEvents.Reverse());
         }

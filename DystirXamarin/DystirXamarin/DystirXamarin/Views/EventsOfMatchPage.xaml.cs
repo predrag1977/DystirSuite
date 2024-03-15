@@ -2,6 +2,7 @@
 using DystirXamarin.Models;
 using DystirXamarin.ViewModels;
 using System;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using Xamarin.Forms;
@@ -13,16 +14,14 @@ namespace DystirXamarin.Views
     public partial class EventsOfMatchPage : ContentPage
     {
         private readonly MatchesViewModel _viewModel;
+        private readonly bool _openFromNotification;
 
         public EventsOfMatchPage(MatchesViewModel viewModel, bool openFromNotification = false)
         {
             InitializeComponent();
             _viewModel = viewModel;
+            _openFromNotification = openFromNotification;
             BindingContext = _viewModel;
-            if(openFromNotification)
-            {
-                ShowMainEvents();
-            }
             LoadMatchData();
             PopulateMatchTime();
         }
@@ -63,6 +62,10 @@ namespace DystirXamarin.Views
             bool loadResult = await _viewModel.GetSelectedLiveMatch(_viewModel.SelectedLiveMatch, true);
             if (loadResult)
             {
+                if(_openFromNotification)
+                {
+                    ShowMainEvents();
+                }
                 LoadingMatchDataGrid.IsVisible = false;
                 EventsOfMatchGrid.IsVisible = true;
             }
@@ -72,7 +75,7 @@ namespace DystirXamarin.Views
                 ErrorLoadingDataLabel.IsVisible = true;
                 TryAgainBottom.IsVisible = true;
             }
-            EventsGrid.IsVisible = true;
+            EventsGrid.IsVisible = !_openFromNotification;
             IsEnabled = true;
         }
 
@@ -103,16 +106,42 @@ namespace DystirXamarin.Views
 
         private void ShowMainEvents()
         {
-            EventsGrid.IsVisible = false;
+            var mainEventsOfMatch = _viewModel.SelectedLiveMatch.EventsOfMatch.Where(x => MainEventName(x.EventName)).Reverse();
+            _viewModel.SelectedLiveMatch.EventsOfMatch = new ObservableCollection<EventOfMatch>(mainEventsOfMatch);
+        }
+
+        private bool MainEventName(string eventName)
+        {
+            switch(eventName.ToUpper())
+            {
+                case "GOAL":
+                case "OWNGOAL":
+                case "PENALTYSCORED":
+                case "PENALTyMISSED":
+                case "YELLOW":
+                case "RED":
+                case "SUBSTITUTION":
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         private async void MatchTime_Clicked(object sender, EventArgs e)
         {
+            if(_openFromNotification)
+            {
+                return;
+            }
             await Navigation.PushAsync(new MatchTimeAndPeriodPage(_viewModel), false);
         }
 
         private async void EditEvent_Tapped(object sender, EventArgs e)
         {
+            if (_openFromNotification)
+            {
+                return;
+            }
             EventOfMatch eventOfMatch = (e as TappedEventArgs).Parameter as EventOfMatch;
             await Navigation.PushAsync(new EventSelectedPage(_viewModel, eventOfMatch.EventName, eventOfMatch), false);
         }
@@ -120,6 +149,10 @@ namespace DystirXamarin.Views
         private async void EventsListView_Refreshing(object sender, EventArgs e)
         {
             await _viewModel.GetSelectedLiveMatch(_viewModel.SelectedLiveMatch, false);
+            if (_openFromNotification)
+            {
+                ShowMainEvents();
+            }
         }
 
         private void TryLoadAgain_Tapped(object sender, EventArgs e)

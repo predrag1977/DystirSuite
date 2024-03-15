@@ -38,6 +38,16 @@
 
   <ItemGroup>
     <None Remove="Microsoft.Extensions.DependencyInjection" />
+    <None Remove="Resources\" />
+    <None Remove="Resources\Images\" />
+    <None Remove="Resources\Images\goal.svg" />
+    <None Remove="Resources\Images\owngoal.svg" />
+    <None Remove="Resources\Images\penaltyscored.svg" />
+    <None Remove="Resources\Images\red.svg" />
+    <None Remove="Resources\Images\substitution.svg" />
+    <None Remove="Resources\Images\yellow.svg" />
+    <None Remove="Resources\Images\noimage.svg" />
+    <None Remove="Resources\Images\penaltymissed.svg" />
   </ItemGroup>
   <ItemGroup>
     <None Update="App.xaml">
@@ -85,5 +95,19 @@
     <None Update="Views\UpdateAndNewMatchPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Resources\Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Images\goal.svg" />
+    <EmbeddedResource Include="Resources\Images\owngoal.svg" />
+    <EmbeddedResource Include="Resources\Images\penaltyscored.svg" />
+    <EmbeddedResource Include="Resources\Images\red.svg" />
+    <EmbeddedResource Include="Resources\Images\substitution.svg" />
+    <EmbeddedResource Include="Resources\Images\yellow.svg" />
+    <EmbeddedResource Include="Resources\Images\noimage.svg" />
+    <EmbeddedResource Include="Resources\Images\penaltymissed.svg" />
   </ItemGroup>
 </Project>

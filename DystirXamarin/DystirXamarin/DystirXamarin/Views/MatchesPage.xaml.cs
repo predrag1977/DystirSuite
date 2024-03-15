@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using DystirXamarin.Models;
@@ -29,7 +28,7 @@ namespace DystirXamarin.Views
 
             Version version = AppInfo.Version;
             string buildString = AppInfo.BuildString;
-            VersionLabel.Text = $"{version.Major}.{version.Minor}.{version.Build} build {buildString}";
+            VersionLabel.Text = $"{version.Major}.{version.Minor}.{version.Build}.{buildString}";
 
             //Push message received event
             CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
@@ -98,23 +97,24 @@ namespace DystirXamarin.Views
             {
                 await Navigation.PopAsync(false);
             }
-            await Navigation.PushAsync(new EventsOfMatchPage(_viewModel), false);
-
+            await Navigation.PushAsync(new EventsOfMatchPage(_viewModel, true), false);
 
             var answer = await DisplayAlert(title, body, "Open COMET LIVE", "Cancel");
-            if (!answer)
+            if (answer)
+            {
+                // Open Comet application
+                if (Device.RuntimePlatform == Device.iOS)
+                {
+                    await Launcher.OpenAsync("https://newcometmobile.page.link/redirect");
+                }
+                else if (Device.RuntimePlatform == Device.Android)
+                {
+                    await Launcher.OpenAsync("https://newcometmobile.page.link/redirect");
+                }
+            }
+            else
             {
                 return;
-            }
-
-            // Open Comet application
-            if (Device.RuntimePlatform == Device.iOS)
-            {
-                await Launcher.OpenAsync("https://newcometmobile.page.link/redirect");
-            }
-            else if (Device.RuntimePlatform == Device.Android)
-            {
-                await Launcher.OpenAsync("https://newcometmobile.page.link/redirect");
             }
         }
 
