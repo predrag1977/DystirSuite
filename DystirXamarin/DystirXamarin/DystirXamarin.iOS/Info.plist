@@ -35,7 +35,7 @@
 	<key>XSAppIconAssets</key>
 	<string>DystirManagerAssets.xcassets/DystirManagerIcon.appiconset</string>
 	<key>CFBundleVersion</key>
-	<string>64</string>
+	<string>65</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
@@ -44,5 +44,7 @@
 	<false/>
 	<key>Queried URL Schemes</key>
 	<string>newmcomet</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>

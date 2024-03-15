@@ -25,6 +25,7 @@
     <PackageReference Include="Xamarin.FFImageLoading.Svg" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.11.982" />
+    <PackageReference Include="Acr.UserDialogs" Version="7.2.0.564" />
   </ItemGroup>
 
   <ItemGroup>

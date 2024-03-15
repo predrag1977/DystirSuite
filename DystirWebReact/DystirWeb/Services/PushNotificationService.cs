@@ -67,7 +67,8 @@ namespace DystirWeb.Services
             var players = mainPlayer + secondPlayer;
             if(eventOfMatch.EventName.ToUpper() == EventType.SUBSTITUTION)
             {
-                players = $"OUT: {mainPlayer}\nIN: {secondPlayer}";
+                players = $"IN: {secondPlayer?.Trim()}\n" +
+                          $"OUT: {mainPlayer?.Trim()}";
             }
 
             var result = $"{homeTeamPenaltiesScoreText}{homeTeamScore}:{awayTeamScore}{awayTeamPenaltiesScoreText}";
@@ -124,7 +125,7 @@ namespace DystirWeb.Services
             var title = $"{eventTypeText}";
             var body = $"{match.HomeTeam} - {match.AwayTeam}\n" +
                 $"{result}" +
-                $"{eventOfMatch.EventTeam} {eventAction}\n" +
+                $"{eventOfMatch.EventTeam}{eventAction}\n" +
                 $"{players}";
 
             ReadOnlyDictionary<string, string> readOnlyData = data.AsReadOnly();
