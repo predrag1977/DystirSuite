@@ -1,4 +1,5 @@
-﻿using DystirWeb.DystirDB;
+﻿using System.Text.RegularExpressions;
+using DystirWeb.DystirDB;
 using DystirWeb.Shared;
 
 namespace DystirWeb.Services
@@ -23,28 +24,33 @@ namespace DystirWeb.Services
             _dystirDBContext = dystirDBContext;
         }
 
-        public MatchDetails GetMatchDetails(int matchID, bool isDatabaseUpdated)
+        public MatchDetails FindMatchDetails(int matchID)
+        {
+            var matchDetails = _dystirService.AllMatchesDetails.FirstOrDefault(x => x.MatchDetailsID == matchID);
+            if(matchDetails == null)
+            {
+                var match = GetMatchFromDB(matchID);
+                matchDetails = GetMatchDetails(match);
+            }
+            return matchDetails;
+        }
+
+        public MatchDetails GetMatchDetails(Matches match)
         {
             lock (lockGetMatchDetails)
             {
-                var matchDetails = isDatabaseUpdated ? null : _dystirService.AllMatchesDetails.FirstOrDefault(x => x.MatchDetailsID == matchID);
-                if (matchDetails == null)
+                var matchID = match.MatchID;
+                var matchDetails = new MatchDetails()
                 {
-                    var eventsOfMatch = GetEventsOfMatches(matchID);
-                    var playersOfMatch = GetPlayersOfMatches(matchID);
-                    
-                    matchDetails = new MatchDetails()
-                    {
-                        MatchDetailsID = matchID,
-                        Match = GetMatchFromDB(matchID),
-                        EventsOfMatch = eventsOfMatch?
-                        .OrderBy(x => x.EventPeriodId ?? 0)
-                        .ThenBy(x => x.EventTotalTime)
-                        .ThenBy(x => x.EventMinute)
-                        .ThenBy(x => x.EventOfMatchId).ToList(),
-                        PlayersOfMatch = playersOfMatch?.Where(x => x.PlayingStatus != 3).ToList(),
-                    };
-                }
+                    MatchDetailsID = matchID,
+                    Match = match,
+                    EventsOfMatch = GetEventsOfMatches(matchID)?
+                    .OrderBy(x => x.EventPeriodId ?? 0)
+                    .ThenBy(x => x.EventTotalTime)
+                    .ThenBy(x => x.EventMinute)
+                    .ThenBy(x => x.EventOfMatchId).ToList(),
+                    PlayersOfMatch = GetPlayersOfMatches(matchID)?.Where(x => x.PlayingStatus != 3).ToList(),
+                };
                 matchDetails.Standings = _standingService.GetStandings().ToList();
                 matchDetails.Matches = _dystirService.AllMatches.Where(x =>
                     x.Time > DateTime.UtcNow.AddDays(-2) &&

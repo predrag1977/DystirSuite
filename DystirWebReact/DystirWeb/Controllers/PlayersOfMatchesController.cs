@@ -283,8 +283,9 @@ namespace DystirWeb.Controllers
 
         private async void HubSendMatchDetails(HubSender hubSender, Matches match)
         {
-            MatchDetails matchDetails = _matchDetailsService.GetMatchDetails(match.MatchID, true);
-            await _dystirService.UpdateDataAsync(matchDetails);
+            //await _dystirService.UpdateAllMatchesAsync(match);
+            MatchDetails matchDetails = _matchDetailsService.GetMatchDetails(match);
+            await _dystirService.UpdateMatchesDetailsAsync(matchDetails);
             hubSender.SendMatchDetails(_hubContext, matchDetails);
         }
     }
