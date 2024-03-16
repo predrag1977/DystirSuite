@@ -107,15 +107,11 @@ namespace DystirWeb.Services
             await Task.CompletedTask;
         }
 
-        public async Task UpdateDataAsync(MatchDetails matchDetails)
+        public async Task UpdateMatchesDetailsAsync(MatchDetails matchDetails)
         {
-            Matches match = matchDetails.Match;
-            if (match == null) return;
-
-            var updateAllMatchesTask = UpdateAllMatchesAsync(match);
             var updateAllMatchesDetailsTask = UpdateAllMatchesDetailsAsync(matchDetails);
             var updateAllPlayersOfMatchesTask = UpdateAllPlayersOfMatchesAsync(matchDetails);
-            await Task.WhenAll(updateAllMatchesTask, updateAllMatchesDetailsTask, updateAllPlayersOfMatchesTask);
+            await Task.WhenAll(updateAllMatchesDetailsTask, updateAllPlayersOfMatchesTask);
         }
 
         public async Task UpdateAllMatchesAsync(Matches match)

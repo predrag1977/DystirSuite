@@ -131,8 +131,8 @@ namespace DystirWeb.Controllers
                     SetNewEventsList((int)eventsOfMatches.MatchId);
                 }
                 Matches match = _dystirDBContext.Matches.Find(eventsOfMatches.MatchId);
-                _pushNotificationService.SendNotificationFromEventAsync(match, eventsOfMatches, "");
                 HubSend(match);
+                _pushNotificationService.SendNotificationFromEventAsync(match, eventsOfMatches, "");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -176,42 +176,39 @@ namespace DystirWeb.Controllers
 
         private void SetPlayersListByEventsOfMatch(List<EventsOfMatches> eventsOfMatch, Matches selectedMatch)
         {
-            if (selectedMatch != null)
-            {
-                selectedMatch.HomeTeamScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL" || x.EventName?.ToUpper() == "DIRECTFREEKICKGOAL") && x.EventTeam?.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())?.Count();
-                selectedMatch.AwayTeamScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL" || x.EventName?.ToUpper() == "DIRECTFREEKICKGOAL") && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())?.Count();
-                selectedMatch.HomeTeamOnTarget = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "ONTARGET" && x.EventTeam?.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())?.Count();
-                selectedMatch.AwayTeamOnTarget = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "ONTARGET" && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())?.Count();
-                selectedMatch.HomeTeamCorner = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "CORNER" && x.EventTeam?.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())?.Count();
-                selectedMatch.AwayTeamCorner = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "CORNER" && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())?.Count();
-                selectedMatch.HomeTeamPenaltiesScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL" || x.EventName?.ToUpper() == "DIRECTFREEKICKGOAL")
-                && x.EventTeam?.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim()
-                && x.EventPeriodId == 10)?.Count();
-                selectedMatch.AwayTeamPenaltiesScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL" || x.EventName?.ToUpper() == "DIRECTFREEKICKGOAL")
-                && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim()
-                && x.EventPeriodId == 10)?.Count();
+            selectedMatch.HomeTeamScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL" || x.EventName?.ToUpper() == "DIRECTFREEKICKGOAL") && x.EventTeam?.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())?.Count();
+            selectedMatch.AwayTeamScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL" || x.EventName?.ToUpper() == "DIRECTFREEKICKGOAL") && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())?.Count();
+            selectedMatch.HomeTeamOnTarget = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "ONTARGET" && x.EventTeam?.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())?.Count();
+            selectedMatch.AwayTeamOnTarget = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "ONTARGET" && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())?.Count();
+            selectedMatch.HomeTeamCorner = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "CORNER" && x.EventTeam?.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim())?.Count();
+            selectedMatch.AwayTeamCorner = eventsOfMatch?.Where(x => x.EventName?.ToUpper() == "CORNER" && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim())?.Count();
+            selectedMatch.HomeTeamPenaltiesScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL" || x.EventName?.ToUpper() == "DIRECTFREEKICKGOAL")
+            && x.EventTeam?.ToUpper().Trim() == selectedMatch.HomeTeam.ToUpper().Trim()
+            && x.EventPeriodId == 10)?.Count();
+            selectedMatch.AwayTeamPenaltiesScore = eventsOfMatch?.Where(x => (x.EventName?.ToUpper() == "GOAL" || x.EventName?.ToUpper() == "PENALTYSCORED" || x.EventName?.ToUpper() == "OWNGOAL" || x.EventName?.ToUpper() == "DIRECTFREEKICKGOAL")
+            && x.EventTeam?.ToUpper().Trim() == selectedMatch.AwayTeam.ToUpper().Trim()
+            && x.EventPeriodId == 10)?.Count();
 
-                var playersOfMatch = _dystirDBContext.PlayersOfMatches.Where(x => x.MatchId == selectedMatch.MatchID)?.ToList();
-                foreach (PlayersOfMatches playerOfMatch in playersOfMatch ?? new List<PlayersOfMatches>())
-                {
-                    playerOfMatch.Goal = 0;
-                    playerOfMatch.OwnGoal = 0;
-                    playerOfMatch.YellowCard = 0;
-                    playerOfMatch.RedCard = 0;
-                    playerOfMatch.SubIn = -1;
-                    playerOfMatch.SubOut = -1;
-                    playerOfMatch.Assist = 0;
-                }
-                foreach (EventsOfMatches eventMatch in eventsOfMatch ?? new List<EventsOfMatches>())
-                {
-                    PlayersOfMatches playerOfMatch = playersOfMatch?.FirstOrDefault(x => x.PlayerOfMatchId == eventMatch.MainPlayerOfMatchId);
-                    if (playerOfMatch != null)
-                    {
-                        PlayersOfMatchValuesFromEvent(playerOfMatch, eventMatch);
-                    }
-                }
-                _dystirDBContext.SaveChanges();
+            var playersOfMatch = _dystirDBContext.PlayersOfMatches.Where(x => x.MatchId == selectedMatch.MatchID)?.ToList();
+            foreach (PlayersOfMatches playerOfMatch in playersOfMatch ?? new List<PlayersOfMatches>())
+            {
+                playerOfMatch.Goal = 0;
+                playerOfMatch.OwnGoal = 0;
+                playerOfMatch.YellowCard = 0;
+                playerOfMatch.RedCard = 0;
+                playerOfMatch.SubIn = -1;
+                playerOfMatch.SubOut = -1;
+                playerOfMatch.Assist = 0;
             }
+            foreach (EventsOfMatches eventMatch in eventsOfMatch ?? new List<EventsOfMatches>())
+            {
+                PlayersOfMatches playerOfMatch = playersOfMatch?.FirstOrDefault(x => x.PlayerOfMatchId == eventMatch.MainPlayerOfMatchId);
+                if (playerOfMatch != null)
+                {
+                    PlayersOfMatchValuesFromEvent(playerOfMatch, eventMatch);
+                }
+            }
+            _dystirDBContext.SaveChanges();
         }
 
         private void PlayersOfMatchValuesFromEvent(PlayersOfMatches playerOfMatch, EventsOfMatches eventMatch)
@@ -503,8 +500,9 @@ namespace DystirWeb.Controllers
 
         private async void HubSendMatchDetails(HubSender hubSender, Matches match)
         {
-            MatchDetails matchDetails = _matchDetailsService.GetMatchDetails(match.MatchID, true);
-            await _dystirService.UpdateDataAsync(matchDetails);
+            await _dystirService.UpdateAllMatchesAsync(match);
+            MatchDetails matchDetails = _matchDetailsService.GetMatchDetails(match);
+            await _dystirService.UpdateMatchesDetailsAsync(matchDetails);
             hubSender.SendMatchDetails(_hubContext, matchDetails);
         }
     }
