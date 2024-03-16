@@ -38,8 +38,7 @@ namespace DystirXamarin.Views
                 UserDialogs.Instance.ActionSheet(new ActionSheetConfig()
                 {
                     Message = _notificationText,
-                    Cancel = new ActionSheetOption("Close", null, null),
-
+                    Cancel = new ActionSheetOption("Close", null, null)
                 });
             }
             Device.StartTimer(new TimeSpan(0, 0, 1), () =>

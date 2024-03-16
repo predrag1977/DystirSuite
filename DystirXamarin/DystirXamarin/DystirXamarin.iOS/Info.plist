@@ -35,7 +35,7 @@
 	<key>XSAppIconAssets</key>
 	<string>DystirManagerAssets.xcassets/DystirManagerIcon.appiconset</string>
 	<key>CFBundleVersion</key>
-	<string>65</string>
+	<string>68</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
