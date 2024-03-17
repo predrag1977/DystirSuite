@@ -18,7 +18,7 @@
         </Style>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems >
-        <ToolbarItem Name="OK" Order="Primary" Text="OK" Clicked="OK_Tapped" />
+        <ToolbarItem Order="Primary" Text="OK" Clicked="OK_Tapped" />
     </ContentPage.ToolbarItems>
 
     <StackLayout Padding="20,0">
@@ -28,7 +28,7 @@
             <Grid HorizontalOptions="Center" VerticalOptions="Start" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="30"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
@@ -51,13 +51,13 @@
         </StackLayout>
         
          <ListView x:Name="StatusListView"
-			      ItemsSource="{Binding StatusList}"
-                  VerticalOptions="FillAndExpand"
-                  HasUnevenRows="true"
+                   ItemsSource="{Binding StatusList}"
+                   VerticalOptions="FillAndExpand"
+                   HasUnevenRows="true"
                    BackgroundColor="{StaticResource LightBackgroundColor}"
-                  CachingStrategy="RecycleElementAndDataTemplate"
+                   CachingStrategy="RecycleElementAndDataTemplate"
                    ItemSelected="StatusListView_ItemSelected"
-                  SeparatorVisibility="None">
+                   SeparatorVisibility="None">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
