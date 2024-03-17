@@ -36,7 +36,7 @@ export default class App extends Component {
             this.setFavicon("https://roysni.fo/icons/favicon.ico");
         } else {
             import('./css/dystir_style.css');
-            this.setTitle("Dystir");
+            this.setTitle("Dystir | Live scores, results, fixtures and standings of football matches in the Faroe Islands");
             this.setFavicon("../favicon.ico?401");
             window.loadGoogleAnalytics('DWCGT486L9');
         }

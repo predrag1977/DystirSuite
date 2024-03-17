@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 using DystirWeb.DystirDB;
 using DystirWeb.Shared;
 
@@ -32,6 +33,10 @@ namespace DystirWeb.Services
                 var match = GetMatchFromDB(matchID);
                 matchDetails = GetMatchDetails(match);
             }
+            else
+            {
+                matchDetails.Matches = GetLiveMatches();
+            }
             return matchDetails;
         }
 
@@ -52,13 +57,17 @@ namespace DystirWeb.Services
                     PlayersOfMatch = GetPlayersOfMatches(matchID)?.Where(x => x.PlayingStatus != 3).ToList(),
                 };
                 matchDetails.Standings = _standingService.GetStandings().ToList();
-                matchDetails.Matches = _dystirService.AllMatches.Where(x =>
-                    x.Time > DateTime.UtcNow.AddDays(-2) &&
-                    x.Time < DateTime.UtcNow.AddDays(2)
-                ).ToList();
+                matchDetails.Matches = GetLiveMatches();
                 matchDetails.Statistic = _matchStatisticService.GetStatistic(matchDetails.EventsOfMatch, matchDetails.Match);
                 return matchDetails;
             }
+        }
+
+        public List<Matches> GetLiveMatches()
+        {
+            return _dystirService.AllMatches.Where(x =>
+                x.Time > DateTime.UtcNow.AddDays(-2) &&
+                x.Time < DateTime.UtcNow.AddDays(2)).ToList();
         }
 
         public IEnumerable<EventsOfMatches> GetEventsOfMatches(int matchID)
