@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="DystirXamarin.Views.DatePickerPage"
@@ -19,12 +19,10 @@
             <Setter Property="FontAttributes" Value="Bold" />
             <Setter Property="HorizontalTextAlignment" Value="Center"/>
             <Setter Property="VerticalTextAlignment" Value="Center"/>
-            <Setter Property="VerticalOptions" Value="Center"/>
-            <Setter Property="HorizontalOptions" Value="Center"/>
         </Style>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems >
-        <ToolbarItem Name="OK" Order="Primary" Text="OK" Clicked="OK_Tapped" />
+        <ToolbarItem Order="Primary" Text="OK" Clicked="OK_Tapped" />
     </ContentPage.ToolbarItems>
     <StackLayout HorizontalOptions="Center" VerticalOptions="Start" Margin="0,20,0,0">
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,0,0,15">
@@ -35,9 +33,9 @@
         <Grid HorizontalOptions="Center" VerticalOptions="Center" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="60"/>
-                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="30"/>
                 <ColumnDefinition Width="60"/>
-                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="30"/>
                 <ColumnDefinition Width="60"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -46,10 +44,10 @@
                 <RowDefinition Height="45" />
             </Grid.RowDefinitions>
 
-            <Button Grid.Column="0"  Grid.Row="2" Text="-" Pressed="DaysDown_Tapped" Released="Button_Released" />
-            <Label x:Name="Days" Grid.Column="0" Grid.Row="1"  BackgroundColor="Transparent" Text="{Binding TotalDate, StringFormat='{}{0:dd}'}" />
             <Button Grid.Column="0" Grid.Row="0" Text="+" Pressed="DaysUp_Tapped" Released="Button_Released" />
-
+            <Label x:Name="Days" Grid.Column="0" Grid.Row="1" BackgroundColor="Transparent" Text="{Binding TotalDate, StringFormat='{}{0:dd}'}" />
+            <Button Grid.Column="0"  Grid.Row="2" Text="-" Pressed="DaysDown_Tapped" Released="Button_Released" />
+            
             <Label Grid.Column="1" Grid.Row="1" BackgroundColor="Transparent" Text="." />
 
             <Button Grid.Column="2" Grid.Row="2" Text="-" Pressed="MonthsDown_Tapped" Released="Button_Released" />
