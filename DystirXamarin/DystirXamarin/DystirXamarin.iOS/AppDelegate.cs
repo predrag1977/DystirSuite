@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FFImageLoading.Forms.Platform;
 using Foundation;
 using Plugin.FirebasePushNotification;
 using UIKit;
@@ -22,7 +23,7 @@ namespace DystirXamarin.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
+            CachedImageRenderer.Init();
 
             FirebasePushNotificationManager.Initialize(options, true);
 
