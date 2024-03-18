@@ -1,6 +1,8 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using FFImageLoading.Forms.Platform;
+using FFImageLoading.Svg.Forms;
 
 namespace DystirXamarin.Droid
 {
@@ -11,6 +13,9 @@ namespace DystirXamarin.Droid
         {
             base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            CachedImageRenderer.Init(true);
+            SvgCachedImage.Init();
+
             LoadApplication(new App());
         }
     }
