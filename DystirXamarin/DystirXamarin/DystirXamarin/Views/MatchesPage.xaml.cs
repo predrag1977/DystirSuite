@@ -89,7 +89,7 @@ namespace DystirXamarin.Views
 
             ((App)Application.Current).NotificationData = null;
 
-            var selectedLiveMatch = _viewModel.AllMatches.FirstOrDefault(x => x.MatchID == int.Parse(string.IsNullOrEmpty(matchID) ? "8948" : matchID));
+            var selectedLiveMatch = _viewModel.AllMatches.FirstOrDefault(x => x.MatchID == int.Parse(string.IsNullOrEmpty(matchID) ? "" : matchID));
             if (selectedLiveMatch == null)
             {
                 return;
