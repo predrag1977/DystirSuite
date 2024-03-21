@@ -29,28 +29,33 @@ namespace DystirXamarin.iOS
 
             if (options != null)
             {
-                NSObject result;
-                if (options.TryGetValue(UIApplication.LaunchOptionsRemoteNotificationKey, out result))
+                try
                 {
-                    var aps = ((NSDictionary)result)["aps"];
-                    var alert = ((NSDictionary)aps)["alert"];
-                    var title = ((NSDictionary)alert)["title"];
-                    var body = ((NSDictionary)alert)["body"];
-                    var matchID = ((NSDictionary)result)["matchID"];
-                    IDictionary<string, object> data = new Dictionary<string, object>
+                    if (options.TryGetValue(UIApplication.LaunchOptionsRemoteNotificationKey, out NSObject result))
+                    {
+                        var aps = ((NSDictionary)result)["aps"];
+                        var alert = ((NSDictionary)aps)["alert"];
+                        var title = ((NSDictionary)alert)["title"];
+                        var body = ((NSDictionary)alert)["body"];
+                        var matchID = ((NSDictionary)result)["matchID"];
+                        IDictionary<string, object> data = new Dictionary<string, object>
                     {
                         { "matchID", matchID },
                         { "aps.alert.title", title },
                         { "aps.alert.body", body}
                     };
-                    LoadApplication(new App(data));
+                        LoadApplication(new App(data));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex?.Message ?? "Unknown error");
                 }
             }
             else
             {
                 LoadApplication(new App());
             }
-            
 
             return base.FinishedLaunching(app, options);
         }
