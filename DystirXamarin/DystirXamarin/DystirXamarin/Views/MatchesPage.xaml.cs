@@ -34,10 +34,13 @@ namespace DystirXamarin.Views
             CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
             {
                 System.Diagnostics.Debug.WriteLine("Received");
-                var eventType = p.Data.ContainsKey("event") ? p.Data["event"]?.ToString() : "";
-                var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
-                player.Load(eventType.Equals("GOAL") ? "crowd.mp3" : "whistle.mp3");
-                player.Play();
+                if (p.Data.ContainsKey("event"))
+                {
+                    var eventType = p.Data["event"]?.ToString();
+                    var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
+                    player.Load(eventType.Equals("GOAL") ? "crowd.mp3" : "whistle.mp3");
+                    player.Play();
+                }
                 OpenMatchAsync(p.Data);
             };
 
@@ -87,9 +90,12 @@ namespace DystirXamarin.Views
             var title = data.ContainsKey("aps.alert.title") ? data["aps.alert.title"]?.ToString() : "";
             var body = data.ContainsKey("aps.alert.body") ? data["aps.alert.body"]?.ToString() : "";
 
-            ((App)Application.Current).NotificationData = null;
+            if (Application.Current != null && Application.Current is App)
+            {
+                ((App)Application.Current).NotificationData = null;
+            }
 
-            var selectedLiveMatch = _viewModel.AllMatches.FirstOrDefault(x => x.MatchID == int.Parse(string.IsNullOrEmpty(matchID) ? "" : matchID));
+            var selectedLiveMatch = _viewModel.AllMatches.FirstOrDefault(x => x.MatchID == int.Parse(string.IsNullOrEmpty(matchID) ? "0" : matchID));
             if (selectedLiveMatch == null)
             {
                 return;
