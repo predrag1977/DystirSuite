@@ -34,7 +34,7 @@ namespace DystirXamarin.Views
             CrossFirebasePushNotification.Current.OnNotificationReceived += (s, p) =>
             {
                 System.Diagnostics.Debug.WriteLine("Received");
-                var eventType = p.Data["event"]?.ToString();
+                var eventType = p.Data.ContainsKey("event") ? p.Data["event"]?.ToString() : "";
                 var player = Plugin.SimpleAudioPlayer.CrossSimpleAudioPlayer.Current;
                 player.Load(eventType.Equals("GOAL") ? "crowd.mp3" : "whistle.mp3");
                 player.Play();
@@ -52,7 +52,11 @@ namespace DystirXamarin.Views
                 OpenMatchAsync(p.Data);
             };
 
-            AddManagerAsync(((App)Application.Current).DeviceToken);
+            if(Application.Current != null && Application.Current is App)
+            {
+                var deviceToken = ((App)Application.Current)?.DeviceToken ?? "";
+                AddManagerAsync(deviceToken);
+            }
         }
 
         protected override void OnAppearing()
@@ -77,15 +81,15 @@ namespace DystirXamarin.Views
             }
         }
 
-        private async void OpenMatchAsync(IDictionary<string, object> data)
+        private void OpenMatchAsync(IDictionary<string, object> data)
         {
-            string matchID = data["matchID"]?.ToString();
-            var title = data["aps.alert.title"]?.ToString();
-            var body = data["aps.alert.body"]?.ToString();
+            string matchID = data.ContainsKey("matchID") ? data["matchID"]?.ToString() : "";
+            var title = data.ContainsKey("aps.alert.title") ? data["aps.alert.title"]?.ToString() : "";
+            var body = data.ContainsKey("aps.alert.body") ? data["aps.alert.body"]?.ToString() : "";
 
             ((App)Application.Current).NotificationData = null;
 
-            var selectedLiveMatch = _viewModel.AllMatches.FirstOrDefault(x => x.MatchID == int.Parse(matchID));
+            var selectedLiveMatch = _viewModel.AllMatches.FirstOrDefault(x => x.MatchID == int.Parse(string.IsNullOrEmpty(matchID) ? "8948" : matchID));
             if (selectedLiveMatch == null)
             {
                 return;
@@ -95,28 +99,16 @@ namespace DystirXamarin.Views
             var page = Navigation.NavigationStack.Last();
             if(page is EventsOfMatchPage)
             {
-                await Navigation.PopAsync(false);
+                Navigation.PopAsync(false);
             }
-            var notificationText = $"{title}\n{body}";
-            await Navigation.PushAsync(new EventsOfMatchPage(_viewModel, true, notificationText), false);
 
-            //var answer = await DisplayAlert(title, body, "Open COMET LIVE", "Cancel");
-            //if (answer)
-            //{
-            //    // Open Comet application
-            //    if (Device.RuntimePlatform == Device.iOS)
-            //    {
-            //        await Launcher.OpenAsync("https://newcometmobile.page.link/redirect");
-            //    }
-            //    else if (Device.RuntimePlatform == Device.Android)
-            //    {
-            //        await Launcher.OpenAsync("https://newcometmobile.page.link/redirect");
-            //    }
-            //}
-            //else
-            //{
-            //    return;
-            //}
+            var notificationText = "";
+            if (!string.IsNullOrEmpty(title) && !string.IsNullOrEmpty(body))
+            {
+                notificationText = $"{title}\n{body}";
+            }
+            
+            Navigation.PushAsync(new EventsOfMatchPage(_viewModel, true, notificationText), false);
         }
 
         private async void Populate()

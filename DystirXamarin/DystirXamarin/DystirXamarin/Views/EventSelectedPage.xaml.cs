@@ -73,6 +73,10 @@ namespace DystirXamarin.Views
                 PopulateEventData();
                 PopulateView();
             }
+            else
+            {
+                MatchTime(_totalEventMinutesAndSeconds, _eventOfMatch.EventPeriodID);
+            }
             Title = _matchEventName.ToUpper();
         }
 
@@ -81,7 +85,6 @@ namespace DystirXamarin.Views
             Title = string.Format("{0} - {1}", _matchEventName.ToUpper(), _teamName);
             TeamEventView.IsVisible = false;
             MatchTimeLayout.IsVisible = true;
-            //MatchTimeLabel.Text = _eventOfMatch.EventTotalTime;
             _totalEventMinutesAndSeconds = GetTotalEventMinutesAndSeconds(_eventOfMatch.EventTotalTime, 0);
             MatchTime(_totalEventMinutesAndSeconds, _eventOfMatch.EventPeriodID);
 

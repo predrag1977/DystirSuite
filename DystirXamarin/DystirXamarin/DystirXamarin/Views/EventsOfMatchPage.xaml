@@ -74,6 +74,7 @@
                   HorizontalOptions="Fill"
                   VerticalOptions="Center"
                   BackgroundColor="Goldenrod"
+                  Margin="0,4"
                   Padding="1.5">
                 <StackLayout x:Name="MatchTimeLayout" Orientation="Horizontal" BackgroundColor="{StaticResource LightBackgroundColor}" Padding="2,6" >
                     <Label x:Name="MatchTimeLabel" FontSize="12" FontAttributes="Bold" TextColor="Goldenrod" BindingContext="{Binding}"
@@ -85,7 +86,7 @@
             </Grid>
         </Grid>
 
-        <Grid Grid.Row="1" Margin="7,0" x:Name="EventsGrid" IsVisible="False" >
+        <Grid Grid.Row="1" Margin="7,10,7,5" x:Name="EventsGrid" IsVisible="False" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="55" />
                 <RowDefinition Height="55" />
